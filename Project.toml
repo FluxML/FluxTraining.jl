@@ -1,0 +1,13 @@
+name = "Training"
+uuid = "7bf95e4d-ca32-48da-9824-f0dc5310474f"
+authors = ["lorenzoh <lorenz.ohly@gmail.com>"]
+version = "0.1.0"
+
+[deps]
+Flux = "587475ba-b771-5e3f-ad9e-33799f191a9c"
+IterTools = "c8e1da08-722c-5040-9ed9-7db0dc04731e"
+LearnBase = "7f8f8fb0-2700-5f03-b4bd-41f8cfc144b6"
+LengthChannels = "6e84ca90-c4c0-49b1-bdb7-24cdbeba32de"
+MLDataPattern = "9920b226-0b2a-5f5f-9153-9aa70a013f8b"
+SplitApplyCombine = "03a91e81-4c3e-53e1-a0a4-9c0c8f19dd66"
+Zygote = "e88e6eb3-aa80-5325-afca-941959d7151f"
