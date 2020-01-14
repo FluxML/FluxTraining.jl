@@ -1,17 +1,7 @@
 
-using Images: Colorant, imresize, channelview, permuteddimsview
 
-include("./functional.jl")
-
-
-function makedensitymaps(keypoints, size, sigma)
-    dmaps = zeros(Float32, size..., length(keypoints))
-    for (j, ks) in enumerate(keypoints)
-        dmap = @view dmaps[:,:,j]
-        densitymap!(dmap, ks, ones(length(ks)) * sigma; f = max)
-    end
-    dmaps
-end
+import Flux: onehot
+using Images: Colorant, Gray, AbstractRGB, imresize, colorview, channelview, permuteddimsview
 
 
 function normalize!(a, means, stds)
@@ -21,9 +11,21 @@ function normalize!(a, means, stds)
     end
     a
 end
+normalize(a, means, stds) = normalize!(copy(a), means, stds)
 
-imageto3d(image) = float.(permuteddimsview(channelview(image), (2, 3, 1)))
+function denormalize!(a, means, stds)
+    for i = 1:3
+        a[:,:,i] .*= stds[i]
+        a[:,:,i] .+= means[i]
+    end
+    a
+end
+denormalize(a, means, stds) = denormalize!(copy(a), means, stds)
 
+imagetotensor(image::AbstractArray{<:AbstractRGB, 2}) = float.(permuteddimsview(channelview(image), (2, 3, 1)))
+
+tensortoimage(tensor::AbstractArray{T, 3}) where T = colorview(RGB, permuteddimsview(tensor, (3, 1, 2)))
+tensortoimage(tensor::AbstractArray{T, 2}) where T = colorview(Gray, permuteddimsview(tensor, (3, 1, 2)))
 
 # Transform structs
 
@@ -61,35 +63,6 @@ function (t::RandomResizedCrop)(image::AbstractMatrix{<:Colorant})
 end
 
 
-function (t::RandomResizedCrop)(
-    image::AbstractMatrix{<:Colorant},
-    poses::AbstractMatrix{<:Joint}
-    )
-    top, left, height, width = getparams(t, size(image))
-    image = resizedcrop(image, top, left, height, width, t.size)
-    poses = resizedcrop(poses, top, left, height, width, (t.size ./ (height, width)))
-    return image, poses
-end
-
-## DownscalePoses
-
-struct DownscalePoses
-    factor::Integer
-end
-
-(t::DownscalePoses)(poses) = mapmaybe(k -> k ./ t.factor, poses)
-
-## DensityMap
-
-struct MakeDensityMap
-    sigma
-end
-
-function(t::MakeDensityMap)(poses, height, width)
-    keypoints = map(pose->filter(!isnothing, pose), eachcol(poses))
-    return makedensitymaps(keypoints, (height, width), t.sigma)
-end
-
 ## Normalizing
 
 struct Normalize
@@ -103,7 +76,7 @@ end
 
 ## Pipelining
 
-function applytransform!(sample::Dict, f, argkeys, outputkeys)
+function applytransform!(sample, f, argkeys, outputkeys)
     outputs = f((sample[arg] for arg in totuple(argkeys))...)
 
     for (output, outputkey) in zip(totuple(outputs), totuple(outputkeys))
@@ -115,6 +88,23 @@ end
 
 totuple(x::Tuple) = x
 totuple(x) = (x,)
+
+# ToEltype
+
+struct ToEltype{T} end
+ToEltype(T::Type) = ToEltype{T}()
+
+(t::ToEltype{T})(a::AbstractArray{<:T, 2}) where T = a
+(t::ToEltype{T})(a::AbstractArray{U, 2}) where {T, U} = map(a) do x
+    convert(T, x)
+end
+
+# OneHot
+
+struct OneHot
+    n
+end
+(t::OneHot)(x) = float(onehot(x, 1:t.n))
 
 
 struct SampleTransform
@@ -128,7 +118,8 @@ end
 
 struct Compose
     transforms
+    Compose(xs...) = new(xs)
 end
-Compose(xs...) = Compose(xs)
 
-(t::Compose)(sample) = foldl((sample, f) -> f(sample), t.transforms, init = sample)
+foldl
+(t::Compose)(sample) = foldl((sample, f) -> f(sample), t.transforms; init = sample)

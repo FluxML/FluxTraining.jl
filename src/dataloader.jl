@@ -10,12 +10,21 @@ mutable struct DataLoader
     shuffle::Bool
     threaded::Bool
     buffersize::Integer
+    transform_fn
     collate_fn
+
     _channel_samples
     _channel_batches
 
-    function DataLoader(dataset, batchsize; shuffle = true, threaded = true, buffersize = 4, collate_fn = identity)
-        return new(dataset, batchsize, shuffle, threaded, buffersize, collate_fn, nothing, nothing)
+    function DataLoader(
+        dataset,
+        batchsize;
+        shuffle = true,
+        threaded = true,
+        buffersize = 4,
+        transform_fn = identity,
+        collate_fn = collate)
+        return new(dataset, batchsize, shuffle, threaded, buffersize, transform_fn, collate_fn, nothing, nothing)
 
     end
 end
@@ -27,11 +36,9 @@ function Base.iterate(dl::DataLoader)
     (isnothing(dl._channel_batches) || isopen(dl._channel_samples)) || close(dl._channel_batches)
 
     # open new channels
-    dl._channel_samples, dl._channel_batches = makeloaderchannels(dl.dataset,
-        dl.batchsize;
-        buffersize = dl.buffersize,
-        shuffle = dl.shuffle,
-        collate_fn = dl.collate_fn)
+    dl._channel_samples = makesamplechannel(dl)
+    dl._channel_batches = makebatchchannel(dl, dl._channel_samples)
+
     return Base.iterate(dl._channel_batches)
 end
 function Base.iterate(dl::DataLoader, state)
@@ -47,36 +54,42 @@ function Base.iterate(dl::DataLoader, state)
 end
 
 
-function makeloaderchannels(dataset, batchsize; buffersize = 1, shuffle = true, collate_fn = collate)
-    idxs = 1:nobs(dataset)
-    if shuffle
+function makesamplechannel(dl::DataLoader)
+    idxs = 1:nobs(dl.dataset)
+    if dl.shuffle
         idxs = Random.shuffle(idxs)
     end
 
-    samplechannel = LengthChannel{Any}(nobs(dataset), buffersize * batchsize) do ch
+    samplechannel = LengthChannel{Any}(nobs(dl.dataset), dl.buffersize * dl.batchsize) do ch
         while true
-            try
-                Threads.@threads for idx in idxs
-                    sample = getobs(dataset, idx)
+            Threads.@threads for idx in idxs
+                try
+                    sample = getobs(dl.dataset, idx)
+                    sample = dl.transform_fn(sample)
                     put!(ch, sample)
+                catch e
+                    @error "Error in sample channel on thread $(Threads.threadid()), closing channel" error = e
+                    throw(e)
                 end
-            catch e
-                @error "Error in sample channel on thread $(Threads.threadid()), closing channel" error = e
-                close(ch)
-                throw(e)
             end
         end
     end
+    return samplechannel
+end
 
-    batchchannel = LengthChannel{Any}(nobs(dataset) ÷ batchsize, buffersize) do ch
+
+function makebatchchannel(dl::DataLoader, samplechannel)
+    batchchannel = LengthChannel{Any}(nobs(dl.dataset) ÷ dl.batchsize, dl.buffersize) do ch
+        # TODO: refactor iteration logic
+        # TODO: add option to drop last batch
         while true
             try
                 i = 1
-                batch = Array{Any}(undef, batchsize)
+                batch = Array{Any}(undef, dl.batchsize)
                 for sample in samplechannel
                     batch[i] = sample
-                    if i == batchsize
-                        put!(ch, batch)
+                    if i == dl.batchsize
+                        put!(ch, dl.collate_fn(batch))
                         i = 1
                     else
                         i += 1
@@ -89,8 +102,6 @@ function makeloaderchannels(dataset, batchsize; buffersize = 1, shuffle = true, 
             end
         end
     end
-
-    return samplechannel, batchchannel
 end
 
 
@@ -100,3 +111,7 @@ function collate(batch)
 end
 
 catbatch(xs) = cat(xs...; dims = ndims(first(xs)) + 1)
+
+getbatch(dl::DataLoader, startidx = 1) = dl.collate_fn(
+    [dl.transform_fn(getobs(dl.dataset, idx)) for idx in startidx:dl.batchsize]
+)

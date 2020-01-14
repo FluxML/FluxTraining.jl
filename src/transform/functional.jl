@@ -1,5 +1,5 @@
 
-using Images
+using Images: Colorant, imresize
 
 
 function crop(image::AbstractArray{T, 2},  top, left, height, width) where T<:Colorant
@@ -17,28 +17,9 @@ function crop(image::AbstractArray{T, 2},  top, left, height, width) where T<:Co
 end
 
 
-function crop(poses::AbstractMatrix{<:Joint}, top, left, height, width)
-    mapmaybe(poses) do keypoint
-        y, x = keypoint
-        if (top <= y <= top+height-1) && (left <= x <= left+width-1)
-            # translate by upper corner of crop
-            return (y - top + 1, x - left + 1)
-        else
-            return nothing
-        end
-    end
-end
-
 function resize(image::AbstractMatrix{T}, size) where T<:Colorant
     return imresize(image, size...)
 end
-
-function resize(poses::AbstractArray{<:Joint}, factors)
-    mapmaybe(poses) do keypoint
-        keypoint .* factors
-    end
-end
-
 
 
 function resizedcrop(image::AbstractArray{T}, top, left, height, width, size) where T<:Colorant
@@ -46,20 +27,3 @@ function resizedcrop(image::AbstractArray{T}, top, left, height, width, size) wh
     image = resize(image, size)
     return image
 end
-
-function resizedcrop(
-    poses::AbstractArray{<:Joint},
-    top,
-    left,
-    height,
-    width,
-    resizefactors) where T<:Colorant
-    poses = crop(poses, top, left, height, width)
-    poses = resize(poses, resizefactors)
-    return poses
-end
-
-
-# utils
-
-mapmaybe(f, a) = [!isnothing(x) ? f(x) : x for x in a]

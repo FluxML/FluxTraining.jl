@@ -1,13 +1,10 @@
-import Base.Order: ReverseOrdering
-
 
 mutable struct TrainingState
-    learner::Learner
-    data
-    opt
+    learner
+    params
     nepochs
     epoch
-    iteration
+    step
     batchx
     batchy
     lossbatch
@@ -17,88 +14,93 @@ mutable struct TrainingState
 end
 
 TrainingState() = TrainingState(
-    nothing, nothing, nothing, nothing, nothing,
-    nothing, nothing, nothing, nothing, nothing,
-    nothing, nothing)
+    nothing, nothing, nothing, nothing, nothing, nothing,
+    nothing, nothing, nothing, nothing, nothing,)
 
 
 # Callbacks
 
+# TODO: make Callbacks parametric to FittingPhases
 abstract type AbstractCallback end
 
-priority(c::AbstractCallback) = 0
+order(c::Type{<:AbstractCallback}) = 0
 
-on_train_begin(c::AbstractCallback, state::TrainingState) = return
-on_train_end(c::AbstractCallback, state::TrainingState) = return
+on_train_begin(c::AbstractCallback, state::TrainingState, phase::AbstractFittingPhase ) = return
+on_train_end(c::AbstractCallback, state::TrainingState, phase::AbstractFittingPhase ) = return
 
-on_epoch_begin(c::AbstractCallback, state::TrainingState) = return
-on_epoch_end(c::AbstractCallback, state::TrainingState) = return
+on_epoch_begin(c::AbstractCallback, state::TrainingState, phase::AbstractFittingPhase ) = return
+on_epoch_end(c::AbstractCallback, state::TrainingState, phase::AbstractFittingPhase ) = return
 
-on_batch_begin(c::AbstractCallback, state::TrainingState) = return
-on_batch_end(c::AbstractCallback, state::TrainingState) = return
+on_batch_begin(c::AbstractCallback, state::TrainingState, phase::AbstractFittingPhase ) = return
+on_batch_end(c::AbstractCallback, state::TrainingState, phase::AbstractFittingPhase ) = return
 
-on_loss_begin(c::AbstractCallback, state::TrainingState) = return
+on_loss_begin(c::AbstractCallback, state::TrainingState, phase::AbstractFittingPhase ) = return
 
-on_backward_begin(c::AbstractCallback, state::TrainingState) = return
-on_backward_end(c::AbstractCallback, state::TrainingState) = return
+on_backward_begin(c::AbstractCallback, state::TrainingState, phase::AbstractFittingPhase ) = return
+on_backward_end(c::AbstractCallback, state::TrainingState, phase::AbstractFittingPhase ) = return
 
 # Callback handling
 
-struct CallbackHandler
+mutable struct CallbackHandler
     callbacks
     state::TrainingState
-    CallbackHandler(callbacks) = new(
-        sort!(callbacks, by=priority),
-        TrainingState()
-    )
+    phase::AbstractFittingPhase
 end
 
-function on_train_begin(ch::CallbackHandler, nepochs::Integer, opt, data)
+CallbackHandler(callbacks, state = TrainingState()) = CallbackHandler(
+    sort!(callbacks, by=cb -> order(typeof(cb))),
+    state,
+    UninitializedPhase()
+)
+
+function on_train_begin(ch::CallbackHandler, nepochs::Integer, learner)
     ch.state.nepochs = nepochs
-    ch.state.opt = opt
-    ch.state.data = data
-    ch.state.epoch = 0
-    ch.state.iteration = 0
-    ch.state.batch = 0
-    foreach(cb -> on_train_begin(cb, ch.state), ch.callbacks)
+    ch.state.learner = learner
+    foreach(cb -> on_train_begin(cb, ch.state, ch.phase), ch.callbacks)
 end
 
 function on_train_end(ch::CallbackHandler, exception::Union{Nothing, Exception})
     ch.state.exception = exception
-    foreach(cb -> on_train_end(cb, ch.state), ch.callbacks)
+    foreach(cb -> on_train_end(cb, ch.state, ch.phase), ch.callbacks)
 end
 
-function on_epoch_begin(ch::CallbackHandler)
-    ch.state.epoch += 1
-    foreach(cb -> on_epoch_begin(cb, ch.state), ch.callbacks)
+function on_epoch_begin(ch::CallbackHandler, phase::AbstractFittingPhase)
+    ch.phase = phase
+    if phase isa TrainingPhase
+        ch.state.epoch += 1
+        ch.state.step = 0
+    end
+    foreach(cb -> on_epoch_begin(cb, ch.state, ch.phase), ch.callbacks)
 end
 
 function on_epoch_end(ch::CallbackHandler)
-    foreach(cb -> on_epoch_end(cb, ch.state), ch.callbacks)
+    foreach(cb -> on_epoch_end(cb, ch.state, ch.phase), ch.callbacks)
 end
 
 function on_batch_begin(ch::CallbackHandler, batch)
-    ch.state.batch = batch
-    ch.state.iteration += 1
-    foreach(cb -> on_batch_begin(cb, ch.state), ch.callbacks)
-    return ch.state.batch
+    ch.state.batchx, ch.state.batchy = batch |> cpu
+    if ch.phase isa TrainingPhase
+        ch.state.step += 1
+    end
+    foreach(cb -> on_batch_begin(cb, ch.state, ch.phase), ch.callbacks)
+    return ch.state.batchx, ch.state.batchy
 end
 
 function on_batch_end(ch::CallbackHandler)
-    foreach(cb -> on_batch_end(cb, ch.state), ch.callbacks)
+    foreach(cb -> on_batch_end(cb, ch.state, ch.phase), ch.callbacks)
 end
 
 function on_loss_begin(ch::CallbackHandler, output)
     ch.state.output = output
-    foreach(cb -> on_loss_begin(cb, ch.state), ch.callbacks)
+    foreach(cb -> on_loss_begin(cb, ch.state, ch.phase), ch.callbacks)
 end
 
 function on_backward_begin(ch::CallbackHandler, lossbatch)
     ch.state.lossbatch = lossbatch
-    foreach(cb -> on_backward_begin(cb, ch.state), ch.callbacks)
+    foreach(cb -> on_backward_begin(cb, ch.state, ch.phase), ch.callbacks)
 end
 
 function on_backward_end(ch::CallbackHandler, gradients)
     ch.state.gradients = gradients
-    foreach(cb -> on_backward_end(cb, ch.state), ch.callbacks)
+    foreach(cb -> on_backward_end(cb, ch.state, ch.phase), ch.callbacks)
 end
