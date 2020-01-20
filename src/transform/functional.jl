@@ -2,7 +2,8 @@
 using Images: Colorant, imresize
 
 
-function crop(image::AbstractArray{T, 2},  top, left, height, width) where T<:Colorant
+function crop(a::AbstractArray{T, 2},  top, left, height, width) where T<:Colorant
+    return a[top:top+height-1, left:left+width-1]
     h, w = size(image)
 
     # pad if necessary

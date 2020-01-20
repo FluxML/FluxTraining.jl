@@ -112,6 +112,8 @@ end
 
 catbatch(xs) = cat(xs...; dims = ndims(first(xs)) + 1)
 
-getbatch(dl::DataLoader, startidx = 1) = dl.collate_fn(
-    [dl.transform_fn(getobs(dl.dataset, idx)) for idx in startidx:dl.batchsize]
-)
+function getbatch(dl::DataLoader, startidx = 1)
+    dl.collate_fn(
+        [dl.transform_fn(getobs(dl.dataset, idx)) for idx in startidx:dl.batchsize]
+    )
+end

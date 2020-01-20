@@ -1,43 +1,95 @@
-using Flux: gpu
+using Flux: gpu, params
+using Zygote: Grads, Params
 
 
+mutable struct BatchState
+    batch::Union{Nothing, Tuple}
+    y_pred::Union{Nothing, AbstractArray}
+    loss::Union{Nothing, Real}
+    gradients::Union{Nothing, Grads}
+end
+BatchState() = BatchState(nothing, nothing, nothing, nothing)
+
+"""
+    Learner
+
+Central object for training that holds all necessary state.
+
+# Fields
+- `model`: a Flux model
+- `databunch::`[`Databunch`](@ref): collection of `DataLoader`s
+- `opt`: optimizer to update model parameters
+- `lossfn`: compute losses with `lossfn(model(x), y)`
+- `device`: device to train on, usually `Flux.cpu` or `Flux.gpu`
+- `params`: model parameters, i.e. `Flux.params(model)`
+- `phase::`[`AbstractFittingPhase`](@ref): current fitting phase
+- `metrics::AbstractVector{`[`AbstractMetric`](@ref)`}`: metric callbacks to
+    evaluate performance during training
+- `callbacks::AbstractVector{`[`AbstractCallback`](@ref)`}`: callbacks for training loop
+- `recorder::`[`Recorder`](@ref): special callback that records metrics and hyperparameters
+- `scheduler::`[`Scheduler`](@ref): special callback that records metrics and hyperparameters
+- `batch::`[`BatchState`](@ref): Holds training state during batch
+"""
 mutable struct Learner
-    databunch::DataBunch
     model
+    databunch::DataBunch
     opt
     lossfn
     device
+    params::Union{Params, NTuple{N, Params} where N}
+    phase::AbstractFittingPhase
     metrics::AbstractVector{<:AbstractMetric}
     callbacks::AbstractVector{<:AbstractCallback}
     recorder::Recorder
-    state::TrainingState
+    scheduler::ParamScheduler
+    batch::BatchState
 end
 
-TrainingState(learner::Learner) = TrainingState(
-    learner, params(learner.model), nothing, 0, 0, nothing, nothing, nothing, nothing, nothing, nothing)
-
 function Learner(
-    databunch::DataBunch,
     model,
+    databunch::DataBunch,
     opt,
     lossfn;
     device = gpu,
-    metrics = [],
+    metrics::AbstractVector{AbstractMetric} = [],
     callbacks = [],
+    schedule::Dict = Dict(),
+    scheduler::ParamScheduler = ParamScheduler(schedule),
     use_default_metrics = true,
     use_default_callbacks = true,
     )
     if use_default_metrics
-        metrics = [get_default_metrics()..., metrics...]
+        metrics::Vector{AbstractMetric} = [get_default_metrics()..., metrics...]
     end
     if use_default_callbacks
         callbacks = [get_default_callbacks()..., callbacks...]
     end
 
-    learner = Learner(databunch, model, opt, lossfn, device, metrics, callbacks, Recorder(), TrainingState())
-    learner.state = TrainingState(learner)
-    return learner
+    return Learner(
+        model, databunch, opt, lossfn, device, params(model), UninitializedPhase(),
+        metrics, callbacks, Recorder(), scheduler, BatchState())
 end
 
-get_default_callbacks() = [StopOnNaNLoss()]
-get_default_metrics() = [AverageLoss()]
+get_default_callbacks()::Vector{AbstractCallback} = [StopOnNaNLoss()]
+get_default_metrics()::Vector{AbstractMetric} = [AverageLoss()]
+
+
+CallbackHandler(learner::Learner) = CallbackHandler(
+    learner,
+    [
+        learner.scheduler,
+        learner.metrics...,
+        learner.recorder,
+        learner.callbacks...
+    ])
+
+
+function setschedule!(learner, schedule)
+    learner.scheduler = ParamScheduler(
+        delayschedule(schedule, learner.recorder.epoch)
+    )
+end
+
+
+numsteps(learner::Learner, phase::AbstractFittingPhase) = length(
+    getdataloader(learner.databunch, phase))

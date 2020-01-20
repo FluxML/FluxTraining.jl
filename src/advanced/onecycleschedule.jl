@@ -3,7 +3,7 @@ function onecycleschedule(
         maxlr;
         startfactor = 1/25,
         endfactor = 1/1e5,
-        pctstart = 0.25)::Vector{ParamSchedule}
+        pctstart = 0.25)
 
     upschedule = ParamSchedule(
         nepochs * pctstart,
@@ -16,5 +16,5 @@ function onecycleschedule(
         maxlr * endfactor,
         anneal_cosine)
 
-    return [upschedule, downschedule]
+    return Dict(LR => [upschedule, downschedule])
 end

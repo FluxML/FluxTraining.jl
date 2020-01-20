@@ -4,34 +4,37 @@ struct LRFinderPhase <: AbstractTrainingPhase
     start_lr::Real
     end_lr::Real
     nbatches::Integer
-    stopondiv::Bool
 end
+# TODO: refactor for new callbacks
 
-LRFinderPhase(start_lr = 1e-7, end_lr = 10; nbatches = 100, stopondiv = true) = LRFinderPhase(
-    start_lr, end_lr, nbatches, stopondiv)
+LRFinderPhase(start_lr = 1e-7, end_lr = 10; nbatches = 100) = LRFinderPhase(
+    start_lr, end_lr, nbatches)
 
 function fitepoch!(learner::Learner, phase::LRFinderPhase)
-    epochs = phase.nbatches / length(getdataloader(learner.databunch, phase))
+    learner.phase = phase
+    epochs = phase.nbatches / numsteps(learner, phase)
 
-    paramscheduler = ParamScheduler(
-        Dict(LR => [ParamSchedule(epochs, phase.start_lr, phase.end_lr, anneal_exp)])
-    )
-    learner.state.epoch += 1
-    recorder = Recorder()
-    smoothloss = Mean(Float32, weight = ExponentialWeight(0.02))
-    cbhandler = CallbackHandler([recorder, paramscheduler], learner.state)
+    schedule = Dict(LR => [ParamSchedule(epochs, phase.start_lr, phase.end_lr, anneal_exp)])
 
-    on_epoch_begin(cbhandler, phase)
+    setschedule!(learner, schedule)
+    smoothloss = MeanMetric(learner.lossfn, ExponentialWeight(0.02))
+    push!(learner.metrics, smoothloss)
+    cbhandler = CallbackHandler(learner)
+
+    EpochBegin() |> cbhandler
+
     minloss = typemax(Float32)
     for (b, batch) in enumerate(learner.databunch.traindl)
+        BatchBegin() |> cbhandler
+
         fitbatch!(learner, phase, batch, cbhandler)
-        learner.state.step += 1
-        OnlineStats.fit!(smoothloss, learner.state.lossbatch)
-        l = OnlineStats.value(smoothloss)
-        if l < minloss
-            minloss = l
+        loss = value(smoothloss)
+
+        BatchEnd() |> cbhandler
+        if loss < minloss
+            minloss = loss
         end
-        if isnan(learner.state.lossbatch) || (4minloss < learner.state.lossbatch)
+        if isnan(learner.batch.loss) || (4minloss < loss)
             break
         end
         if b == phase.nbatches
@@ -39,5 +42,7 @@ function fitepoch!(learner::Learner, phase::LRFinderPhase)
         end
     end
 
-    return recorder
+    EpochBegin() |> cbhandler
+
+    return learner
 end

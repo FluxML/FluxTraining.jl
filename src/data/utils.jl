@@ -1,6 +1,7 @@
-import ProgressMeter: Progress, next!
-import Statistics: mean, std
-import Images: RGB
+using ProgressMeter: Progress, next!
+using Statistics: mean, std
+using Images: RGB
+using MLDataUtils: datasubset
 
 
 function computestats(dataset; getimagefn = (sample) -> sample[:image])
@@ -24,4 +25,16 @@ function computestats(dataset; getimagefn = (sample) -> sample[:image])
     end
 
     return means ./ nobs(dataset), stds ./ nobs(dataset)
+end
+
+
+function splitdataset(f, dataset)
+    trainidxs = filter(idx -> f(idx), 1:nobs(dataset))
+    validxs = filter(idx -> !f(idx), 1:nobs(dataset))
+
+    return datasubset(dataset, trainidxs), datasubset(dataset, validxs)
+end
+
+function splitdataset(dataset, splits::AbstractVector{Bool})
+    splitdataset((idx) -> splits[idx], dataset)
 end

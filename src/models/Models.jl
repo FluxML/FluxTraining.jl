@@ -1,5 +1,8 @@
 module Models
 
+include("./layers.jl")
+include("./heads.jl")
+
 include("./selecsls.jl")
 include("./xresnet.jl")
 

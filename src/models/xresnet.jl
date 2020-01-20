@@ -5,27 +5,6 @@ using ModelUtils
 
 act_fn = relu
 
-"""
-    AdaptiveMeanPool(target_out)
-Adaptive mean pooling layer. 'target_out' stands for the size of one layer(channel) of output.
-Irrespective of Input size and pooling window size, it returns the target output dimensions.
-"""
-struct AdaptiveMeanPool{N}
-  target_out::NTuple{N, Int}
-end
-
-AdaptiveMeanPool(target_out::NTuple{N, Integer}) where N =
-  AdaptiveMeanPool(target_out)
-
-function (m::AdaptiveMeanPool)(x)
-  w = size(x, 1) - m.target_out[1] + 1
-  h = size(x, 2) - m.target_out[2] + 1
-  pdims = PoolDims(x, (w, h); padding = (0, 0), stride = (1, 1))
-  return meanpool(x, pdims)
-end
-
-flatten(x) = reshape(x, :, size(x)[end])
-
 conv(ni, nf; ks=3, stride=1) = Conv((ks, ks), ni => nf, stride = stride, pad = ks ÷ 2)
 
 function conv_layer(ni, nf; ks=3, stride=1, zero_bn=false, act=true)
@@ -74,7 +53,7 @@ function make_layer(expansion, ni, nf, n_blocks, stride)
             ]...)
 end
 
-function XResNet(expansion, layers; c_in = 3, c_out = 1000)
+function XResNet(expansion, layers; c_in = 3, nclasses = 1000)
     nfs = [c_in, (c_in+1)*8, 64, 64]
     stem = [conv_layer(nfs[i], nfs[i+1]; stride = i == 1 ? 2 : 1) for i in 1:3]
 
@@ -88,10 +67,6 @@ function XResNet(expansion, layers; c_in = 3, c_out = 1000)
         stem...,
         MaxPool((3, 3); pad = 1, stride = 2),
         res_layers...,
-        AdaptiveMeanPool((1,1)),
-        flatten,
-        Dense(nfs[end]*expansion, c_out),
-        softmax
     )
 end
 

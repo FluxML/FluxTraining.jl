@@ -5,36 +5,19 @@ import TensorBoardLogger: TBLogger
 # ProgressBarLogger
 
 mutable struct ProgressBarLogger <: AbstractCallback
-    p::Union{Nothing, Progress}
+    p::Union{Nothing,Progress}
 end
 ProgressBarLogger() = ProgressBarLogger(nothing)
 
-function on_epoch_begin(cb::ProgressBarLogger, state::TrainingState, phase::AbstractFittingPhase )
-    cb.p = Progress(length(getdataloader(state.learner.databunch, phase)), "Epoch $(state.epoch) $(phase): ")
+function on(::EpochBegin,
+        phase::AbstractFittingPhase,
+        cb::ProgressBarLogger,
+        learner)
+    e = learner.recorder.epoch
+    cb.p = Progress(numsteps(learner, phase), "Epoch $(e) $(phase): ")
 end
 
-function on_batch_end(cb::ProgressBarLogger, state::TrainingState, phase::AbstractFittingPhase )
-    next!(cb.p)
-end
-
-
-# DebugCallbackCallback
-
-struct DebugCallbackCallback <: AbstractCallback end
-
-on_train_begin(cb::DebugCallbackCallback, state::TrainingState, phase::AbstractFittingPhase ) = println("on_train_begin")
-on_train_end(cb::DebugCallbackCallback, state::TrainingState, phase::AbstractFittingPhase ) = println("on_train_end")
-
-on_epoch_begin(cb::DebugCallbackCallback, state::TrainingState, phase::AbstractFittingPhase ) = println("on_epoch_begin")
-on_epoch_end(cb::DebugCallbackCallback, state::TrainingState, phase::AbstractFittingPhase ) = println("on_epoch_end")
-
-on_batch_begin(cb::DebugCallbackCallback, state::TrainingState, phase::AbstractFittingPhase ) = println("on_batch_begin")
-on_batch_end(cb::DebugCallbackCallback, state::TrainingState, phase::AbstractFittingPhase ) = println("on_batch_end")
-
-on_loss_begin(cb::DebugCallbackCallback, state::TrainingState, phase::AbstractFittingPhase ) = println("on_loss_begin")
-
-on_backward_begin(cb::DebugCallbackCallback, state::TrainingState, phase::AbstractFittingPhase ) = println("on_backward_begin")
-on_backward_end(cb::DebugCallbackCallback, state::TrainingState, phase::AbstractFittingPhase ) = println("on_backward_end")
+on(::BatchEnd, ::AbstractFittingPhase, cb::ProgressBarLogger, learner) = next!(cb.p)
 
 
 # TensorBoradLogger
@@ -42,14 +25,12 @@ on_backward_end(cb::DebugCallbackCallback, state::TrainingState, phase::Abstract
 # TODO: log more
 struct TensorBoardCallback <: AbstractCallback
     logger::TBLogger
-    TensorBoardCallback(logdir::AbstractString, runname::AbstractString) = new(
-        TBLogger(joinpath(logdir, runname)))
+    TensorBoardCallback(logdir::AbstractString, runname::AbstractString) = new(TBLogger(joinpath(logdir, runname)))
 end
 
-function on_batch_end(cb::TensorBoardCallback, state::TrainingState, phase::AbstractFittingPhase )
-    phasename = phase isa TrainingPhase ? "train" : "val"
+function on(::BatchEnd, phase::AbstractFittingPhase, cb::TensorBoardCallback, learner)
     with_logger(cb.logger) do
-        @info "$(phasename)/step" loss=state.lossbatch
+        @info "$(typeof(phase).name)/step" loss = learner.batch.loss
     end
 end
 
@@ -58,10 +39,13 @@ end
 
 struct PrintMetrics <: AbstractCallback end
 
-function on_epoch_end(cb::PrintMetrics, state::TrainingState, phase::ValidationPhase)
-    df = state.learner.recorder.epochdf
-    dfsubset = df[(df.epoch .== state.epoch) .& (df.phase .== string(phase)), :]
-    println(string([(row.metric, row.value) for row in eachrow(dfsubset)]...))
+function on(::EpochEnd,
+        phase::AbstractFittingPhase,
+        cb::PrintMetrics,
+        learner)
+    for metric in learner.metrics
+        println(string(metric), ": ", value(metric))
+    end
 end
 
 
@@ -71,6 +55,6 @@ struct StopOnNaNLoss <: AbstractCallback end
 
 struct NaNLossException <: Exception end
 
-function on_backward_begin(cb::StopOnNaNLoss, state::TrainingState, phase::AbstractFittingPhase )
-    !isnan(state.lossbatch) || throw(NaNLossException())
+function on(::BackwardBegin, ::AbstractTrainingPhase, ::StopOnNaNLoss, learner)
+    !isnan(learner.batch.loss) || throw(NaNLossException())
 end
