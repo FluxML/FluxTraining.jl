@@ -1,0 +1,8 @@
+name = "test"
+uuid = "612e305d-09cf-4a5b-84db-f5bbbeaa0bae"
+authors = ["lorenzoh <lorenz.ohly@gmail.com>"]
+version = "0.1.0"
+
+[deps]
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+TestSetExtensions = "98d24dd4-01ad-11ea-1b02-c9a08f80db04"
