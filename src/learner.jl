@@ -1,5 +1,6 @@
 using Flux: gpu, params
 using Zygote: Grads, Params
+using UUIDs: UUID, uuid4
 
 
 mutable struct BatchState
@@ -43,6 +44,7 @@ mutable struct Learner
     recorder::Recorder
     scheduler::ParamScheduler
     batch::BatchState
+    runid::UUID
 end
 
 function Learner(
@@ -51,7 +53,7 @@ function Learner(
     opt,
     lossfn;
     device = gpu,
-    metrics::AbstractVector{AbstractMetric} = [],
+    metrics::AbstractVector{<:AbstractMetric} = AbstractMetric[],
     callbacks = [],
     schedule::Dict = Dict(),
     scheduler::ParamScheduler = ParamScheduler(schedule),
@@ -59,15 +61,15 @@ function Learner(
     use_default_callbacks = true,
     )
     if use_default_metrics
-        metrics::Vector{AbstractMetric} = [get_default_metrics()..., metrics...]
+        metrics::Vector{<:AbstractMetric} = [get_default_metrics()..., metrics...]
     end
     if use_default_callbacks
         callbacks = [get_default_callbacks()..., callbacks...]
     end
 
     return Learner(
-        model, databunch, opt, lossfn, device, params(model), UninitializedPhase(),
-        metrics, callbacks, Recorder(), scheduler, BatchState())
+        model, databunch, opt, lossfn, device, params(model), InitializationPhase(),
+        metrics, callbacks, Recorder(), scheduler, BatchState(), uuid4())
 end
 
 get_default_callbacks()::Vector{AbstractCallback} = [StopOnNaNLoss()]
@@ -93,3 +95,24 @@ end
 
 numsteps(learner::Learner, phase::AbstractFittingPhase) = length(
     getdataloader(learner.databunch, phase))
+
+
+function starttraining(learner)
+    learner.runid = uuid4()
+    Initialize() |> CallbackHandler(learner)
+end
+
+
+function endtraining(learner)
+    learner.phase = CleanupPhase()
+    Cleanup() |> CallbackHandler(learner)
+end
+
+
+function artifactpath(learner)
+    p = joinpath(pwd(), ".artifacts", string(learner.runid))
+    if !isdir(p)
+        mkpath(p)
+    end
+    return p
+end
