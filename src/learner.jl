@@ -3,6 +3,31 @@ using Zygote: Grads, Params
 using UUIDs: UUID, uuid4
 
 
+"""
+    DataBunch(traindl, valdl, [testdl])
+
+Container for DataLoaders
+"""
+mutable struct DataBunch
+    traindl::DataLoader
+    valdl::DataLoader
+    testdl::Union{Nothing, DataLoader}
+    DataBunch(traindl, valdl, testdl = nothing) = new(
+        traindl, valdl, testdl)
+end
+
+getdataloader(databunch::DataBunch, phase::AbstractTrainingPhase) = databunch.traindl
+getdataloader(databunch::DataBunch, phase::ValidationPhase) = databunch.valdl
+getdataloader(databunch::DataBunch, phase::TestPhase) = databunch.testdl
+
+
+"""
+    BatchState()
+    BatchState(batch, y_pred, loss, gradients)
+
+Container that stores variables from the current batch
+All fields are reset to `nothing` on `BatchBegin`
+"""
 mutable struct BatchState
     batch::Union{Nothing, Tuple}
     y_pred::Union{Nothing, AbstractArray}
@@ -26,6 +51,7 @@ Central object for training that holds all necessary state.
 - `phase::`[`AbstractFittingPhase`](@ref): current fitting phase
 - `metrics::AbstractVector{`[`AbstractMetric`](@ref)`}`: metric callbacks to
     evaluate performance during training
+- `config`
 - `callbacks::AbstractVector{`[`AbstractCallback`](@ref)`}`: callbacks for training loop
 - `recorder::`[`Recorder`](@ref): special callback that records metrics and hyperparameters
 - `scheduler::`[`Scheduler`](@ref): special callback that records metrics and hyperparameters
@@ -44,6 +70,7 @@ mutable struct Learner
     recorder::Recorder
     scheduler::ParamScheduler
     batch::BatchState
+    config::Dict
     runid::UUID
 end
 
@@ -56,6 +83,7 @@ function Learner(
     metrics::AbstractVector{<:AbstractMetric} = AbstractMetric[],
     callbacks = [],
     schedule::Dict = Dict(),
+    config::Dict = Dict(),
     scheduler::ParamScheduler = ParamScheduler(schedule),
     use_default_metrics = true,
     use_default_callbacks = true,
@@ -69,7 +97,7 @@ function Learner(
 
     return Learner(
         model, databunch, opt, lossfn, device, params(model), InitializationPhase(),
-        metrics, callbacks, Recorder(), scheduler, BatchState(), uuid4())
+        metrics, callbacks, Recorder(), scheduler, BatchState(), config, uuid4())
 end
 
 get_default_callbacks()::Vector{AbstractCallback} = [StopOnNaNLoss()]

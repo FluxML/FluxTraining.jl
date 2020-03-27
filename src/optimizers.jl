@@ -22,3 +22,5 @@ function setoptimparam!(opt, optimparam::Type{<:OptimParam}, x)
     setfield!(opt, optimparamfield(opt, optimparam), x)
 end
 getoptimparam(opt, optimparam::Type{<:OptimParam}) = getfield(opt, optimparamfield(opt, optimparam))
+
+getoptimparams(opt) = Dict(LR => getoptimparam(opt, LR))

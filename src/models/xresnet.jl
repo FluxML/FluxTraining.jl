@@ -20,7 +20,7 @@ struct ResBlock
     pool
 end
 
-function ResBlock(expansion::Integer, ni::Integer, nh::Integer; stride::Integer = 1)
+function ResBlock(expansion::Int, ni::Int, nh::Int; stride::Int = 1)
     nf, ni = nh * expansion, ni * expansion
     if expansion == 1
         layers = [

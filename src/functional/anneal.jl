@@ -7,6 +7,9 @@ function anneal_cosine(pctg, from, to)
     return to + (from - to)/2 * (cos(pi*pctg) + 1)
 end
 
-anneal_const(pctg, from, to) = from
+anneal_const(pctg, from, to) = pctg == 1 ? to : from
 
-anneal_exp(pctg, from, to) = from * (to/from)^pctg
+function anneal_exp(pctg, from, to)
+    from != 0 || throw(DomainError("`from` must not be 0"))
+    return from * (to/from)^pctg
+end

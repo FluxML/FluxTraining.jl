@@ -4,6 +4,7 @@ using Flux
 using Training
 using Training: getdataloader
 
+include("./utils.jl")
 
 @testset ExtendedTestSet "Training tests" begin
     @testset ExtendedTestSet "Dummy learner convergence" begin
@@ -15,17 +16,22 @@ using Training: getdataloader
 
     @testset ExtendedTestSet "Recorder" begin
         learner = dummylearner(3)
-        @test learner.recorder.epoch == 0
-        @test learner.recorder.step == 0
-        fit!(learner, [TrainingPhase(), TrainingPhase()])
-        @test learner.recorder.epoch == 2
-        @test learner.recorder.step == length(getdataloader(learner.databunch, TrainingPhase()))
-        @test learner.recorder.steptotal == 2*length(getdataloader(learner.databunch, TrainingPhase()))
+        r = learner.recorder
+        @test r.epoch == 0
+        @test r.step == 0
+        fit!(learner, [TrainingPhase(), ValidationPhase(), TrainingPhase(), ValidationPhase()])
+        @test r.epoch == 2
+        @test r.step == length(getdataloader(learner.databunch, TrainingPhase()))
+        @test r.steptotal == 2length(getdataloader(learner.databunch, TrainingPhase()))
+        @test length(r.stepstats) == 2length(getdataloader(learner.databunch, TrainingPhase()))
+        @test length(r.stepstats) == r.steptotal
     end
 
     @testset ExtendedTestSet "Hyperparameter scheduling" begin
         learner = dummylearner(3)
-        setschedule!(learner, Dict(Training.LR => [ParamSchedule(1, 1e-4, 1e-6, anneal_linear)]))
+        setschedule!(learner, Dict(Training.LR => [ParamSchedule(2, 1e-4, 1e-6, anneal_linear)]))
+        fit!(learner, TrainingPhase())
+        @test Training.getoptimparam(learner.opt, Training.LR) ≈ ((1e-4+1e-6) / 2)
         fit!(learner, TrainingPhase())
         @test Training.getoptimparam(learner.opt, Training.LR) ≈ 1e-6
     end

@@ -8,9 +8,6 @@ struct AdaptiveMeanPool{N}
   target_out::NTuple{N, Int}
 end
 
-AdaptiveMeanPool(target_out::NTuple{N, Integer}) where N =
-  AdaptiveMeanPool(target_out)
-
 function (m::AdaptiveMeanPool)(x)
   w = size(x, 1) - m.target_out[1] + 1
   h = size(x, 2) - m.target_out[2] + 1
@@ -26,9 +23,6 @@ Irrespective of Input size and pooling window size, it returns the target output
 struct AdaptiveMaxPool{N}
   target_out::NTuple{N, Int}
 end
-
-AdaptiveMaxPool(target_out::NTuple{N, Integer}) where N =
-  AdaptiveMaxPool(target_out)
 
 function (m::AdaptiveMaxPool)(x)
   w = size(x, 1) - m.target_out[1] + 1

@@ -3,7 +3,7 @@ using OnlineStats: Mean, ExponentialWeight
 struct LRFinderPhase <: AbstractTrainingPhase
     start_lr::Real
     end_lr::Real
-    nbatches::Integer
+    nbatches::Int
 end
 # TODO: refactor for new callbacks
 

@@ -1,18 +1,17 @@
-import DataStructures: DefaultDict
-
 """
     Recorder(epoch, step, epochstats, stepstats)
 """
 mutable struct Recorder <: AbstractCallback
-    epoch::Integer  # completed training epochs
-    step::Integer  # completed steps in current epoch
+    epoch::Int  # current or last completed epoch
+    step::Int  # completed steps in current epoch
+    steptotal::Int  # completed steps in total
     epochstats
     stepstats
 end
 
-Recorder() = Recorder(0, 0, [], Dict())
+Recorder() = Recorder(0, 0, 0, [], [])
 
-order(cb::Type{Recorder}) = -50
+order(cb::Type{Recorder}) = -90
 
 
 function on(::EpochBegin, ::AbstractTrainingPhase, recorder::Recorder, learner)
@@ -22,24 +21,26 @@ end
 
 function on(::BatchBegin, ::AbstractTrainingPhase, recorder::Recorder, learner)
     recorder.step += 1
+    recorder.steptotal += 1
 end
 
 
 function on(::BatchEnd, phase::AbstractTrainingPhase, recorder::Recorder, learner)
+    stepdata = Dict(
+        "phase" => typeof(phase).name,
+        "epochstep" => recorder.step,
+        "step" => recorder.steptotal
+    )
+
     for metric in learner.metrics
-        k = string(metric)
-        if !haskey(recorder.stepstats, k)
-            recorder.stepstats[k] = []
-        end
-        xs = recorder.stepstats[k]
-        push!(xs, value(metric))
+        stepdata["step/$metric"] = value(metric)
     end
 
-    if !haskey(recorder.stepstats, LR)
-        recorder.stepstats[LR] = []
+    for (OptimParam, value) in getoptimparams(learner.opt)
+        stepdata["opt/$(OptimParam.name)"] = value
     end
-    xs = recorder.stepstats[LR]
-    push!(xs, getoptimparam(learner.opt, LR))
+
+    push!(recorder.stepstats, stepdata)
 end
 
 function on(
@@ -47,11 +48,15 @@ function on(
         phase::AbstractFittingPhase,
         recorder::Recorder,
         learner)
-
+        
+    epochdata = Dict(
+        "phase" => typeof(phase).name,
+        "epoch" => recorder.epoch
+    )
     for metric in learner.metrics
-        row = [learner.recorder.epoch, string(phase), string(metric), value(metric)]
-        push!(recorder.epochstats, row)
+        epochdata["$(typeof(phase).name)/$metric"] = value(metric)
     end
+
+    push!(recorder.epochstats, epochdata)
 end
 
-getoptstats(opt) = Dict(LR => getoptimparam(opt, LR))

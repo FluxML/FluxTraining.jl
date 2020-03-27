@@ -3,14 +3,15 @@ using Flux.Optimise: update!
 using Zygote: gradient
 
 
-function fit!(learner::Learner, phases::AbstractVector{<:AbstractFittingPhase})
+function fit!(learner::Learner, phases::AbstractVector{<:AbstractFittingPhase})::Learner
     for phase in phases
         learner.phase = phase
         fitepoch!(learner, phase)
     end
+    return learner
 end
-fit!(learner::Learner, phase::P) where P<:AbstractFittingPhase = fit!(learner, [phase])
-
+fit!(learner::Learner, phase::AbstractFittingPhase)::Learner = fit!(learner, [phase])
+fit!(learner, n::Int)::Learner = fit!(learner, repeat([TrainingPhase(), ValidationPhase()], n))
 
 """
     fitepoch!(learner, phase)

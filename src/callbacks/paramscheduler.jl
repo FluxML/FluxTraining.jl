@@ -9,12 +9,16 @@ struct ParamSchedule
 end
 ParamSchedule(n, s, e; anneal_fn = anneal_linear) = ParamSchedule(n, s, e, anneal_fn)
 
+
 duration(sched::ParamSchedule) = sched.nepochs
 duration(scheds::AbstractVector{ParamSchedule}) = sum(duration.(scheds))
+duration(scheddict::Dict) = maximum(duration.(values(scheddict)))
 
 struct ParamScheduler <: AbstractCallback
     scheduledict::Dict{Type{<:OptimParam}, AbstractVector{ParamSchedule}}
 end
+
+order(::Type{ParamScheduler}) = -80
 
 """
     on(::BatchBegin, phase::AbstractTrainingPhase, cb::ParamScheduler, learner)
@@ -58,7 +62,7 @@ function sampleschedule(
         epochs = Training.duration(schedule))
     xs = collect(0:0.01:epochs)
     ys = map(xs) do x
-        Training.schedulevalue(schedule, x)
+        schedulevalue(schedule, x)
     end
     xs, ys
 end

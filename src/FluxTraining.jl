@@ -1,27 +1,29 @@
-module Training
+module FluxTraining
 
-include("./utils.jl")
+using DataLoaders
+using Flux
 
-# data
-include("./dataloader.jl")
-include("./databunch.jl")
-include("./data/utils.jl")
+
+# optimizers
 include("./optimizers.jl")
 
 # functional
 include("./functional/anneal.jl")
 include("./functional/metrics.jl")
 
-
 # callback framework
-include("./callbacks/phases.jl")
 include("./callbacks/callback.jl")
-include("./callbacks/events.jl")
-include("./callbacks/callbackhandler.jl")
 
+# utilities
+include("./util/datautils.jl")
+include("./util/ioutils.jl")
+include("./util/plotutils.jl")
 
 # callback implementations
 include("./callbacks/callbacks.jl")
+include("./callbacks/experimenttracker.jl")
+include("./callbacks/customcallback.jl")
+include("./callbacks/checkpointer.jl")
 include("./callbacks/metrics.jl")
 include("./callbacks/recorder.jl")
 include("./callbacks/paramscheduler.jl")
@@ -31,45 +33,31 @@ include("./learner.jl")
 
 include("./train.jl")
 
-# transform
-include("./transform/functional.jl")
-include("./transform/transform.jl")
-
-
-
-# deprecated
-include("./modelutils/initialization.jl")
-
-
 # advanced
 include("./advanced/lrfinder.jl")
 include("./advanced/onecycleschedule.jl")
 
-# introspection
-include("./plot.jl")
-
 # submodules
 include("./models/Models.jl")
 
-export DataLoader,
+export 
     Models,
 
     AbstractCallback,
     AbstractMetric,
     AverageLoss,
-    Compose,
+    Checkpointer,
+    CheckpointAny,
+    CheckpointLowest,
+    CustomCallback,
     DataBunch,
-    DataLoader,
     Learner,
     LRFinderPhase,
-    Normalize,
-    OneHot,
+    ExperimentTracker,
     ProgressBarLogger,
     PrintMetrics,
     ParamSchedule,
     ParamScheduler,
-    RandomResizedCrop,
-    SampleTransform,
     TrainingPhase,
     ValidationPhase,
 
@@ -78,19 +66,18 @@ export DataLoader,
     anneal_cosine,
     anneal_exp,
     anneal_const,
-    computestats,
+    endtraining,
     fit!,
-    fitepoch!,
-    fitbatch!,
-    getbatch,
-    imagetotensor,
-    normalize,
+    loadmodel,
+    loadweights,
     onecycleschedule,
     plotlosses,
     plotlrfinder,
     plotschedule,
+    savemodel,
+    saveweights,
     setschedule!,
     splitdataset,
-    tensortoimage
+    starttraining
 
 end # module

@@ -2,12 +2,12 @@ using Flux
 using Flux: @functor
 
 
-function convlayer(size::Tuple{Integer,Integer}, insize, outsize; stride = 1)
+function convlayer(size::Tuple{Int,Int}, insize, outsize; stride = 1)
     return Chain(Conv(size, insize => outsize, relu; stride = stride, pad = size .÷ 2),
         BatchNorm(outsize))
 end
 
-convlayer(size::Integer, args...; kwargs...) = convlayer((size, size), args...; kwargs...)
+convlayer(size::Int, args...; kwargs...) = convlayer((size, size), args...; kwargs...)
 
 
 struct SelecSLSBlock

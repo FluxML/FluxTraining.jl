@@ -22,7 +22,7 @@ on(::BatchEnd, ::AbstractFittingPhase, cb::ProgressBarLogger, learner) = next!(c
 
 # TensorBoradLogger
 
-# TODO: log more
+# TODO: factor out into different package
 struct TensorBoardCallback <: AbstractCallback
     logger::TBLogger
     TensorBoardCallback(logdir::AbstractString, runname::AbstractString) = new(TBLogger(joinpath(logdir, runname)))
