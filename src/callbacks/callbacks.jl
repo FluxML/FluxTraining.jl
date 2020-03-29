@@ -1,6 +1,5 @@
 import Logging: with_logger
 import ProgressMeter: Progress, next!
-import TensorBoardLogger: TBLogger
 
 # ProgressBarLogger
 
@@ -18,21 +17,6 @@ function on(::EpochBegin,
 end
 
 on(::BatchEnd, ::AbstractFittingPhase, cb::ProgressBarLogger, learner) = next!(cb.p)
-
-
-# TensorBoradLogger
-
-# TODO: factor out into different package
-struct TensorBoardCallback <: AbstractCallback
-    logger::TBLogger
-    TensorBoardCallback(logdir::AbstractString, runname::AbstractString) = new(TBLogger(joinpath(logdir, runname)))
-end
-
-function on(::BatchEnd, phase::AbstractFittingPhase, cb::TensorBoardCallback, learner)
-    with_logger(cb.logger) do
-        @info "$(typeof(phase).name)/step" loss = learner.batch.loss
-    end
-end
 
 
 # PrintMetrics
