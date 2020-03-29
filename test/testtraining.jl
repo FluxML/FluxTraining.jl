@@ -2,7 +2,7 @@ using Test
 using TestSetExtensions
 using Flux
 using FluxTraining
-using FluxTraining: getdataloader
+using FluxTraining: EpochEnd, LR, getdataloader, getoptimparam
 
 include("./utils.jl")
 
@@ -29,15 +29,15 @@ include("./utils.jl")
 
     @testset ExtendedTestSet "Hyperparameter scheduling" begin
         learner = dummylearner(3)
-        setschedule!(learner, Dict(Training.LR => [ParamSchedule(2, 1e-4, 1e-6, anneal_linear)]))
+        setschedule!(learner, Dict(LR => [ParamSchedule(2, 1e-4, 1e-6, anneal_linear)]))
         fit!(learner, TrainingPhase())
-        @test Training.getoptimparam(learner.opt, Training.LR) ≈ ((1e-4+1e-6) / 2)
+        @test getoptimparam(learner.opt, LR) ≈ ((1e-4+1e-6) / 2)
         fit!(learner, TrainingPhase())
-        @test Training.getoptimparam(learner.opt, Training.LR) ≈ 1e-6
+        @test getoptimparam(learner.opt, LR) ≈ 1e-6
     end
 
     @testset ExtendedTestSet "CustomCallback" begin
-        cb = CustomCallback{Training.EpochEnd, TrainingPhase}((learner) -> error("test"))
+        cb = CustomCallback{EpochEnd, TrainingPhase}((learner) -> error("test"))
         learner = dummylearner(3, callbacks = [cb])
         @test_throws ErrorException fit!(learner, TrainingPhase())
     end
