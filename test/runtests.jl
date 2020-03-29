@@ -1,10 +1,10 @@
 using Test
 using TestSetExtensions
 using Flux
-using Training
+using FluxTraining
 
 include("./utils.jl")
 
-@testset ExtendedTestSet "Training.jl tests" begin
+@testset ExtendedTestSet "FluxTraining.jl" begin
     @includetests ARGS
 end

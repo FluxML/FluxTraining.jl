@@ -1,5 +1,6 @@
 using DataLoaders
 using MLDataUtils: splitobs
+using FluxTraining
 import Flux: trainable
 
 

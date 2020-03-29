@@ -1,8 +1,8 @@
 using Test
 using TestSetExtensions
 using Flux
-using Training
-using Training: LR, getoptimparam, setoptimparam!
+using FluxTraining
+using FluxTraining: LR, getoptimparam, setoptimparam!
 
 @testset ExtendedTestSet "Optimizer and OptimParams" begin
     opt = ADAM(0.01)

@@ -1,8 +1,8 @@
 using Test
 using TestSetExtensions
 using Flux
-using Training
-using Training: getdataloader
+using FluxTraining
+using FluxTraining: getdataloader
 
 include("./utils.jl")
 

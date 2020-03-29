@@ -17,7 +17,6 @@ include("./callbacks/callback.jl")
 # utilities
 include("./util/datautils.jl")
 include("./util/ioutils.jl")
-include("./util/plotutils.jl")
 
 # callback implementations
 include("./callbacks/callbacks.jl")
@@ -36,6 +35,8 @@ include("./train.jl")
 # advanced
 include("./advanced/lrfinder.jl")
 include("./advanced/onecycleschedule.jl")
+
+include("./util/plotutils.jl")
 
 # submodules
 include("./models/Models.jl")

@@ -1,4 +1,3 @@
-import Logging: with_logger
 import ProgressMeter: Progress, next!
 
 # ProgressBarLogger
