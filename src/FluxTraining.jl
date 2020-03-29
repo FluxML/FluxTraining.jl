@@ -20,7 +20,6 @@ include("./util/ioutils.jl")
 
 # callback implementations
 include("./callbacks/callbacks.jl")
-include("./callbacks/experimenttracker.jl")
 include("./callbacks/customcallback.jl")
 include("./callbacks/checkpointer.jl")
 include("./callbacks/metrics.jl")
