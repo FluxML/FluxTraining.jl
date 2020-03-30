@@ -1,4 +1,4 @@
-using OnlineStats
+import OnlineStats
 using Plots: plot, plot!
 
 function plotlrfinder(recorder::Recorder, β = 0.02)
@@ -9,7 +9,7 @@ end
 
 
 function plotschedule(scheduledict::Dict)
-    epochs = maximum([Training.duration(sched) for sched in values(scheduledict)])
+    epochs = maximum([duration(sched) for sched in values(scheduledict)])
     p = plot()
     for (P, sched) in scheduledict
         xs, ys = sampleschedule(sched, epochs = epochs)
@@ -24,7 +24,6 @@ plotschedule(scheduler::ParamScheduler) = plotschedule(scheduler.scheduledict)
 function plotlosses(losses, β = 0.02)
     plot(smoothed(losses, β), ylim = (0, maximum(losses)))
 end
-
 
 
 function smoothed(values::AbstractVector{T}, β = 0.98) where T
