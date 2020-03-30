@@ -192,7 +192,7 @@ version = "1.1.0"
 
 [[DataAugmentation]]
 deps = ["CoordinateTransformations", "ImageTransformations", "Images", "NamedDims", "StaticArrays"]
-git-tree-sha1 = "8fd77eecd90efbf0eb544e5cf33d5f72f41ed814"
+git-tree-sha1 = "9217ea50e267e9c4666d683b496e791b666851a2"
 repo-rev = "master"
 repo-url = "https://github.com/lorenzoh/DataAugmentation.jl"
 uuid = "88a5189c-e7ff-4f85-ac6b-e6158070f02e"
@@ -331,9 +331,9 @@ version = "0.10.3"
 
 [[ForwardDiff]]
 deps = ["CommonSubexpressions", "DiffResults", "DiffRules", "NaNMath", "Random", "SpecialFunctions", "StaticArrays"]
-git-tree-sha1 = "88b082d492be6b63f967b6c96b352e25ced1a34c"
+git-tree-sha1 = "869540e4367122fbffaace383a5bdc34d6e5e5ac"
 uuid = "f6369f11-7733-5829-9624-2563aa707210"
-version = "0.10.9"
+version = "0.10.10"
 
 [[FreeType2_jll]]
 deps = ["Bzip2_jll", "Libdl", "Pkg", "Zlib_jll"]
@@ -365,9 +365,9 @@ version = "0.48.0"
 
 [[GeometryTypes]]
 deps = ["ColorTypes", "FixedPointNumbers", "LinearAlgebra", "StaticArrays"]
-git-tree-sha1 = "9d7520999ca80a51f1bf41be2268a9ac0e4f0619"
+git-tree-sha1 = "96fd99cf83b1952a7d8cb54f4c585a648275805a"
 uuid = "4d00f742-c7ba-57c2-abde-4428a4b178cb"
-version = "0.8.1"
+version = "0.8.2"
 
 [[Glob]]
 deps = ["Compat", "Test"]
@@ -539,6 +539,7 @@ uuid = "7f8f8fb0-2700-5f03-b4bd-41f8cfc144b6"
 version = "0.2.2"
 
 [[LibGit2]]
+deps = ["Printf"]
 uuid = "76f85450-5226-5b5a-8eaa-529ad045b433"
 
 [[LibVPX_jll]]
