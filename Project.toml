@@ -6,7 +6,6 @@ version = "0.1.0"
 [deps]
 BSON = "fbb218c0-5317-5bc6-957e-2ee96dd4b1f0"
 CoordinateTransformations = "150eb455-5306-5404-9cee-2592286d6298"
-DataAugmentation = "88a5189c-e7ff-4f85-ac6b-e6158070f02e"
 DataFrames = "a93c6f00-e57d-5684-b7b6-d8193f3e46c0"
 DataLoaders = "2e981812-ef13-4a9c-bfa0-ab13047b12a9"
 Flux = "587475ba-b771-5e3f-ad9e-33799f191a9c"

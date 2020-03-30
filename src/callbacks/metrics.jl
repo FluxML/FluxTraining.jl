@@ -57,3 +57,6 @@ function on(::BatchEnd, phase::AbstractFittingPhase, metric::Metric, learner)
 end
 
 MeanMetric(fn, weight = EqualWeight()) = Metric(() -> Mean(Float32, weight = weight), fn)
+
+
+Accuracy() = MeanMetric(accuracy)

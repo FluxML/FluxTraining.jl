@@ -1,4 +1,5 @@
 using FluxTraining
+using Flux
 using Documenter
 
 makedocs(;
