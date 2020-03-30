@@ -1,9 +1,13 @@
 module Models
 
+using Flux
+using Flux: @functor
+using ModelUtils
+
+
 include("./layers.jl")
 include("./heads.jl")
 
-include("./selecsls.jl")
 include("./xresnet.jl")
 
 

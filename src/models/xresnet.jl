@@ -1,7 +1,4 @@
 
-using Flux
-
-using ModelUtils
 
 act_fn = relu
 
