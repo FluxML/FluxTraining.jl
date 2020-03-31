@@ -33,6 +33,10 @@ jobs:
         with:
           version: '1.3'
       - run: |
+          julia --project=. -e '                          ⇡   
+            using Pkg
+            Pkg.instantiate()'
+      - run: |
           julia --project=docs -e '
             using Pkg
             Pkg.develop(PackageSpec(path=pwd()))

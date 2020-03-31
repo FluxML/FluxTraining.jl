@@ -59,7 +59,7 @@ end
 
 function sampleschedule(
         schedule::Union{ParamSchedule, AbstractVector{ParamSchedule}};
-        epochs = Training.duration(schedule))
+        epochs = duration(schedule))
     xs = collect(0:0.01:epochs)
     ys = map(xs) do x
         schedulevalue(schedule, x)

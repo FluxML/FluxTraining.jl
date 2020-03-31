@@ -8,13 +8,18 @@ A flexible neural net training library inspired by fast.ai
 
 (note: package is in a very early stage and will have bugs and interface is open to change, proper docs are also a work in progress)
 
+## Demo
+
+see [`demo notebook`](./examples/FluxTraining.jl-demo.ipynb)
+
 ## Features
 
 - flexible training loop that is highly extensible through a callback system
 - (custom) metric logging and recording
 - hyperparameter scheduling
-- model checkpointing (s. `Checkpointer`)
+- model checkpointing
 - learning rate finder
+- sample models
 
 ## Related packages
 
