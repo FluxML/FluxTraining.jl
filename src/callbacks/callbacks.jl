@@ -38,6 +38,6 @@ struct StopOnNaNLoss <: AbstractCallback end
 
 struct NaNLossException <: Exception end
 
-function on(::BackwardBegin, ::AbstractTrainingPhase, ::StopOnNaNLoss, learner)
-    !isnan(learner.batch.loss) || throw(NaNLossException())
+function on(::BackwardEnd, ::AbstractTrainingPhase, ::StopOnNaNLoss, learner)
+    !isnan(learner.batch.loss) || throw(CancelFittingException("Encountered NaN loss"))
 end

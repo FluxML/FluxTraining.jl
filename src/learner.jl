@@ -127,13 +127,13 @@ numsteps(learner::Learner, phase::AbstractFittingPhase) = length(
 
 function starttraining(learner)
     learner.runid = uuid4()
-    Initialize() |> CallbackHandler(learner)
+    FitBegin() |> CallbackHandler(learner)
 end
 
 
 function endtraining(learner)
     learner.phase = CleanupPhase()
-    Cleanup() |> CallbackHandler(learner)
+    FitEnd() |> CallbackHandler(learner)
 end
 
 

@@ -26,8 +26,7 @@ end
 
 
 function on(::BatchEnd, phase::AbstractTrainingPhase, recorder::Recorder, learner)
-    stepdata = Dict(
-        "phase" => typeof(phase).name,
+    stepdata = Dict{String, Any}(
         "epochstep" => recorder.step,
         "step" => recorder.steptotal
     )
@@ -50,11 +49,11 @@ function on(
         learner)
         
     epochdata = Dict(
-        "phase" => typeof(phase).name,
+        "phase" => string(typeof(phase).name),
         "epoch" => recorder.epoch
     )
     for metric in learner.metrics
-        epochdata["$(typeof(phase).name)/$metric"] = value(metric)
+        epochdata["$(string(typeof(phase).name))/$metric"] = Float64(value(metric))
     end
 
     push!(recorder.epochstats, epochdata)
