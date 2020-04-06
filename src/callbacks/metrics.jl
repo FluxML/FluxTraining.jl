@@ -31,14 +31,16 @@ Base.show(io::IO, loss::AverageLoss) = print(io, "loss")
 
 # OnlineMetrics metric
 
-mutable struct Metric <: AbstractMetric
+mutable struct Metric{T} <: AbstractMetric
     metricfactory
     fn
-    metric::OnlineStat
+    name
+    metric::OnlineStat{T}
+    last::T
 end
-Metric(metricfactory, fn) = Metric(metricfactory, fn, metricfactory())
+Metric(metricfactory, fn, name = string(fn)) = Metric(metricfactory, fn, name, metricfactory(), Inf)
 
-Base.show(io::IO, metric::Metric) = print(io, string(metric.fn))
+Base.show(io::IO, metric::Metric) = print(io, metric.name)
 
 value(metric::Metric) = OnlineStats.value(metric.metric)
 
@@ -47,16 +49,19 @@ function on(::EpochBegin, ::AbstractFittingPhase, metric::Metric, learner)
 end
 
 function on(::BatchEnd, phase::AbstractFittingPhase, metric::Metric, learner)
+    metric.last = metric.fn(
+            # FIXME: configure which device to evaluate on
+            learner.batch.y_pred,# |> cpu,
+            learner.batch.batch[2],# |> cpu
+        )
     OnlineStats.fit!(
         metric.metric,
-        metric.fn(
-            learner.batch.y_pred |> cpu,
-            learner.batch.batch[2] |> cpu
-        )
+        metric.last,
     )
 end
 
-MeanMetric(fn, weight = EqualWeight()) = Metric(() -> Mean(Float32, weight = weight), fn)
+MeanMetric(fn, name = string(fn); weight = EqualWeight()) =
+    Metric(() -> Mean(Float64, weight = weight), fn, name)
 
 
 Accuracy() = MeanMetric(accuracy)

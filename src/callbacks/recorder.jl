@@ -30,9 +30,9 @@ function on(::BatchEnd, phase::AbstractTrainingPhase, recorder::Recorder, learne
         "epochstep" => recorder.step,
         "step" => recorder.steptotal
     )
-
-    for metric in learner.metrics
-        stepdata["step/$metric"] = value(metric)
+    stepdata["step/loss"] = Float64(learner.batch.loss)
+    for metric in learner.metrics[2:end]
+        stepdata["step/$metric"] = metric.last
     end
 
     for (OptimParam, value) in getoptimparams(learner.opt)

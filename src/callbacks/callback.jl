@@ -148,8 +148,7 @@ function (handler::CallbackHandler)(event::FitEvent)
             try
                 on(event, handler.learner.phase, callback, handler.learner)
             catch e
-                if e isa FitException || callback isa AbstractMetric
-                    @show e
+                if e isa Union{FitException, InterruptException} || callback isa AbstractMetric
                     rethrow()
                 else
                     @error "Callback $callback threw an unexpected error, disabling it." error=e

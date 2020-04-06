@@ -84,7 +84,6 @@ end
 
 """
     fitbatchphase!(learner, phase, batch, cbhandler)
-
 """
 function fitbatchphase!(
         learner::Learner,
@@ -95,19 +94,20 @@ function fitbatchphase!(
     BatchBegin() |> cbhandler
     learner.batch.batch = x, y = learner.device(batch)
 
-    learner.batch.gradients = gradient(learner.params) do
+    gs = learner.batch.gradients = gradient(learner.params) do
         y_pred = learner.batch.y_pred = learner.model(x)
 
         LossBegin() |> cbhandler
         loss = learner.batch.loss = learner.lossfn(y_pred, y)
 
         BackwardBegin() |> cbhandler
-        return learner.batch.loss
+        return loss
     end
 
     BackwardEnd() |> cbhandler
 
-    update!(learner.opt, learner.params, learner.batch.gradients)
+    # FIXME: revert to learner.batch.gradients
+    update!(learner.opt, learner.params, gs)
 
     BatchEnd() |> cbhandler
     return learner

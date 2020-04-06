@@ -41,3 +41,26 @@ struct NaNLossException <: Exception end
 function on(::BackwardEnd, ::AbstractTrainingPhase, ::StopOnNaNLoss, learner)
     !isnan(learner.batch.loss) || throw(CancelFittingException("Encountered NaN loss"))
 end
+
+
+# Early stopping
+mutable struct EarlyStopping <: AbstractCallback
+    patience::Int
+    waited::Int
+    lowest::Float64
+end
+EarlyStopping(patience) = EarlyStopping(patience, 0, Inf64)
+
+function on(::EpochEnd, ::ValidationPhase, cb::EarlyStopping, learner)
+    valloss = value(learner.metrics[1])
+    if (valloss > cb.lowest)
+        if !(cb.waited < cb.patience)
+            throw(CancelFittingException("Validation loss did not improve for $(cb.patience) epochs"))
+        else
+            cb.waited += 1
+        end
+    else
+        cb.waited = 0
+        cb.lowest = valloss
+    end
+end
