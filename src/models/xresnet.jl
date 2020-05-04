@@ -50,7 +50,7 @@ function make_layer(expansion, ni, nf, n_blocks, stride)
             ]...)
 end
 
-function XResNet(expansion, layers; c_in = 3, nclasses = 1000)
+function XResNet(expansion, layers; c_in = 3)
     nfs = [c_in, (c_in+1)*8, 64, 64]
     stem = [conv_layer(nfs[i], nfs[i+1]; stride = i == 1 ? 2 : 1) for i in 1:3]
 
