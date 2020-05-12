@@ -1,5 +1,3 @@
-using Plots: plot, plot!
-
 
 struct ParamSchedule
     nepochs::Real

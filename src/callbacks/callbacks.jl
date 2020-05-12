@@ -1,4 +1,3 @@
-import ProgressMeter: Progress, next!
 
 # ProgressBarLogger
 

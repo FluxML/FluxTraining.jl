@@ -1,4 +1,3 @@
-using OnlineStats: Mean, ExponentialWeight
 
 struct LRFinderPhase <: AbstractTrainingPhase
     start_lr::Real

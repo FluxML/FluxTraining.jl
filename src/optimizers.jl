@@ -1,7 +1,5 @@
-using Flux
 
-
-FluxOptimizer = Union{
+const FluxOptimizer = Union{
     Descent, Momentum, Nesterov, RMSProp,
     ADAM, AdaMax, ADAGrad, ADADelta, RADAM,
     AMSGrad, NADAM

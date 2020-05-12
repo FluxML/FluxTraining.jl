@@ -1,7 +1,3 @@
-using Flux: params, gpu
-using Flux.Optimise: update!
-using Zygote: gradient
-
 """
     fit!(learner, phases)
     fit!(learner, phase)
@@ -16,7 +12,7 @@ function fit!(learner::Learner, phases::AbstractVector{<:AbstractFittingPhase}):
     catch e
         if e isa CancelFittingException
             @info "Fitting was cancelled" error=e
-        else 
+        else
             rethrow()
         end
     end
@@ -41,7 +37,7 @@ function fitepoch!(learner, phase = learner.phase, handler = CallbackHandler(lea
             rethrow()
         end
     end
-    
+
     return learner
 end
 

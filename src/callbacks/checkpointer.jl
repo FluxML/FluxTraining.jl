@@ -1,4 +1,3 @@
-using Glob
 
 # CheckpointCondition
 abstract type CheckpointCondition end

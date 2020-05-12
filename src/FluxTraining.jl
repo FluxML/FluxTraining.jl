@@ -1,7 +1,18 @@
 module FluxTraining
 
+using BSON: @load, @save
 using DataLoaders
 using Flux
+using Flux: onecold
+using Flux.Optimise: update!
+using Glob
+using MLDataUtils: datasubset, nobs
+import OnlineStats
+using OnlineStats: EqualWeight, Mean, OnlineStat
+using ProgressMeter: Progress, next!
+using Statistics: mean
+using UUIDs
+using Zygote: Grads, gradient
 
 
 # optimizers
@@ -35,12 +46,12 @@ include("./train.jl")
 include("./advanced/lrfinder.jl")
 include("./advanced/onecycleschedule.jl")
 
-include("./util/plotutils.jl")
+#include("./util/plotutils.jl")
 
 # submodules
 include("./models/Models.jl")
 
-export 
+export
     Models,
 
     AbstractCallback,

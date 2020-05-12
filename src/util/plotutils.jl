@@ -1,5 +1,3 @@
-import OnlineStats
-using Plots: plot, plot!
 
 function plotlrfinder(recorder::Recorder, β = 0.02)
     lrs = recorder.stepstats[LR]

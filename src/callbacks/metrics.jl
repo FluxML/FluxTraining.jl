@@ -1,7 +1,3 @@
-import Flux: cpu
-import OnlineStats
-using OnlineStats: EqualWeight, Mean, OnlineStat
-
 
 value(metric::T) where T<:AbstractMetric = throw(
     "`value` not implemented for $(T), add a definition")
