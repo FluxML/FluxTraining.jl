@@ -37,8 +37,9 @@ include("./utils.jl")
     end
 
     @testset ExtendedTestSet "CustomCallback" begin
-        cb = CustomCallback{EpochEnd, TrainingPhase}((learner) -> error("test"))
+        cb = CustomCallback{EpochEnd, TrainingPhase}((learner) -> CancelFittingException("test"))
         learner = dummylearner(3, callbacks = [cb])
-        @test_throws ErrorException fit!(learner, TrainingPhase())
+        fit!(learner, TrainingPhase())
+        @test learner.recorder.epoch == 1
     end
 end

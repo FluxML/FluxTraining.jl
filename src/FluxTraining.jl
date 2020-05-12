@@ -3,7 +3,7 @@ module FluxTraining
 using BSON: @load, @save
 using DataLoaders
 using Flux
-using Flux: onecold
+using Flux: Params, onecold
 using Flux.Optimise: update!
 using Glob
 using MLDataUtils: datasubset, nobs
@@ -58,6 +58,9 @@ export
     AbstractMetric,
     Accuracy,
     AverageLoss,
+    CancelBatchException,
+    CancelEpochException,
+    CancelFittingException,
     Checkpointer,
     CheckpointAny,
     CheckpointLowest,
