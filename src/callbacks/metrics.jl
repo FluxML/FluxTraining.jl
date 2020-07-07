@@ -44,11 +44,11 @@ function on(::EpochBegin, ::AbstractFittingPhase, metric::Metric, learner)
     metric.metric = metric.metricfactory()
 end
 
-function on(::BatchEnd, phase::AbstractFittingPhase, metric::Metric, learner)
+function on(::BatchEnd, ::AbstractFittingPhase, metric::Metric, learner)
     metric.last = metric.fn(
             # FIXME: configure which device to evaluate on
-            learner.batch.y_pred,# |> cpu,
-            learner.batch.batch[2],# |> cpu
+            learner.batch.y_pred |> gpu,
+            learner.batch.batch[2] |> gpu
         )
     OnlineStats.fit!(
         metric.metric,

@@ -9,6 +9,5 @@ function classificationhead(n, inchannels)
         AdaptiveMeanPool((1,1)),
         flatten,
         Dense(inchannels, n),
-        softmax
     )
 end

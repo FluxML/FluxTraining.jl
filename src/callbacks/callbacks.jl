@@ -63,3 +63,19 @@ function on(::EpochEnd, ::ValidationPhase, cb::EarlyStopping, learner)
         cb.lowest = valloss
     end
 end
+
+
+
+garbagecollect() = (GC.gc(); ccall(:malloc_trim, Cvoid, (Cint,), 0))
+
+"""
+    GarbageCollect(nsteps)
+
+Every `nsteps`, forces garbage collection.
+Use this if you get memory leaks from, for example, parallel data loading.
+"""
+function GarbageCollect(nsteps::Int = 100)
+    return CustomCallback{BatchEnd, AbstractFittingPhase}(nsteps) do learner
+        garbagecollect()
+    end
+end

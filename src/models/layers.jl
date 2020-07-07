@@ -39,3 +39,10 @@ Flatten `x` in all dimensions except the last/batch dimension
 flatten(x) = reshape(x, :, size(x)[end])
 
 
+
+"""
+    Residual(model) == SkipConnection(model, +)
+
+Helper for defining residual connections
+"""
+Residual(model) = SkipConnection(model, +)

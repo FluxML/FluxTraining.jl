@@ -1,47 +1,53 @@
-
-struct LRFinderPhase <: AbstractTrainingPhase
-    start_lr::Real
-    end_lr::Real
-    nbatches::Int
+@with_kw struct LRFinderPhase <: AbstractTrainingPhase
+    startlr::Float32 = 1e-7
+    endlr::Float32 = 10
+    nsteps::Int = 100
+    stop_on_divergence::Bool = true
 end
-# TODO: refactor for new callbacks
 
-LRFinderPhase(start_lr = 1e-7, end_lr = 10; nbatches = 100) = LRFinderPhase(
-    start_lr, end_lr, nbatches)
 
-function fitepoch!(learner::Learner, phase::LRFinderPhase)
-    learner.phase = phase
-    epochs = phase.nbatches / numsteps(learner, phase)
+function FluxTraining.fitepochphase!(
+        learner::Learner,
+        phase::LRFinderPhase,
+        cbhandler::FluxTraining.CallbackHandler = FluxTraining.CallbackHandler(learner))
 
-    schedule = Dict(LR => [ParamSchedule(epochs, phase.start_lr, phase.end_lr, anneal_exp)])
+    # create Scheduler and Loss callbacks
+    epochlength = length(learner.databunch.traindl)
+    nepochs = min(1, phase.nsteps / epochlength)
+    schedule = Dict(FluxTraining.LR => [ParamSchedule(nepochs, phase.startlr, phase.endlr, anneal_exp)])
 
-    setschedule!(learner, schedule)
-    smoothloss = MeanMetric(learner.lossfn, ExponentialWeight(0.02))
-    push!(learner.metrics, smoothloss)
-    cbhandler = CallbackHandler(learner)
+    recorder = Recorder()
+    callbacks = [ParamScheduler(schedule), recorder]
+    cbhandler = FluxTraining.CallbackHandler(learner, callbacks)
 
-    EpochBegin() |> cbhandler
+    stepstaken = 0
+    best_loss = Inf64
+    losses = Float64[]
+    p = Progress(phase.nsteps; desc = "Learning rate finder: ")
 
-    minloss = typemax(Float32)
-    for (b, batch) in enumerate(learner.databunch.traindl)
-        BatchBegin() |> cbhandler
+    while stepstaken < phase.nsteps
+        for batch in FluxTraining.getdataloader(learner.databunch, phase)
+            FluxTraining.fitbatch!(learner, batch, phase, cbhandler)
 
-        fitbatch!(learner, phase, batch, cbhandler)
-        loss = value(smoothloss)
+            loss = learner.batch.loss
+            push!(losses, loss)
+            if phase.stop_on_divergence
+                best_loss = min(loss, best_loss)
 
-        BatchEnd() |> cbhandler
-        if loss < minloss
-            minloss = loss
-        end
-        if isnan(learner.batch.loss) || (4minloss < loss)
-            break
-        end
-        if b == phase.nbatches
-            break
+                # stop if loss is diverging
+                if isnan(loss) || loss > 4best_loss
+                    stepstaken = phase.nsteps
+                    break
+                end
+            end
+
+            next!(p)
+            stepstaken += 1
+            if stepstaken > phase.nsteps
+                break
+            end
         end
     end
 
-    EpochBegin() |> cbhandler
-
-    return learner
-end
+    return losses
+    end

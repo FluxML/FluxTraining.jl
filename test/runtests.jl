@@ -6,5 +6,7 @@ using FluxTraining
 include("./utils.jl")
 
 @testset ExtendedTestSet "FluxTraining.jl" begin
-    @includetests ARGS
+    include("./testfunctional.jl")
+    include("./testoptim.jl")
+    include("./testtraining.jl")
 end

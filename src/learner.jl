@@ -13,9 +13,9 @@ mutable struct DataBunch
         traindl, valdl, testdl)
 end
 
-getdataloader(databunch::DataBunch, phase::AbstractTrainingPhase) = databunch.traindl
-getdataloader(databunch::DataBunch, phase::ValidationPhase) = databunch.valdl
-getdataloader(databunch::DataBunch, phase::TestPhase) = databunch.testdl
+getdataloader(databunch::DataBunch, ::AbstractTrainingPhase) = databunch.traindl
+getdataloader(databunch::DataBunch, ::ValidationPhase) = databunch.valdl
+getdataloader(databunch::DataBunch, ::TestPhase) = databunch.testdl
 
 
 """
@@ -60,7 +60,7 @@ mutable struct Learner
     opt
     lossfn
     device
-    params::Union{Params, NTuple{N, Params} where N}
+    params::Union{Flux.Params, NTuple{N, Flux.Params} where N}
     phase::AbstractFittingPhase
     metrics::AbstractVector{<:AbstractMetric}
     callbacks::AbstractVector{<:AbstractCallback}

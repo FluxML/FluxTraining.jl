@@ -2,12 +2,12 @@
 
 act_fn = relu
 
-conv(ni, nf; ks=3, stride=1) = Conv((ks, ks), ni => nf, stride = stride, pad = ks ÷ 2)
+convx(ni, nf; ks=3, stride=1) = Conv((ks, ks), ni => nf, stride = stride, pad = ks ÷ 2)
 
 function conv_layer(ni, nf; ks=3, stride=1, zero_bn=false, act=true)
     bn = BatchNorm(nf, act ? act_fn : identity)
     fill!(bn.γ, zero_bn ? 0 : 1)
-    layers = [conv(ni, nf; ks = ks, stride = stride), bn]
+    layers = [convx(ni, nf; ks = ks, stride = stride), bn]
     return Chain(layers...)
 end
 

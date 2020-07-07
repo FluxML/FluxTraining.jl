@@ -1,4 +1,3 @@
-
 # CheckpointCondition
 abstract type CheckpointCondition end
 

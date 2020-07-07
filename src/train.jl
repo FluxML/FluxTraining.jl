@@ -32,7 +32,7 @@ function fitepoch!(learner, phase = learner.phase, handler = CallbackHandler(lea
         fitepochphase!(learner, phase, handler)
     catch e
         if e isa CancelEpochException
-            @debug "Epoch was cancelled" error=e
+            @info "Epoch was cancelled" error=e
         else
             rethrow()
         end
@@ -49,7 +49,7 @@ function fitbatch!(learner, batch, phase = learner.phase, handler = CallbackHand
         fitbatchphase!(learner, batch, phase, handler)
     catch e
         if e isa CancelBatchException
-            @debug "Batch was cancelled" error=e
+            @info "Batch was cancelled" error=e
         else
             rethrow()
         end
@@ -84,11 +84,12 @@ end
 function fitbatchphase!(
         learner::Learner,
         batch,
-        phase::AbstractTrainingPhase,
+        ::AbstractTrainingPhase,
         cbhandler::CallbackHandler)
 
     BatchBegin() |> cbhandler
     learner.batch.batch = x, y = learner.device(batch)
+
 
     gs = learner.batch.gradients = gradient(learner.params) do
         y_pred = learner.batch.y_pred = learner.model(x)
@@ -113,7 +114,7 @@ end
 function fitbatchphase!(
         learner::Learner,
         batch,
-        phase::ValidationPhase,
+        ::ValidationPhase,
         cbhandler::CallbackHandler = CallbackHandler(learner))
     BatchBegin() |> cbhandler
     learner.batch = BatchState()

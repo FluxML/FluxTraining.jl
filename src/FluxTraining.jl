@@ -9,6 +9,7 @@ using Glob
 using MLDataUtils: datasubset, nobs
 import OnlineStats
 using OnlineStats: EqualWeight, Mean, OnlineStat
+using Parameters
 using ProgressMeter: Progress, next!
 using Statistics: mean
 using UUIDs
@@ -41,18 +42,17 @@ include("./callbacks/paramscheduler.jl")
 include("./learner.jl")
 
 include("./train.jl")
+include("./util/trainutils.jl")
 
 # advanced
 include("./advanced/lrfinder.jl")
 include("./advanced/onecycleschedule.jl")
 
-#include("./util/plotutils.jl")
 
 # submodules
 include("./models/Models.jl")
 
-export
-    Models,
+export Models,
 
     AbstractCallback,
     AbstractMetric,
@@ -68,6 +68,7 @@ export
     DataBunch,
     DataLoader,
     EarlyStopping,
+    GarbageCollect,
     Learner,
     LRFinderPhase,
     Metric,
@@ -89,9 +90,6 @@ export
     loadmodel,
     loadweights,
     onecycleschedule,
-    plotlosses,
-    plotlrfinder,
-    plotschedule,
     savemodel,
     saveweights,
     setschedule!,
