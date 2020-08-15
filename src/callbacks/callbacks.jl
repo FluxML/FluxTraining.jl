@@ -10,7 +10,7 @@ function on(::EpochBegin,
         phase::AbstractFittingPhase,
         cb::ProgressBarLogger,
         learner)
-    e = learner.recorder.epoch
+    e = learner.state.history.epochs + 1
     cb.p = Progress(numsteps(learner, phase), "Epoch $(e) $(phase): ")
 end
 
@@ -25,7 +25,8 @@ function on(::EpochEnd,
         phase::AbstractFittingPhase,
         cb::PrintMetrics,
         learner)
-    for metric in learner.metrics
+    cbs = learner.state.callbacks
+    for metric in [cbs.loss, cbs.metrics...]
         println(string(metric), ": ", value(metric))
     end
 end
@@ -35,10 +36,8 @@ end
 
 struct StopOnNaNLoss <: AbstractCallback end
 
-struct NaNLossException <: Exception end
-
 function on(::BackwardEnd, ::AbstractTrainingPhase, ::StopOnNaNLoss, learner)
-    !isnan(learner.batch.loss) || throw(CancelFittingException("Encountered NaN loss"))
+    !isnan(learner.state.batch.loss) || throw(CancelFittingException("Encountered NaN loss"))
 end
 
 
@@ -51,7 +50,7 @@ end
 EarlyStopping(patience) = EarlyStopping(patience, 0, Inf64)
 
 function on(::EpochEnd, ::ValidationPhase, cb::EarlyStopping, learner)
-    valloss = value(learner.metrics[1])
+    valloss = value(learner.state.callbacks.loss)
     if (valloss > cb.lowest)
         if !(cb.waited < cb.patience)
             throw(CancelFittingException("Validation loss did not improve for $(cb.patience) epochs"))

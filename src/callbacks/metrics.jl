@@ -17,7 +17,7 @@ function on(::EpochBegin, ::AbstractFittingPhase, metric::AverageLoss, learner)
 end
 
 function on(::BatchEnd, phase::AbstractFittingPhase, metric::AverageLoss, learner)
-    metric.loss += learner.batch.loss
+    metric.loss += learner.state.batch.loss
     metric.count += 1
 end
 
@@ -33,8 +33,9 @@ mutable struct Metric{T} <: AbstractMetric
     name
     metric::OnlineStat{T}
     last::T
+    device
 end
-Metric(metricfactory, fn, name = string(fn)) = Metric(metricfactory, fn, name, metricfactory(), Inf)
+Metric(metricfactory, fn, name = string(fn), device = cpu) = Metric(metricfactory, fn, name, metricfactory(), Inf, device)
 
 Base.show(io::IO, metric::Metric) = print(io, metric.name)
 
@@ -46,9 +47,8 @@ end
 
 function on(::BatchEnd, ::AbstractFittingPhase, metric::Metric, learner)
     metric.last = metric.fn(
-            # FIXME: configure which device to evaluate on
-            learner.batch.y_pred |> gpu,
-            learner.batch.batch[2] |> gpu
+            metric.device(learner.state.batch.ŷs),
+            metric.device(learner.batch.batch.ys),
         )
     OnlineStats.fit!(
         metric.metric,
@@ -56,8 +56,13 @@ function on(::BatchEnd, ::AbstractFittingPhase, metric::Metric, learner)
     )
 end
 
-MeanMetric(fn, name = string(fn); weight = EqualWeight()) =
-    Metric(() -> Mean(Float64, weight = weight), fn, name)
+"""
+    Metric(fn, name = string(fn); device = cpu)
+
+`fn(y_pred, y)`
+"""
+Metric(fn, name = string(fn); device = cpu, metric = Mean) =
+    Metric(() -> metric(), fn, name, device)
 
 
-Accuracy() = MeanMetric(accuracy)
+Accuracy() = Metric(accuracy)

@@ -1,3 +1,7 @@
+#=
+- improve documentation with DocStringExtensions.jl
+=#
+
 """
     Abstract Callback
 
@@ -37,7 +41,7 @@ struct CleanupPhase <: AbstractFittingPhase end
 
 export
     AbstractFittingPhase,
-    AbstractTrainingPhase, 
+    AbstractTrainingPhase,
     TrainingPhase,
     ValidationPhase,
     TestPhase,
@@ -82,7 +86,7 @@ struct BackwardBegin <: GradEvent end
 struct BackwardEnd <: FitEvent end
 
 
-export 
+export
     # asbtract
     FitEvent, GradEvent,
     # concrete
@@ -127,40 +131,3 @@ To see events which an `AbstractCallback` handles, use
     `methods(Training.on, (Any, Any, MyCallbackType, Any)`
 """
 on(::FitEvent, ::AbstractFittingPhase, ::AbstractCallback, learner) = return
-
-
-# CallbackHandler
-
-struct CallbackHandler
-    learner
-    callbacks::Vector{AbstractCallback}
-    errored::Set{AbstractCallback}
-    CallbackHandler(learner, callbacks) = new(
-        learner,
-        sort!(callbacks, by=cb -> order(typeof(cb))),
-        Set{AbstractCallback}(),
-    )
-end
-
-function (handler::CallbackHandler)(event::FitEvent)
-    foreach(handler.callbacks) do callback
-        if !(callback in handler.errored)
-            try
-                on(event, handler.learner.phase, callback, handler.learner)
-            catch e
-                if e isa Union{FitException, InterruptException} || callback isa AbstractMetric
-                    rethrow()
-                else
-                    @error "Callback $callback threw an unexpected error, disabling it." error=e
-                    push!(handler.errored, callback)
-                end
-            end
-        end
-    end
-end
-
-function (handler::CallbackHandler)(event::GradEvent)
-    foreach(handler.callbacks) do callback
-        on(event, handler.learner.phase, callback, handler.learner)
-    end
-end

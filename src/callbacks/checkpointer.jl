@@ -11,7 +11,7 @@ CheckpointLowest() = CheckpointLowest(Inf)
 (::CheckpointAny)(learner) = true
 
 function (checklowest::CheckpointLowest)(learner)
-    loss = value(learner.metrics[1])
+    loss = value(learner.state.callbacks.loss)
     cond = loss < checklowest.lowest
     if cond
         checklowest.lowest = loss

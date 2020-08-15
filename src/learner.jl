@@ -1,48 +1,82 @@
 
+#=
+
+- replace DataBunch with DataLoaders
+    - fix DataBunch references
+- implement ToGPU as callback
+
+=#
+
+
+
 
 """
-    DataBunch(traindl, valdl, [testdl])
+    $TYPEDEF
 
-Container for DataLoaders
+Stores all callbacks of a `Learner`.
+
+$TYPEDFIELDS
 """
-mutable struct DataBunch
-    traindl::DataLoader
-    valdl::DataLoader
-    testdl::Union{Nothing, DataLoader}
-    DataBunch(traindl, valdl, testdl = nothing) = new(
-        traindl, valdl, testdl)
+@with_kw  mutable struct Callbacks
+    loss::AverageLoss = AverageLoss()
+    recorder::Recorder = Recorder()
+    scheduler::ParamScheduler = ParamScheduler()
+    metrics::Vector{AbstractMetric}
+    other::Vector{AbstractCallback}
+    all = sort!(
+        [loss, metrics..., recorder, scheduler, other...],
+        by = cb -> order(typeof(cb)))
 end
 
-getdataloader(databunch::DataBunch, ::AbstractTrainingPhase) = databunch.traindl
-getdataloader(databunch::DataBunch, ::ValidationPhase) = databunch.valdl
-getdataloader(databunch::DataBunch, ::TestPhase) = databunch.testdl
-
+Callbacks(callbacks, metrics) = Callbacks(other = callbacks, metrics = metrics)
 
 """
-    BatchState()
-    BatchState(batch, y_pred, loss, gradients)
+    $TYPEDEF
 
-Container that stores variables from the current batch
-All fields are reset to `nothing` on `BatchBegin`
+Stores data of the last processed batch.
+
+$FIELDS
+
+(!) If used in callbacks, some fields may be `nothing` as
+they are reset after every step.
 """
-mutable struct BatchState
-    batch::Union{Nothing, Tuple}
-    y_pred::Union{Nothing, AbstractArray}
-    loss::Union{Nothing, Real}
-    gradients::Union{Nothing, Grads}
+@with_kw mutable struct BatchState
+    xs = nothing
+    ys = nothing
+    ŷs = nothing
+    loss = nothing
+    grads = nothing
 end
-BatchState() = BatchState(nothing, nothing, nothing, nothing)
+
 
 """
-    Learner
+    $TYPEDEF
+
+Stores all state of a learner.
+
+$TYPEDFIELDS
+
+"""
+@with_kw mutable struct LearnerState
+    phase::AbstractFittingPhase = InitializationPhase()
+    history::History = History()
+    schedule::Schedules = Schedules()
+    params
+    batch::BatchState = BatchState()
+    callbacks::Callbacks
+    config::Dict = Dict()
+    run::UUID = uuid4()
+end
+
+
+"""
+    Learner(model, data, opt, lossfn)
 
 Central object for training that holds all necessary state.
 
+$(TYPEDFIELDS)
+
 # Fields
-- `model`: a Flux model
-- `databunch::`[`Databunch`](@ref): collection of `DataLoader`s
-- `opt`: optimizer to update model parameters
-- `lossfn`: compute losses with `lossfn(model(x), y)`
 - `device`: device to train on, usually `Flux.cpu` or `Flux.gpu`
 - `params`: model parameters, i.e. `Flux.params(model)`
 - `phase::`[`AbstractFittingPhase`](@ref): current fitting phase
@@ -54,62 +88,58 @@ Central object for training that holds all necessary state.
 - `scheduler::`[`Scheduler`](@ref): special callback that records metrics and hyperparameters
 - `batch::`[`BatchState`](@ref): Holds training state during batch
 """
-mutable struct Learner
+@with_kw mutable struct Learner
+    # Flux model
     model
-    databunch::DataBunch
+    # tuple of training and validation DataLoaders
+    data
+    # optimizer
     opt
+    # loss function taking `lossfn(y_pred, y)`
     lossfn
-    device
-    params::Union{Flux.Params, NTuple{N, Flux.Params} where N}
-    phase::AbstractFittingPhase
-    metrics::AbstractVector{<:AbstractMetric}
-    callbacks::AbstractVector{<:AbstractCallback}
-    recorder::Recorder
-    scheduler::ParamScheduler
-    batch::BatchState
-    config::Dict
-    runid::UUID
+    #
+    state::LearnerState
 end
+
 
 function Learner(
-    model,
-    databunch::DataBunch,
-    opt,
-    lossfn;
-    device = gpu,
-    metrics::AbstractVector{<:AbstractMetric} = AbstractMetric[],
-    callbacks = [],
-    schedule::Dict = Dict(),
-    config::Dict = Dict(),
-    scheduler::ParamScheduler = ParamScheduler(schedule),
-    use_default_metrics = true,
-    use_default_callbacks = true,
+        model, data, opt, lossfn;
+        callbacks = [], metrics = [], schedule = Schedules(),
+        usedefaultcallbacks = true, config = Dict()
     )
-    if use_default_metrics
-        metrics::Vector{<:AbstractMetric} = [get_default_metrics()..., metrics...]
-    end
-    if use_default_callbacks
-        callbacks = [get_default_callbacks()..., callbacks...]
+    if usedefaultcallbacks
+        callbacks = vcat(defaultcallbacks(), callbacks)
     end
 
-    return Learner(
-        model, databunch, opt, lossfn, device, params(model), InitializationPhase(),
-        metrics, callbacks, Recorder(), scheduler, BatchState(), config, uuid4())
+    state = LearnerState(
+        schedule = schedule,
+        callbacks = Callbacks(callbacks, metrics),
+        params = params(model),
+        config = config,
+    )
+    return Learner(model, data, opt, lossfn, state)
 end
 
-get_default_callbacks()::Vector{AbstractCallback} = [StopOnNaNLoss()]
-get_default_metrics()::Vector{AbstractMetric} = [AverageLoss()]
+
+defaultcallbacks()::Vector{AbstractCallback} = [StopOnNaNLoss()]
 
 
-CallbackHandler(learner::Learner) = CallbackHandler(
-    learner,
-    [
-        learner.scheduler,
-        learner.metrics...,
-        learner.recorder,
-        learner.callbacks...
-    ])
+#  Callback handling
 
+function handle(event::FitEvent, learner::Learner)
+    foreach(learner.state.callbacks.all) do callback
+        on(event, learner.state.phase, callback, learner)
+    end
+end
+
+# Other
+
+getdataloader(phase::AbstractTrainingPhase, learner) = learner.data[1]
+getdataloader(phase::ValidationPhase, learner) = learner.data[2]
+
+
+
+# TOdo: fix
 
 function setschedule!(learner, schedule)
     learner.scheduler = ParamScheduler(
@@ -119,7 +149,7 @@ end
 
 
 numsteps(learner::Learner, phase::AbstractFittingPhase) = length(
-    getdataloader(learner.databunch, phase))
+    getdataloader(phase, learner))
 
 
 function starttraining(learner)

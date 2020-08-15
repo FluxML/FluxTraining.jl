@@ -1,11 +1,18 @@
 module FluxTraining
 
+#=
+Refactoring:
+- better serialization of Learners
+=#
+
+
 using BSON: @load, @save
 using DataLoaders
 using Flux
 using Flux: Params, onecold
 using Flux.Optimise: update!
 using Glob
+using DocStringExtensions
 using MLDataUtils: datasubset, nobs
 import OnlineStats
 using OnlineStats: EqualWeight, Mean, OnlineStat
@@ -14,6 +21,8 @@ using ProgressMeter: Progress, next!
 using Statistics: mean
 using UUIDs
 using Zygote: Grads, gradient
+using ValueHistories
+using DataStructures: DefaultDict
 
 
 # optimizers
@@ -45,8 +54,8 @@ include("./train.jl")
 include("./util/trainutils.jl")
 
 # advanced
-include("./advanced/lrfinder.jl")
-include("./advanced/onecycleschedule.jl")
+#include("./advanced/lrfinder.jl")
+#include("./advanced/onecycleschedule.jl")
 
 
 # submodules
@@ -79,6 +88,8 @@ export Models,
     ParamScheduler,
     TrainingPhase,
     ValidationPhase,
+    Schedule,
+    Schedules,
 
     accuracy,
     anneal_linear,

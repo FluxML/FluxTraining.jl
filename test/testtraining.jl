@@ -3,43 +3,40 @@ using TestSetExtensions
 using Flux
 using FluxTraining
 using FluxTraining: EpochEnd, LR, getdataloader, getoptimparam
+using MLDataPattern
 
-include("./utils.jl")
+include("./imports.jl")
 
-@testset ExtendedTestSet "Training tests" begin
-    @testset ExtendedTestSet "Dummy learner convergence" begin
-        learner = dummylearner(3)
-        fit!(learner, repeat([TrainingPhase()], 5))
-        @test learner.model.factor[1] ≈ 3
-        @test learner.phase isa TrainingPhase
-    end
 
-    @testset ExtendedTestSet "Recorder" begin
-        learner = dummylearner(3)
-        r = learner.recorder
-        @test r.epoch == 0
-        @test r.step == 0
-        fit!(learner, [TrainingPhase(), ValidationPhase(), TrainingPhase(), ValidationPhase()])
-        @test r.epoch == 2
-        @test r.step == length(getdataloader(learner.databunch, TrainingPhase()))
-        @test r.steptotal == 2length(getdataloader(learner.databunch, TrainingPhase()))
-        @test length(r.stepstats) == 2length(getdataloader(learner.databunch, TrainingPhase()))
-        @test length(r.stepstats) == r.steptotal
-    end
+@testset ExtendedTestSet "Dummy learner convergence" begin
+    learner = dummylearner(3)
+    fit!(learner, repeat([TrainingPhase()], 5))
+    @test learner.model.factor[1] ≈ 3
+    @test learner.state.phase isa TrainingPhase
+end
 
-    @testset ExtendedTestSet "Hyperparameter scheduling" begin
-        learner = dummylearner(3)
-        setschedule!(learner, Dict(LR => [ParamSchedule(2, 1e-4, 1e-6, anneal_linear)]))
-        fit!(learner, TrainingPhase())
-        @test getoptimparam(learner.opt, LR) ≈ ((1e-4+1e-6) / 2)
-        fit!(learner, TrainingPhase())
-        @test getoptimparam(learner.opt, LR) ≈ 1e-6
-    end
+@testset ExtendedTestSet "Recorder" begin
+    learner = dummylearner(3)
+    h = learner.state.history
+    @test h.epochs == 0
+    @test h.nsteps == 0
+    fit!(learner, [TrainingPhase(), ValidationPhase(), TrainingPhase(), ValidationPhase()])
+    @test h.epochs == 2
+    @test h.nstepsepoch == length(getdataloader(TrainingPhase(), learner))
+    @test h.nsteps == 2 * length(getdataloader(TrainingPhase(), learner))
 
-    @testset ExtendedTestSet "CustomCallback" begin
-        cb = CustomCallback{EpochEnd, TrainingPhase}((learner) -> CancelFittingException("test"))
-        learner = dummylearner(3, callbacks = [cb])
-        fit!(learner, TrainingPhase())
-        @test learner.recorder.epoch == 1
-    end
+    loss1, loss2 = get(h.epochmetrics[ValidationPhase()], :loss)[2]
+    @test loss1 > loss2
+end
+
+@testset ExtendedTestSet "Hyperparameter scheduling" begin
+
+    schedules = Schedules(Dict(LR => Schedule(16, 1e-4, 1e-6, anneal_linear)))
+    learner = dummylearner(3, schedule = schedules)
+
+    fit!(learner, TrainingPhase())
+    @test getoptimparam(learner.opt, LR) ≈ ((1e-4 + 1e-6) / 2)
+
+    fit!(learner, TrainingPhase())
+    @test getoptimparam(learner.opt, LR) ≈ 1e-6
 end

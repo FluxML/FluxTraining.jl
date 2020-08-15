@@ -1,4 +1,6 @@
 
+# TODO: Refactor
+#=
 
 function splitdataset(f, dataset)
     trainidxs = filter(idx -> f(idx), 1:nobs(dataset))
@@ -10,3 +12,5 @@ end
 function splitdataset(dataset, splits::AbstractVector{Bool})
     splitdataset((idx) -> splits[idx], dataset)
 end
+
+=#

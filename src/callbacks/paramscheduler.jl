@@ -1,20 +1,40 @@
 
-struct ParamSchedule
-    nepochs::Real
-    startvalue::Real
-    endvalue::Real
-    anneal_fn
+# Schedule data structures
+
+@with_kw struct Schedules
+    data::Dict = Dict()
 end
-ParamSchedule(n, s, e; anneal_fn = anneal_linear) = ParamSchedule(n, s, e, anneal_fn)
 
-
-duration(sched::ParamSchedule) = sched.nepochs
-duration(scheds::AbstractVector{ParamSchedule}) = sum(duration.(scheds))
-duration(scheddict::Dict) = maximum(duration.(values(scheddict)))
-
-struct ParamScheduler <: AbstractCallback
-    scheduledict::Dict{Type{<:OptimParam}, AbstractVector{ParamSchedule}}
+@with_kw struct Schedule{T}
+    nsteps::Int
+    from::T
+    to::T
+    annealfn = anneal_linear
 end
+
+
+duration(schedule::Schedule) = schedule.nsteps
+duration(schedules::Vector{Schedule}) = sum(duration.(schedules))
+duration(schedules::Schedules) = maximum(duration.(values(schedules.data)))
+
+function schedulevalue(schedule::Schedule, step)
+    pctg = min(1, step / schedule.nsteps)
+    return schedule.annealfn(pctg, schedule.from, schedule.to)
+end
+
+function schedulevalue(schedules::Vector{Schedule}, step)
+    length(schedules) > 0 || error("Missing schedule")
+    i = 1
+    while duration(schedules[i]) < step
+        step -= duration(schedules[i])
+        i += 1
+    end
+    return schedulevalue(schedules[i], step)
+end
+
+# Scheduler Callback
+
+struct ParamScheduler <: AbstractCallback end
 
 order(::Type{ParamScheduler}) = -80
 
@@ -24,37 +44,45 @@ order(::Type{ParamScheduler}) = -80
 Every batch, set all hyperparameters according to `cb.scheduledict`.
 """
 function on(::BatchBegin, phase::AbstractTrainingPhase, cb::ParamScheduler, learner)
-    e, s = learner.recorder.epoch, learner.recorder.step
-    epochs = (e - 1) + (s / numsteps(learner, phase))
-
-    for (P, schedules) in cb.scheduledict
-        val = schedulevalue(schedules, epochs)
-        setoptimparam!(learner.opt, P, schedulevalue(schedules, epochs))
+    for (P, schedule) in learner.state.schedule.data
+        setoptimparam!(
+            learner.opt,
+            P,
+            # TODO: maybe add one? + 1
+            schedulevalue(schedule, learner.state.history.nsteps + 1))
     end
 end
 
 
-function schedulevalue(schedule::ParamSchedule, epochs::Real)::Union{Nothing, Real}
-    pctg = min(epochs / schedule.nepochs, 1)  # return last value if out of bounds
-    return schedule.anneal_fn(pctg, schedule.startvalue, schedule.endvalue)
+# Sample schedules
+
+function onecycleschedule(
+        nsteps,
+        maxlr;
+        startfactor = 1/10,
+        endfactor = 1/100,
+        pctstart = 0.1)
+
+    upschedule = Schedule(
+        round(Int, nsteps * pctstart),
+        maxlr * startfactor,
+        maxlr,
+        anneal_cosine)
+    downschedule = Schedule(
+        round(Int, nsteps * (1-pctstart)),
+        maxlr,
+        maxlr * endfactor,
+        anneal_cosine)
+
+    return Dict(LR => [upschedule, downschedule])
 end
 
-
-function schedulevalue(schedules::AbstractVector{ParamSchedule}, epochs::Real)
-    length(schedules) > 0 || error("Missing schedule")
-
-    s = schedules[1]
-
-    if epochs < s.nepochs || length(schedules) == 1
-        return schedulevalue(s, epochs)
-    else
-        return schedulevalue(schedules[2:end], epochs - s.nepochs)
-    end
-end
 
 
 # Utilities
+# TODO: update
 
+#=
 function sampleschedule(
         schedule::Union{ParamSchedule, AbstractVector{ParamSchedule}};
         epochs = duration(schedule))
@@ -75,3 +103,4 @@ function delayschedule(schedule::Dict, nepochs::Real)
     end
     return newschedule
 end
+=#

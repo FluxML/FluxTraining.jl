@@ -1,8 +1,9 @@
 
+#=
 function getbatch(dataloader::DataLoader, batchsize = dataloader.batchsize; offset = 0)
     idxs = 1 + offset:offset + batchsize
     samples = [DataLoaders.getsample(dataloader, idx) for idx in idxs]
-    batch = DataLoaders.collate(samples)
+    batch = dataloader.collatefn(samples)
 
     return batch
 end
@@ -24,3 +25,5 @@ function getloss(learner, batch = getbatch(learner))
     y_pred, y = getoutputs(learner, batch)
     learner.lossfn(y_pred, y)
 end
+
+=#
