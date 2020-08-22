@@ -35,7 +35,15 @@ mutable struct Metric{T} <: AbstractMetric
     last::T
     device
 end
-Metric(metricfactory, fn, name = string(fn), device = cpu) = Metric(metricfactory, fn, name, metricfactory(), Inf, device)
+
+"""
+    Metric(fn, name = string(fn); device = cpu)
+
+`fn(y_pred, y)`
+"""
+function Metric(fn, name = string(fn); device = cpu, metric = Mean)
+    Metric(() -> metric(), fn, name, metric(), Inf, device)
+end
 
 Base.show(io::IO, metric::Metric) = print(io, metric.name)
 
@@ -56,13 +64,6 @@ function on(::BatchEnd, ::AbstractFittingPhase, metric::Metric, learner)
     )
 end
 
-"""
-    Metric(fn, name = string(fn); device = cpu)
-
-`fn(y_pred, y)`
-"""
-Metric(fn, name = string(fn); device = cpu, metric = Mean) =
-    Metric(() -> metric(), fn, name, device)
 
 
 Accuracy() = Metric(accuracy)
