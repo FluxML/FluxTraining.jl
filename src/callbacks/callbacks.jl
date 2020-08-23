@@ -35,8 +35,6 @@ end
 
 struct StopOnNaNLoss <: AbstractCallback end
 
-struct NaNLossException <: Exception end
-
 function on(::BackwardEnd, ::AbstractTrainingPhase, ::StopOnNaNLoss, learner)
     !isnan(learner.batch.loss) || throw(CancelFittingException("Encountered NaN loss"))
 end
@@ -71,7 +69,7 @@ garbagecollect() = (GC.gc(); ccall(:malloc_trim, Cvoid, (Cint,), 0))
 """
     GarbageCollect(nsteps)
 
-Every `nsteps`, forces garbage collection.
+Every `nsteps` steps, forces garbage collection.
 Use this if you get memory leaks from, for example, parallel data loading.
 """
 function GarbageCollect(nsteps::Int = 100)
