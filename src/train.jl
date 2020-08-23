@@ -4,10 +4,9 @@
     fit!(learner, n)
 """
 function fit!(learner::Learner, phases::AbstractVector{<:AbstractFittingPhase})::Learner
-    handler = CallbackHandler(learner)
     try
         for phase in phases
-            fitepoch!(learner, phase, handler)
+            fitepoch!(learner, phase)
         end
     catch e
         if e isa CancelFittingException
@@ -26,10 +25,10 @@ fit!(learner, n::Int)::Learner = fit!(learner, repeat([TrainingPhase(), Validati
 """
     fitepoch!(learner, phase = learner.phase)
 """
-function fitepoch!(learner, phase = learner.phase, handler = CallbackHandler(learner))
-    learner.phase = phase
+function fitepoch!(learner, phase = learner.phase)
+    learner.state.phase = phase
     try
-        fitepochphase!(learner, phase, handler)
+        fitepochphase!(learner, phase)
     catch e
         if e isa CancelEpochException
             @info "Epoch was cancelled" error=e
@@ -42,11 +41,11 @@ function fitepoch!(learner, phase = learner.phase, handler = CallbackHandler(lea
 end
 
 
-function fitbatch!(learner, batch, phase = learner.phase, handler = CallbackHandler(learner))
-    learner.phase = phase
-    learner.batch = BatchState()
+function fitbatch!(learner, batch, phase = learner.phase)
+    learner.state.phase = phase
+    learner.state.batch = BatchState()
     try
-        fitbatchphase!(learner, batch, phase, handler)
+        fitbatchphase!(learner, batch, phase)
     catch e
         if e isa CancelBatchException
             @info "Batch was cancelled" error=e
@@ -54,7 +53,6 @@ function fitbatch!(learner, batch, phase = learner.phase, handler = CallbackHand
             rethrow()
         end
     end
-
 end
 
 """
@@ -67,46 +65,42 @@ Customize by deriving custom phase from `AbstractFittingPhase`.
 function fitepochphase!(
         learner::Learner,
         phase::Union{TrainingPhase, ValidationPhase, TestPhase},
-        cbhandler::CallbackHandler = CallbackHandler(learner))
-    EpochBegin() |> cbhandler
+    )
+    handle(EpochBegin(), learner)
 
-    for batch in getdataloader(learner.databunch, phase)
-        fitbatch!(learner, batch, phase, cbhandler)
+    for batch in getdataloader(phase, learner)
+        fitbatch!(learner, batch, phase)
     end
 
-    EpochEnd() |> cbhandler
+    handle(EpochEnd(), learner)
 end
 
 
-"""
-    fitbatchphase!(learner, phase, batch, cbhandler)
-"""
 function fitbatchphase!(
         learner::Learner,
         batch,
         ::AbstractTrainingPhase,
-        cbhandler::CallbackHandler)
+    )
 
-    BatchBegin() |> cbhandler
-    learner.batch.batch = x, y = learner.device(batch)
+    batchstate = learner.state.batch
+    xs, ys = batchstate.xs, batchstate.ys = batch
 
+    handle(BatchBegin(), learner)
 
-    gs = learner.batch.gradients = gradient(learner.params) do
-        y_pred = learner.batch.y_pred = learner.model(x)
+    grads = batchstate.grads = gradient(learner.state.params) do
+        ŷs = batchstate.ŷs = learner.model(xs)
 
-        LossBegin() |> cbhandler
-        loss = learner.batch.loss = learner.lossfn(y_pred, y)
+        handle(LossBegin(), learner)
+        loss = learner.state.batch.loss = learner.lossfn(ŷs, ys)
 
-        BackwardBegin() |> cbhandler
+        handle(BackwardBegin(), learner)
         return loss
     end
+    handle(BackwardEnd(), learner)
 
-    BackwardEnd() |> cbhandler
+    update!(learner.opt, learner.state.params, grads)
 
-    # FIXME: revert to learner.batch.gradients
-    update!(learner.opt, learner.params, gs)
-
-    BatchEnd() |> cbhandler
+    handle(BatchEnd(), learner)
     return learner
 end
 
@@ -115,15 +109,15 @@ function fitbatchphase!(
         learner::Learner,
         batch,
         ::ValidationPhase,
-        cbhandler::CallbackHandler = CallbackHandler(learner))
-    BatchBegin() |> cbhandler
-    learner.batch = BatchState()
-    learner.batch.batch = x, y = learner.device(batch)
+    )
+    batchstate = learner.state.batch
+    xs, ys = batchstate.xs, batchstate.ys = batch
+    handle(BatchBegin(), learner)
 
-    y_pred = learner.batch.y_pred = learner.model(x)
+    ŷs = batchstate.ŷs = learner.model(xs)
 
-    LossBegin() |> cbhandler
-    loss = learner.batch.loss = learner.lossfn(y_pred, y)
+    handle(LossBegin(), learner)
+    batchstate.loss = learner.lossfn(ŷs, ys)
 
-    BatchEnd() |> cbhandler
+    handle(BatchEnd(), learner)
 end
