@@ -22,7 +22,7 @@ function schedulevalue(schedule::Schedule, step)
     return schedule.annealfn(pctg, schedule.from, schedule.to)
 end
 
-function schedulevalue(schedules::Vector{Schedule}, step)
+function schedulevalue(schedules::Vector{<:Schedule}, step)
     length(schedules) > 0 || error("Missing schedule")
     i = 1
     while duration(schedules[i]) < step
