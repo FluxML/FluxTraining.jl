@@ -82,23 +82,23 @@ function fitbatchphase!(
         ::AbstractTrainingPhase,
     )
 
-    batchstate = learner.state.batch
-    xs, ys = batchstate.xs, batchstate.ys = batch
+    b = learner.state.batch
+    b.xs, b.ys = batch
 
     handle(BatchBegin(), learner)
 
-    grads = batchstate.grads = gradient(learner.state.params) do
-        ŷs = batchstate.ŷs = learner.model(xs)
+    b.grads = gradient(learner.state.params) do
+        b.ŷs = learner.model(b.xs)
 
         handle(LossBegin(), learner)
-        loss = learner.state.batch.loss = learner.lossfn(ŷs, ys)
+        b.loss = learner.lossfn(b.ŷs, b.ys)
 
         handle(BackwardBegin(), learner)
-        return loss
+        return b.loss
     end
     handle(BackwardEnd(), learner)
 
-    update!(learner.opt, learner.state.params, grads)
+    update!(learner.opt, learner.state.params, b.grads)
 
     handle(BatchEnd(), learner)
     return learner
@@ -110,14 +110,14 @@ function fitbatchphase!(
         batch,
         ::ValidationPhase,
     )
-    batchstate = learner.state.batch
-    xs, ys = batchstate.xs, batchstate.ys = batch
+    b = learner.state.batch
+    b.xs, b.ys = batch
     handle(BatchBegin(), learner)
 
-    ŷs = batchstate.ŷs = learner.model(xs)
+    b.ŷs = learner.model(b.xs)
 
     handle(LossBegin(), learner)
-    batchstate.loss = learner.lossfn(ŷs, ys)
+    b.loss = learner.lossfn(b.ŷs, b.ys)
 
     handle(BatchEnd(), learner)
 end
