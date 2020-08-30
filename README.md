@@ -10,7 +10,7 @@ A flexible neural net training library inspired by fast.ai
 
 ## Demo
 
-see [`demo notebook`](./examples/FluxTraining.jl-demo.ipynb)
+see [`demo notebook`](./examples/FluxTraining.jl-demo.ipynb) (now outdated but features are still there)
 
 ## Features
 
