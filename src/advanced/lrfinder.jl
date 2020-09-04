@@ -1,3 +1,7 @@
+# TODO: refactor
+
+
+#=
 @with_kw struct LRFinderPhase <: AbstractTrainingPhase
     startlr::Float32 = 1e-7
     endlr::Float32 = 10
@@ -51,3 +55,5 @@ function FluxTraining.fitepochphase!(
 
     return losses
     end
+
+    =#

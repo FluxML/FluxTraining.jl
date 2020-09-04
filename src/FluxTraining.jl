@@ -7,13 +7,12 @@ Refactoring:
 
 
 using BSON: @load, @save
-using DataLoaders
 using Flux
 using Flux: Params, onecold
 using Flux.Optimise: update!
 using Glob
 using DocStringExtensions
-using MLDataUtils: datasubset, nobs
+using LearnBase: nobs
 import OnlineStats
 using OnlineStats: EqualWeight, Mean, OnlineStat
 using Parameters
@@ -36,7 +35,6 @@ include("./functional/metrics.jl")
 include("./callbacks/callback.jl")
 
 # utilities
-include("./util/datautils.jl")
 include("./util/ioutils.jl")
 
 # callback implementations
@@ -55,15 +53,10 @@ include("./util/trainutils.jl")
 
 # advanced
 #include("./advanced/lrfinder.jl")
-#include("./advanced/onecycleschedule.jl")
 
 
-# submodules
-include("./models/Models.jl")
 
-export Models,
-
-    AbstractCallback,
+export AbstractCallback,
     AbstractMetric,
     Accuracy,
     AverageLoss,

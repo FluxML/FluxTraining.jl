@@ -66,12 +66,12 @@ end
 
 struct ToGPU <: AbstractCallback end
 
-function on(::EpochBegin, ::AbstractFittingPhase, cb::ToGPU, learner)
+function on(::EpochBegin, ::AbstractFittingPhase, ::ToGPU, learner)
     learner.model = gpu(learner.model)
 end
 
 function on(::BatchBegin, ::AbstractFittingPhase, cb::ToGPU, learner)
-    learner.model = gpu(learner.model)
+    #learner.model = gpu(learner.model)
     learner.state.batch.xs = gpu(learner.state.batch.xs)
     learner.state.batch.ys = gpu(learner.state.batch.ys)
 end

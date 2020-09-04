@@ -14,12 +14,13 @@ see [`demo notebook`](./examples/FluxTraining.jl-demo.ipynb)
 
 ## Features
 
-- flexible training loop that is highly extensible through a callback system
-- (custom) metric logging and recording
-- hyperparameter scheduling
-- model checkpointing
-- learning rate finder
-- sample models
+- training loop with extensible callback system
+- built-in callbacks:
+  - metrics
+  - hyperparameter scheduling
+  - logging
+  - training history
+  - model checkpointing
 
 ## Related packages
 
@@ -29,3 +30,4 @@ see [`demo notebook`](./examples/FluxTraining.jl-demo.ipynb)
 - [`DataLoaders.jl`](https://github.com/lorenzoh/DataLoaders.jl): for parallel data loading and batching
 - [`ModelUtils.jl`](https://github.com/lorenzoh/ModelUtils.jl): for model introspection
 - [`VisionDatasets.jl`](https://github.com/lorenzoh/VisionDatasets.jl): for computer vision datasets
+- [`FluxModels.jl`](https://github.com/lorenzoh/FluxModels.jl): for computer vision models

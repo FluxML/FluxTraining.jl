@@ -1,15 +1,3 @@
-
-#=
-
-- replace DataBunch with DataLoaders
-    - fix DataBunch references
-- implement ToGPU as callback
-
-=#
-
-
-
-
 """
     $TYPEDEF
 
@@ -141,15 +129,20 @@ getdataloader(phase::ValidationPhase, learner) = learner.data[2]
 
 # TOdo: fix
 
+#=
 function setschedule!(learner, schedule)
     learner.scheduler = ParamScheduler(
         delayschedule(schedule, learner.recorder.epoch)
     )
 end
+=#
 
 
-numsteps(learner::Learner, phase::AbstractFittingPhase) = length(
-    getdataloader(phase, learner))
+function numsteps(
+        learner::Learner,
+        phase::AbstractFittingPhase = learner.state.phase)
+    return length(getdataloader(phase, learner))
+end
 
 
 function starttraining(learner)
