@@ -1,5 +1,7 @@
 
 #=
+
+# TODO: refactor
 function getbatch(dataloader::DataLoader, batchsize = dataloader.batchsize; offset = 0)
     idxs = 1 + offset:offset + batchsize
     samples = [DataLoaders.getsample(dataloader, idx) for idx in idxs]
