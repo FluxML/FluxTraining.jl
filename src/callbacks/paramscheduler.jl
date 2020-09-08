@@ -34,8 +34,9 @@ end
 
 # Scheduler Callback
 
-struct ParamScheduler <: AbstractCallback end
+struct ParamScheduler <: SafeCallback end
 
+canwrite(::ParamScheduler) = (:opt,)
 order(::Type{ParamScheduler}) = -80
 
 """
@@ -48,11 +49,9 @@ function on(::BatchBegin, phase::AbstractTrainingPhase, cb::ParamScheduler, lear
         setoptimparam!(
             learner.opt,
             P,
-            # TODO: maybe add one? + 1
             schedulevalue(schedule, learner.state.history.nsteps + 1))
     end
 end
-
 
 # Sample schedules
 

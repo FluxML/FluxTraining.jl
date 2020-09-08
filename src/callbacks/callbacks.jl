@@ -1,7 +1,12 @@
 
 # ProgressBarLogger
 
-mutable struct ProgressBarLogger <: AbstractCallback
+"""
+    ProgressBarLogger()
+
+Prints the progress of the current epoch.
+"""
+mutable struct ProgressBarLogger <: SafeCallback
     p::Union{Nothing,Progress}
 end
 ProgressBarLogger() = ProgressBarLogger(nothing)
@@ -17,13 +22,18 @@ end
 on(::BatchEnd, ::AbstractFittingPhase, cb::ProgressBarLogger, learner) = next!(cb.p)
 
 
-# PrintMetrics
+# MetricsLogger
 
-struct PrintMetrics <: AbstractCallback end
+"""
+    MetricsLogger()
+
+Prints the metrics after every epoch.
+"""
+struct MetricsLogger <: SafeCallback end
 
 function on(::EpochEnd,
         phase::AbstractFittingPhase,
-        cb::PrintMetrics,
+        cb::MetricsLogger,
         learner)
     cbs = learner.state.callbacks
     for metric in [cbs.loss, cbs.metrics...]
@@ -34,7 +44,12 @@ end
 
 # StopOnNaNLoss
 
-struct StopOnNaNLoss <: AbstractCallback end
+"""
+    StopOnNaNLoss()
+
+Stops the training when a NaN loss is encountered.
+"""
+struct StopOnNaNLoss <: SafeCallback end
 
 function on(::BackwardEnd, ::AbstractTrainingPhase, ::StopOnNaNLoss, learner)
     !isnan(learner.state.batch.loss) || throw(CancelFittingException("Encountered NaN loss"))
@@ -42,7 +57,7 @@ end
 
 
 # Early stopping
-mutable struct EarlyStopping <: AbstractCallback
+mutable struct EarlyStopping <: SafeCallback
     patience::Int
     waited::Int
     lowest::Float64
@@ -64,11 +79,13 @@ function on(::EpochEnd, ::ValidationPhase, cb::EarlyStopping, learner)
 end
 
 
-struct ToGPU <: AbstractCallback end
+struct ToGPU <: SafeCallback end
 
 function on(::EpochBegin, ::AbstractFittingPhase, ::ToGPU, learner)
     learner.model = gpu(learner.model)
 end
+
+canwrite(::ToGPU) = (;model = nothing, state = (; batch = (:xs, :ys)))
 
 function on(::BatchBegin, ::AbstractFittingPhase, cb::ToGPU, learner)
     #learner.model = gpu(learner.model)

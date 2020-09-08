@@ -1,7 +1,4 @@
-using Test
-using TestSetExtensions
-using Flux
-using FluxTraining
+
 
 @testset ExtendedTestSet "Annealing" begin
     @testset ExtendedTestSet "Edge identity" begin

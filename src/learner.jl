@@ -109,14 +109,17 @@ function Learner(
 end
 
 
-defaultcallbacks()::Vector{AbstractCallback} = [StopOnNaNLoss()]
+defaultcallbacks()::Vector{AbstractCallback} = [
+    ProgressBarLogger(),
+    MetricsLogger(),
+    StopOnNaNLoss()]
 
 
 #  Callback handling
 
 function handle(event::FitEvent, learner::Learner)
     foreach(learner.state.callbacks.all) do callback
-        on(event, learner.state.phase, callback, learner)
+        _on(event, learner.state.phase, callback, learner)
     end
 end
 
@@ -143,6 +146,7 @@ function numsteps(
         phase::AbstractFittingPhase = learner.state.phase)
     return length(getdataloader(phase, learner))
 end
+numsteps(p::Protected{Learner}, phase) = numsteps(getfield(p, :data), phase)
 
 
 function starttraining(learner)

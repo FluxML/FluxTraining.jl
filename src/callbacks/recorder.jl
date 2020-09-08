@@ -20,7 +20,6 @@ $TYPEDFIELDS
     # stores values of all hyperparameters for every step
     stephyperparams::MVHistory = MVHistory()
     # events
-    # events should include time, phase, event, endtime
     events::Vector = []
 end
 

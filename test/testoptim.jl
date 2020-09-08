@@ -1,8 +1,4 @@
-using Test
-using TestSetExtensions
-using Flux
-using FluxTraining
-using FluxTraining: LR, getoptimparam, setoptimparam!
+include("./imports.jl")
 
 @testset ExtendedTestSet "Optimizer and OptimParams" begin
     opt = ADAM(0.01)

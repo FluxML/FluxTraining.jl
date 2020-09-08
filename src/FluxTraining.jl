@@ -32,6 +32,9 @@ include("./functional/anneal.jl")
 include("./functional/metrics.jl")
 
 # callback framework
+include("./callbacks/protect.jl")
+include("./callbacks/phases.jl")
+include("./callbacks/events.jl")
 include("./callbacks/callback.jl")
 
 # utilities
@@ -77,13 +80,14 @@ export AbstractCallback,
     Metric,
     MeanMetric,
     ProgressBarLogger,
-    PrintMetrics,
+    MetricsLogger,
     ParamSchedule,
     ParamScheduler,
     TrainingPhase,
     ValidationPhase,
     Schedule,
     Schedules,
+    StopOnNaNLoss,
 
     accuracy,
     anneal_linear,

@@ -1,105 +1,20 @@
-#=
-- improve documentation with DocStringExtensions.jl
-=#
 
-"""
-    Abstract Callback
-
-Abstract supertype for all callbacks
-
-# Callback interface
-
-- `order(cb) = 0`
-
-"""
 abstract type AbstractCallback end
-abstract type AbstractMetric <: AbstractCallback end
-abstract type AbstractLogger <: AbstractCallback end
+abstract type SafeCallback <: AbstractCallback end
+const Callback = SafeCallback
+abstract type UnsafeCallback <: AbstractCallback end
+
+
+abstract type AbstractMetric <: Callback end
+abstract type AbstractLogger <: Callback end
+
+
+canwrite(::SafeCallback) = nothing
 
 order(c::Type{<:AbstractCallback}) = 0
 order(c::Type{<:AbstractMetric}) = -100
 order(c::Type{<:AbstractLogger}) = 100
 order(c::T) where T<:AbstractCallback = order(T)
-
-
-"""
-    Phases
-"""
-module Phases
-
-abstract type AbstractFittingPhase end
-abstract type AbstractTrainingPhase <: AbstractFittingPhase end
-
-struct TrainingPhase <: AbstractTrainingPhase end
-
-
-struct ValidationPhase <: AbstractFittingPhase end
-struct TestPhase <: AbstractFittingPhase end
-struct InitializationPhase <: AbstractFittingPhase end
-struct CleanupPhase <: AbstractFittingPhase end
-
-
-export
-    AbstractFittingPhase,
-    AbstractTrainingPhase,
-    TrainingPhase,
-    ValidationPhase,
-    TestPhase,
-    InitializationPhase,
-    CleanupPhase
-end # module
-
-using .Phases
-
-
-"""
-    Events
-"""
-module Events
-
-"""
-Abstract type for events that callbacks can hook into
-"""
-abstract type FitEvent end
-
-"""
-Supertype for events that are called within `Zygote.gradient`.
-They need to be handled differently because try/catch is not
-supported by Zygote's compiler.
-"""
-abstract type GradEvent <: FitEvent end
-
-struct FitBegin <: FitEvent end
-struct FitEnd <: FitEvent end
-
-struct EpochBegin <: FitEvent end
-struct EpochEnd <: FitEvent end
-
-struct BatchBegin <: FitEvent end
-struct BatchEnd <: FitEvent end
-
-"""Called between calculating `y_pred` and calculating loss"""
-struct LossBegin <: GradEvent end
-"""Called between calculating loss and calculating gradients"""
-struct BackwardBegin <: GradEvent end
-"""Called between calculating gradients and updating parameters"""
-struct BackwardEnd <: FitEvent end
-
-
-export
-    # asbtract
-    FitEvent, GradEvent,
-    # concrete
-    FitBegin, FitEnd,
-    EpochBegin, EpochEnd,
-    BatchBegin, BatchEnd,
-    LossBegin,
-    BackwardBegin, BackwardEnd
-
-end # module
-
-
-using .Events
 
 
 # Training control flow
@@ -131,3 +46,6 @@ To see events which an `AbstractCallback` handles, use
     `methods(Training.on, (Any, Any, MyCallbackType, Any)`
 """
 on(::FitEvent, ::AbstractFittingPhase, ::AbstractCallback, learner) = return
+
+_on(e, p, cb, learner) = on(e, p, cb, learner)
+_on(e, p, cb::SafeCallback, learner) = on(e, p, cb, protect(learner, canwrite(cb)))

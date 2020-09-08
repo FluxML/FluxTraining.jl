@@ -20,7 +20,7 @@ function (checklowest::CheckpointLowest)(learner)
 end
 
 # Checkpointer
-struct Checkpointer <: AbstractCallback
+struct Checkpointer <: SafeCallback
     condition::CheckpointCondition
     deleteprevious::Bool
 end
