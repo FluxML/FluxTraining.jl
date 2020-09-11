@@ -19,4 +19,5 @@ ValueHistories = "98cad3c8-aec3-5f06-8e41-884608649ab7"
 Zygote = "e88e6eb3-aa80-5325-afca-941959d7151f"
 
 [compat]
+Parameters = "0.12"
 julia = "1"
