@@ -2,7 +2,7 @@
 
 [![Dev](https://img.shields.io/badge/docs-dev-blue.svg)](https://lorenzoh.github.io/FluxTraining.jl/dev)
 
-A powerful, extensible neural net training library inspired by fast.ai
+A powerful, extensible neural net training library inspired by fast.ai.
 
 `FluxTraining` gives you an endlessly extensible training loop for deep learning. It is inspired by [fast.ai](https://docs.fast.ai)
 

@@ -38,3 +38,4 @@ Callbacks can add all kinds of functionality by hooking into the training loop. 
 - [`ProgressBarLogger`](#) prints the progress of the current epoch
 - [`MetricsLogger`](#) prints the metrics of the last epoch
 - [`StopOnNaNLoss`](#) stops the training when a `NaN` loss is encountered
+

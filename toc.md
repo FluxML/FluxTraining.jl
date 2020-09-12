@@ -6,7 +6,7 @@
 
 ### Extending FluxTraining.jl
 
-- [Callbacks](./docs/extending/extend_callbacks.md)
+- [Callbacks](docs/extending/extend_callbacks.md)
 - [Training Loop](./docs/extending/extend_training.md)
 
 

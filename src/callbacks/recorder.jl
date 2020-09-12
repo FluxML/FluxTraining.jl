@@ -30,6 +30,7 @@ struct Recorder <: AbstractCallback end
 
 
 order(cb::Type{Recorder}) = -90
+canwrite(::Recorder) = (;state = (:history,))
 
 
 function on(::EpochBegin, ::AbstractTrainingPhase, recorder::Recorder, learner)

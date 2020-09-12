@@ -41,6 +41,9 @@ function on(::EpochEnd,
     end
 end
 
+canwrite(::MetricsLogger) = (; state = (; callbacks = (:loss, :metrics)))
+
+canaccess(::MetricsLogger) =
 
 # StopOnNaNLoss
 
