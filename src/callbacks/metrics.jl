@@ -56,7 +56,7 @@ end
 function on(::BatchEnd, ::AbstractFittingPhase, metric::Metric, learner)
     metric.last = metric.fn(
             metric.device(learner.state.batch.ŷs),
-            metric.device(learner.batch.batch.ys),
+            metric.device(learner.state.batch.ys),
         )
     OnlineStats.fit!(
         metric.metric,

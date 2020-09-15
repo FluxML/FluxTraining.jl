@@ -48,4 +48,5 @@ To see events which an `AbstractCallback` handles, use
 on(::FitEvent, ::AbstractFittingPhase, ::AbstractCallback, learner) = return
 
 _on(e, p, cb, learner) = on(e, p, cb, learner)
-_on(e, p, cb::SafeCallback, learner) = on(e, p, cb, protect(learner, canwrite(cb)))
+#_on(e, p, cb::SafeCallback, learner) = on(e, p, cb, protect(learner, canwrite(cb)))
+_on(e, p, cb::SafeCallback, learner) = on(e, p, cb, learner)

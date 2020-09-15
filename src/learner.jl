@@ -102,7 +102,7 @@ function Learner(
     state = LearnerState(
         schedule = schedule,
         callbacks = Callbacks(callbacks, metrics),
-        params = params(model),
+        params = Flux.params(model),
         config = config,
     )
     return Learner(model, data, opt, lossfn, state)

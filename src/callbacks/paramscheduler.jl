@@ -25,6 +25,7 @@ end
 function schedulevalue(schedules::Vector{<:Schedule}, step)
     length(schedules) > 0 || error("Missing schedule")
     i = 1
+    # FIXME: BoundsError when given too short schedule
     while duration(schedules[i]) < step
         step -= duration(schedules[i])
         i += 1

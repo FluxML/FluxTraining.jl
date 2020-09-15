@@ -86,6 +86,8 @@ struct ToGPU <: SafeCallback end
 
 function on(::EpochBegin, ::AbstractFittingPhase, ::ToGPU, learner)
     learner.model = gpu(learner.model)
+    # Params need to be refreshed! IMPORTANT
+    learner.state.params = Flux.params(learner.model)
 end
 
 canwrite(::ToGPU) = (;model = nothing, state = (; batch = (:xs, :ys)))

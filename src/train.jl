@@ -84,6 +84,7 @@ function fitbatchphase!(
 
     b = learner.state.batch
     b.xs, b.ys = batch
+    #learner.state.params = Flux.params(learner.model)
 
     handle(BatchBegin(), learner)
 

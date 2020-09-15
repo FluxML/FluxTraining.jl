@@ -68,6 +68,6 @@ function on(::EpochEnd, phase::AbstractFittingPhase, recorder::Recorder, learner
 
     push!(history.epochmetrics[phase], :loss, history.epochs, value(cbs.loss))
     for metric in cbs.metrics
-        push!(history.epochmetrics[phase], string(metric), history.epochs, value(metric))
+        push!(history.epochmetrics[phase], Symbol(string(metric)), history.epochs, value(metric))
     end
 end
