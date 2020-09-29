@@ -149,18 +149,6 @@ end
 numsteps(p::Protected{Learner}, phase) = numsteps(getfield(p, :data), phase)
 
 
-function starttraining(learner)
-    learner.runid = uuid4()
-    FitBegin() |> CallbackHandler(learner)
-end
-
-
-function endtraining(learner)
-    learner.phase = CleanupPhase()
-    FitEnd() |> CallbackHandler(learner)
-end
-
-
 function artifactpath(learner)
     p = joinpath(pwd(), ".artifacts", string(learner.runid))
     if !isdir(p)

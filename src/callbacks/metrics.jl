@@ -21,6 +21,9 @@ function on(::BatchEnd, phase::AbstractFittingPhase, metric::AverageLoss, learne
     metric.count += 1
 end
 
+
+stateaccess(::AverageLoss) = (state = (batch = (loss = Read(),),),)
+
 value(metric::AverageLoss) = metric.loss / metric.count
 
 Base.show(io::IO, loss::AverageLoss) = print(io, "loss")
@@ -63,6 +66,8 @@ function on(::BatchEnd, ::AbstractFittingPhase, metric::Metric, learner)
         metric.last,
     )
 end
+
+stateaccess(::Metric) = (state = (batch = (ŷs = Read(), ys = Read()),),)
 
 
 

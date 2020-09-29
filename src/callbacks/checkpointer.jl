@@ -34,8 +34,8 @@ function on(::EpochEnd, ::ValidationPhase, checkpointer::Checkpointer, learner)
             previousfiles = glob("model-chckpnt-E*", artifactpath(learner))
             foreach(rm, previousfiles)
         end
-        loss = value(learner.metrics[1])
-        filename = "model-chckpnt-E$(learner.recorder.epoch)-L$loss.bson"
+        loss = get(learner.state.history.epochmetrics[ValidationPhase()], :loss)[2][end]
+        filename = "model-chckpnt-E$(learner.state.history.epochs)-L$loss.bson"
         path = joinpath(artifactpath(learner), filename)
         savemodel(learner.model, path)
     end

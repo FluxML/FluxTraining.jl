@@ -9,13 +9,16 @@ abstract type AbstractMetric <: Callback end
 abstract type AbstractLogger <: Callback end
 
 
-canwrite(::SafeCallback) = nothing
+abstract type Permission end
+struct Read <: Permission end
+struct Write <: Permission end
+
+stateaccess(::Callback) = (;)
 
 order(c::Type{<:AbstractCallback}) = 0
 order(c::Type{<:AbstractMetric}) = -100
 order(c::Type{<:AbstractLogger}) = 100
 order(c::T) where T<:AbstractCallback = order(T)
-
 
 # Training control flow
 
@@ -48,5 +51,5 @@ To see events which an `AbstractCallback` handles, use
 on(::FitEvent, ::AbstractFittingPhase, ::AbstractCallback, learner) = return
 
 _on(e, p, cb, learner) = on(e, p, cb, learner)
-#_on(e, p, cb::SafeCallback, learner) = on(e, p, cb, protect(learner, canwrite(cb)))
-_on(e, p, cb::SafeCallback, learner) = on(e, p, cb, learner)
+_on(e, p, cb::SafeCallback, learner) = on(e, p, cb, protect(learner, stateaccess(cb)))
+#_on(e, p, cb::SafeCallback, learner) = on(e, p, cb, learner)

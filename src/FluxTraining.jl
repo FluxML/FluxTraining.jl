@@ -6,6 +6,7 @@ Refactoring:
 =#
 
 
+using LightGraphs
 using BSON: @load, @save
 using Flux
 using Flux: Params, onecold
@@ -35,6 +36,7 @@ include("./functional/metrics.jl")
 include("./callbacks/protect.jl")
 include("./callbacks/phases.jl")
 include("./callbacks/events.jl")
+include("./callbacks/execution.jl")
 include("./callbacks/callback.jl")
 
 # utilities
@@ -43,10 +45,10 @@ include("./util/ioutils.jl")
 # callback implementations
 include("./callbacks/callbacks.jl")
 include("./callbacks/customcallback.jl")
-include("./callbacks/checkpointer.jl")
 include("./callbacks/metrics.jl")
 include("./callbacks/recorder.jl")
 include("./callbacks/paramscheduler.jl")
+include("./callbacks/checkpointer.jl")
 
 # learner
 include("./learner.jl")

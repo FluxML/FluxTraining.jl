@@ -59,8 +59,8 @@ end
 function onecycleschedule(
         nsteps,
         maxlr;
-        startfactor = 1/10,
-        endfactor = 1/100,
+        startfactor = 1/5,
+        endfactor = 1/10,
         pctstart = 0.1)
 
     upschedule = Schedule(

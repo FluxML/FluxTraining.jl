@@ -21,6 +21,7 @@ end
 
 on(::BatchEnd, ::AbstractFittingPhase, cb::ProgressBarLogger, learner) = next!(cb.p)
 
+#stateaccess(::ProgressBarLogger) = (state = (),)
 
 # MetricsLogger
 
@@ -93,7 +94,6 @@ end
 canwrite(::ToGPU) = (;model = nothing, state = (; batch = (:xs, :ys)))
 
 function on(::BatchBegin, ::AbstractFittingPhase, cb::ToGPU, learner)
-    #learner.model = gpu(learner.model)
     learner.state.batch.xs = gpu(learner.state.batch.xs)
     learner.state.batch.ys = gpu(learner.state.batch.ys)
 end
