@@ -9,18 +9,26 @@ abstract type AbstractMetric <: Callback end
 abstract type AbstractLogger <: Callback end
 
 
-abstract type Permission end
-struct Read <: Permission end
-struct Write <: Permission end
 
 stateaccess(::Callback) = (;)
+runafter(::AbstractCallback) = ()
 
-order(c::Type{<:AbstractCallback}) = 0
-order(c::Type{<:AbstractMetric}) = -100
-order(c::Type{<:AbstractLogger}) = 100
-order(c::T) where T<:AbstractCallback = order(T)
+abstract type ConflictResolution end
+struct NotDefined <: ConflictResolution end
+struct Unresolvable <: ConflictResolution end
+struct RunFirst <: ConflictResolution cb end
+struct NoConflict <: ConflictResolution end
 
-# Training control flow
+function _resolveconflict(cb1, cb2)
+    r = resolveconflict(cb1, cb2)
+    if r === NotDefined()
+        return resolveconflict(cb2, cb1)
+    else
+        return r
+    end
+end
+resolveconflict(::AbstractCallback, ::AbstractCallback) = NotDefined()
+
 
 abstract type FitException <: Exception end
 struct CancelBatchException <: FitException

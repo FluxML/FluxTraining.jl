@@ -1,22 +1,15 @@
-"""
-    $TYPEDEF
 
-Stores all callbacks of a `Learner`.
 
-$TYPEDFIELDS
-"""
-@with_kw  mutable struct Callbacks
-    loss::AverageLoss = AverageLoss()
-    recorder::Recorder = Recorder()
-    scheduler::ParamScheduler = ParamScheduler()
-    metrics::Vector{AbstractMetric}
-    other::Vector{AbstractCallback}
-    all = sort!(
-        [loss, metrics..., recorder, scheduler, other...],
-        by = cb -> order(typeof(cb)))
+struct Callbacks
+    cbs::Vector
+    executor::CallbackExecutor
+    graph::SimpleDiGraph
 end
+Callbacks(cbs, executor = LinearExecutor()) = Callbacks(cbs, executor, callbackgraph(cbs))
 
-Callbacks(callbacks, metrics) = Callbacks(other = callbacks, metrics = metrics)
+
+getmetrics(cbs::Callbacks) = [cb for cb in cbs.cbs if cb isa AbstractMetric]
+getloss(cbs::Callbacks) = only([cb for cb in cbs.cbs if cb isa AverageLoss])
 
 """
     $TYPEDEF
@@ -28,6 +21,7 @@ $FIELDS
 (!) If used in callbacks, some fields may be `nothing` as
 they are reset after every step.
 """
+# TODO: maybe make this dependent on the current `Phase`?
 @with_kw mutable struct BatchState
     xs = nothing
     ys = nothing
@@ -36,25 +30,6 @@ they are reset after every step.
     grads = nothing
 end
 
-
-"""
-    $TYPEDEF
-
-Stores all state of a learner.
-
-$TYPEDFIELDS
-
-"""
-@with_kw mutable struct LearnerState
-    phase::AbstractFittingPhase = InitializationPhase()
-    history::History = History()
-    schedule::Schedules = Schedules()
-    params
-    batch::BatchState = BatchState()
-    callbacks::Callbacks
-    config::Dict = Dict()
-    run::UUID = uuid4()
-end
 
 
 """
@@ -77,51 +52,49 @@ $(TYPEDFIELDS)
 - `batch::`[`BatchState`](@ref): Holds training state during batch
 """
 @with_kw mutable struct Learner
-    # Flux model
     model
-    # tuple of training and validation DataLoaders
     data
-    # optimizer
     opt
-    # loss function taking `lossfn(y_pred, y)`
     lossfn
-    #
-    state::LearnerState
+    params
+    batch::BatchState
+    callbacks::Callbacks
+    cbstate::Dict
 end
 
 
 function Learner(
         model, data, opt, lossfn;
         callbacks = [], metrics = [], schedule = Schedules(),
-        usedefaultcallbacks = true, config = Dict()
+        usedefaultcallbacks = true, config = Dict(), cbexecutor = LinearExecutor()
     )
     if usedefaultcallbacks
         callbacks = vcat(defaultcallbacks(), callbacks)
     end
+    callbacks = vcat(callbacks, metrics)
+    Callbacks(callbacks)
 
-    state = LearnerState(
-        schedule = schedule,
-        callbacks = Callbacks(callbacks, metrics),
-        params = Flux.params(model),
-        config = config,
-    )
-    return Learner(model, data, opt, lossfn, state)
+    return Learner(
+        model, data, opt, lossfn,
+        Flux.params(model),
+        BatchState(),
+        Callbacks(callbacks, cbexecutor),
+        Dict{Symbol, Any}())
 end
 
 
 defaultcallbacks()::Vector{AbstractCallback} = [
     ProgressBarLogger(),
     MetricsLogger(),
-    StopOnNaNLoss()]
+    StopOnNaNLoss(),
+    Recorder(),
+    AverageLoss(),
+]
 
 
 #  Callback handling
+handle(event, learner, phase) = handle(learner.callbacks.executor, event, phase, learner)
 
-function handle(event::FitEvent, learner::Learner)
-    foreach(learner.state.callbacks.all) do callback
-        _on(event, learner.state.phase, callback, learner)
-    end
-end
 
 # Other
 
@@ -129,8 +102,17 @@ getdataloader(phase::AbstractTrainingPhase, learner) = learner.data[1]
 getdataloader(phase::ValidationPhase, learner) = learner.data[2]
 
 
+function model!(learner, model)
+    learner.model = model
+    learner.params = Flux.params(model)
+end
 
-# TOdo: fix
+
+numsteps(learner::Protected, phase) = numsteps(getfield(learner, :data), phase)
+numsteps(learner, phase) = length(getdataloader(phase, learner))
+
+
+# TODO: fix
 
 #=
 function setschedule!(learner, schedule)
@@ -141,14 +123,19 @@ end
 =#
 
 
+# TODO: fix
+#=
 function numsteps(
         learner::Learner,
         phase::AbstractFittingPhase = learner.state.phase)
     return length(getdataloader(phase, learner))
 end
 numsteps(p::Protected{Learner}, phase) = numsteps(getfield(p, :data), phase)
+=#
 
+# TODO: move to Callback
 
+#=
 function artifactpath(learner)
     p = joinpath(pwd(), ".artifacts", string(learner.runid))
     if !isdir(p)
@@ -156,3 +143,4 @@ function artifactpath(learner)
     end
     return p
 end
+=#

@@ -20,6 +20,7 @@ using Parameters
 using ProgressMeter: Progress, next!
 using Statistics: mean
 using UUIDs
+using Zygote
 using Zygote: Grads, gradient
 using ValueHistories
 using DataStructures: DefaultDict
@@ -36,8 +37,9 @@ include("./functional/metrics.jl")
 include("./callbacks/protect.jl")
 include("./callbacks/phases.jl")
 include("./callbacks/events.jl")
-include("./callbacks/execution.jl")
 include("./callbacks/callback.jl")
+include("./callbacks/graph.jl")
+include("./callbacks/execution.jl")
 
 # utilities
 include("./util/ioutils.jl")
@@ -55,10 +57,6 @@ include("./learner.jl")
 
 include("./train.jl")
 include("./util/trainutils.jl")
-
-# advanced
-#include("./advanced/lrfinder.jl")
-
 
 
 export AbstractCallback,
@@ -81,6 +79,7 @@ export AbstractCallback,
     LRFinderPhase,
     Metric,
     MeanMetric,
+    Recorder,
     ProgressBarLogger,
     MetricsLogger,
     ParamSchedule,

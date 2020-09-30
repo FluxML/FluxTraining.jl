@@ -19,55 +19,55 @@ $TYPEDFIELDS
     stepmetrics::MVHistory = MVHistory()
     # stores values of all hyperparameters for every step
     stephyperparams::MVHistory = MVHistory()
-    # events
-    events::Vector = []
 end
 
 """
     Recorder(epoch, step, epochstats, stepstats)
 """
-struct Recorder <: AbstractCallback end
+struct Recorder <: Callback end
 
 
-order(cb::Type{Recorder}) = -90
-canwrite(::Recorder) = (;state = (:history,))
+stateaccess(::Recorder) = (cbstate = (history = Write()), batch = Read(), callbacks = Read())
+runafter(::Recorder) = (AbstractMetric,)
 
 
 function on(::EpochBegin, ::AbstractTrainingPhase, recorder::Recorder, learner)
-    learner.state.history.nstepsepoch = 0
+    if isnothing(get(learner.cbstate, :history, nothing))
+        learner.cbstate[:history] = History()
+    end
+    learner.cbstate[:history].nstepsepoch = 0
 end
 
 
 function on(::BatchEnd, phase::AbstractTrainingPhase, recorder::Recorder, learner)
-    history = learner.state.history
+    history = learner.cbstate[:history]
 
     # increment counters
     history.nsteps += 1
     history.nstepsepoch += 1
-    history.nsamples += size(learner.state.batch.xs)[end]
+    history.nsamples += size(learner.batch.xs)[end]
 
     # save metrics
-    push!(history.stepmetrics, :loss, history.nsteps, learner.state.batch.loss)
-    for metric in learner.state.callbacks.metrics
-        push!(history.stepmetrics, Symbol(metric), history.nsteps, metric.last)
+    for metric in getmetrics(learner.callbacks)
+        push!(history.stepmetrics, Symbol(metric), history.nsteps, stepvalue(metric))
     end
 
+    # TODO: refactor together with hyperparameters
     # save hyper parameters
-    for (OptimParam, value) in getoptimparams(learner.opt)
-        push!(history.stephyperparams, Symbol(OptimParam.name), history.nsteps, value)
-    end
+    # for (OptimParam, value) in getoptimparams(learner.opt)
+    #     push!(history.stephyperparams, Symbol(OptimParam.name), history.nsteps, value)
+    # end
 end
 
 
 function on(::EpochEnd, phase::AbstractFittingPhase, recorder::Recorder, learner)
-    history = learner.state.history
-    cbs = learner.state.callbacks
+    history = learner.cbstate[:history]
+
     if phase isa AbstractTrainingPhase
         history.epochs += 1
     end
 
-    push!(history.epochmetrics[phase], :loss, history.epochs, value(cbs.loss))
-    for metric in cbs.metrics
-        push!(history.epochmetrics[phase], Symbol(string(metric)), history.epochs, value(metric))
+    for metric in getmetrics(learner.callbacks)
+        push!(history.epochmetrics[phase], Symbol(string(metric)), history.epochs, epochvalue(metric))
     end
 end

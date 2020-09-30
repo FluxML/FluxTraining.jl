@@ -3,7 +3,7 @@
     fit!(learner, phase)
     fit!(learner, n)
 """
-function fit!(learner::Learner, phases::AbstractVector{<:AbstractFittingPhase})::Learner
+function fit!(learner::Learner, phases::AbstractVector{<:AbstractFittingPhase})
     try
         for phase in phases
             fitepoch!(learner, phase)
@@ -22,11 +22,7 @@ fit!(learner::Learner, phase::AbstractFittingPhase)::Learner = fit!(learner, [ph
 fit!(learner, n::Int)::Learner = fit!(learner, repeat([TrainingPhase(), ValidationPhase()], n))
 
 
-"""
-    fitepoch!(learner, phase = learner.phase)
-"""
-function fitepoch!(learner, phase = learner.phase)
-    learner.state.phase = phase
+function fitepoch!(learner, phase)
     try
         fitepochphase!(learner, phase)
     catch e
@@ -41,9 +37,8 @@ function fitepoch!(learner, phase = learner.phase)
 end
 
 
-function fitbatch!(learner, batch, phase = learner.phase)
-    learner.state.phase = phase
-    learner.state.batch = BatchState()
+function fitbatch!(learner, batch, phase)
+    learner.batch = BatchState()
     try
         fitbatchphase!(learner, batch, phase)
     catch e
@@ -66,41 +61,41 @@ function fitepochphase!(
         learner::Learner,
         phase::Union{TrainingPhase, ValidationPhase, TestPhase},
     )
-    handle(EpochBegin(), learner)
+    handle(EpochBegin(), learner, phase)
 
     for batch in getdataloader(phase, learner)
         fitbatch!(learner, batch, phase)
     end
 
-    handle(EpochEnd(), learner)
+    handle(EpochEnd(), learner, phase)
 end
 
 
 function fitbatchphase!(
         learner::Learner,
         batch,
-        ::AbstractTrainingPhase,
+        phase::AbstractTrainingPhase,
     )
 
-    b = learner.state.batch
+    b = learner.batch
     b.xs, b.ys = batch
 
-    handle(BatchBegin(), learner)
+    handle(BatchBegin(), learner, phase)
 
-    b.grads = gradient(learner.state.params) do
+    b.grads = gradient(learner.params) do
         b.ŷs = learner.model(b.xs)
 
-        handle(LossBegin(), learner)
+        handle(LossBegin(), learner, phase)
         b.loss = learner.lossfn(b.ŷs, b.ys)
 
-        handle(BackwardBegin(), learner)
+        handle(BackwardBegin(), learner, phase)
         return b.loss
     end
-    handle(BackwardEnd(), learner)
+    handle(BackwardEnd(), learner, phase)
 
-    update!(learner.opt, learner.state.params, b.grads)
+    update!(learner.opt, learner.params, b.grads)
 
-    handle(BatchEnd(), learner)
+    handle(BatchEnd(), learner, phase)
     return learner
 end
 
@@ -108,16 +103,16 @@ end
 function fitbatchphase!(
         learner::Learner,
         batch,
-        ::ValidationPhase,
+        phase::ValidationPhase,
     )
-    b = learner.state.batch
+    b = learner.batch
     b.xs, b.ys = batch
-    handle(BatchBegin(), learner)
+    handle(BatchBegin(), learner, phase)
 
     b.ŷs = learner.model(b.xs)
 
-    handle(LossBegin(), learner)
+    handle(LossBegin(), learner, phase)
     b.loss = learner.lossfn(b.ŷs, b.ys)
 
-    handle(BatchEnd(), learner)
+    handle(BatchEnd(), learner, phase)
 end

@@ -1,4 +1,7 @@
 
+# TODO: make it easier to combine schedules and update
+# schedule mid-training
+
 # Schedule data structures
 
 @with_kw struct Schedules

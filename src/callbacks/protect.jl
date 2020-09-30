@@ -1,59 +1,81 @@
 
-struct ProtectedException <: Exception end
-
-struct Protected{T, W<:Union{Nothing, Tuple, NamedTuple}}
-    data::T
-    writable::W
+struct ProtectedException <: Exception
+    msg::String
 end
+
+
+abstract type Permission end
+struct Read <: Permission end
+struct Write <: Permission end
+
+struct Protected{T}
+    data::T
+    perms::NamedTuple
+end
+
 
 function Base.getproperty(protected::Protected, field::Symbol)
-    data = getfield(protected, :data)
-    writable = getfield(protected, :writable)
-    return protectfield(data, field, writable)
+    return getfieldperm(
+        getfield(protected, :data),
+        field,
+        get(getfield(protected, :perms), field, nothing),
+    )
 end
 
-function protectfield(data, field::Symbol, writable::Tuple)
-    fielddata = getproperty(data, field)
-    if !(field ∈ writable)
-        fielddata = protect(fielddata)
-    end
-    return fielddata
+function Base.setproperty!(protected::Protected, field::Symbol, x)
+    return setfieldperm!(
+        getfield(protected, :data),
+        field,
+        x,
+        get(getfield(protected, :perms), field, nothing),
+    )
 end
 
-function protectfield(data, field::Symbol, writable::NamedTuple)
-    return protect(getproperty(data, field), get(writable, field, nothing))
+function Base.getindex(protected::Protected, idx)
+    return getindexperm(
+        getfield(protected, :data),
+        idx,
+        get(getfield(protected, :perms), field, nothing),
+    )
 end
 
-protectfield(data, field::Symbol, writable::Nothing) = protect(getproperty(data, field))
-
-
-function Base.setproperty!(protected::Protected{T, <:Tuple}, field::Symbol, x) where T
-    if field in getfield(protected, :writable)
-        setproperty!(getfield(protected, :data), field, x)
-    else
-        throw(ProtectedException())
-    end
+function Base.setindex!(protected::Protected, idx, x)
+    return setindexperm!(
+        getfield(protected, :data),
+        idx,
+        x,
+        get(getfield(protected, :perms), field, nothing),
+    )
 end
 
-function Base.setproperty!(protected::Protected, field::Symbol, x) where T
-    if allowwrite(getfield(protected, :writable), field)
-        setproperty!(getfield(protected, :data), field, x)
-    else
-        throw(ProtectedException())
-        #    "Can't set field $(string(field)) on `Protected` type $(T)!")
-    end
-end
+getindexperm(data::D, idx, perm::Nothing) where D =
+    throw(ProtectedException("Read access to $(D)[$(string(idx))] disallowed."))
+getindexperm(data, idx, perm::Union{Read, Write}) = getindex(data, idx)
+getindexperm(data, idx, perm::NamedTuple) = protect(getindex(data, idx), perm)
 
-allowwrite(writable::Tuple, field) = field ∈ writable
-allowwrite(writable::NamedTuple, field) = field ∈ keys(writable)
-allowwrite(writable::Nothing, field) = false
+setindexperm!(data::D, idx, x, perm::Union{Read, Nothing, NamedTuple}) where D =
+    throw(ProtectedException("Write access to $(D)[$(string(idx))] disallowed."))
+setindexperm!(data, idx, x, perm::Write) = setindex!(data, idx, x)
+
+
+getfieldperm(data::D, field, perm::Nothing) where D =
+    throw(ProtectedException("Read access to $(D).$(string(field)) disallowed."))
+getfieldperm(data, field, perm::Union{Read, Write}) = getproperty(data, field)
+getfieldperm(data, field, perm::NamedTuple) = protect(getproperty(data, field), perm)
+
+setfieldperm!(data::D, field, x, perm::Union{Read, Nothing, NamedTuple}) where D =
+    throw(ProtectedException("Write access to $(D).$(string(field)) disallowed."))
+setfieldperm!(data, field, x, perm::Write) = setproperty!(data, field, x)
+
 
 Base.fieldnames(protected::Protected) = fieldnames(typeof(getfield(protected, :data)))
 
-protect(x, writable) = Protected(x, writable)
+protect(x, perms) = Protected(x, perms)
 
-protect(x) = protect(x, nothing)
 
-protect(x::Number, _ = nothing) = x
-protect(x::AbstractArray, _ = nothing) = x
-protect(x::Dict, _ = nothing) = copy(x)
+struct PropDict{V}
+    d::Dict
+    function PropDict(d::Dict{K, V}) where {K, V}
+        return new{V}(d)
+    end
+end

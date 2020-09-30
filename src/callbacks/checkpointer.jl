@@ -7,11 +7,9 @@ mutable struct CheckpointLowest <: CheckpointCondition
 end
 CheckpointLowest() = CheckpointLowest(Inf)
 
-(::CheckpointCondition)(learner) = error()
-(::CheckpointAny)(learner) = true
+(::CheckpointAny)(loss) = true
 
-function (checklowest::CheckpointLowest)(learner)
-    loss = value(learner.state.callbacks.loss)
+function (checklowest::CheckpointLowest)(loss)
     cond = loss < checklowest.lowest
     if cond
         checklowest.lowest = loss
@@ -28,15 +26,18 @@ Checkpointer(condition = CheckpointLowest(); deleteprevious = false) = Checkpoin
     condition, deleteprevious)
 
 
+# TODO: add Artifacts callback to handle files
 function on(::EpochEnd, ::ValidationPhase, checkpointer::Checkpointer, learner)
-    if checkpointer.condition(learner)
+    loss = epochvalue(getloss(learner.callbacks))
+    if checkpointer.condition(loss)
         if checkpointer.deleteprevious
             previousfiles = glob("model-chckpnt-E*", artifactpath(learner))
             foreach(rm, previousfiles)
         end
-        loss = get(learner.state.history.epochmetrics[ValidationPhase()], :loss)[2][end]
-        filename = "model-chckpnt-E$(learner.state.history.epochs)-L$loss.bson"
+        filename = "model-chckpnt-E$(learner.cbstate[:history].epochs)-L$loss.bson"
         path = joinpath(artifactpath(learner), filename)
         savemodel(learner.model, path)
     end
 end
+
+stateaccess(::Checkpointer) = (callbacks = Read(), cbstate = (history = Read()))

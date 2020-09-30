@@ -15,13 +15,14 @@ function on(::EpochBegin,
         phase::AbstractFittingPhase,
         cb::ProgressBarLogger,
         learner)
-    e = learner.state.history.epochs + 1
+    e = learner.cbstate[:history].epochs + 1
     cb.p = Progress(numsteps(learner, phase), "Epoch $(e) $(phase): ")
 end
 
 on(::BatchEnd, ::AbstractFittingPhase, cb::ProgressBarLogger, learner) = next!(cb.p)
 
-#stateaccess(::ProgressBarLogger) = (state = (),)
+runafter(::ProgressBarLogger) = (Recorder,)
+stateaccess(::ProgressBarLogger) = (data = Read(), cbstate = (history = Read()),)
 
 # MetricsLogger
 
@@ -36,15 +37,14 @@ function on(::EpochEnd,
         phase::AbstractFittingPhase,
         cb::MetricsLogger,
         learner)
-    cbs = learner.state.callbacks
-    for metric in [cbs.loss, cbs.metrics...]
-        println(string(metric), ": ", value(metric))
+
+    for metric in getmetrics(learner.callbacks)
+        println(string(metric), ": ", epochvalue(metric))
     end
 end
 
-canwrite(::MetricsLogger) = (; state = (; callbacks = (:loss, :metrics)))
-
-canaccess(::MetricsLogger) =
+stateaccess(::MetricsLogger) = (callbacks = Read(),)
+runafter(::MetricsLogger) = (AbstractMetric,)
 
 # StopOnNaNLoss
 
@@ -56,8 +56,10 @@ Stops the training when a NaN loss is encountered.
 struct StopOnNaNLoss <: SafeCallback end
 
 function on(::BackwardEnd, ::AbstractTrainingPhase, ::StopOnNaNLoss, learner)
-    !isnan(learner.state.batch.loss) || throw(CancelFittingException("Encountered NaN loss"))
+    !isnan(learner.batch.loss) || throw(CancelFittingException("Encountered NaN loss"))
 end
+
+stateaccess(::StopOnNaNLoss) = (batch = (loss = Read()),)
 
 
 # Early stopping
@@ -69,7 +71,7 @@ end
 EarlyStopping(patience) = EarlyStopping(patience, 0, Inf64)
 
 function on(::EpochEnd, ::ValidationPhase, cb::EarlyStopping, learner)
-    valloss = value(learner.state.callbacks.loss)
+    valloss = epochvalue(getloss(learner.callbacks))
     if (valloss > cb.lowest)
         if !(cb.waited < cb.patience)
             throw(CancelFittingException("Validation loss did not improve for $(cb.patience) epochs"))
@@ -82,20 +84,20 @@ function on(::EpochEnd, ::ValidationPhase, cb::EarlyStopping, learner)
     end
 end
 
+stateaccess(::EarlyStopping) = (callbacks = Read(),)
+
 
 struct ToGPU <: SafeCallback end
 
 function on(::EpochBegin, ::AbstractFittingPhase, ::ToGPU, learner)
-    learner.model = gpu(learner.model)
-    # Params need to be refreshed! IMPORTANT
-    learner.state.params = Flux.params(learner.model)
+    model!(learner, gpu(learner.model))
 end
 
-canwrite(::ToGPU) = (;model = nothing, state = (; batch = (:xs, :ys)))
+stateaccess(::ToGPU) = (model = Write(), params = Write(), batch = (xs = Write(), ys = Write()),)
 
 function on(::BatchBegin, ::AbstractFittingPhase, cb::ToGPU, learner)
-    learner.state.batch.xs = gpu(learner.state.batch.xs)
-    learner.state.batch.ys = gpu(learner.state.batch.ys)
+    learner.batch.xs = gpu(learner.batch.xs)
+    learner.batch.ys = gpu(learner.batch.ys)
 end
 
 
