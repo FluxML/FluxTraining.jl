@@ -24,16 +24,17 @@ function sethyperparameter! end
 Defines what `Learner` state is accessed when calling
 `sethyperparameter!` and `gethyperparameter`
 """
-stateaccess(::Type{HyperParameter}) = (;)
+stateaccess(::Type{HyperParameter}) = ()
 
 
 # Implementations
 
 abstract type LearningRate <: HyperParameter{Float64} end
 
-stateaccess(::Type{LearningRate}) = (opt = Write(),)
-sethyperparameter!(learner, ::Type{LearningRate}, value) = setlearningrate!(learner.opt, value)
+stateaccess(::Type{LearningRate}) = (optimizer = Write(),)
+sethyperparameter!(learner, ::Type{LearningRate}, value) =
+    setlearningrate!(learner.optimizer, value)
 
-function setlearningrate!(optim, value)
-    optim.eta = value
+function setlearningrate!(optimiizer, value)
+    optimizer.eta = value
 end

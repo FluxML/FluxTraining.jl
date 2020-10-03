@@ -34,15 +34,22 @@ end
 
 
 """
-    Learner(model, (traindata, valdata), opt, lossfn; kwargs...)
+    Learner(model, data, optimizer, lossfn; kwargs...)
 
-Holds and coordinates all state of the training.
+Holds and coordinates all state of the training. `model` is trained by
+optimizing `lossfn` with `optimizer` on `data`.
+
+## Arguments
+
+- `model`: any *Zygote.jl* compatible-model
+- `lossfn`: a function with signature `lossfn(model(x), y) -> Number`
+-
 
 """
 mutable struct Learner
     model
     data
-    opt
+    optimizer
     lossfn
     params
     batch::BatchState
@@ -52,7 +59,7 @@ end
 
 
 function Learner(
-        model, data, opt, lossfn;
+        model, data, optimizer, lossfn;
         callbacks = [], metrics = [], schedules = Dict(),
         usedefaultcallbacks = true, config = Dict(), cbexecutor = LinearExecutor()
     )
@@ -63,7 +70,7 @@ function Learner(
     Callbacks(callbacks)
 
     return Learner(
-        model, dataiters(data), opt, lossfn,
+        model, dataiters(data), optimizer, lossfn,
         Flux.params(model),
         BatchState(),
         Callbacks(callbacks, cbexecutor),
