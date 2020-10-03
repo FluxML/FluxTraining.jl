@@ -1,12 +1,12 @@
-# FluxTraining
+# FluxTraining.jl
 
 [![Dev](https://img.shields.io/badge/docs-dev-blue.svg)](https://lorenzoh.github.io/FluxTraining.jl/dev)
 
-A powerful, extensible neural net training library inspired by fast.ai.
+A powerful, extensible neural net training library.
 
-`FluxTraining` gives you an endlessly extensible training loop for deep learning. It is inspired by [fast.ai](https://docs.fast.ai)
+*FluxTraining.jl* gives you an endlessly extensible training loop for deep learning. It is inspired by [fastai](https://docs.fast.ai).
 
-It exposes a small set of [extensible](docs/extending.md) interfaces and uses them to implement
+It exposes a small set of extensible interfaces and uses them to implement
 
 - hyperparameter scheduling
 - metrics
@@ -14,18 +14,10 @@ It exposes a small set of [extensible](docs/extending.md) interfaces and uses th
 - training history; and
 - model checkpointing
 
-## Getting started
+Read [getting started](docs/getting_started.md) first and the [user guide](docs/overview.md) if you want to know more. See also the [reference](docstrings.md) for detailed function documentation.
 
-The best place to start is the [user guide](docs/guide/getting_started.md).
+### Status
 
-See also the [reference](docstrings.md).
+*FluxTraining.jl* will be ready for a first release soon. It is part of an ongoing effort to improve Julia's deep learning infrastructure and will be the training library for the work-in-progress [*FastAI.jl*](https://github.com/FluxML/FastAI.jl).
 
-{#ecosystem}
-## Ecosystem
-
-Unlike fastai, `FluxTraining` focuses on the training part of the deep learning pipeline. Other packages you may find useful are
-
-- [`Metalhead.jl`](https://github.com/FluxML/Metalhead.jl) and [`FluxModels.jl`](https://github.com/lorenzoh/FluxModels.jl) for models
-- [`Augmentor.jl`](https://github.com/Evizero/Augmentor.jl) and [`DataAugmentation.jl`](https://github.com/lorenzoh/DataAugmentation.jl) for data augmentation
-- [`DataLoaders.jl`](https://github.com/lorenzoh/DataLoaders.jl) for parallel data loading; and
-- [`DLDatasets.jl`](https://github.com/lorenzoh/DLDatasets.jl) for datasets
+Drop by on the [Julia Zulip](julialang.zulipchat.com) and say hello in the stream `#ml-ecosystem-coordination`.

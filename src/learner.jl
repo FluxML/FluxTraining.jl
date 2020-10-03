@@ -1,15 +1,16 @@
 
 
-struct Callbacks
+mutable struct Callbacks
     cbs::Vector
     executor::CallbackExecutor
     graph::SimpleDiGraph
+    initialized::Bool
 end
-Callbacks(cbs, executor = LinearExecutor()) = Callbacks(cbs, executor, callbackgraph(cbs))
+Callbacks(cbs, executor = LinearExecutor()) = Callbacks(cbs, executor, callbackgraph(cbs), false)
 
 
 getmetrics(cbs::Callbacks) = [cb for cb in cbs.cbs if cb isa AbstractMetric]
-getloss(cbs::Callbacks) = only([cb for cb in cbs.cbs if cb isa AverageLoss])
+getloss(cbs::Callbacks) = only([cb for cb in cbs.cbs if cb isa Loss])
 
 """
     $TYPEDEF
@@ -33,25 +34,12 @@ end
 
 
 """
-    Learner(model, data, opt, lossfn)
+    Learner(model, (traindata, valdata), opt, lossfn; kwargs...)
 
-Central object for training that holds all necessary state.
+Holds and coordinates all state of the training.
 
-$(TYPEDFIELDS)
-
-# Fields
-- `device`: device to train on, usually `Flux.cpu` or `Flux.gpu`
-- `params`: model parameters, i.e. `Flux.params(model)`
-- `phase::`[`AbstractFittingPhase`](@ref): current fitting phase
-- `metrics::AbstractVector{`[`AbstractMetric`](@ref)`}`: metric callbacks to
-    evaluate performance during training
-- `config`
-- `callbacks::AbstractVector{`[`AbstractCallback`](@ref)`}`: callbacks for training loop
-- `recorder::`[`Recorder`](@ref): special callback that records metrics and hyperparameters
-- `scheduler::`[`Scheduler`](@ref): special callback that records metrics and hyperparameters
-- `batch::`[`BatchState`](@ref): Holds training state during batch
 """
-@with_kw mutable struct Learner
+mutable struct Learner
     model
     data
     opt
@@ -65,30 +53,32 @@ end
 
 function Learner(
         model, data, opt, lossfn;
-        callbacks = [], metrics = [], schedule = Schedules(),
+        callbacks = [], metrics = [], schedules = Dict(),
         usedefaultcallbacks = true, config = Dict(), cbexecutor = LinearExecutor()
     )
     if usedefaultcallbacks
-        callbacks = vcat(defaultcallbacks(), callbacks)
+        callbacks = vcat(defaultcallbacks(schedules = schedules), callbacks)
     end
     callbacks = vcat(callbacks, metrics)
     Callbacks(callbacks)
 
     return Learner(
-        model, data, opt, lossfn,
+        model, dataiters(data), opt, lossfn,
         Flux.params(model),
         BatchState(),
         Callbacks(callbacks, cbexecutor),
         Dict{Symbol, Any}())
 end
 
+Base.show(io::IO, learner::Learner) = print(io, "Learner()")
 
-defaultcallbacks()::Vector{AbstractCallback} = [
+defaultcallbacks(; schedules = Dict())::Vector{AbstractCallback} = [
     ProgressBarLogger(),
     MetricsLogger(),
     StopOnNaNLoss(),
     Recorder(),
-    AverageLoss(),
+    Loss(),
+    Scheduler(schedules),
 ]
 
 
@@ -98,8 +88,8 @@ handle(event, learner, phase) = handle(learner.callbacks.executor, event, phase,
 
 # Other
 
-getdataloader(phase::AbstractTrainingPhase, learner) = learner.data[1]
-getdataloader(phase::ValidationPhase, learner) = learner.data[2]
+getdataiter(phase::AbstractTrainingPhase, learner) = learner.data.training
+getdataiter(phase::ValidationPhase, learner) = learner.data.validation
 
 
 function model!(learner, model)
@@ -111,7 +101,13 @@ end
 numsteps(learner::Protected, phase) = numsteps(getfield(learner, :data), phase)
 numsteps(learner, phase) = length(getdataloader(phase, learner))
 
+hascallback(learner::Protected, T) = hascallback(getfield(learner, :data), phase)
+hascallback(learner, T) = any(C <: T for C in typeof.(learner.callbacks.cbs))
 
+
+dataiters(t::Tuple) = dataiters(t...)
+dataiters(train, val, test = nothing) = (training = train, validation = val, test = test)
+dataiters(t::NamedTuple) = keys(t) == (:training, :validation, :test) ? t : error("Wrong keys.")
 # TODO: fix
 
 #=
@@ -122,16 +118,6 @@ function setschedule!(learner, schedule)
 end
 =#
 
-
-# TODO: fix
-#=
-function numsteps(
-        learner::Learner,
-        phase::AbstractFittingPhase = learner.state.phase)
-    return length(getdataloader(phase, learner))
-end
-numsteps(p::Protected{Learner}, phase) = numsteps(getfield(p, :data), phase)
-=#
 
 # TODO: move to Callback
 

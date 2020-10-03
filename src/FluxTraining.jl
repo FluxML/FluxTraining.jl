@@ -21,6 +21,7 @@ using ProgressMeter: Progress, next!
 using Statistics: mean
 using UUIDs
 using Zygote
+using Animations
 using Zygote: Grads, gradient
 using ValueHistories
 using DataStructures: DefaultDict
@@ -40,6 +41,7 @@ include("./callbacks/events.jl")
 include("./callbacks/callback.jl")
 include("./callbacks/graph.jl")
 include("./callbacks/execution.jl")
+include("./callbacks/hyperparameters.jl")
 
 # utilities
 include("./util/ioutils.jl")
@@ -49,7 +51,7 @@ include("./callbacks/callbacks.jl")
 include("./callbacks/customcallback.jl")
 include("./callbacks/metrics.jl")
 include("./callbacks/recorder.jl")
-include("./callbacks/paramscheduler.jl")
+include("./callbacks/scheduler.jl")
 include("./callbacks/checkpointer.jl")
 
 # learner
@@ -62,7 +64,7 @@ include("./util/trainutils.jl")
 export AbstractCallback,
     AbstractMetric,
     Accuracy,
-    AverageLoss,
+    Loss,
     CancelBatchException,
     CancelEpochException,
     CancelFittingException,
@@ -87,8 +89,10 @@ export AbstractCallback,
     TrainingPhase,
     ValidationPhase,
     Schedule,
-    Schedules,
+    Scheduler,
     StopOnNaNLoss,
+
+    LearningRate,
 
     accuracy,
     anneal_linear,
@@ -99,7 +103,7 @@ export AbstractCallback,
     fit!,
     loadmodel,
     loadweights,
-    onecycleschedule,
+    onecycle,
     savemodel,
     saveweights,
     setschedule!,

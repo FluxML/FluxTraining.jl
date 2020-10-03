@@ -4,20 +4,20 @@
 """
 module Phases
 
-abstract type AbstractFittingPhase end
-abstract type AbstractTrainingPhase <: AbstractFittingPhase end
+abstract type Phase end
+abstract type AbstractTrainingPhase <: Phase end
 
 struct TrainingPhase <: AbstractTrainingPhase end
 
 
-struct ValidationPhase <: AbstractFittingPhase end
-struct TestPhase <: AbstractFittingPhase end
-struct InitializationPhase <: AbstractFittingPhase end
-struct CleanupPhase <: AbstractFittingPhase end
+struct ValidationPhase <: Phase end
+struct TestPhase <: Phase end
+struct InitializationPhase <: Phase end
+struct CleanupPhase <: Phase end
 
 
 export
-    AbstractFittingPhase,
+    Phase,
     AbstractTrainingPhase,
     TrainingPhase,
     ValidationPhase,

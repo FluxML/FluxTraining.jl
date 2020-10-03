@@ -17,6 +17,13 @@ supported by Zygote's compiler.
 """
 abstract type GradEvent <: FitEvent end
 
+"""
+    Init <: FitEvent
+
+Called once when the learner is created/the callback is added.
+"""
+struct Init <: FitEvent end
+
 struct FitBegin <: FitEvent end
 struct FitEnd <: FitEvent end
 
@@ -38,6 +45,7 @@ export
     # asbtract
     FitEvent, GradEvent,
     # concrete
+    Init,
     FitBegin, FitEnd,
     EpochBegin, EpochEnd,
     BatchBegin, BatchEnd,

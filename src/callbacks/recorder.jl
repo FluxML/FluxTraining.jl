@@ -14,11 +14,11 @@ $TYPEDFIELDS
     nsamples::Int = 0
     # stores metrics of epochs grouped by phase
     epochmetrics::DefaultDict =
-        DefaultDict{AbstractFittingPhase, MVHistory}(() -> MVHistory())
+        DefaultDict{Phase, MVHistory}(() -> MVHistory())
     # stores values of all metrics for every step
     stepmetrics::MVHistory = MVHistory()
     # stores values of all hyperparameters for every step
-    stephyperparams::MVHistory = MVHistory()
+    hyperparams::MVHistory = MVHistory()
 end
 
 """
@@ -27,14 +27,16 @@ end
 struct Recorder <: Callback end
 
 
-stateaccess(::Recorder) = (cbstate = (history = Write()), batch = Read(), callbacks = Read())
+stateaccess(::Recorder) = (cbstate = (history = Write(),), batch = Read(), callbacks = Read())
 runafter(::Recorder) = (AbstractMetric,)
 
 
+function on(::Init, ::Phase, recorder::Recorder, learner)
+    learner.cbstate[:history] = History()
+end
+
+
 function on(::EpochBegin, ::AbstractTrainingPhase, recorder::Recorder, learner)
-    if isnothing(get(learner.cbstate, :history, nothing))
-        learner.cbstate[:history] = History()
-    end
     learner.cbstate[:history].nstepsepoch = 0
 end
 
@@ -51,16 +53,10 @@ function on(::BatchEnd, phase::AbstractTrainingPhase, recorder::Recorder, learne
     for metric in getmetrics(learner.callbacks)
         push!(history.stepmetrics, Symbol(metric), history.nsteps, stepvalue(metric))
     end
-
-    # TODO: refactor together with hyperparameters
-    # save hyper parameters
-    # for (OptimParam, value) in getoptimparams(learner.opt)
-    #     push!(history.stephyperparams, Symbol(OptimParam.name), history.nsteps, value)
-    # end
 end
 
 
-function on(::EpochEnd, phase::AbstractFittingPhase, recorder::Recorder, learner)
+function on(::EpochEnd, phase::Phase, recorder::Recorder, learner)
     history = learner.cbstate[:history]
 
     if phase isa AbstractTrainingPhase

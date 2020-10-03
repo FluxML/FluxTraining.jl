@@ -3,7 +3,11 @@
     fit!(learner, phase)
     fit!(learner, n)
 """
-function fit!(learner::Learner, phases::AbstractVector{<:AbstractFittingPhase})
+function fit!(learner::Learner, phases::AbstractVector{<:Phase})
+    if !(learner.callbacks.initialized)
+        handle(Init(), learner, phases[1])
+        learner.callbacks.initialized = true
+    end
     try
         for phase in phases
             fitepoch!(learner, phase)
@@ -18,7 +22,7 @@ function fit!(learner::Learner, phases::AbstractVector{<:AbstractFittingPhase})
     return learner
 end
 
-fit!(learner::Learner, phase::AbstractFittingPhase)::Learner = fit!(learner, [phase])
+fit!(learner::Learner, phase::Phase)::Learner = fit!(learner, [phase])
 fit!(learner, n::Int)::Learner = fit!(learner, repeat([TrainingPhase(), ValidationPhase()], n))
 
 
@@ -55,7 +59,7 @@ end
 
 Fit `learner` for one epoch.
 
-Customize by deriving custom phase from `AbstractFittingPhase`.
+Customize by deriving custom phase from `Phase`.
 """
 function fitepochphase!(
         learner::Learner,
@@ -63,7 +67,7 @@ function fitepochphase!(
     )
     handle(EpochBegin(), learner, phase)
 
-    for batch in getdataloader(phase, learner)
+    for batch in getdataiter(phase, learner)
         fitbatch!(learner, batch, phase)
     end
 

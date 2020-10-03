@@ -35,16 +35,16 @@ function Base.getindex(protected::Protected, idx)
     return getindexperm(
         getfield(protected, :data),
         idx,
-        get(getfield(protected, :perms), field, nothing),
+        get(getfield(protected, :perms), idx, nothing),
     )
 end
 
-function Base.setindex!(protected::Protected, idx, x)
+function Base.setindex!(protected::Protected, x, idx)
     return setindexperm!(
         getfield(protected, :data),
-        idx,
         x,
-        get(getfield(protected, :perms), field, nothing),
+        idx,
+        get(getfield(protected, :perms), idx, nothing),
     )
 end
 
@@ -55,7 +55,7 @@ getindexperm(data, idx, perm::NamedTuple) = protect(getindex(data, idx), perm)
 
 setindexperm!(data::D, idx, x, perm::Union{Read, Nothing, NamedTuple}) where D =
     throw(ProtectedException("Write access to $(D)[$(string(idx))] disallowed."))
-setindexperm!(data, idx, x, perm::Write) = setindex!(data, idx, x)
+setindexperm!(data, x, idx, perm::Write) = setindex!(data, x, idx)
 
 
 getfieldperm(data::D, field, perm::Nothing) where D =

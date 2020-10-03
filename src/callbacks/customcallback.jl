@@ -1,5 +1,5 @@
 
-mutable struct CustomCallback{E<:FitEvent,P<:AbstractFittingPhase} <: AbstractCallback
+mutable struct CustomCallback{E<:FitEvent,P<:Phase} <: AbstractCallback
     fn::Any
     everyn::Int
     _current::Int
@@ -12,7 +12,7 @@ function on(
     ::P,
     cb::CustomCallback{E,P},
     learner,
-) where {E<:FitEvent,P<:AbstractFittingPhase}
+) where {E<:FitEvent,P<:Phase}
     cb._current += 1
     if cb._current % cb.everyn == 0
         cb.fn(learner)

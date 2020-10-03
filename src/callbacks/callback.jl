@@ -9,6 +9,7 @@ abstract type AbstractMetric <: Callback end
 abstract type AbstractLogger <: Callback end
 
 
+# TODO: implement proper merging of permissions
 
 stateaccess(::Callback) = (;)
 runafter(::AbstractCallback) = ()
@@ -45,9 +46,9 @@ end
 # Callback hook
 
 """
-    on(event::FitEvent, phase::AbstractFittingPhase, callback::AbstractCallback, learner)
+    on(event::FitEvent, phase::Phase, callback::AbstractCallback, learner)
 
-Handle `event` with `callback`. Can dispatch on an `AbstractFittingPhase` and
+Handle `event` with `callback`. Can dispatch on an `Phase` and
 receives `learner` as an additional argument.
 
 If not overwritten with a more specific method, does nothing.
@@ -56,8 +57,12 @@ To see events which an `AbstractCallback` handles, use
 
     `methods(Training.on, (Any, Any, MyCallbackType, Any)`
 """
-on(::FitEvent, ::AbstractFittingPhase, ::AbstractCallback, learner) = return
+on(::FitEvent, phase, ::Callback, learner) = return
 
 _on(e, p, cb, learner) = on(e, p, cb, learner)
-_on(e, p, cb::SafeCallback, learner) = on(e, p, cb, protect(learner, stateaccess(cb)))
-#_on(e, p, cb::SafeCallback, learner) = on(e, p, cb, learner)
+function _on(e, p, cb::SafeCallback, learner)
+    perms = Zygote.ignore() do
+        stateaccess(cb)
+    end
+    on(e, p, cb, protect(learner, perms))
+end

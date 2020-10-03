@@ -1,30 +1,30 @@
 Base.show(io::IO, metric::T) where T<:AbstractMetric = print(io, string(T))
 
-# AverageLoss
-mutable struct AverageLoss <: AbstractMetric
+# Loss
+mutable struct Loss <: AbstractMetric
     loss
     last
     count
-    AverageLoss() = new(nothing, nothing, nothing)
+    Loss() = new(nothing, nothing, nothing)
 end
 
-function on(::EpochBegin, ::AbstractFittingPhase, metric::AverageLoss, learner)
+function on(::EpochBegin, ::Phase, metric::Loss, learner)
     metric.loss = 0.
     metric.count = 0
 end
 
-function on(::BatchEnd, phase::AbstractFittingPhase, metric::AverageLoss, learner)
+function on(::BatchEnd, phase::Phase, metric::Loss, learner)
     metric.loss += learner.batch.loss
     metric.last = learner.batch.loss
     metric.count += 1
 end
 
-stateaccess(::AverageLoss) = (batch = (loss = Read(),),)
+stateaccess(::Loss) = (batch = (loss = Read(),),)
 
-stepvalue(metric::AverageLoss) = metric.last
-epochvalue(metric::AverageLoss) = metric.loss / metric.count
+stepvalue(metric::Loss) = metric.last
+epochvalue(metric::Loss) = metric.loss / metric.count
 
-Base.show(io::IO, loss::AverageLoss) = print(io, "Loss()")
+Base.show(io::IO, loss::Loss) = print(io, "Loss()")
 
 # OnlineMetrics metric
 
@@ -52,11 +52,11 @@ end
 Base.show(io::IO, metric::Metric) = print(io, metric.name)
 
 
-function on(::EpochBegin, ::AbstractFittingPhase, metric::Metric, learner)
+function on(::EpochBegin, ::Phase, metric::Metric, learner)
     metric.metric = metric.metricfactory()
 end
 
-function on(::BatchEnd, ::AbstractFittingPhase, metric::Metric, learner)
+function on(::BatchEnd, ::Phase, metric::Metric, learner)
     metric.last = metric.fn(
             metric.device(learner.batch.ŷs),
             metric.device(learner.batch.ys),

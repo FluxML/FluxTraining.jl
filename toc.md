@@ -1,14 +1,21 @@
-- [Introduction](README.md)
+[README](README.md)
 
-### User guide
+#### Start here
 
-- [Getting started](docs/guide/getting_started.md)
+- [Getting started](docs/getting_started.md)
+- [User guide](docs/overview.md)
 
-### Extending FluxTraining.jl
+#### Training loop
 
-- [Callbacks](docs/extending/extend_callbacks.md)
-- [Training Loop](./docs/extending/extend_training.md)
+- [Using callbacks](docs/training/usage.md)
 
+
+#### Callbacks
+
+- [Using callbacks](docs/callbacks/usage.md)
+- [Callback reference](docs/callbacks/reference.md)
+- [Custom callbacks](docs/callbacks/custom.md)
+- [Tips & tricks](docs/callbacks/tipstricks.md)
 
 
 ### Reference
@@ -19,3 +26,4 @@
 ### Other
 
 - [Project status](docs/status.md)
+- [Ecosystem](docs/ecosystem.md)

@@ -4,22 +4,23 @@
 """
     ProgressBarLogger()
 
-Prints the progress of the current epoch.
+Prints a progress bar of the currently running epoch.
 """
-mutable struct ProgressBarLogger <: SafeCallback
+mutable struct ProgressBarLogger <: Callback
     p::Union{Nothing,Progress}
 end
 ProgressBarLogger() = ProgressBarLogger(nothing)
+Base.show(io::IO, ::ProgressBarLogger) = print(io, "ProgressBarLogger()")
 
 function on(::EpochBegin,
-        phase::AbstractFittingPhase,
+        phase::Phase,
         cb::ProgressBarLogger,
         learner)
     e = learner.cbstate[:history].epochs + 1
     cb.p = Progress(numsteps(learner, phase), "Epoch $(e) $(phase): ")
 end
 
-on(::BatchEnd, ::AbstractFittingPhase, cb::ProgressBarLogger, learner) = next!(cb.p)
+on(::BatchEnd, ::Phase, cb::ProgressBarLogger, learner) = next!(cb.p)
 
 runafter(::ProgressBarLogger) = (Recorder,)
 stateaccess(::ProgressBarLogger) = (data = Read(), cbstate = (history = Read()),)
@@ -29,21 +30,20 @@ stateaccess(::ProgressBarLogger) = (data = Read(), cbstate = (history = Read()),
 """
     MetricsLogger()
 
-Prints the metrics after every epoch.
+Prints any metrics after every epoch.
 """
-struct MetricsLogger <: SafeCallback end
+struct MetricsLogger <: Callback end
 
 function on(::EpochEnd,
-        phase::AbstractFittingPhase,
+        phase::Phase,
         cb::MetricsLogger,
         learner)
-
     for metric in getmetrics(learner.callbacks)
         println(string(metric), ": ", epochvalue(metric))
     end
 end
 
-stateaccess(::MetricsLogger) = (callbacks = Read(),)
+stateaccess(::MetricsLogger) = (callbacks = (cbs = Read()),)
 runafter(::MetricsLogger) = (AbstractMetric,)
 
 # StopOnNaNLoss
@@ -89,13 +89,13 @@ stateaccess(::EarlyStopping) = (callbacks = Read(),)
 
 struct ToGPU <: SafeCallback end
 
-function on(::EpochBegin, ::AbstractFittingPhase, ::ToGPU, learner)
+function on(::EpochBegin, ::Phase, ::ToGPU, learner)
     model!(learner, gpu(learner.model))
 end
 
 stateaccess(::ToGPU) = (model = Write(), params = Write(), batch = (xs = Write(), ys = Write()),)
 
-function on(::BatchBegin, ::AbstractFittingPhase, cb::ToGPU, learner)
+function on(::BatchBegin, ::Phase, cb::ToGPU, learner)
     learner.batch.xs = gpu(learner.batch.xs)
     learner.batch.ys = gpu(learner.batch.ys)
 end
@@ -110,7 +110,7 @@ Every `nsteps` steps, forces garbage collection.
 Use this if you get memory leaks from, for example, parallel data loading.
 """
 function GarbageCollect(nsteps::Int = 100)
-    return CustomCallback{BatchEnd, AbstractFittingPhase}(nsteps) do learner
+    return CustomCallback{BatchEnd, Phase}(nsteps) do learner
         garbagecollect()
     end
 end
