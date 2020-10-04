@@ -1,4 +1,11 @@
-Base.show(io::IO, metric::T) where T<:AbstractMetric = print(io, string(T))
+
+# store metrics in `cbstate` so other callbacks can access them
+function on(::Init, ::Phase, metric::AbstractMetric, learer)
+    if isnothing(get(learner.cbstate, :metrics))
+        learner.cbstate.metrics = AbstractMetric[]
+    end
+    push!(learner.cbstate.metrics, metric)
+end
 
 # Loss
 mutable struct Loss <: AbstractMetric
@@ -7,6 +14,7 @@ mutable struct Loss <: AbstractMetric
     count
     Loss() = new(nothing, nothing, nothing)
 end
+
 
 function on(::EpochBegin, ::Phase, metric::Loss, learner)
     metric.loss = 0.
@@ -19,7 +27,7 @@ function on(::BatchEnd, phase::Phase, metric::Loss, learner)
     metric.count += 1
 end
 
-stateaccess(::Loss) = (batch = (loss = Read(),),)
+stateaccess(::Loss) = (batch = (loss = Read(),), cbstate = (metrics = Write(),))
 
 stepvalue(metric::Loss) = metric.last
 epochvalue(metric::Loss) = metric.loss / metric.count
@@ -49,7 +57,7 @@ function Metric(fn, name = string(fn); device = cpu, metric = Mean)
     Metric(() -> metric(), fn, name, metric(), Inf, device)
 end
 
-Base.show(io::IO, metric::Metric) = print(io, metric.name)
+Base.show(io::IO, metric::Metric) = print(io, "Metric(", metric.name, ")")
 
 
 function on(::EpochBegin, ::Phase, metric::Metric, learner)

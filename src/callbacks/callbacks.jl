@@ -38,12 +38,12 @@ function on(::EpochEnd,
         phase::Phase,
         cb::MetricsLogger,
         learner)
-    for metric in getmetrics(learner.callbacks)
+    for metric in learner.cbstate.metrics
         println(string(metric), ": ", epochvalue(metric))
     end
 end
 
-stateaccess(::MetricsLogger) = (callbacks = (cbs = Read()),)
+stateaccess(::MetricsLogger) = (cbstate = (metrics = Read(),),)
 runafter(::MetricsLogger) = (AbstractMetric,)
 
 # StopOnNaNLoss

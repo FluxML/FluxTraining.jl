@@ -27,7 +27,10 @@ end
 struct Recorder <: Callback end
 
 
-stateaccess(::Recorder) = (cbstate = (history = Write(),), batch = Read(), callbacks = Read())
+stateaccess(::Recorder) = (
+    cbstate = (history = Write(), metrics = Read()),
+    batch = Read(),
+    )
 runafter(::Recorder) = (AbstractMetric,)
 
 
@@ -50,7 +53,7 @@ function on(::BatchEnd, phase::AbstractTrainingPhase, recorder::Recorder, learne
     history.nsamples += size(learner.batch.xs)[end]
 
     # save metrics
-    for metric in getmetrics(learner.callbacks)
+    for metric in learner.cbstate.metrics
         push!(history.stepmetrics, Symbol(metric), history.nsteps, stepvalue(metric))
     end
 end
@@ -63,7 +66,7 @@ function on(::EpochEnd, phase::Phase, recorder::Recorder, learner)
         history.epochs += 1
     end
 
-    for metric in getmetrics(learner.callbacks)
+    for metric in learner.cbstate.metrics
         push!(history.epochmetrics[phase], Symbol(string(metric)), history.epochs, epochvalue(metric))
     end
 end
