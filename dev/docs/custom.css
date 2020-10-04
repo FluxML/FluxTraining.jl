@@ -1,0 +1,89 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Source+Serif+Pro&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:ital,wght@1,800&display=swap');
+
+h1, h2, h3, h4, h5 {
+    font-family: 'Source Sans Pro';
+    font-weight: bold;
+    padding-left: 8px;
+}
+
+article {
+    font-family: 'Source Serif Pro', serif;
+}
+nav {
+    font-family: 'Source Sans Pro';
+    font-style: normal;
+    margin: 50px auto;
+    max-width: 720px;
+    min-width: 400px;
+}
+
+.menu {
+    position: relative
+}
+
+main {
+    margin-top: 0px
+}
+
+#search-input {
+  border-radius: 8px;
+  margin: auto;
+}
+
+#menu-toggler {
+  padding-left: 6px;
+}
+
+article {
+    max-width: 900px
+}
+
+:not(pre) > code {
+    background-color: #f8f8f8;
+}
+
+main  p, ul {
+    max-width: 600px;
+}
+
+p {
+    padding-left: 8px;
+}
+
+code.hljs {
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border-left: solid 1px lightgray;
+    background-color: #f8f8f8;
+}
+
+
+pre > .cell-result {
+    background: white;
+    background-color: white;
+}
+
+pre {
+
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+.tabulator {
+    font-family: 'Source Sans Pro';
+    font-style: normal;
+}
+.tabulator-row.tabulator-selectable:hover {
+    background-color: transparent;
+}
+
+
+.info {
+    background-color: #e5f4ff;
+    border: none;
+    position: relative;
+    padding: 8px;
+}
