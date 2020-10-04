@@ -24,7 +24,7 @@ jobs:
       - name: Build and deploy
         run: |
           cd gh-pages
-          julia --color=yes --project=.. -e 'using Pkg; Pkg.add("Publish"); using Publish, DataLoaders; deploy(DataLoaders; root="/DataLoaders.jl", label="dev", force = true)'
+          julia --color=yes --project=.. ../docs/make.jl
           git config user.name github-actions
           git config user.email github-actions@github.com
           git add .
