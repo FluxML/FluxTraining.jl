@@ -56,6 +56,7 @@ include("./learner.jl")
 include("./train.jl")
 
 
+# TODO: remove old exports
 export AbstractCallback,
     AbstractMetric,
     Accuracy,
@@ -67,15 +68,12 @@ export AbstractCallback,
     CheckpointAny,
     CheckpointLowest,
     CustomCallback,
-    DataBunch,
     DataLoader,
     EarlyStopping,
     ToGPU,
     GarbageCollect,
     Learner,
-    LRFinderPhase,
     Metric,
-    MeanMetric,
     Recorder,
     ProgressBarLogger,
     MetricsLogger,

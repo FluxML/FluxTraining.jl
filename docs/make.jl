@@ -2,6 +2,7 @@
 using Pkg
 
 Pkg.add("Publish")
+Pkg.add("GraphPlot")
 
 using Publish
 using FluxTraining
