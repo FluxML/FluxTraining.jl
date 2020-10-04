@@ -49,14 +49,11 @@ include("./callbacks/metrics.jl")
 include("./callbacks/recorder.jl")
 include("./callbacks/scheduler.jl")
 
-include("./callbacks/logging/checkpointer.jl")
-include("./callbacks/logging/artifacts.jl")
 
 # learner
 include("./learner.jl")
 
 include("./train.jl")
-include("./util/trainutils.jl")
 
 
 export AbstractCallback,
