@@ -27,9 +27,6 @@ using ValueHistories
 using DataStructures: DefaultDict
 
 
-# optimizers
-include("./optimizers.jl")
-
 # functional
 include("./functional/anneal.jl")
 include("./functional/metrics.jl")
@@ -52,7 +49,9 @@ include("./callbacks/customcallback.jl")
 include("./callbacks/metrics.jl")
 include("./callbacks/recorder.jl")
 include("./callbacks/scheduler.jl")
-include("./callbacks/checkpointer.jl")
+
+include("./callbacks/logging/checkpointer.jl")
+include("./callbacks/logging/artifacts.jl")
 
 # learner
 include("./learner.jl")
