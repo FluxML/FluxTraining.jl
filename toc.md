@@ -17,13 +17,8 @@
 - [Custom callbacks](docs/callbacks/custom.md)
 - [Tips & tricks](docs/callbacks/tipstricks.md)
 
+---
 
-### Reference
-
-- [Overview](docs/overview.md)
 - [Docstrings](docstrings.md)
-
-### Other
-
 - [Project status](docs/status.md)
 - [Ecosystem](docs/ecosystem.md)

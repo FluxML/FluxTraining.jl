@@ -42,13 +42,14 @@ article {
 }
 
 :not(pre) > code {
-    background: transparent;
-    padding: 0em;
+    background-color: #f8f8f8;
+}
+
+main  p, ul {
+    max-width: 600px;
 }
 
 p {
-    max-width: 600px;
-    position: relative;
     padding-left: 8px;
 }
 

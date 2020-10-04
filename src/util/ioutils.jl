@@ -2,6 +2,7 @@
 
 # Loading and saving utilities
 
+# TODO: replace with JLD2
 function savemodel(model, path)
     @save path model = cpu(model)
 end

@@ -1,10 +1,10 @@
 
 
-abstract type CallbackExecutor end
+abstract type CallbackRunner end
 
-struct LinearExecutor <: CallbackExecutor end
+struct LinearRunner <: CallbackRunner end
 
-function handle(executor::LinearExecutor, event::FitEvent, phase, learner)
+function handle(runner::LinearRunner, event::FitEvent, phase, learner)
     idxs = Zygote.ignore() do
         topological_sort_by_dfs(learner.callbacks.graph)
     end

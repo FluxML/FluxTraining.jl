@@ -97,7 +97,7 @@ function fitbatchphase!(
     end
     handle(BackwardEnd(), learner, phase)
 
-    update!(learner.opt, learner.params, b.grads)
+    update!(learner.optimizer, learner.params, b.grads)
 
     handle(BatchEnd(), learner, phase)
     return learner

@@ -23,7 +23,6 @@ Zygote = "e88e6eb3-aa80-5325-afca-941959d7151f"
 [compat]
 julia = "1"
 
-
 [publish]
 title = "FluxTraining.jl"
 

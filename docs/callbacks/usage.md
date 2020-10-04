@@ -2,6 +2,7 @@
 ```julia
 using FluxTraining
 using FluxTraining: Callback, Read, Write, stateaccess
+model, data, lossfn, optimizer = nothing, nothing, nothing, nothing
 ```
 
 # Using callbacks
@@ -13,11 +14,8 @@ To use them, pass a list of callbacks to `Learner`:
 {cell=main, output=false}
 ```julia
 learner = Learner(
-    nothing, (nothing, nothing), nothing, nothing;  # dummy arguments
-    callbacks = [
-        ToGPU(),
-    ]
-);
+    model, data, optimizer, lossfn,
+    ToGPU(), Metric(accuracy))  # pass any number of callbacks
 ```
 
 Some useful callbacks are added by default:

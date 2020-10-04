@@ -11,7 +11,7 @@ There are 4 things you need to do to implement a custom callback:
 3. Define what state the callback accesses by implementing [`stateaccess`](#)
 4. (Optionally) define dependencies on other callbacks with [`runafter`](#)
 
-Let's go through them one at a time by implementing a simple callback that prints something whenever a new epoch starts.
+Let's go through them one at a time by implementing a simple callback that prints something after every batch.
 
 ### 1. Callback `struct`
 
