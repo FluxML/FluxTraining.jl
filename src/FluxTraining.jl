@@ -21,6 +21,7 @@ using Statistics: mean
 using UUIDs
 using Zygote
 using Animations
+using TensorBoardLogger
 using Zygote: Grads, gradient
 using ValueHistories
 using DataStructures: DefaultDict
@@ -30,23 +31,31 @@ using DataStructures: DefaultDict
 include("./functional/anneal.jl")
 include("./functional/metrics.jl")
 
-# callback framework
+# utilities
+include("./util/ioutils.jl")
+
+# callback system
 include("./callbacks/protect.jl")
 include("./callbacks/phases.jl")
 include("./callbacks/events.jl")
 include("./callbacks/callback.jl")
 include("./callbacks/graph.jl")
 include("./callbacks/execution.jl")
-include("./callbacks/hyperparameters.jl")
 
-# utilities
-include("./util/ioutils.jl")
+# logging
+include("./callbacks/logging/Loggables.jl")
+include("./callbacks/logging/logger.jl")
+include("./callbacks/logging/tensorboard.jl")
+
 
 # callback implementations
 include("./callbacks/callbacks.jl")
 include("./callbacks/customcallback.jl")
 include("./callbacks/metrics.jl")
 include("./callbacks/recorder.jl")
+
+# hyperparameter scheduling
+include("./callbacks/hyperparameters.jl")
 include("./callbacks/scheduler.jl")
 
 

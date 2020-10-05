@@ -1,10 +1,15 @@
 
 # store metrics in `cbstate` so other callbacks can access them
 function on(::Init, ::Phase, metric::AbstractMetric, learer)
-    if isnothing(get(learner.cbstate, :metrics))
-        learner.cbstate.metrics = AbstractMetric[]
+    metricsstep = get(learner.cbstate, :metricsstep)
+    if isnothing(metricsstep)
+        learner.cbstate[:metricsstep] = MVHistory()
     end
-    push!(learner.cbstate.metrics, metric)
+
+    metricsepoch = get(learner.cbstate, :metricsstep)
+    if isnothing(metricsstep)
+        learner.cbstate[:metricsepoch] = MVHistory()
+    end
 end
 
 # Loss
@@ -27,7 +32,11 @@ function on(::BatchEnd, phase::Phase, metric::Loss, learner)
     metric.count += 1
 end
 
-stateaccess(::Loss) = (batch = (loss = Read(),), cbstate = (metrics = Write(),))
+stateaccess(::Loss) = (
+    batch = (loss = Read(),),
+    cbstate = (metricsstep = Write(), metricsepoch = Write()))
+
+resolveconflict(::AbstractMetric, ::AbstractMetric) = NoConflict()
 
 stepvalue(metric::Loss) = metric.last
 epochvalue(metric::Loss) = metric.loss / metric.count
