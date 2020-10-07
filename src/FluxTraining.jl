@@ -67,7 +67,6 @@ include("./train.jl")
 
 # TODO: remove old exports
 export AbstractCallback,
-    AbstractMetric,
     Accuracy,
     Loss,
     CancelBatchException,
@@ -85,7 +84,8 @@ export AbstractCallback,
     Metric,
     Recorder,
     ProgressBarLogger,
-    MetricsLogger,
+    Metrics,
+    MetricsPrinter,
     ParamSchedule,
     ParamScheduler,
     TrainingPhase,

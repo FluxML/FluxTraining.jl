@@ -28,23 +28,24 @@ stateaccess(::ProgressBarLogger) = (data = Read(), cbstate = (history = Read()),
 # MetricsLogger
 
 """
-    MetricsLogger()
+    MetricsPrinter()
 
 Prints any metrics after every epoch.
 """
-struct MetricsLogger <: Callback end
+struct MetricsPrinter <: Callback end
 
 function on(::EpochEnd,
         phase::Phase,
-        cb::MetricsLogger,
+        cb::MetricsPrinter,
         learner)
-    for metric in learner.cbstate.metrics
-        println(string(metric), ": ", epochvalue(metric))
+    mvhistory = learner.cbstate.metricsepoch[phase]
+    for (key, history) in mvhistory
+        println(string(metric), ": ", last(history)[2])
     end
 end
 
-stateaccess(::MetricsLogger) = (cbstate = (metrics = Read(),),)
-runafter(::MetricsLogger) = (AbstractMetric,)
+stateaccess(::MetricsPrinter) = (cbstate = (metricsepoch = (Read(),),)
+runafter(::MetricsPrinter) = (Metrics,)
 
 # StopOnNaNLoss
 

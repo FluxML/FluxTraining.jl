@@ -9,9 +9,6 @@ end
 Callbacks(cbs, runner = LinearRunner()) = Callbacks(cbs, runner, callbackgraph(cbs), false)
 
 
-getmetrics(cbs::Callbacks) = [cb for cb in cbs.cbs if cb isa AbstractMetric]
-getloss(cbs::Callbacks) = only([cb for cb in cbs.cbs if cb isa Loss])
-
 """
     $TYPEDEF
 

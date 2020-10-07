@@ -1,90 +1,123 @@
+"""
+    Metrics(metricfns...)
+
+Callback that tracks metrics during training.
+
+A metric tracking `lossfn` is included by default.
+
+## Examples
+
+```
+metrics = Metrics(accuracy)
+```
+
+"""
+struct Metrics <: Callback
+    metrics
+end
+
+runafter(::Metrics) = (Recorder,)
+stateaccess(::Metrics) = (
+    cbstate = (metricsstep = Write(), metricsepoch = Write()),
+    batch = Read()
+)
+
+function Metrics(metrics)
+    return Metrics(Tuple(m isa AbstractMetric ? m : Metric(m) for m in (Loss(), metrics...)))
+end
+
+
+abstract type AbstractMetric end
+
 
 # store metrics in `cbstate` so other callbacks can access them
-function on(::Init, ::Phase, metric::AbstractMetric, learer)
-    metricsstep = get(learner.cbstate, :metricsstep)
-    if isnothing(metricsstep)
-        learner.cbstate[:metricsstep] = MVHistory()
+function on(::Init, ::Phase, metrics::Metrics, learer)
+    learner.cbstate[:metricsstep] = MVHistory()
+    learner.cbstate[:metricsepoch] = DefaultDict{Phase, MVHistory}(() -> MVHistory())
+end
+
+
+
+on(::EpochBegin, ::Phase, metrics::Metrics, learner) = foreach(reset!, metrics.metrics)
+
+function on(::BatchEnd, ::Phase, metrics::Metrics, learner)
+    metricsstep = learner.cbstate[:metricsstep]
+    step = learner.cbstate[:history].nsteps
+    for metric in metrics.metrics
+        step!(metric, learner)
+        push!(metricsstep, string(metric), step, stepvalue(metric))
     end
+end
 
-    metricsepoch = get(learner.cbstate, :metricsstep)
-    if isnothing(metricsstep)
-        learner.cbstate[:metricsepoch] = MVHistory()
+function on(::EpochEnd, phase, metrics::Metrics, learner)
+    metricsepoch = learner.cbstate[:metricsepoch]
+    epoch = learner.cbstate[:history].epochs
+    for metric in metrics.metrics
+        push!(metricsepoch[phase], string(metric), step, epochvalue(metric))
     end
 end
 
-# Loss
-mutable struct Loss <: AbstractMetric
-    loss
-    last
-    count
-    Loss() = new(nothing, nothing, nothing)
-end
+
+# AbstractMetric interface
 
 
-function on(::EpochBegin, ::Phase, metric::Loss, learner)
-    metric.loss = 0.
-    metric.count = 0
-end
-
-function on(::BatchEnd, phase::Phase, metric::Loss, learner)
-    metric.loss += learner.batch.loss
-    metric.last = learner.batch.loss
-    metric.count += 1
-end
-
-stateaccess(::Loss) = (
-    batch = (loss = Read(),),
-    cbstate = (metricsstep = Write(), metricsepoch = Write()))
-
-resolveconflict(::AbstractMetric, ::AbstractMetric) = NoConflict()
-
-stepvalue(metric::Loss) = metric.last
-epochvalue(metric::Loss) = metric.loss / metric.count
-
-Base.show(io::IO, loss::Loss) = print(io, "Loss()")
-
-# OnlineMetrics metric
-
-mutable struct Metric{T} <: AbstractMetric
-    metricfactory
-    fn
+mutable struct Metric{T}
+    metricfn
+    statistic::OnlineStats{T}
+    _statistic
     name
-    metric::OnlineStat{T}
-    last::T
     device
+    last::T
 end
 
-stepvalue(metric::Metric) = metric.last
-epochvalue(metric::Metric) = OnlineStats.value(metric.metric)
+function Metric(
+        metricfn;
+        name = uppercasefirst(string(metricfn)),
+        statistic = Mean(),
+        device = cpu)
 
-"""
-    Metric(fn, name = string(fn); device = cpu)
-
-`fn(y_pred, y)`
-"""
-function Metric(fn, name = string(fn); device = cpu, metric = Mean)
-    Metric(() -> metric(), fn, name, metric(), Inf, device)
-end
-
-Base.show(io::IO, metric::Metric) = print(io, "Metric(", metric.name, ")")
-
-
-function on(::EpochBegin, ::Phase, metric::Metric, learner)
-    metric.metric = metric.metricfactory()
-end
-
-function on(::BatchEnd, ::Phase, metric::Metric, learner)
-    metric.last = metric.fn(
-            metric.device(learner.batch.ŷs),
-            metric.device(learner.batch.ys),
-        )
-    OnlineStats.fit!(
-        metric.metric,
-        metric.last,
+    return Metric(
+        metricfn,
+        deepcopy(statistic),
+        statistic,
+        name,
+        device
     )
 end
 
-stateaccess(::Metric) = (batch = (ŷs = Read(), ys = Read()),)
+
+function reset!(metric::Metric)
+    metric.statistics = deepcopy(metric._statistics)
+end
+
+function step!(metric::Metric)
+    ŷs, ys = learner.batch.ŷs, learner.batch.ys
+    metric.last = metric.metricfn(ŷs, ys)
+    OnlineStats.fit!(statistic, metric.last)
+end
+
+stepvalue(metric::Metric) = metric.last
+epochvalue(metric::Metric) = OnlineStats.value(metric.statistic)
 
 
-Accuracy() = Metric(accuracy)
+# Loss Metric
+
+mutable struct Loss <: AbstractMetric
+    sum
+    last
+    count
+end
+
+function reset!(metric::Loss)
+    metric.last = nothing
+    metric.sum = 0.
+    metric.count = 0
+end
+
+function step!(metric::Loss, learner)
+    metric.sum += learner.batch.loss
+    metric.count += 1
+end
+
+stepvalue(metric::Loss) = metric.last
+epochvalue(metric::Loss) = metric.sum / metric.count

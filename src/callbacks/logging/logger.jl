@@ -31,11 +31,12 @@ end
 Logger(backends...) = Logger(backends)
 
 
-runafter(::Logger) = (AbstractMetric, Scheduler)
+runafter(::Logger) = (Metrics, Scheduler)
 stateaccess(::Logger) = (cbstate = (
         loggerbackends = Write(),
         history = Read(),
-        metrics = Read(),
+        metricsepoch = Read(),
+        metricsstep = Read(),
         hyperparams = Read(),
     ),)
 
@@ -48,12 +49,12 @@ end
 function on(::BatchEnd, phase, logger::Logger, learner)
     history = learner.cbstate.history
 
-    metrics = get(learner.cbstate, :metrics)
+    metricsstep = get(learner.cbstate, :metricsstep)
     if !isnothing(metrics)
-        for metric in values(metrics)
+        for (metric, history) in metricsstep
             log_to(
                 logger.backends,
-                Value(stepvalue(metric)),
+                Value(last(history)[2]),
                 string(metric),
                 history.steps,
                 group = "step")

@@ -5,9 +5,6 @@ const Callback = SafeCallback
 abstract type UnsafeCallback <: AbstractCallback end
 
 
-abstract type AbstractMetric <: Callback end
-abstract type AbstractLogger <: Callback end
-
 
 # TODO: implement proper merging of permissions
 
