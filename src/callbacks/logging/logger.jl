@@ -14,12 +14,17 @@ function canlog end
 
 
 """
-    log_to(backend, loggable, name, i, [group])
+    log_to(backend, loggable, name, i; [group])
+    log_to(backends, loggable, name, i; [group])
 
 Log `loggable` to `backend` with `name` to index `i`
 of optional `group`.
 """
-function log_to end
+function log_to(backends::Tuple, loggable, name, i; group = ())
+    for backend in backends
+        log_to(backend, loggable, name, i, group = group)
+    end
+end
 
 
 """
@@ -27,8 +32,10 @@ function log_to end
 """
 struct Logger <: Callback
     backends::Tuple
+    Logger(backends...) = new(backends)
 end
-Logger(backends...) = Logger(backends)
+
+Base.show(io::IO, logger::Logger) = print(io, "Logger(", join(string.(logger.backends), ", "), ")")
 
 
 runafter(::Logger) = (Metrics, Scheduler)
@@ -42,35 +49,38 @@ stateaccess(::Logger) = (cbstate = (
 
 
 function on(::Init, phase, logger::Logger, learner)
-    learner.cbstate[:loggerbackends] = logger.backends
+    learner.cbstate.loggerbackends = logger.backends
 end
 
 
 function on(::BatchEnd, phase, logger::Logger, learner)
     history = learner.cbstate.history
 
-    metricsstep = get(learner.cbstate, :metricsstep)
-    if !isnothing(metrics)
-        for (metric, history) in metricsstep
+    # log metrics
+    if haskey(learner.cbstate, :metricsstep)
+        metricsstep = learner.cbstate.metricsstep
+        for metric in keys(metricsstep)
+            _, val = last(metricsstep, metric)
             log_to(
                 logger.backends,
-                Value(last(history)[2]),
+                Loggables.Value(val),
                 string(metric),
                 history.steps,
-                group = "step")
+                group = ("Step", "Metrics"))
         end
     end
 
-    hyperparams = get(learner.cbstate, :hyperparams)
-    if !isnothing(hyperparams)
-        for h in keys(hyperparams)
-            _, val = last(hyperparams, h)
+    # log hyperparameters
+    if haskey(learner.cbstate, :hyperparams)
+        hyperparams = learner.cbstate.hyperparams
+        for hparam in keys(hyperparams)
+            _, val = last(hyperparams, hparam)
             log_to(
                 logger.backends,
-                Value(val),
-                string(h),
+                Loggables.Value(val),
+                string(hparam),
                 history.steps,
-                group = "step")
+                group = ("Step", "HParams"))
         end
     end
 end
@@ -79,15 +89,16 @@ end
 function on(::EpochEnd, phase, logger::Logger, learner)
     history = learner.cbstate.history
 
-    metrics = get(learner.cbstate, :metrics)
-    if !isnothing(metrics)
-        for metric in values(metrics)
-            log(
+    if haskey(learner.cbstate, :metricsepoch)
+        metricsepoch = learner.cbstate.metricsepoch[phase]
+        for metric in keys(metricsepoch)
+            _, val = last(metricsepoch, metric)
+            log_to(
                 logger.backends,
-                Value(epochvalue(metric)),
+                Loggables.Value(val),
                 string(metric),
                 history.epochs,
-                group = ("epoch", string(phase)))
+                group = ("Epoch", string(phase), "Metrics"))
         end
     end
 end

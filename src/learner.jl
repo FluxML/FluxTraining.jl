@@ -37,7 +37,7 @@ mutable struct Learner
     params
     batch::BatchState
     callbacks::Callbacks
-    cbstate::Dict
+    cbstate::PropDict
 end
 
 
@@ -79,15 +79,13 @@ optimizing `lossfn` with `optimizer` on `data`.
 
     (!) Note: Depending on the progress of the step, some fields may be `nothing`,
     e.g. the `gs` before the backward pass.
-- `cbstate::Dict{Symbol,Any}`: Special state container that callbacks can
+- `cbstate::`[`PropDict`](#): Special state container that callbacks can
     save state to for other callbacks. Its keys depend on what callbacks
     are being used. See the [custom callbacks guide](../docs/callbacks/custom.md)
     for more info.
-
-
 """
 function Learner(
-        model, data, optimizer, lossfn, callbacks...;
+        model, data, optimizer, lossfn, callbacks::Vararg{<:Callback};
         usedefaultcallbacks = true, cbrunner = LinearRunner()
     )
     callbacks = collect(Callback, callbacks)
@@ -105,7 +103,7 @@ function Learner(
         Flux.params(model),
         BatchState(),
         Callbacks(callbacks, cbrunner),
-        Dict{Symbol, Any}())
+        PropDict())
 end
 
 Base.show(io::IO, learner::Learner) = print(io, "Learner()")
@@ -144,25 +142,12 @@ hascallback(learner, T) = any(C <: T for C in typeof.(learner.callbacks.cbs))
 dataiters(train, val = nothing, test = nothing) = (training = train, validation = val, test = test)
 dataiters(t::Tuple) = dataiters(t...)
 dataiters(t::NamedTuple) = keys(t) == (:training, :validation, :test) ? t : error("Wrong keys.")
-# TODO: fix
 
-#=
-function setschedule!(learner, schedule)
-    learner.scheduler = ParamScheduler(
-        delayschedule(schedule, learner.recorder.epoch)
-    )
+
+function setcallbacks!(learner, callbacks)
+    learner.callbacks = Callbacks(callbacks)
 end
-=#
 
-
-# TODO: move to Callback
-
-#=
-function artifactpath(learner)
-    p = joinpath(pwd(), ".artifacts", string(learner.runid))
-    if !isdir(p)
-        mkpath(p)
-    end
-    return p
+function addcallback!(learner, callback)
+    learner.callbacks = Callbacks(vcat(learner.callbacks.cbs, callback))
 end
-=#

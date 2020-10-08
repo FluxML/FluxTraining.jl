@@ -48,6 +48,8 @@ function Base.setindex!(protected::Protected, x, idx)
     )
 end
 
+Base.haskey(d::Protected, key) = haskey(getfield(d, :data), key)
+
 getindexperm(data::D, idx, perm::Nothing) where D =
     throw(ProtectedException("Read access to $D[$idx] disallowed."))
 getindexperm(data, idx, perm::Union{Read, Write}) = getindex(data, idx)
@@ -72,10 +74,17 @@ Base.fieldnames(protected::Protected) = fieldnames(typeof(getfield(protected, :d
 
 protect(x, perms) = Protected(x, perms)
 
-
 struct PropDict{V}
     d::Dict
     function PropDict(d::Dict{K, V}) where {K, V}
         return new{V}(d)
     end
 end
+
+Base.getproperty(d::PropDict, field::Symbol) = getfield(d, :d)[field]
+Base.setproperty!(d::PropDict, field::Symbol, val) = (getfield(d, :d)[field] = val;)
+Base.propertynames(d::PropDict) = Tuple(keys(getfield(d, :d)))
+
+Base.haskey(d::PropDict, key) = haskey(getfield(d, :d), key)
+
+PropDict(args...) = PropDict(Dict{Symbol, Any}(args...))

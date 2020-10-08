@@ -1,8 +1,25 @@
 
+"""
+    TensorBoardBackend(logdir[, tb_overwrite];
+        time=time(),
+        purge_step=nothing,
+        step_increment=1,
+        min_level=Logging.Info)
+
+TensorBoard backend for [`Logger`](#). Takes the same arguments
+as `TensorBoardLogger.TBLogger`.
+"""
 struct TensorBoardBackend <: LoggerBackend
     logger::TBLogger
+    function TensorBoardBackend(
+            logdir,
+            existfn = TensorBoardLogger.tb_overwrite; kwargs...)
+        return new(TBLogger(logdir, existfn; kwargs...))
+    end
 end
-TensorBoardBackend(args...; kwargs...) = TensorBoardBackend(TBLogger(args...; kwargs...))
+
+Base.show(io::IO, backend::TensorBoardBackend) = print(
+    io, "TensorBoardBackend(", backend.logger.logdir, ")")
 
 canlog(::TensorBoardBackend) = (Text, Image, Value)
 
@@ -30,6 +47,6 @@ end
 
 # Utilities
 
-_combinename(name, group::String) = _combinename((name, group))
-_combinename(name, group::Tuple) = _combinename((name, group...))
+_combinename(name, group::String) = _combinename((group, name))
+_combinename(name, group::Tuple) = _combinename((group..., name))
 _combinename(strings::Tuple) = join(strings, '/')

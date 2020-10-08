@@ -48,7 +48,7 @@ end
 
 
 function on(::Init, phase, scheduler::Scheduler, learner)
-    learner.cbstate[:hyperparams] = MVHistory()
+    learner.cbstate.hyperparams = MVHistory()
     # convert schedules to use step as a unit
     epochlength = length(learner.data[1])
     for (H, schedule) in scheduler.schedules
@@ -60,11 +60,11 @@ end
 
 
 function on(::BatchBegin, ::AbstractTrainingPhase, scheduler::Scheduler, learner)
-    step = learner.cbstate[:history].nsteps
+    step = learner.cbstate.history.steps
     for (H, schedule) in scheduler.schedules
         value = Animations.at(schedule.animation, step)
         sethyperparameter!(learner, H, Animations.at(schedule.animation, step))
-        push!(learner.cbstate[:hyperparams], Symbol(H), step, value)
+        push!(learner.cbstate.hyperparams, Symbol(H), step, value)
     end
 end
 

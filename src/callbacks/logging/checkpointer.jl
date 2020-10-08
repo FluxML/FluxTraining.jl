@@ -26,7 +26,7 @@ Checkpointer(condition = CheckpointLowest(); deleteprevious = false) = Checkpoin
     condition, deleteprevious)
 
 
-# TODO: add Artifacts callback to handle files
+# TODO: refactor to use `Metrics`
 function on(::EpochEnd, ::ValidationPhase, checkpointer::Checkpointer, learner)
     loss = epochvalue(getloss(learner.callbacks))
     if checkpointer.condition(loss)
@@ -34,7 +34,8 @@ function on(::EpochEnd, ::ValidationPhase, checkpointer::Checkpointer, learner)
             previousfiles = glob("model-chckpnt-E*", artifactpath(learner))
             foreach(rm, previousfiles)
         end
-        filename = "model-chckpnt-E$(learner.cbstate[:history].epochs)-L$loss.bson"
+        epochs = learner.cbstate.history.epochs
+        filename = "model-chckpnt-E$epochs-L$loss.bson"
         path = joinpath(artifactpath(learner), filename)
         savemodel(learner.model, path)
     end

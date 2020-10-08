@@ -92,6 +92,8 @@ export AbstractCallback,
     ValidationPhase,
     Schedule,
     Scheduler,
+    Logger,
+    TensorBoardBackend,
     StopOnNaNLoss,
 
     LearningRate,

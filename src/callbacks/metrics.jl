@@ -30,8 +30,8 @@ Base.show(io::IO, metrics::Metrics) = print(io, "Metrics(", join(string.(metrics
 
 # store metrics in `cbstate` so other callbacks can access them
 function on(::Init, ::Phase, metrics::Metrics, learner)
-    learner.cbstate[:metricsstep] = MVHistory()
-    learner.cbstate[:metricsepoch] = DefaultDict{Phase, MVHistory}(() -> MVHistory())
+    learner.cbstate.metricsstep = MVHistory()
+    learner.cbstate.metricsepoch = DefaultDict{Phase, MVHistory}(() -> MVHistory())
 end
 
 
@@ -39,8 +39,8 @@ end
 on(::EpochBegin, ::Phase, metrics::Metrics, learner) = foreach(reset!, metrics.metrics)
 
 function on(::BatchEnd, phase, metrics::Metrics, learner)
-    metricsstep = learner.cbstate[:metricsstep]
-    step = learner.cbstate[:history].nsteps
+    metricsstep = learner.cbstate.metricsstep
+    step = learner.cbstate.history.steps
     for metric in metrics.metrics
         step!(metric, learner)
         if phase isa AbstractTrainingPhase
@@ -50,8 +50,8 @@ function on(::BatchEnd, phase, metrics::Metrics, learner)
 end
 
 function on(::EpochEnd, phase, metrics::Metrics, learner)
-    metricsepoch = learner.cbstate[:metricsepoch]
-    epoch = learner.cbstate[:history].epochs
+    metricsepoch = learner.cbstate.metricsepoch
+    epoch = learner.cbstate.history.epochs
     for metric in metrics.metrics
         push!(metricsepoch[phase], Symbol(metricname(metric)), epoch, epochvalue(metric))
     end

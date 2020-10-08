@@ -16,7 +16,7 @@ function on(::EpochBegin,
         phase::Phase,
         cb::ProgressBarLogger,
         learner)
-    e = learner.cbstate[:history].epochs + 1
+    e = learner.cbstate.history.epochs + 1
     cb.p = Progress(numsteps(learner, phase), "Epoch $(e) $(phase): ")
 end
 
@@ -38,7 +38,7 @@ function on(::EpochEnd,
         phase::Phase,
         cb::MetricsPrinter,
         learner)
-    mvhistory = learner.cbstate[:metricsepoch][phase]
+    mvhistory = learner.cbstate.metricsepoch[phase]
     for key in keys(mvhistory)
         println(key, ": ", last(mvhistory, key)[2])
     end
