@@ -38,13 +38,13 @@ function on(::EpochEnd,
         phase::Phase,
         cb::MetricsPrinter,
         learner)
-    mvhistory = learner.cbstate.metricsepoch[phase]
-    for (key, history) in mvhistory
-        println(string(metric), ": ", last(history)[2])
+    mvhistory = learner.cbstate[:metricsepoch][phase]
+    for key in keys(mvhistory)
+        println(key, ": ", last(mvhistory, key)[2])
     end
 end
 
-stateaccess(::MetricsPrinter) = (cbstate = (metricsepoch = (Read(),),)
+stateaccess(::MetricsPrinter) = (; cbstate = (; metricsepoch = Read()))
 runafter(::MetricsPrinter) = (Metrics,)
 
 # StopOnNaNLoss

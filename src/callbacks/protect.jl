@@ -49,12 +49,12 @@ function Base.setindex!(protected::Protected, x, idx)
 end
 
 getindexperm(data::D, idx, perm::Nothing) where D =
-    throw(ProtectedException("Read access to $(D)[$(string(idx))] disallowed."))
+    throw(ProtectedException("Read access to $D[$idx] disallowed."))
 getindexperm(data, idx, perm::Union{Read, Write}) = getindex(data, idx)
 getindexperm(data, idx, perm::NamedTuple) = protect(getindex(data, idx), perm)
 
 setindexperm!(data::D, idx, x, perm::Union{Read, Nothing, NamedTuple}) where D =
-    throw(ProtectedException("Write access to $(D)[$(string(idx))] disallowed."))
+    throw(ProtectedException("Write access to $D[$idx] disallowed."))
 setindexperm!(data, x, idx, perm::Write) = setindex!(data, x, idx)
 
 

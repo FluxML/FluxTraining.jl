@@ -59,8 +59,8 @@ optimizing `lossfn` with `optimizer` on `data`.
 ## Keyword arguments
 
 - `usedefaultcallbacks = true`: Whether to add some basic callbacks. Included
-    are [`Loss`](#), [`Recorder`](#), [`ProgressBarLogger`](#),
-    [`StopOnNaNLoss`](#), and [`MetricsLogger`](#)
+    are [`Metrics`](#), [`Recorder`](#), [`ProgressBarLogger`](#),
+    [`StopOnNaNLoss`](#), and [`MetricsPrinter`](#)
 - `cbrunner = LinearRunner()`: Callback runner to use.
 
 ## Fields
@@ -91,6 +91,7 @@ function Learner(
         usedefaultcallbacks = true, cbrunner = LinearRunner()
     )
     callbacks = collect(Callback, callbacks)
+
     if usedefaultcallbacks
         for cb in defaultcallbacks()
             if !any(typeof(cb) .== typeof.(callbacks))
@@ -111,10 +112,9 @@ Base.show(io::IO, learner::Learner) = print(io, "Learner()")
 
 defaultcallbacks()::Vector{AbstractCallback} = [
     ProgressBarLogger(),
-    MetricsLogger(),
+    MetricsPrinter(),
     StopOnNaNLoss(),
     Recorder(),
-    Loss(),
 ]
 
 
@@ -135,7 +135,7 @@ end
 
 
 numsteps(learner::Protected, phase) = numsteps(getfield(learner, :data), phase)
-numsteps(learner, phase) = length(getdataloader(phase, learner))
+numsteps(learner, phase) = length(getdataiter(phase, learner))
 
 hascallback(learner::Protected, T) = hascallback(getfield(learner, :data), phase)
 hascallback(learner, T) = any(C <: T for C in typeof.(learner.callbacks.cbs))

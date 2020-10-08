@@ -21,7 +21,7 @@ struct Recorder <: Callback end
 
 
 stateaccess(::Recorder) = (
-    cbstate = (history = Write()),
+    cbstate = (history = Write(),),
     batch = Read(),
     )
 

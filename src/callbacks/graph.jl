@@ -1,6 +1,7 @@
 
 # TOOD: check for reads on :cbstate without a previous write (missing callback)
 # TODO: check for cyclical dependencies
+# TODO: better error messages
 """
     callbackgraph(callbacks) -> SimpleDiGraph
 
@@ -23,15 +24,15 @@ function callbackgraph(callbacks)
     readaccesses = [accesses(ps, Read) for ps in permissions]
 
     # detect write-write conflicts and handle them
-    for (i, j, access) in findconflicts(writeaccesses, writeaccesses)
+    for (i, j, accessi, accessj) in findconflicts(writeaccesses, writeaccesses)
         if !(has_edge(g, i, j) || has_edge(g, j, i))
             cb1, cb2 = callbacks[i], callbacks[j]
             resolution = resolveconflict(cb1, cb2)
             if resolution isa NotDefined
-                error("Write conflict detected between $cb1 and $cb2: $access). Implement `resolveconflict(::$(typeof(cb1)), ::$(typeof(cb2))`")
+                errorwriteconflict(cb1, cb2, accessi, accessj, resolvable = true)
             end
             if resolution isa Unresolvable
-                error("Unresolvable write conflict detected between $cb1 and $cb2: $access)")
+                errorwriteconflict(cb1, cb2, accessi, accessj, resolvable = false)
             elseif resolution isa RunFirst
                 if resolution.cb === cb1
                     add_edge!(g, cb1, cb2)
@@ -64,8 +65,7 @@ function findconflicts(accesses1, accesses2)
             for a1 in as1
                 for a2 in as2
                     if hasconflict(a1, a2)
-                        access = length(a1) > length(a2) ?  a2 : a1
-                        push!(conflicts, (i, j+i, access))
+                        push!(conflicts, (i, j+i, a1, a2))
                     end
                 end
             end
@@ -130,3 +130,34 @@ function hasconflict(access1::T1, access2::T2)::Bool where {T1<:Tuple, T2<:Tuple
         return hasconflict(access1[2:end], access2[2:end])
     end
 end
+
+
+
+function errorwriteconflict(cb1, cb2, access1, access2; resolvable = true)
+    msg = """
+    Write conflict detected between $cb1 and $(cb2)!
+
+    - $cb1 writes to $(formataccess(access1))
+    - $cb2 writes to $(formataccess(access2))
+    """
+
+    if resolvable
+        msg *= """
+
+        To resolve this, implement:
+
+        `resolveconflict(::$(typeof(cb1)), ::$(typeof(cb2)))`
+
+        See also `resolveconflict` and `ConflictResolution`.
+        """
+    else
+        msg *= """
+
+        Both callbacks cannot be used together, please remove one.
+        """
+    end
+
+    error(msg)
+end
+
+formataccess(access) = join(string.(access), '.')

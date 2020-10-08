@@ -35,6 +35,6 @@ stateaccess(::Type{LearningRate}) = (optimizer = Write(),)
 sethyperparameter!(learner, ::Type{LearningRate}, value) =
     setlearningrate!(learner.optimizer, value)
 
-function setlearningrate!(optimiizer, value)
+function setlearningrate!(optimizer, value)
     optimizer.eta = value
 end
