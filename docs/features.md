@@ -5,7 +5,7 @@ This page gives a run-down of many features *FluxTraining.jl* brings to the tabl
 Most features are implemented as callbacks and using them is as simple as passing the callback when constructing the [`Learner`](#):
 
 ```julia
-cb = CoolFeatureCallback()
+cb = CoolFeature🕶️Callback()
 learner = Learner(model, data, opt, lossfn, cb)
 ```
 
