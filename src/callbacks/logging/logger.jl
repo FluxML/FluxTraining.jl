@@ -1,24 +1,31 @@
 
 import .Loggables
 
-Loggables.Image
 
+"""
+    abstract type LoggerBackend
+
+Backend for the [`Logger`](#) callback.
+
+To add support for logging [`Loggables.Loggable`](#) `L` to backend `B`, implement
+
+[`log_to`](#)`(backend::B, loggable::L, names, i)`
+
+See also [`Logger`](#), [`log_to`](#)
+"""
 abstract type LoggerBackend end
 
-"""
-    canlog(backend::LoggerBackend)
-
-Return a list of [`Loggable`] types that `backend` supports.
-"""
-function canlog end
-
 
 """
-    log_to(backend, loggable, name, i; [group])
-    log_to(backends, loggable, name, i; [group])
+    log_to(backend, loggable, group, i)
+    log_to(backends, loggable, group, i)
 
-Log `loggable` to `backend` with `name` to index `i`
-of optional `group`.
+Log `loggable` to `backend` with `group` to index `i`.
+
+- `loggable` is any [`Loggables.Loggable`](#)
+- `group` can be a `String` or a tuple of `String`s implying
+  some grouping which can be used by a supporting backend.
+- `i` is a step counter and unique for every group.
 """
 function log_to(backends::Tuple, loggable, name, i; group = ())
     for backend in backends
@@ -29,6 +36,23 @@ end
 
 """
     Logger(backends...) <: Callback
+
+Callback that logs training data to one or many [`LoggerBackend`](#)s.
+
+Logs metrics data if `cbstate.metrics` exists (i.e. [`Metrics`](#) is used)
+and hyperparameters if `cbstate.hyperparams` exists (i.e. [`Scheduler`](#) is used).
+
+Also publishes its backends to `cbstate.loggerbackends` so that other callbacks
+may use them to publish other data like images.
+
+See also [`LoggerBackend`](#), [`Loggables.Loggable`](#), [`log_to`](#), [`TensorBoardBackend`](#)
+
+Example:
+
+```julia
+logger = Logger(TensorBoardBackend("tblogs"))
+Learner(model, data, opt, lossfn, Metrics(accuracy), logger)
+```
 """
 struct Logger <: Callback
     backends::Tuple
@@ -98,7 +122,7 @@ function on(::EpochEnd, phase, logger::Logger, learner)
                 Loggables.Value(val),
                 string(metric),
                 history.epochs,
-                group = ("Epoch", string(phase), "Metrics"))
+                group = ("Epoch", string(typeof(phase)), "Metrics"))
         end
     end
 end

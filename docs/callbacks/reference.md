@@ -11,10 +11,10 @@
 
 ### Logging and I/O
 
-- [`Checkpointer`](#)
+- `Checkpointer`
 - [`ProgressBarLogger`](#)*
 - [`Recorder`](#)*
-- [`MetricsLogger`](#)*
+- [`MetricsPrinter`](#)*
 
 ### Training loop
 
@@ -22,11 +22,6 @@
 - [`StopOnNaNLoss`](#)*
 - [`Scheduler`](#)
 - [`ToGPU`](#)
-
-Additionally, some abstract types are defined. It is recommended that you subtype from these where it makes sense so they will be play nicely with other callbacks.
-
-- [`AbstractMetric`](#)
-- [`AbstractLogger`](#) 
 
 ## API
 

@@ -75,6 +75,15 @@ function fitepochphase!(
 end
 
 
+step!(learner, phase, data)
+
+# regular training
+data = (xs, ys)
+
+
+
+
+
 function fitbatchphase!(
         learner::Learner,
         batch,

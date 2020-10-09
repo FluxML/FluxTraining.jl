@@ -14,8 +14,8 @@ To use them, pass a list of callbacks to `Learner`:
 {cell=main, output=false}
 ```julia
 learner = Learner(
-    model, data, optimizer, lossfn,
-    ToGPU(), Metric(accuracy))  # pass any number of callbacks
+    model, data, optimizer, lossfn,  # required arguments
+    ToGPU(), Metrics(accuracy))      # pass any number of callbacks as additional arguments
 ```
 
 Some useful callbacks are added by default:
