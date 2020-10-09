@@ -1,16 +1,21 @@
 [README](README.md)
 
-#### Start here
+### Start here
 
 - [Getting started](docs/getting_started.md)
 - [User guide](docs/overview.md)
+- [Features](docs/features.md)
 
-#### Training loop
-
-- [Using callbacks](docs/training/usage.md)
+### Tutorials
 
 
-#### Callbacks
+
+### Training loop
+
+- [Basics](docs/training/basics.md)
+
+
+### Callbacks
 
 - [Using callbacks](docs/callbacks/usage.md)
 - [Callback reference](docs/callbacks/reference.md)

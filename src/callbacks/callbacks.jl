@@ -25,7 +25,6 @@ on(::BatchEnd, ::Phase, cb::ProgressBarLogger, learner) = next!(cb.p)
 runafter(::ProgressBarLogger) = (Recorder,)
 stateaccess(::ProgressBarLogger) = (data = Read(), cbstate = (history = Read()),)
 
-# MetricsLogger
 
 """
     MetricsPrinter()

@@ -1,15 +1,17 @@
 """
-    Metrics(metricfns...)
+    Metrics(metrics...)
 
 Callback that tracks metrics during training.
+
+`metrics` can be both [`AbstractMetric`](#)s or functions
+like `f(ŷs, ys)` which will be converted to [`Metric`](#)s.
 
 A metric tracking `lossfn` is included by default.
 
 ## Examples
 
-```
-metrics = Metrics(accuracy)
-```
+- `metrics = Metrics(accuracy)`
+- `metrics = Metrics(Metric(Flux.mse, device = gpu), Metric(Flux.mae, device = gpu))`
 
 """
 struct Metrics <: Callback
@@ -60,6 +62,27 @@ end
 
 # AbstractMetric interface
 
+
+"""
+    abstract type AbstractMetric
+
+Abstract type for metrics passed to [`Metrics`](#).
+
+For most use cases, you should use [`Metric`](#), the standard
+implementation.
+
+## Interface
+
+If [`Metric`](#) doesn't fit your use case, you can create
+a new subtype of `AbstractMetric` and implement the following
+methods to make it compatible with [`Metrics`](#):
+
+- [`reset!`](#)`(metric)`
+- [`step!`](#)`(metric, learner)`
+- [`stepvalue`](#)`(metric)`
+- [`epochvalue`](#)`(metric)`
+- [`metricname`](#)`(metric)`
+"""
 abstract type AbstractMetric end
 
 mutable struct Metric{T}
@@ -71,6 +94,31 @@ mutable struct Metric{T}
     last::Union{Nothing, T}
 end
 
+Base.show(io::IO, metric::Metric{T}) where T = print(io, "Metric(", metric.name, ")")
+
+"""
+    Metric(metricfn[; statistic, device, name])
+
+Implementation of [`AbstractMetric`](#) that can be used with the
+[`Metrics`](#) callback.
+
+## Arguments
+
+- `metricfn(ŷs, ys)` should return a number.
+- `statistic` is a `OnlineStats.Statistic` that is updated after every step.
+    The default is `OnlineStats.Mean()`
+- `name` is used for printing.
+- `device = cpu` is a function applied to `ys` and `ŷs` before calling
+    `metricfn`. If `metricfn` works on the GPU, you may want to pass
+    `Flux.gpu` here for better performance.
+
+## Examples
+
+- `Metric(accuracy)`
+- `Metric(Flux.mse, device = gpu)`
+- `Metric(Flux.mae, device = gpu)`
+
+"""
 function Metric(
         metricfn;
         name = uppercasefirst(string(metricfn)),

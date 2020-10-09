@@ -12,6 +12,9 @@ h1, h2, h3, h4, h5 {
 article {
     font-family: 'Source Serif Pro', serif;
 }
+footer {
+    font-family: 'Source Sans Pro'
+}
 nav {
     font-family: 'Source Sans Pro';
     font-style: normal;
@@ -86,4 +89,8 @@ pre {
     border: none;
     position: relative;
     padding: 8px;
+}
+
+#page-navigation {
+    margin-top: 4em
 }

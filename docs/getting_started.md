@@ -30,12 +30,3 @@ And train for 10 epochs:
 ```julia
 fit!(learner, 10)
 ```
-
-Most functionality in `FluxTraining.jl` is implemented as a [callback](../extending/extend_callbacks.md).
-
-Callbacks can add all kinds of functionality by hooking into the training loop. For example, the following callbacks are used by default when you create a learner:
-
-- [`ProgressBarLogger`](#) prints the progress of the current epoch
-- [`MetricsLogger`](#) prints the metrics of the last epoch
-- [`StopOnNaNLoss`](#) stops the training when a `NaN` loss is encountered
-
