@@ -125,4 +125,33 @@ function on(::EpochEnd, phase, logger::Logger, learner)
                 group = ("Epoch", string(typeof(phase)), "Metrics"))
         end
     end
+    
+    log_parameters(
+        logger.backends,
+        learner.model,
+        "Model",
+        history.epochs,
+        group = ("Epoch", string(typeof(phase))))
+end
+
+
+function log_parameters(backends, x, name, epochs; group)
+    params = Flux.trainable(x)
+    if isempty(params) && x isa AbstractArray
+        log_to(
+            backends,
+            Loggables.Histogram(vec(x)),
+            name,
+            epochs,
+            group = group)
+    else
+        for (pname, pval) in pairs(params)
+            log_parameters(
+                backends,
+                pval,
+                "$name.$pname",
+                epochs,
+                group = group)
+        end
+    end
 end
