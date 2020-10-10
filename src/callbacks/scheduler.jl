@@ -24,8 +24,26 @@ end
 Schedule(args...; unit = :epoch, kwargs...) =
     Schedule(Animation(args...; kwargs...), unit)
 
+"""
+    Scheduler(schedules...)
+
+Callback for hyperparameter scheduling. Takes pairs of [`HyperParameter`](#)
+types and [`Schedule`](#)s.
+
+## Example
+
+```julia
+lrschedule = Schedule([0, 10], [0.1, 0.001], Animations.sineio())
+scheduler = Scheduler(
+    LearningRate => lrschedule
+)
+```
+
+See also [`Schedule`](#).
+"""
 struct Scheduler <: Callback
     schedules::Dict{Type{<:HyperParameter}, Schedule}
+    Scheduler(args...; kwargs...) = new(Dict(args...; kwargs...))
 end
 
 Base.show(io::IO, scheduler::Scheduler) = print(
