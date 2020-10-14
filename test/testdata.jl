@@ -24,7 +24,7 @@ end
 
 
 
-function testlearner(; nbatches = 16, coeff = 3, batchsize = 8, kwargs...)
+function testlearner(args...; nbatches = 16, coeff = 3, batchsize = 8, kwargs...)
     model = TestModel(rand())
     data = collect(testbatches(nbatches, coeff, batchsize))
     opt = Descent(0.001)
@@ -32,7 +32,8 @@ function testlearner(; nbatches = 16, coeff = 3, batchsize = 8, kwargs...)
         model,
         (data, data),
         opt,
-        Flux.mae;
+        Flux.mae,
+        args...;
         usedefaultcallbacks = false,
         kwargs...)
 end
