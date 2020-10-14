@@ -65,9 +65,14 @@ function fitepochphase!(
         learner::Learner,
         phase::Union{TrainingPhase, ValidationPhase, TestPhase},
     )
+    dataiter = getdataiter(phase, learner)
+    if dataiter === nothing
+        throw(CancelEpochException("No data found for phase $(typeof(phase))"))
+    end
+
     handle(EpochBegin(), learner, phase)
 
-    for batch in getdataiter(phase, learner)
+    for batch in dataiter
         fitbatch!(learner, batch, phase)
     end
 
