@@ -113,6 +113,7 @@ defaultcallbacks()::Vector{AbstractCallback} = [
     MetricsPrinter(),
     StopOnNaNLoss(),
     Recorder(),
+    Metrics(),
 ]
 
 
