@@ -8,7 +8,7 @@
 
 ### Tutorials
 
-
+- [MNIST training](docs/tutorials/mnist.ipynb)
 
 ### Training loop
 
