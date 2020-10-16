@@ -1,8 +1,12 @@
 include("./imports.jl")
 
+
 @testset ExtendedTestSet "FluxTraining.jl" begin
-    include("./testfunctional.jl")
-    include("./testprotected.jl")
-    include("./testtraining.jl")
-    include("./testcallbacks.jl")
+    include("./metrics.jl")
+    include("./protected.jl")
+    include("./training.jl")
+    include("./callbacks/stoponnanloss.jl")
+    include("./callbacks/custom.jl")
+    include("./callbacks/recorder.jl")
+    include("./callbacks/scheduler.jl")
 end

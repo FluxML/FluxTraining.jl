@@ -1,7 +1,7 @@
 
 include("./imports.jl")
 
-@testset ExtendedTestSet "Protected" begin
+@testset ExtendedTestSet "`protect`" begin
     mutable struct C
         x::Int
         y::Int
@@ -41,7 +41,7 @@ include("./imports.jl")
     @testset ExtendedTestSet "write nested" begin
         a_p3 = protect(makea(), (b1 = (c = (x=Write(),),),))  # allow mutating only a.b1.c.x
         @test_nowarn a_p3.b1.c.x = 2
-        @test_nowarn a_p3.b1.c.x 
+        @test_nowarn a_p3.b1.c.x
         @test a_p3.b1.c isa Protected
         @test_throws ProtectedException a_p3.b1.c.y = 2
     end
