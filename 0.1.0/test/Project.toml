@@ -3,6 +3,7 @@ authors = ["lorenzoh <lorenz.ohly@gmail.com>"]
 version = "0.1.0"
 
 [deps]
+Animations = "27a7e980-b3e6-11e9-2bcd-0b925532e340"
 Flux = "587475ba-b771-5e3f-ad9e-33799f191a9c"
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 TestSetExtensions = "98d24dd4-01ad-11ea-1b02-c9a08f80db04"

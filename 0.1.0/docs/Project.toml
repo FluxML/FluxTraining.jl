@@ -1,5 +1,6 @@
 [deps]
-Documenter = "e30172f5-a6a5-5a46-863b-614d45cd2de4"
+DataLoaders = "2e981812-ef13-4a9c-bfa0-ab13047b12a9"
 Flux = "587475ba-b771-5e3f-ad9e-33799f191a9c"
 FluxTraining = "7bf95e4d-ca32-48da-9824-f0dc5310474f"
-
+MLDataPattern = "9920b226-0b2a-5f5f-9153-9aa70a013f8b"
+Publish = "f065f642-d108-4f50-8aa5-6749150a895a"

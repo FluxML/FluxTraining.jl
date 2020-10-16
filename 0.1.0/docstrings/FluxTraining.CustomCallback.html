@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="Publish.jl" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="" />
+    <title>FluxTraining.jl</title>
+    <link rel="stylesheet" href="..&#x2F;normalize.css" />
+    <link rel="stylesheet" href="..&#x2F;tabulator_simple.min.css" />
+    <link rel="stylesheet" href="..&#x2F;publish.css" />
+    <link rel="stylesheet" href="..&#x2F;default.min.css" />
+    <script src="..&#x2F;versions.js"></script>
+    <script src="..&#x2F;lunr.js"></script>
+    <script src="..&#x2F;highlight.min.js"></script>
+    <script src="..&#x2F;tabulator.min.js"></script>
+    <script src="..&#x2F;julia.min.js"></script>
+    <script src="..&#x2F;julia-repl.min.js"></script>
+    <script src="..&#x2F;publish.js"></script>
+    <link rel="stylesheet" href="..&#x2F;docs&#x2F;custom.css" />
+    
+</head>
+<body>
+    <div class="menu">
+        <svg id="menu-toggler" title="Contents" onclick="toggleIndexPage();" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 6C2 5.44772 2.44772 5 3 5H21C21.5523 5 22 5.44772 22 6C22 6.55228 21.5523 7 21 7H3C2.44772 7 2 6.55228 2 6Z" fill="currentColor" /><path d="M2 12.0322C2 11.4799 2.44772 11.0322 3 11.0322H21C21.5523 11.0322 22 11.4799 22 12.0322C22 12.5845 21.5523 13.0322 21 13.0322H3C2.44772 13.0322 2 12.5845 2 12.0322Z" fill="currentColor" /><path d="M3 17.0645C2.44772 17.0645 2 17.5122 2 18.0645C2 18.6167 2.44772 19.0645 3 19.0645H21C21.5523 19.0645 22 18.6167 22 18.0645C22 17.5122 21.5523 17.0645 21 17.0645H3Z" fill="currentColor" /></svg>
+        <input id="search-input" placeholder="Search">
+        <select id="version-selector"></select>
+    </div>
+    <main id="page"><article><div class='docs' id='CustomCallback'>
+<p><code>public</code> <code>CustomCallback</code> — <code>parametric type</code></p>
+<div class='doc' id='1'>
+<pre><code>CustomCallback(f, TEvent, [TPhase = Phase, access = (;)])
+</code></pre>
+<p>A callback that runs <code>f(learner)</code> every time <code>TEvent</code> is triggered
+in <code>TPhase</code>.</p>
+<p>If <code>f</code> needs to access learner state, pass <code>access</code>, a named tuple
+in the same form as <a href="FluxTraining.stateaccess.html"><code>stateaccess</code></a>.</p>
+</div>
+</div>
+</article>
+        <div id="page-navigation">
+            <a id="previous-page" title="Previous" href="FluxTraining.AbstractMetric.html"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M16.2426 6.34317L14.8284 4.92896L7.75739 12L14.8285 19.0711L16.2427 17.6569L10.5858 12L16.2426 6.34317Z" fill="currentColor" /></svg></a>
+            <a id="next-page" title="Next" href="FluxTraining.Events.BackwardBegin.html"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10.5858 6.34317L12 4.92896L19.0711 12L12 19.0711L10.5858 17.6569L16.2427 12L10.5858 6.34317Z" fill="currentColor" /></svg></a>
+        </div>
+    </main>
+    <nav id="toc"><p><a href="../README.html">README</a></p>
+<h3 id="start-here"><a href="../#start-here" class="anchor"></a>Start here</h3>
+<ul>
+<li><a href="../docs/getting_started.html">Getting started</a></li>
+<li><a href="../docs/overview.html">User guide</a></li>
+<li><a href="../docs/features.html">Features</a></li>
+</ul>
+<h3 id="tutorials"><a href="../#tutorials" class="anchor"></a>Tutorials</h3>
+<ul>
+<li><a href="../docs/tutorials/mnist.html">MNIST training</a></li>
+</ul>
+<h3 id="training-loop"><a href="../#training-loop" class="anchor"></a>Training loop</h3>
+<ul>
+<li><a href="../docs/training/basics.html">Basics</a></li>
+</ul>
+<h3 id="callbacks"><a href="../#callbacks" class="anchor"></a>Callbacks</h3>
+<ul>
+<li><a href="../docs/callbacks/usage.html">Using callbacks</a></li>
+<li><a href="../docs/callbacks/reference.html">Callback reference</a></li>
+<li><a href="../docs/callbacks/custom.html">Custom callbacks</a></li>
+<li><a href="../docs/callbacks/tipstricks.html">Tips &amp; tricks</a></li>
+</ul>
+<hr />
+<ul>
+<li><a href="../docstrings.html">Docstrings</a></li>
+<li><a href="../docs/status.html">Project status</a></li>
+<li><a href="../docs/ecosystem.html">Ecosystem</a></li>
+</ul>
+</nav>
+    <footer>
+        Built with <a target="_blank" href="https://github.com/MichaelHatherly/Publish.jl">Publish.jl</a> and the <a target="_blank" href="https://julialang.org">Julia Language.</a>
+    </footer>
+    <script>hljs.initHighlightingOnLoad();</script>
+</body>
+</html>
