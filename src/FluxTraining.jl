@@ -49,8 +49,9 @@ include("./callbacks/logging/tensorboard.jl")
 
 
 # callback implementations
+include("./callbacks/conditional.jl")
 include("./callbacks/callbacks.jl")
-include("./callbacks/customcallback.jl")
+include("./callbacks/custom.jl")
 include("./callbacks/metrics.jl")
 include("./callbacks/recorder.jl")
 
@@ -67,8 +68,8 @@ include("./train.jl")
 
 # TODO: remove old exports
 export AbstractCallback,
-    Accuracy,
     Loss,
+    ConditionalCallback,
     CancelBatchException,
     CancelEpochException,
     CancelFittingException,
@@ -76,14 +77,13 @@ export AbstractCallback,
     CheckpointAny,
     CheckpointLowest,
     CustomCallback,
-    DataLoader,
     EarlyStopping,
     ToGPU,
     GarbageCollect,
     Learner,
     Metric,
     Recorder,
-    ProgressBarLogger,
+    ProgressPrinter,
     Metrics,
     MetricsPrinter,
     ParamSchedule,
@@ -98,6 +98,7 @@ export AbstractCallback,
 
     LearningRate,
 
+    throttle,
     accuracy,
     anneal_linear,
     anneal_cosine,

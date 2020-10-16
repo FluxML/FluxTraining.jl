@@ -59,7 +59,7 @@ optimizing `lossfn` with `optimizer` on `data`.
 ## Keyword arguments
 
 - `usedefaultcallbacks = true`: Whether to add some basic callbacks. Included
-    are [`Metrics`](#), [`Recorder`](#), [`ProgressBarLogger`](#),
+    are [`Metrics`](#), [`Recorder`](#), [`ProgressPrinter`](#),
     [`StopOnNaNLoss`](#), and [`MetricsPrinter`](#)
 - `cbrunner = LinearRunner()`: Callback runner to use.
 
@@ -109,7 +109,7 @@ end
 Base.show(io::IO, learner::Learner) = print(io, "Learner()")
 
 defaultcallbacks()::Vector{AbstractCallback} = [
-    ProgressBarLogger(),
+    ProgressPrinter(),
     MetricsPrinter(),
     StopOnNaNLoss(),
     Recorder(),

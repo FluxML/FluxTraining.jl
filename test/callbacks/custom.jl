@@ -1,12 +1,12 @@
 include("../imports.jl")
 
 
-# TODO: fix
-#=
 @testset ExtendedTestSet "`CustomCallback`" begin
-    cb = CustomCallback{EpochEnd,TrainingPhase}((learner) -> CancelFittingException("test"))
-    learner = testlearner(coeff = 3, callbacks = [cb])
+    cb = CustomCallback(Events.BatchEnd, TrainingPhase) do learner
+            throw(CancelFittingException("test"))
+    end
+    learner = testlearner(Recorder(), cb, coeff = 3)
     fit!(learner, TrainingPhase())
-    @test learner.state.history.epochs == 1
+    @test learner.cbstate.history.epochs == 0
+    @test learner.cbstate.history.steps == 0
 end
-=#

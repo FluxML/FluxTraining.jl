@@ -78,7 +78,7 @@ end
 
 
 function on(::BatchBegin, ::AbstractTrainingPhase, scheduler::Scheduler, learner)
-    step = learner.cbstate.history.steps
+    step = learner.cbstate.history.steps + 1
     for (H, schedule) in scheduler.schedules
         value = Animations.at(schedule.animation, step)
         sethyperparameter!(learner, H, Animations.at(schedule.animation, step))

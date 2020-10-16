@@ -7,6 +7,7 @@ include("./imports.jl")
     include("./training.jl")
     include("./callbacks/stoponnanloss.jl")
     include("./callbacks/custom.jl")
+    include("./callbacks/conditional.jl")
     include("./callbacks/recorder.jl")
     include("./callbacks/scheduler.jl")
 end

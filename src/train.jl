@@ -14,7 +14,7 @@ function fit!(learner::Learner, phases::AbstractVector{<:Phase})
         end
     catch e
         if e isa CancelFittingException
-            @info "Fitting was cancelled" error=e
+            @debug "Fitting was cancelled" error=e
         else
             rethrow()
         end
@@ -31,7 +31,7 @@ function fitepoch!(learner, phase)
         fitepochphase!(learner, phase)
     catch e
         if e isa CancelEpochException
-            @info "Epoch was cancelled" error=e
+            @debug "Epoch was cancelled" error=e
         else
             rethrow()
         end
@@ -47,7 +47,7 @@ function fitbatch!(learner, batch, phase)
         fitbatchphase!(learner, batch, phase)
     catch e
         if e isa CancelBatchException
-            @info "Batch was cancelled" error=e
+            @debug "Batch was cancelled" error=e
         else
             rethrow()
         end

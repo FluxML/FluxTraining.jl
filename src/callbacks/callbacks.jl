@@ -1,29 +1,29 @@
 
-# ProgressBarLogger
+# ProgressPrinter
 
 """
-    ProgressBarLogger()
+    ProgressPrinter()
 
 Prints a progress bar of the currently running epoch.
 """
-mutable struct ProgressBarLogger <: Callback
+mutable struct ProgressPrinter <: Callback
     p::Union{Nothing,Progress}
 end
-ProgressBarLogger() = ProgressBarLogger(nothing)
-Base.show(io::IO, ::ProgressBarLogger) = print(io, "ProgressBarLogger()")
+ProgressPrinter() = ProgressPrinter(nothing)
+Base.show(io::IO, ::ProgressPrinter) = print(io, "ProgressPrinter()")
 
 function on(::EpochBegin,
         phase::Phase,
-        cb::ProgressBarLogger,
+        cb::ProgressPrinter,
         learner)
     e = learner.cbstate.history.epochs + 1
     cb.p = Progress(numsteps(learner, phase), "Epoch $(e) $(phase): ")
 end
 
-on(::BatchEnd, ::Phase, cb::ProgressBarLogger, learner) = next!(cb.p)
+on(::BatchEnd, ::Phase, cb::ProgressPrinter, learner) = next!(cb.p)
 
-runafter(::ProgressBarLogger) = (Recorder,)
-stateaccess(::ProgressBarLogger) = (data = Read(), cbstate = (history = Read()),)
+runafter(::ProgressPrinter) = (Recorder,)
+stateaccess(::ProgressPrinter) = (data = Read(), cbstate = (history = Read()),)
 
 
 """
