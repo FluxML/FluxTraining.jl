@@ -12,7 +12,7 @@
 ### Logging and I/O
 
 - `Checkpointer`
-- [`ProgressBarLogger`](#)*
+- [`ProgressPrinter`](#)*
 - [`Recorder`](#)*
 - [`MetricsPrinter`](#)*
 
