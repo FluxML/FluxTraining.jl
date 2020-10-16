@@ -77,10 +77,10 @@ uuid = "082447d4-558c-5d27-93f4-14fc19e9eca2"
 version = "0.7.26"
 
 [[ChainRulesCore]]
-deps = ["LinearAlgebra", "MuladdMacro"]
-git-tree-sha1 = "a7e639087196dc62ce4f7cad7224735d7520e963"
+deps = ["LinearAlgebra", "MuladdMacro", "SparseArrays"]
+git-tree-sha1 = "aebbda0a7c644bd8739b34f2a1b1e48f114aab49"
 uuid = "d360d2e6-b24c-11e9-a2a3-2a2ae2dbcce4"
-version = "0.9.16"
+version = "0.9.17"
 
 [[CodecZlib]]
 deps = ["TranscodingStreams", "Zlib_jll"]
