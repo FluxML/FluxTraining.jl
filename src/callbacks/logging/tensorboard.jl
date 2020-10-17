@@ -41,9 +41,10 @@ function log_to(backend::TensorBoardBackend, text::Loggables.Text, name, i; grou
     log_text(backend.logger, name, text.data; step = i)
 end
 
-
-
-
+function log_to(backend::TensorBoardBackend, hist::Loggables.Histogram, name, i; group=())
+    name = _combinename(name, group)
+    log_histogram(backend.logger, name, hist.data, step=i)
+end
 
 # Utilities
 
