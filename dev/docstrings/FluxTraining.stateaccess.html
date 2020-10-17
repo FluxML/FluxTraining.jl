@@ -29,6 +29,13 @@
     <main id="page"><article><div class='docs' id='stateaccess'>
 <p><code>private</code> <code>stateaccess</code> — <code>function</code></p>
 <div class='doc' id='1'>
+<pre><code>stateaccess(callback)
+</code></pre>
+<p>Return a named tuple determining what learner state <code>callback</code>
+can access.</p>
+<p>The default is <code>(;)</code>, the empty named tuple, meaning no state can be accessed.</p>
+</div>
+<div class='doc' id='2'>
 <pre><code>stateaccess(::Type{HyperParameter})
 </code></pre>
 <p>Defines what <code>Learner</code> state is accessed when calling

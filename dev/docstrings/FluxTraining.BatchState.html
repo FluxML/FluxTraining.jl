@@ -26,35 +26,28 @@
         <input id="search-input" placeholder="Search">
         <select id="version-selector"></select>
     </div>
-    <main id="page"><article><div class='docs' id='History'>
-<p><code>private</code> <code>History</code> — <code>struct</code></p>
+    <main id="page"><article><div class='docs' id='BatchState'>
+<p><code>private</code> <code>BatchState</code> — <code>struct</code></p>
 <div class='doc' id='1'>
-<pre><code class="language-julia">mutable struct History
+<pre><code>mutable struct BatchState
 </code></pre>
+<p>Stores data of the last processed batch.</p>
+<h1 id="fields"><a href="#fields" class="anchor"></a>Fields</h1>
 <ul>
-<li>
-<p><code>epochs::Int64</code></p>
-<p>Default: 0</p>
-</li>
-<li>
-<p><code>steps::Int64</code></p>
-<p>Default: 0</p>
-</li>
-<li>
-<p><code>stepsepoch::Int64</code></p>
-<p>Default: 0</p>
-</li>
-<li>
-<p><code>samples::Int64</code></p>
-<p>Default: 0</p>
-</li>
+<li><code>xs</code></li>
+<li><code>ys</code></li>
+<li><code>ŷs</code></li>
+<li><code>loss</code></li>
+<li><code>grads</code></li>
 </ul>
+<p>(!) If used in callbacks, some fields may be <code>nothing</code> as
+they are reset after every step.</p>
 </div>
 </div>
 </article>
         <div id="page-navigation">
-            <a id="previous-page" title="Previous" href="FluxTraining.GarbageCollect.html"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M16.2426 6.34317L14.8284 4.92896L7.75739 12L14.8285 19.0711L16.2427 17.6569L10.5858 12L16.2426 6.34317Z" fill="currentColor" /></svg></a>
-            <a id="next-page" title="Next" href="FluxTraining.HyperParameter.html"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10.5858 6.34317L12 4.92896L19.0711 12L12 19.0711L10.5858 17.6569L16.2427 12L10.5858 6.34317Z" fill="currentColor" /></svg></a>
+            <a id="previous-page" title="Previous" href="FluxTraining.AbstractMetric.html"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M16.2426 6.34317L14.8284 4.92896L7.75739 12L14.8285 19.0711L16.2427 17.6569L10.5858 12L16.2426 6.34317Z" fill="currentColor" /></svg></a>
+            <a id="next-page" title="Next" href="FluxTraining.CustomCallback.html"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10.5858 6.34317L12 4.92896L19.0711 12L12 19.0711L10.5858 17.6569L16.2427 12L10.5858 6.34317Z" fill="currentColor" /></svg></a>
         </div>
     </main>
     <nav id="toc"><p><a href="../README.html">README</a></p>
