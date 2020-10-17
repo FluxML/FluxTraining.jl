@@ -10,16 +10,21 @@ Callbacks(cbs, runner = LinearRunner()) = Callbacks(cbs, runner, callbackgraph(c
 
 
 """
-    $TYPEDEF
+    mutable struct BatchState
 
 Stores data of the last processed batch.
 
-$FIELDS
+# Fields
+
+- `xs`
+- `ys`
+- `ŷs`
+- `loss`
+- `grads`
 
 (!) If used in callbacks, some fields may be `nothing` as
 they are reset after every step.
 """
-# TODO: maybe make this dependent on the current `Phase`?
 @with_kw mutable struct BatchState
     xs = nothing
     ys = nothing
