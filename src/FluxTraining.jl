@@ -30,9 +30,6 @@ using DataStructures: DefaultDict
 include("./functional/anneal.jl")
 include("./functional/metrics.jl")
 
-# utilities
-include("./util/ioutils.jl")
-
 # callback system
 include("./callbacks/protect.jl")
 include("./callbacks/phases.jl")
@@ -53,6 +50,7 @@ include("./callbacks/callbacks.jl")
 include("./callbacks/custom.jl")
 include("./callbacks/metrics.jl")
 include("./callbacks/recorder.jl")
+include("./callbacks/checkpointer.jl")
 
 # hyperparameter scheduling
 include("./callbacks/hyperparameters.jl")
@@ -73,8 +71,6 @@ export AbstractCallback,
     CancelEpochException,
     CancelFittingException,
     Checkpointer,
-    CheckpointAny,
-    CheckpointLowest,
     CustomCallback,
     EarlyStopping,
     ToGPU,

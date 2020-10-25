@@ -71,7 +71,7 @@ end
 EarlyStopping(patience) = EarlyStopping(patience, 0, Inf64)
 
 function on(::EpochEnd, ::ValidationPhase, cb::EarlyStopping, learner)
-    valloss = epochvalue(getloss(learner.callbacks))
+    valloss = last(learner.cbstate.metricsepoch[phase], :Loss)[2]
     if (valloss > cb.lowest)
         if !(cb.waited < cb.patience)
             throw(CancelFittingException("Validation loss did not improve for $(cb.patience) epochs"))
@@ -84,7 +84,7 @@ function on(::EpochEnd, ::ValidationPhase, cb::EarlyStopping, learner)
     end
 end
 
-stateaccess(::EarlyStopping) = (callbacks = Read(),)
+stateaccess(::EarlyStopping) = (callbacks = Read(), cbstate = (; metricsepoch = Read()))
 
 
 struct ToGPU <: SafeCallback end
