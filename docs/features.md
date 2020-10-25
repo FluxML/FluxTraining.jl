@@ -19,8 +19,12 @@ By default, `Learner` will track only the loss function. You can track other met
 
 ## Hyperparameter scheduling
 
-The [`Scheduler`](#) callback takes care of hyperparameter scheduling. Documentation is WIP and a proper tutorial is in the works. See [`Scheduler`](#), [`Schedule`](#), [`HyperParameter`](#).
+The [`Scheduler`](#) callback takes care of hyperparameter scheduling. See the [Hyperparameter scheduling tutorial] and also [`Scheduler`](#), [`Schedule`](#), [`HyperParameter`](#).
 
 ## Logging
 
 For logging, use the [`Logger`](#) callback. It can have multiple backends but right now only [`TensorBoardBackend`](#) is part of *FluxTraining.jl*. See also [`LoggerBackend`](#), [`log_to`](#), and [`Loggables.Loggable`](#).
+
+## Checkpointing
+
+Use the [`Checkpointer`](#) callback to create model checkpoints after every epoch.
