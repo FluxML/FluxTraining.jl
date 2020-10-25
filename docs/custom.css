@@ -1,12 +1,11 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Source+Serif+Pro&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:ital,wght@1,800&display=swap');
 
 h1, h2, h3, h4, h5 {
     font-family: 'Source Sans Pro';
-    font-weight: bold;
     padding-left: 8px;
+    font-weight: 500;
 }
 
 article {
@@ -49,7 +48,7 @@ article {
 }
 
 main  p, ul {
-    max-width: 600px;
+    max-width: 700px;
 }
 
 p {
@@ -60,7 +59,8 @@ code.hljs {
     padding-top: 5px;
     padding-bottom: 5px;
     border-left: solid 1px lightgray;
-    background-color: #f8f8f8;
+    background-color: #ffffff;
+    font-size: 14px;
 }
 
 
