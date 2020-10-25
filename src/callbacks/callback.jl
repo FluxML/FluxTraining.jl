@@ -8,6 +8,15 @@ abstract type UnsafeCallback <: AbstractCallback end
 
 # TODO: implement proper merging of permissions
 
+"""
+    stateaccess(callback)
+
+Return a named tuple determining what learner state `callback`
+can access.
+
+The default is `(;)`, the empty named tuple, meaning no state can be accessed.
+
+"""
 stateaccess(::Callback) = (;)
 runafter(::AbstractCallback) = ()
 

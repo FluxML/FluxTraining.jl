@@ -1,8 +1,3 @@
-"""
-    $TYPEDEF
-
-$TYPEDFIELDS
-"""
 @with_kw mutable struct History
     # Number of completed training epochs
     epochs::Int = 0

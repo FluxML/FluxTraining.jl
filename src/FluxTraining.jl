@@ -12,7 +12,6 @@ using Flux
 using Flux: Params, onecold
 using Flux.Optimise: update!
 using Glob
-using DocStringExtensions
 import OnlineStats
 using OnlineStats: EqualWeight, Mean, OnlineStat
 using Parameters

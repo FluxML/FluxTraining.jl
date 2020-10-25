@@ -5,8 +5,8 @@
     throttle(callback, event, freq = 1)
     throttle(callback, event, seconds = 1)
 
-
-    # TODO
+Throttle `event` for `callback` so that it is triggered either only every
+`freq`'th time  or every `seconds` seconds.
 """
 function throttle(callback, event; freq = nothing, seconds = nothing)
     xor(isnothing(freq), isnothing(seconds)) || error("Pass either `every` OR `seconds`.")
