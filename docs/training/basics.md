@@ -15,7 +15,7 @@ Each phase implements its own training logic which is run when calling `fit!(lea
 
 If this looks like a regular old training loop, you're right! What makes the training loop customizable is the callback system. During training, [`Event`](#)s are thrown that [callbacks can hook into](../callbacks/custom.md).
 
-Here's a rundown of the events thrown during a training and validation phase:
+For a rundown of events, see [`Events`](#).
 
 
 

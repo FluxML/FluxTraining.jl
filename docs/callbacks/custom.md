@@ -1,6 +1,6 @@
 # Custom callbacks
 
-*FluxTraining.jl*'s callback system is built around multiple dispatch, so you specify which part of the training you want to "hook into" by dispatching on `Phase`s and `Event`s.
+*FluxTraining.jl*'s callback system is built around multiple dispatch, so you specify which part of the training you want to "hook into" by dispatching on [`Phase`](#)s and `Event`s. See [Training loop](../training/basics.md) and [`Events`](#) as a reference to phases and events.
 
 ## A guided example
 
