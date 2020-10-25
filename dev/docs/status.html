@@ -26,14 +26,23 @@
         <input id="search-input" placeholder="Search">
         <select id="version-selector"></select>
     </div>
-    <main id="page"><article><h3 id="planned-features"><a href="#planned-features" class="anchor"></a>Planned Features</h3>
-<h4 id="changes"><a href="#changes" class="anchor"></a>Changes</h4>
+    <main id="page"><article><h1 id="project-status"><a href="#project-status" class="anchor"></a>Project status</h1>
+<p>The core interfaces of <em>FluxTraining.jl</em> are stable now and it comes with a good set of features to get started.</p>
+<p>However, there is still a lot of work to be done! This page gives some ideas for new features and improvements that could be added to <em>FluxTraining.jl</em>. If you want to have something on this list, open a GitHub issue or, better yet, a merge request.</p>
+<h2 id="features"><a href="#features" class="anchor"></a>Features</h2>
 <ul>
-<li>add default optimizer and use weight decay</li>
+<li><code>ToTorch</code> callback: like <a href="../docstrings/FluxTraining.ToGPU.html"><code>ToGPU</code></a> but uses <a href="https://github.com/FluxML/Torch.jl"><em>Torch.jl</em></a>. Should be implemented using <a href="https://github.com/JuliaPackaging/Requires.jl"><em>Requires.jl</em></a> to forego the heavy dependency.</li>
+<li><a href="https://www.wandb.com/">Weights&amp;Biases</a> backend for <a href="../docstrings/FluxTraining.Logger.html"><code>Logger</code></a></li>
+<li>More functional metrics, i.e. <code>metric(y_pred, y)</code> (atm the only one is <code>accuracy</code>). <a href="https://docs.fast.ai/metrics">Metrics implemented in fastai</a> could be an inspiration.</li>
 </ul>
-<h4 id="callbacks"><a href="#callbacks" class="anchor"></a>Callbacks</h4>
+<h2 id="improvements"><a href="#improvements" class="anchor"></a>Improvements</h2>
 <ul>
-<li><code>ToTorch</code> callback that uses <code>Torch.jl</code> (<span class="citation"><a href="#ref-requires">@requires</a></span>)</li>
+<li><a href="../docstrings/FluxTraining.Checkpointer.html"><code>Checkpointer</code></a>: Add conditions for checkpointing, e.g. only save a checkpoint when validation loss is decreasing.</li>
+</ul>
+<h2 id="documentation"><a href="#documentation" class="anchor"></a>Documentation</h2>
+<ul>
+<li>Hyperparameter scheduling tutorial</li>
+<li>More complete training tutorials including data pipelines</li>
 </ul>
 </article>
         <div id="page-navigation">
