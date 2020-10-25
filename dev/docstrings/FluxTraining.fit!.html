@@ -30,9 +30,15 @@
 <p><code>public</code> <code>fit!</code> — <code>function</code></p>
 <div class='doc' id='1'>
 <pre><code>fit!(learner, phases)
-fit!(learner, phase)
-fit!(learner, n)
 </code></pre>
+<p>Fit <code>learner</code> with <a href="FluxTraining.Phases.Phase.html"><code>Phase</code></a>s <code>phases</code>. See [<code>./docs/training/basics.md</code>] for more
+info on the training loop.</p>
+</div>
+<div class='doc' id='2'>
+<pre><code>fit!(learner, n)
+</code></pre>
+<p>Shorthand for <code>fit!(learner, repeat([TrainingPhase(), ValidationPhase()], n))</code>, i.e.
+a very basic training loop of <code>n</code> epochs of training followed by validation.</p>
 </div>
 </div>
 </article>

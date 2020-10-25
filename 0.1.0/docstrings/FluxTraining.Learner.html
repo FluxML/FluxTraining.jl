@@ -46,10 +46,11 @@ Must be iterable and return tuples of <code>(xs, ys)</code></li>
 <ul>
 <li><code>usedefaultcallbacks = true</code>: Whether to add some basic callbacks. Included
 are <a href="FluxTraining.Metrics.html"><code>Metrics</code></a>, <a href="FluxTraining.Recorder.html"><code>Recorder</code></a>, <a href="FluxTraining.ProgressPrinter.html"><code>ProgressPrinter</code></a>,
-<a href="FluxTraining.StopOnNaNLoss.html"><code>StopOnNaNLoss</code></a>, and <a href="FluxTraining.MetricsPrinter.html"><code>MetricsPrinter</code></a></li>
+<a href="FluxTraining.StopOnNaNLoss.html"><code>StopOnNaNLoss</code></a>, and <a href="FluxTraining.MetricsPrinter.html"><code>MetricsPrinter</code></a>.</li>
 <li><code>cbrunner = LinearRunner()</code>: Callback runner to use.</li>
 </ul>
 <h2 id="fields"><a href="#fields" class="anchor"></a>Fields</h2>
+<p><em>(Use this as a reference when implementing callbacks)</em></p>
 <ul>
 <li>
 <p><code>model</code>, <code>optimizer</code>, and <code>lossfn</code> are stored as passed in</p>

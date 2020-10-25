@@ -26,7 +26,20 @@
         <input id="search-input" placeholder="Search">
         <select id="version-selector"></select>
     </div>
-    <main id="page"><article><h1 id="training-loop-basics"><a href="#training-loop-basics" class="anchor"></a>Training loop basics</h1>
+    <main id="page"><article><h1 id="training-loop"><a href="#training-loop" class="anchor"></a>Training loop</h1>
+<p>The training loop, of course, is the core component in <em>FluxTraining.jl</em>.</p>
+<p>Once you have a <a href="../../docstrings/FluxTraining.Learner.html"><code>Learner</code></a>, the simplest way to start training is to run <a href="../../docstrings/FluxTraining.fit!.html"><code>fit!</code></a><code>(learner, n)</code>. This will train for <code>n</code> epochs of one training phase and one validation phase each.</p>
+<p>Like the <a href="../callbacks/usage.html">callback system</a>, the training loop has an extensible interface based on multiple dispatch.</p>
+<p>The key abstraction are <a href="../../docstrings/FluxTraining.Phases.Phase.html"><code>Phase</code></a>s. In fact, the above <code>fit!(learner, n)</code> is just a shorthand for running <code>fit!(learner, [TrainingPhase(), ValidationPhase()])</code> <code>n</code> times.</p>
+<p>Each phase implements its own training logic which is run when calling <code>fit!(learner, phase)</code>:</p>
+<ul>
+<li><a href="../../docstrings/FluxTraining.Phases.TrainingPhase.html"><code>TrainingPhase</code></a> does what you expect it to: it uses the training data iterator (<code>learner.data.training</code>), iterates over the batches, computes the forward and backward pass for each batch and updates the model parameters.</li>
+<li><a href="../../docstrings/FluxTraining.Phases.ValidationPhase.html"><code>ValidationPhase</code></a> uses the validation data to compute the forward pass</li>
+</ul>
+<p>If this looks like a regular old training loop, you’re right! What makes the training loop customizable is the callback system. During training, <a href="../../docstrings/FluxTraining.Events.Event.html"><code>Event</code></a>s are thrown that <a href="../callbacks/custom.html">callbacks can hook into</a>.</p>
+<p>Here’s a rundown of the events thrown during a training and validation phase:</p>
+<h2 id="extending"><a href="#extending" class="anchor"></a>Extending</h2>
+<p>Training and validation are currently the only two <a href="../../docstrings/FluxTraining.Phases.Phase.html"><code>Phase</code></a>s implemented, but the interface can be extended by implementing <a href="../../docstrings/FluxTraining.fitepochphase!.html"><code>fitepochphase!</code></a> and <a href="../../docstrings/FluxTraining.fitbatchphase!.html"><code>fitbatchphase!</code></a>. An example use case is implementing GAN training.</p>
 </article>
         <div id="page-navigation">
             <a id="previous-page" title="Previous" href="..&#x2F;tutorials&#x2F;mnist.html"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M16.2426 6.34317L14.8284 4.92896L7.75739 12L14.8285 19.0711L16.2427 17.6569L10.5858 12L16.2426 6.34317Z" fill="currentColor" /></svg></a>
