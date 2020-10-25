@@ -87,14 +87,20 @@ function on(::BatchBegin, ::AbstractTrainingPhase, scheduler::Scheduler, learner
 end
 
 
+"""
+    onecycle(nepochs, max_val, [start_val, end_val; start_pctg])
+
+Creates a one-cycle [`Schedule`](#) over `nepochs` epochs from `start_val`
+over `max_val` to `end_val`.
+"""
 function onecycle(
-        epochs, max_lr,
-        start_lr = max_lr / 10,
-        end_lr = max_lr / 30,
+        nepochs, max_val,
+        start_val = max_val / 10,
+        end_val = max_val / 30,
         start_pctg = 0.1)
     return Schedule(
-        [0, epochs * start_pctg, epochs],
-        [start_lr, max_lr, end_lr],
+        [0, nepochs * start_pctg, nepochs],
+        [start_val, max_val, end_val],
         [Animations.sineio(), Animations.sineio()]
     )
 

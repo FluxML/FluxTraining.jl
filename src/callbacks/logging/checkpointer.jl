@@ -1,44 +1,45 @@
-# CheckpointCondition
-abstract type CheckpointCondition end
-
-struct CheckpointAny <: CheckpointCondition end
-mutable struct CheckpointLowest <: CheckpointCondition
-    lowest::Real
-end
-CheckpointLowest() = CheckpointLowest(Inf)
-
-(::CheckpointAny)(loss) = true
-
-function (checklowest::CheckpointLowest)(loss)
-    cond = loss < checklowest.lowest
-    if cond
-        checklowest.lowest = loss
-    end
-    return cond
-end
-
-# Checkpointer
-struct Checkpointer <: SafeCallback
-    condition::CheckpointCondition
-    deleteprevious::Bool
-end
-Checkpointer(condition = CheckpointLowest(); deleteprevious = false) = Checkpointer(
-    condition, deleteprevious)
 
 
-# TODO: refactor to use `Metrics`
-function on(::EpochEnd, ::ValidationPhase, checkpointer::Checkpointer, learner)
-    loss = epochvalue(getloss(learner.callbacks))
-    if checkpointer.condition(loss)
-        if checkpointer.deleteprevious
-            previousfiles = glob("model-chckpnt-E*", artifactpath(learner))
-            foreach(rm, previousfiles)
-        end
-        epochs = learner.cbstate.history.epochs
-        filename = "model-chckpnt-E$epochs-L$loss.bson"
-        path = joinpath(artifactpath(learner), filename)
-        savemodel(learner.model, path)
+"""
+    Checkpointer(folder)
+
+Saves `learner.model` to `folder` after every [`AbstractTrainingPhase`].
+
+Use `FluxTraining.`[`loadmodel`](#) to load a model.
+"""
+struct Checkpointer <: Callback
+    folder
+    function Checkpointer(folder)
+        mkpath(folder)
+        return new(folder)
     end
 end
 
-stateaccess(::Checkpointer) = (callbacks = Read(), cbstate = (history = Read()))
+
+stateaccess(::Checkpointer) = (
+    model = Read(),
+    cbstate = (metricsepoch = Read(), history = Read())
+)
+
+function on(::EpochEnd, phase::AbstractTrainingPhase, checkpointer::Checkpointer, learner)
+    loss = last(learner.cbstate.metricsepoch[phase], :Loss)[2]
+    epoch = learner.cbstate.history.epochs
+    filename = "checkpoint_epoch_$(lpad(string(epoch), 3, '0'))_loss_$loss.bson"
+    savemodel(learner.model, joinpath(checkpointer.folder, filename))
+end
+
+
+# TODO: replace with JLD2?
+function savemodel(model, path)
+    @save path model = cpu(model)
+end
+
+"""
+    loadmodel(path)
+
+Loads a model that was saved to `path` using `FluxTraining.`[`savemode`](#).
+"""
+function loadmodel(path)
+    @load path model
+    return model
+end
