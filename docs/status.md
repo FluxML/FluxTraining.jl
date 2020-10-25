@@ -18,5 +18,4 @@ However, there is still a lot of work to be done! This page gives some ideas for
 
 ## Documentation
 
-- Hyperparameter scheduling tutorial
 - More complete training tutorials including data pipelines
