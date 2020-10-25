@@ -27,7 +27,6 @@ using DataStructures: DefaultDict
 
 
 # functional
-include("./functional/anneal.jl")
 include("./functional/metrics.jl")
 
 # callback system
@@ -81,8 +80,6 @@ export AbstractCallback,
     ProgressPrinter,
     Metrics,
     MetricsPrinter,
-    ParamSchedule,
-    ParamScheduler,
     TrainingPhase,
     ValidationPhase,
     Schedule,
@@ -95,14 +92,8 @@ export AbstractCallback,
 
     throttle,
     accuracy,
-    anneal_linear,
-    anneal_cosine,
-    anneal_exp,
-    anneal_const,
-    endtraining,
     fit!,
     loadmodel,
-    loadweights,
     onecycle,
     savemodel,
     saveweights,
