@@ -24,6 +24,7 @@ function fit!(learner::Learner, phases::AbstractVector{<:Phase})
 end
 
 fit!(learner::Learner, phase::Phase)::Learner = fit!(learner, [phase])
+
 """
     fit!(learner, n)
 

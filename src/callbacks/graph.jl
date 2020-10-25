@@ -1,7 +1,6 @@
 
 # TOOD: check for reads on :cbstate without a previous write (missing callback)
 # TODO: check for cyclical dependencies
-# TODO: better error messages
 """
     callbackgraph(callbacks) -> SimpleDiGraph
 

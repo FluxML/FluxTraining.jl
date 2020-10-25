@@ -45,6 +45,8 @@ schedule = Schedule(
 learner = model(model, data, opt, lossfn, Scheduler(LearningRate => schedule))
 ```
 
+For convenience, you can also use the [`onecycle`](#) to create the `Schedule`.
+
 ## Extending
 
 You can create and schedule your own hyperparameters.

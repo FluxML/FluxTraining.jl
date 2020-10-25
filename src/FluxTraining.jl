@@ -1,10 +1,5 @@
 module FluxTraining
 
-#=
-Refactoring:
-- better serialization of Learners
-=#
-
 
 using LightGraphs
 using BSON: @load, @save
@@ -41,6 +36,7 @@ include("./callbacks/execution.jl")
 include("./callbacks/logging/Loggables.jl")
 include("./callbacks/logging/logger.jl")
 include("./callbacks/logging/tensorboard.jl")
+include("./callbacks/logging/checkpointer.jl")
 
 
 # callback implementations
@@ -49,7 +45,6 @@ include("./callbacks/callbacks.jl")
 include("./callbacks/custom.jl")
 include("./callbacks/metrics.jl")
 include("./callbacks/recorder.jl")
-include("./callbacks/checkpointer.jl")
 
 # hyperparameter scheduling
 include("./callbacks/hyperparameters.jl")
@@ -62,7 +57,6 @@ include("./learner.jl")
 include("./train.jl")
 
 
-# TODO: remove old exports
 export AbstractCallback,
     Loss,
     ConditionalCallback,
@@ -87,18 +81,11 @@ export AbstractCallback,
     Logger,
     TensorBoardBackend,
     StopOnNaNLoss,
-
     LearningRate,
-
     throttle,
     accuracy,
     fit!,
-    loadmodel,
     onecycle,
-    savemodel,
-    saveweights,
-    setschedule!,
-    splitdataset,
-    starttraining
-
+    loadmodel,
+    savemodel
 end # module
