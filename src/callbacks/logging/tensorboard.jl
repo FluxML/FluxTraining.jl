@@ -14,7 +14,7 @@ struct TensorBoardBackend <: LoggerBackend
     function TensorBoardBackend(
             logdir,
             existfn = TensorBoardLogger.tb_overwrite; kwargs...)
-        return new(TBLogger(logdir, existfn; kwargs...))
+        return new(TensorBoardLogger.TBLogger(logdir, existfn; kwargs...))
     end
 end
 

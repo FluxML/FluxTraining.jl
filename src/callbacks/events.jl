@@ -8,42 +8,42 @@ module Events
 """
 Abstract type for events that callbacks can hook into
 """
-abstract type FitEvent end
+abstract type Event end
 
 """
 Supertype for events that are called within `Zygote.gradient`.
 They need to be handled differently because try/catch is not
 supported by Zygote's compiler.
 """
-abstract type GradEvent <: FitEvent end
+abstract type GradEvent <: Event end
 
 """
-    Init <: FitEvent
+    Init <: Event
 
 Called once when the learner is created/the callback is added.
 """
-struct Init <: FitEvent end
+struct Init <: Event end
 
-struct FitBegin <: FitEvent end
-struct FitEnd <: FitEvent end
+struct FitBegin <: Event end
+struct FitEnd <: Event end
 
-struct EpochBegin <: FitEvent end
-struct EpochEnd <: FitEvent end
+struct EpochBegin <: Event end
+struct EpochEnd <: Event end
 
-struct BatchBegin <: FitEvent end
-struct BatchEnd <: FitEvent end
+struct BatchBegin <: Event end
+struct BatchEnd <: Event end
 
 """Called between calculating `y_pred` and calculating loss"""
 struct LossBegin <: GradEvent end
 """Called between calculating loss and calculating gradients"""
 struct BackwardBegin <: GradEvent end
 """Called between calculating gradients and updating parameters"""
-struct BackwardEnd <: FitEvent end
+struct BackwardEnd <: Event end
 
 
 export
     # asbtract
-    FitEvent, GradEvent,
+    Event, GradEvent,
     # concrete
     Init,
     FitBegin, FitEnd,

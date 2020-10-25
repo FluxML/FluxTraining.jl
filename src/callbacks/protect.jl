@@ -74,6 +74,16 @@ Base.fieldnames(protected::Protected) = fieldnames(typeof(getfield(protected, :d
 
 protect(x, perms) = Protected(x, perms)
 
+"""
+    PropDict(dict)
+
+Like a `Dict{Symbol}`, but attribute syntax can be used to access values.
+
+## Examples
+
+
+
+"""
 struct PropDict{V}
     d::Dict
     function PropDict(d::Dict{K, V}) where {K, V}

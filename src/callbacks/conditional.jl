@@ -28,7 +28,7 @@ end
 
 stateaccess(cc::ConditionalCallback) = stateaccess(cc.callback)
 
-function on(event::FitEvent, phase::Phase, cb::ConditionalCallback, learner)
+function on(event::Event, phase::Phase, cb::ConditionalCallback, learner)
     if shouldrun(cb.condition, event, phase)
         on(event, phase, cb.callback, learner)
     end
