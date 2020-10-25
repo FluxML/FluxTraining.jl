@@ -58,6 +58,7 @@ schedule = Schedule(
 
 learner = model(model, data, opt, lossfn, Scheduler(LearningRate =&gt; schedule))
 </code></pre>
+<p>For convenience, you can also use the <a href="../../docstrings/FluxTraining.onecycle.html"><code>onecycle</code></a> to create the <code>Schedule</code>.</p>
 <h2 id="extending"><a href="#extending" class="anchor"></a>Extending</h2>
 <p>You can create and schedule your own hyperparameters.</p>
 <p>To do this, you will need to define</p>
