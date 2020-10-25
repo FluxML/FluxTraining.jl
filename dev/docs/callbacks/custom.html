@@ -27,7 +27,7 @@
         <select id="version-selector"></select>
     </div>
     <main id="page"><article><h1 id="custom-callbacks"><a href="#custom-callbacks" class="anchor"></a>Custom callbacks</h1>
-<p><em>FluxTraining.jl</em>’s callback system is built around multiple dispatch, so you specify which part of the training you want to “hook into” by dispatching on <code>Phase</code>s and <code>Event</code>s.</p>
+<p><em>FluxTraining.jl</em>’s callback system is built around multiple dispatch, so you specify which part of the training you want to “hook into” by dispatching on <a href="../../docstrings/FluxTraining.Phases.Phase.html"><code>Phase</code></a>s and <code>Event</code>s. See <a href="../training/basics.html">Training loop</a> and <a href="../../docstrings/FluxTraining.Events.html"><code>Events</code></a> as a reference to phases and events.</p>
 <h2 id="a-guided-example"><a href="#a-guided-example" class="anchor"></a>A guided example</h2>
 <p>There are 4 things you need to do to implement a custom callback:</p>
 <ol>

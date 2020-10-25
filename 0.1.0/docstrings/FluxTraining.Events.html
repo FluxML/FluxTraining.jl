@@ -29,8 +29,27 @@
     <main id="page"><article><div class='docs' id='Events'>
 <p><code>private</code> <code>Events</code> — <code>module</code></p>
 <div class='doc' id='1'>
-<pre><code>Events
+<pre><code>module Events
 </code></pre>
+<p>Provides the abstract <a href="FluxTraining.Events.Event.html"><code>Event</code></a> type and concrete event types.</p>
+<ul>
+<li><a href="FluxTraining.Events.Init.html"><code>Init</code></a> is called once for every callback. Use for initialization code
+that needs access to some <code>Learner</code> state.</li>
+</ul>
+<p>Events in <a href="FluxTraining.Phases.TrainingPhase.html"><code>TrainingPhase</code></a> and <a href="FluxTraining.Phases.ValidationPhase.html"><code>ValidationPhase</code></a>:</p>
+<ul>
+<li><a href="FluxTraining.Events.EpochBegin.html"><code>EpochBegin</code></a> and <a href="FluxTraining.Events.EpochEnd.html"><code>EpochEnd</code></a>, called at the beginning and end of each
+epoch.</li>
+<li><a href="FluxTraining.Events.BatchBegin.html"><code>BatchBegin</code></a> and <a href="FluxTraining.Events.BatchEnd.html"><code>BatchEnd</code></a>, called at the beginning and end of each
+batch.</li>
+<li><a href="FluxTraining.Events.LossBegin.html"><code>LossBegin</code></a>, called after the forward pass but before the loss calculation.</li>
+</ul>
+<p><a href="FluxTraining.Phases.TrainingPhase.html"><code>TrainingPhase</code></a> only:</p>
+<ul>
+<li><a href="FluxTraining.Events.BackwardBegin.html"><code>BackwardBegin</code></a>, called after forward pass and loss calculation but before gradient
+calculation.</li>
+<li><a href="FluxTraining.Events.BackwardEnd.html"><code>BackwardEnd</code></a>, called after gradient calculation but before parameter update.</li>
+</ul>
 </div>
 </div>
 </article>

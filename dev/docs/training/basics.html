@@ -37,7 +37,7 @@
 <li><a href="../../docstrings/FluxTraining.Phases.ValidationPhase.html"><code>ValidationPhase</code></a> uses the validation data to compute the forward pass</li>
 </ul>
 <p>If this looks like a regular old training loop, you’re right! What makes the training loop customizable is the callback system. During training, <a href="../../docstrings/FluxTraining.Events.Event.html"><code>Event</code></a>s are thrown that <a href="../callbacks/custom.html">callbacks can hook into</a>.</p>
-<p>Here’s a rundown of the events thrown during a training and validation phase:</p>
+<p>For a rundown of events, see <a href="../../docstrings/FluxTraining.Events.html"><code>Events</code></a>.</p>
 <h2 id="extending"><a href="#extending" class="anchor"></a>Extending</h2>
 <p>Training and validation are currently the only two <a href="../../docstrings/FluxTraining.Phases.Phase.html"><code>Phase</code></a>s implemented, but the interface can be extended by implementing <a href="../../docstrings/FluxTraining.fitepochphase!.html"><code>fitepochphase!</code></a> and <a href="../../docstrings/FluxTraining.fitbatchphase!.html"><code>fitbatchphase!</code></a>. An example use case is implementing GAN training.</p>
 </article>
