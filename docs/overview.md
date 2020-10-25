@@ -9,8 +9,7 @@ You decide what you want to read next!
 ## Tutorials
 
 - [MNIST training](./tutorials/mnist.ipynb)
-- Hyperparameter scheduling (TODO)
-- Logging (TODO)
+- [Hyperparameter scheduling](./tutorials/hyperparameters.md)
 
 ## Interfaces
 

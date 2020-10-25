@@ -6,7 +6,6 @@
 Saves `learner.model` to `folder` after every [`AbstractTrainingPhase`].
 
 Use `FluxTraining.`[`loadmodel`](#) to load a model.
-
 """
 struct Checkpointer <: Callback
     folder

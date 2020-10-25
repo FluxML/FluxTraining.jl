@@ -110,7 +110,5 @@ Every `nsteps` steps, forces garbage collection.
 Use this if you get memory leaks from, for example, parallel data loading.
 """
 function GarbageCollect(nsteps::Int = 100)
-    return CustomCallback{BatchEnd, Phase}(nsteps) do learner
-        garbagecollect()
-    end
+    return throttle(CustomCallback((learner) -> garbagecollect(), BatchEnd), freq = nsteps)
 end
