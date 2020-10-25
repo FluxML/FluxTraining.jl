@@ -34,7 +34,7 @@ using FluxTraining.Events, FluxTraining.Phases
 <p>Use <code>Base.methods</code> to check what events a callback handles:</p>
 <pre><code cell="main" class="language-julia">methods(FluxTraining.on, (Any, Any, Recorder, Any))
 </code></pre>
-# 5 methods for generic function <b>on</b>:<ul><li> on(::<b>FluxTraining.Events.EpochBegin</b>, ::<b>FluxTraining.Phases.AbstractTrainingPhase</b>, recorder::<b>Recorder</b>, learner) in FluxTraining at <a href="https://github.com/lorenzoh/FluxTraining.jl/tree/dcc92eb208bbb05cf52ae868e30be5438c0389eb//src/callbacks/recorder.jl#L29" target="_blank">/home/runner/work/FluxTraining.jl/FluxTraining.jl/src/callbacks/recorder.jl:29</a></li> <li> on(::<b>FluxTraining.Events.Init</b>, ::<b>FluxTraining.Phases.Phase</b>, recorder::<b>Recorder</b>, learner) in FluxTraining at <a href="https://github.com/lorenzoh/FluxTraining.jl/tree/dcc92eb208bbb05cf52ae868e30be5438c0389eb//src/callbacks/recorder.jl#L24" target="_blank">/home/runner/work/FluxTraining.jl/FluxTraining.jl/src/callbacks/recorder.jl:24</a></li> <li> on(::<b>FluxTraining.Events.BatchEnd</b>, phase::<b>FluxTraining.Phases.AbstractTrainingPhase</b>, recorder::<b>Recorder</b>, learner) in FluxTraining at <a href="https://github.com/lorenzoh/FluxTraining.jl/tree/dcc92eb208bbb05cf52ae868e30be5438c0389eb//src/callbacks/recorder.jl#L34" target="_blank">/home/runner/work/FluxTraining.jl/FluxTraining.jl/src/callbacks/recorder.jl:34</a></li> <li> on(::<b>FluxTraining.Events.EpochEnd</b>, phase::<b>FluxTraining.Phases.Phase</b>, recorder::<b>Recorder</b>, learner) in FluxTraining at <a href="https://github.com/lorenzoh/FluxTraining.jl/tree/dcc92eb208bbb05cf52ae868e30be5438c0389eb//src/callbacks/recorder.jl#L42" target="_blank">/home/runner/work/FluxTraining.jl/FluxTraining.jl/src/callbacks/recorder.jl:42</a></li> <li> on(::<b>FluxTraining.Events.Event</b>, phase, ::<b>FluxTraining.SafeCallback</b>, learner) in FluxTraining at <a href="https://github.com/lorenzoh/FluxTraining.jl/tree/dcc92eb208bbb05cf52ae868e30be5438c0389eb//src/callbacks/callback.jl#L66" target="_blank">/home/runner/work/FluxTraining.jl/FluxTraining.jl/src/callbacks/callback.jl:66</a></li> </ul><h3 id="visualize-the-callback-dependency-graph"><a href="#visualize-the-callback-dependency-graph" class="anchor"></a>Visualize the callback dependency graph</h3>
+# 5 methods for generic function <b>on</b>:<ul><li> on(::<b>FluxTraining.Events.Init</b>, ::<b>FluxTraining.Phases.Phase</b>, recorder::<b>Recorder</b>, learner) in FluxTraining at <a href="https://github.com/lorenzoh/FluxTraining.jl/tree/645483a2f9795f41d8f4c6b852b5672d6d0894e7//src/callbacks/recorder.jl#L24" target="_blank">/home/runner/work/FluxTraining.jl/FluxTraining.jl/src/callbacks/recorder.jl:24</a></li> <li> on(::<b>FluxTraining.Events.EpochEnd</b>, phase::<b>FluxTraining.Phases.Phase</b>, recorder::<b>Recorder</b>, learner) in FluxTraining at <a href="https://github.com/lorenzoh/FluxTraining.jl/tree/645483a2f9795f41d8f4c6b852b5672d6d0894e7//src/callbacks/recorder.jl#L42" target="_blank">/home/runner/work/FluxTraining.jl/FluxTraining.jl/src/callbacks/recorder.jl:42</a></li> <li> on(::<b>FluxTraining.Events.EpochBegin</b>, ::<b>FluxTraining.Phases.AbstractTrainingPhase</b>, recorder::<b>Recorder</b>, learner) in FluxTraining at <a href="https://github.com/lorenzoh/FluxTraining.jl/tree/645483a2f9795f41d8f4c6b852b5672d6d0894e7//src/callbacks/recorder.jl#L29" target="_blank">/home/runner/work/FluxTraining.jl/FluxTraining.jl/src/callbacks/recorder.jl:29</a></li> <li> on(::<b>FluxTraining.Events.BatchEnd</b>, phase::<b>FluxTraining.Phases.AbstractTrainingPhase</b>, recorder::<b>Recorder</b>, learner) in FluxTraining at <a href="https://github.com/lorenzoh/FluxTraining.jl/tree/645483a2f9795f41d8f4c6b852b5672d6d0894e7//src/callbacks/recorder.jl#L34" target="_blank">/home/runner/work/FluxTraining.jl/FluxTraining.jl/src/callbacks/recorder.jl:34</a></li> <li> on(::<b>FluxTraining.Events.Event</b>, phase, ::<b>FluxTraining.SafeCallback</b>, learner) in FluxTraining at <a href="https://github.com/lorenzoh/FluxTraining.jl/tree/645483a2f9795f41d8f4c6b852b5672d6d0894e7//src/callbacks/callback.jl#L66" target="_blank">/home/runner/work/FluxTraining.jl/FluxTraining.jl/src/callbacks/callback.jl:66</a></li> </ul><h3 id="visualize-the-callback-dependency-graph"><a href="#visualize-the-callback-dependency-graph" class="anchor"></a>Visualize the callback dependency graph</h3>
 <p>You can use <a href="https://juliagraphs.github.io/GraphPlot.jl/"><em>GraphPlot.jl</em></a> to visualize the dependencies between callbacks:</p>
 <pre><code output="false" style="display:none" cell="main" result="false" class="language-julia">learner = Learner(
     nothing, (nothing, nothing), nothing, nothing,  # dummy arguments
@@ -60,24 +60,26 @@ gplot(learner.callbacks.graph, nodelabel = learner.callbacks.cbs, layout = stres
 <li><a href="../../docs/overview.html">User guide</a></li>
 <li><a href="../../docs/features.html">Features</a></li>
 </ul>
-<h3 id="tutorials"><a href="../../#tutorials" class="anchor"></a>Tutorials</h3>
+<h3 id="library"><a href="../../#library" class="anchor"></a>Library</h3>
 <ul>
-<li><a href="../../docs/tutorials/mnist.html">MNIST training</a></li>
-</ul>
-<h3 id="training-loop"><a href="../../#training-loop" class="anchor"></a>Training loop</h3>
-<ul>
-<li><a href="../../docs/training/basics.html">Basics</a></li>
-</ul>
-<h3 id="callbacks"><a href="../../#callbacks" class="anchor"></a>Callbacks</h3>
+<li><a href="../../docs/training/basics.html">Training loop</a></li>
+<li>Callbacks
 <ul>
 <li><a href="../../docs/callbacks/usage.html">Using callbacks</a></li>
 <li><a href="../../docs/callbacks/reference.html">Callback reference</a></li>
 <li><a href="../../docs/callbacks/custom.html">Custom callbacks</a></li>
 <li><a href="../../docs/callbacks/tipstricks.html">Tips &amp; tricks</a></li>
 </ul>
-<hr />
-<ul>
+</li>
 <li><a href="../../docstrings.html">Docstrings</a></li>
+</ul>
+<h3 id="tutorials"><a href="../../#tutorials" class="anchor"></a>Tutorials</h3>
+<ul>
+<li><a href="../../docs/tutorials/mnist.html">MNIST training</a></li>
+<li><a href="../../docs/tutorials/hyperparameters.html">Hyperparameter scheduling</a></li>
+</ul>
+<h3 id="other"><a href="../../#other" class="anchor"></a>Other</h3>
+<ul>
 <li><a href="../../docs/status.html">Project status</a></li>
 <li><a href="../../docs/ecosystem.html">Ecosystem</a></li>
 </ul>

@@ -37,13 +37,15 @@ learner = Learner(model, data, opt, lossfn, cb)
 <h2 id="metrics"><a href="#metrics" class="anchor"></a>Metrics</h2>
 <p>By default, <code>Learner</code> will track only the loss function. You can track other metric with the <a href="../docstrings/FluxTraining.Metrics.html"><code>Metrics</code></a> callback. See also <a href="../docstrings/FluxTraining.Metric.html"><code>Metric</code></a>, <a href="../docstrings/FluxTraining.AbstractMetric.html"><code>AbstractMetric</code></a>.</p>
 <h2 id="hyperparameter-scheduling"><a href="#hyperparameter-scheduling" class="anchor"></a>Hyperparameter scheduling</h2>
-<p>The <a href="../docstrings/FluxTraining.Scheduler.html"><code>Scheduler</code></a> callback takes care of hyperparameter scheduling. Documentation is WIP and a proper tutorial is in the works. See <a href="../docstrings/FluxTraining.Scheduler.html"><code>Scheduler</code></a>, <a href="../docstrings/FluxTraining.Schedule.html"><code>Schedule</code></a>, <a href="../docstrings/FluxTraining.HyperParameter.html"><code>HyperParameter</code></a>.</p>
+<p>The <a href="../docstrings/FluxTraining.Scheduler.html"><code>Scheduler</code></a> callback takes care of hyperparameter scheduling. See the [Hyperparameter scheduling tutorial] and also <a href="../docstrings/FluxTraining.Scheduler.html"><code>Scheduler</code></a>, <a href="../docstrings/FluxTraining.Schedule.html"><code>Schedule</code></a>, <a href="../docstrings/FluxTraining.HyperParameter.html"><code>HyperParameter</code></a>.</p>
 <h2 id="logging"><a href="#logging" class="anchor"></a>Logging</h2>
 <p>For logging, use the <a href="../docstrings/FluxTraining.Logger.html"><code>Logger</code></a> callback. It can have multiple backends but right now only <a href="../docstrings/FluxTraining.TensorBoardBackend.html"><code>TensorBoardBackend</code></a> is part of <em>FluxTraining.jl</em>. See also <a href="../docstrings/FluxTraining.LoggerBackend.html"><code>LoggerBackend</code></a>, <a href="../docstrings/FluxTraining.log_to.html"><code>log_to</code></a>, and <a href="../docstrings/FluxTraining.Loggables.Loggable.html"><code>Loggables.Loggable</code></a>.</p>
+<h2 id="checkpointing"><a href="#checkpointing" class="anchor"></a>Checkpointing</h2>
+<p>Use the <a href="../docstrings/FluxTraining.Checkpointer.html"><code>Checkpointer</code></a> callback to create model checkpoints after every epoch.</p>
 </article>
         <div id="page-navigation">
             <a id="previous-page" title="Previous" href="overview.html"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M16.2426 6.34317L14.8284 4.92896L7.75739 12L14.8285 19.0711L16.2427 17.6569L10.5858 12L16.2426 6.34317Z" fill="currentColor" /></svg></a>
-            <a id="next-page" title="Next" href="tutorials&#x2F;mnist.html"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10.5858 6.34317L12 4.92896L19.0711 12L12 19.0711L10.5858 17.6569L16.2427 12L10.5858 6.34317Z" fill="currentColor" /></svg></a>
+            <a id="next-page" title="Next" href="training&#x2F;basics.html"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10.5858 6.34317L12 4.92896L19.0711 12L12 19.0711L10.5858 17.6569L16.2427 12L10.5858 6.34317Z" fill="currentColor" /></svg></a>
         </div>
     </main>
     <nav id="toc"><p><a href="../README.html">README</a></p>
@@ -53,24 +55,26 @@ learner = Learner(model, data, opt, lossfn, cb)
 <li><a href="../docs/overview.html">User guide</a></li>
 <li><a href="../docs/features.html">Features</a></li>
 </ul>
-<h3 id="tutorials"><a href="../#tutorials" class="anchor"></a>Tutorials</h3>
+<h3 id="library"><a href="../#library" class="anchor"></a>Library</h3>
 <ul>
-<li><a href="../docs/tutorials/mnist.html">MNIST training</a></li>
-</ul>
-<h3 id="training-loop"><a href="../#training-loop" class="anchor"></a>Training loop</h3>
-<ul>
-<li><a href="../docs/training/basics.html">Basics</a></li>
-</ul>
-<h3 id="callbacks"><a href="../#callbacks" class="anchor"></a>Callbacks</h3>
+<li><a href="../docs/training/basics.html">Training loop</a></li>
+<li>Callbacks
 <ul>
 <li><a href="../docs/callbacks/usage.html">Using callbacks</a></li>
 <li><a href="../docs/callbacks/reference.html">Callback reference</a></li>
 <li><a href="../docs/callbacks/custom.html">Custom callbacks</a></li>
 <li><a href="../docs/callbacks/tipstricks.html">Tips &amp; tricks</a></li>
 </ul>
-<hr />
-<ul>
+</li>
 <li><a href="../docstrings.html">Docstrings</a></li>
+</ul>
+<h3 id="tutorials"><a href="../#tutorials" class="anchor"></a>Tutorials</h3>
+<ul>
+<li><a href="../docs/tutorials/mnist.html">MNIST training</a></li>
+<li><a href="../docs/tutorials/hyperparameters.html">Hyperparameter scheduling</a></li>
+</ul>
+<h3 id="other"><a href="../#other" class="anchor"></a>Other</h3>
+<ul>
 <li><a href="../docs/status.html">Project status</a></li>
 <li><a href="../docs/ecosystem.html">Ecosystem</a></li>
 </ul>
