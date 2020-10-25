@@ -20,7 +20,7 @@ using Statistics: mean
 using UUIDs
 using Zygote
 using Animations
-using TensorBoardLogger: TBLogger, log_value, log_image, log_text
+using TensorBoardLogger: TBLogger, log_value, log_image, log_text, log_histogram
 using Zygote: Grads, gradient
 using ValueHistories
 using DataStructures: DefaultDict
