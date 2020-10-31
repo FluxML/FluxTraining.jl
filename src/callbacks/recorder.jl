@@ -10,7 +10,9 @@
 end
 
 """
-    Recorder(epoch, step, epochstats, stepstats)
+    Recorder()
+
+Maintains a [`History`](#). It's stored in `learner.cbstate.history`.
 """
 struct Recorder <: Callback end
 

@@ -29,6 +29,13 @@ stateaccess(::Type{HyperParameter}) = ()
 
 # Implementations
 
+"""
+    abstract type LearningRate <: HyperParameter
+
+Hyperparameter for the optimizer's learning rate.
+
+See [`Scheduler`](#) and [hyperparameter scheduling](./docs/tutorials/hyperparameters.md).
+"""
 abstract type LearningRate <: HyperParameter{Float64} end
 
 stateaccess(::Type{LearningRate}) = (optimizer = Write(),)

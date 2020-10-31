@@ -3,12 +3,15 @@
 
 You decide what you want to read next!
 
-- There are some user-centric **tutorials** that will introduce you to features of *FluxTraining.jl* one at a time
+- There are some user-centric tutorials that will introduce you to features of *FluxTraining.jl* one at a time
+- Alternatively you can read more about how *FluxTraining.jl* is implemented and how you can extend it
 
-### Tutorials
+## Tutorials
 
-- TODO [Hyperparameter scheduling](tutorials/scheduling)
-- TODO [Logging](tutorials/scheduling)
+- [MNIST training](./tutorials/mnist.ipynb)
+- [Hyperparameter scheduling](./tutorials/hyperparameters.md)
+
+## Interfaces
 
 ### Training loop
 

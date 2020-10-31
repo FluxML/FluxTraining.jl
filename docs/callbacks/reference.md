@@ -11,7 +11,7 @@
 
 ### Logging and I/O
 
-- `Checkpointer`
+- [`Checkpointer`](#)
 - [`ProgressPrinter`](#)*
 - [`Recorder`](#)*
 - [`MetricsPrinter`](#)*
@@ -23,6 +23,13 @@
 - [`Scheduler`](#)
 - [`ToGPU`](#)
 
+## Utilities
+
+There are also some callback utilities:
+
+- [`CustomCallback`](#)
+- [`throttle`](#)
+
 ## API
 
 The following types and functions can be used to create custom callbacks. Read the [custom callbacks guide](./custom.md) for more context.
@@ -31,3 +38,4 @@ The following types and functions can be used to create custom callbacks. Read t
 - [`stateaccess`](#)
 - [`runafter`](#)
 - [`resolveconflict`](#)
+

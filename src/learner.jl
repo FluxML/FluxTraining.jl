@@ -65,10 +65,12 @@ optimizing `lossfn` with `optimizer` on `data`.
 
 - `usedefaultcallbacks = true`: Whether to add some basic callbacks. Included
     are [`Metrics`](#), [`Recorder`](#), [`ProgressPrinter`](#),
-    [`StopOnNaNLoss`](#), and [`MetricsPrinter`](#)
+    [`StopOnNaNLoss`](#), and [`MetricsPrinter`](#).
 - `cbrunner = LinearRunner()`: Callback runner to use.
 
 ## Fields
+
+*(Use this as a reference when implementing callbacks)*
 
 - `model`, `optimizer`, and `lossfn` are stored as passed in
 - `data` is a `NamedTuple` of `(training = ..., validation = ..., test = ...)`.

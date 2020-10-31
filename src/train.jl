@@ -1,7 +1,8 @@
 """
     fit!(learner, phases)
-    fit!(learner, phase)
-    fit!(learner, n)
+
+Fit `learner` with [`Phase`](#)s `phases`. See [`./docs/training/basics.md`] for more
+info on the training loop.
 """
 function fit!(learner::Learner, phases::AbstractVector{<:Phase})
     if !(learner.callbacks.initialized)
@@ -23,6 +24,13 @@ function fit!(learner::Learner, phases::AbstractVector{<:Phase})
 end
 
 fit!(learner::Learner, phase::Phase)::Learner = fit!(learner, [phase])
+
+"""
+    fit!(learner, n)
+
+Shorthand for `fit!(learner, repeat([TrainingPhase(), ValidationPhase()], n))`, i.e.
+a very basic training loop of `n` epochs of training followed by validation.
+"""
 fit!(learner, n::Int)::Learner = fit!(learner, repeat([TrainingPhase(), ValidationPhase()], n))
 
 

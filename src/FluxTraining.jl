@@ -1,10 +1,5 @@
 module FluxTraining
 
-#=
-Refactoring:
-- better serialization of Learners
-=#
-
 
 using LightGraphs
 using BSON: @load, @save
@@ -20,18 +15,14 @@ using Statistics: mean
 using UUIDs
 using Zygote
 using Animations
-using TensorBoardLogger
+using TensorBoardLogger: TBLogger, log_value, log_image, log_text, log_histogram
 using Zygote: Grads, gradient
 using ValueHistories
 using DataStructures: DefaultDict
 
 
 # functional
-include("./functional/anneal.jl")
 include("./functional/metrics.jl")
-
-# utilities
-include("./util/ioutils.jl")
 
 # callback system
 include("./callbacks/protect.jl")
@@ -45,6 +36,7 @@ include("./callbacks/execution.jl")
 include("./callbacks/logging/Loggables.jl")
 include("./callbacks/logging/logger.jl")
 include("./callbacks/logging/tensorboard.jl")
+include("./callbacks/logging/checkpointer.jl")
 
 
 # callback implementations
@@ -65,7 +57,6 @@ include("./learner.jl")
 include("./train.jl")
 
 
-# TODO: remove old exports
 export AbstractCallback,
     Loss,
     ConditionalCallback,
@@ -73,8 +64,6 @@ export AbstractCallback,
     CancelEpochException,
     CancelFittingException,
     Checkpointer,
-    CheckpointAny,
-    CheckpointLowest,
     CustomCallback,
     EarlyStopping,
     ToGPU,
@@ -85,8 +74,6 @@ export AbstractCallback,
     ProgressPrinter,
     Metrics,
     MetricsPrinter,
-    ParamSchedule,
-    ParamScheduler,
     TrainingPhase,
     ValidationPhase,
     Schedule,
@@ -94,24 +81,11 @@ export AbstractCallback,
     Logger,
     TensorBoardBackend,
     StopOnNaNLoss,
-
     LearningRate,
-
     throttle,
     accuracy,
-    anneal_linear,
-    anneal_cosine,
-    anneal_exp,
-    anneal_const,
-    endtraining,
     fit!,
-    loadmodel,
-    loadweights,
     onecycle,
-    savemodel,
-    saveweights,
-    setschedule!,
-    splitdataset,
-    starttraining
-
+    loadmodel,
+    savemodel
 end # module

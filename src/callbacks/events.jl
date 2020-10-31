@@ -1,52 +1,61 @@
 
 
 """
-    Events
+    module Events
+
+Provides the abstract [`Event`](#) type and concrete event types.
+
+- [`Init`](#) is called once for every callback. Use for initialization code
+  that needs access to some `Learner` state.
+
+Events in [`TrainingPhase`](#) and [`ValidationPhase`](#):
+
+- [`EpochBegin`](#) and [`EpochEnd`](#), called at the beginning and end of each
+  epoch.
+- [`BatchBegin`](#) and [`BatchEnd`](#), called at the beginning and end of each
+  batch.
+- [`LossBegin`](#), called after the forward pass but before the loss calculation.
+
+[`TrainingPhase`](#) only:
+
+- [`BackwardBegin`](#), called after forward pass and loss calculation but before gradient
+  calculation.
+- [`BackwardEnd`](#), called after gradient calculation but before parameter update.
+
 """
 module Events
 
 """
 Abstract type for events that callbacks can hook into
 """
-abstract type FitEvent end
+abstract type Event end
 
 """
-Supertype for events that are called within `Zygote.gradient`.
-They need to be handled differently because try/catch is not
-supported by Zygote's compiler.
-"""
-abstract type GradEvent <: FitEvent end
-
-"""
-    Init <: FitEvent
+    Init <: Event
 
 Called once when the learner is created/the callback is added.
 """
-struct Init <: FitEvent end
+struct Init <: Event end
 
-struct FitBegin <: FitEvent end
-struct FitEnd <: FitEvent end
+struct EpochBegin <: Event end
+struct EpochEnd <: Event end
 
-struct EpochBegin <: FitEvent end
-struct EpochEnd <: FitEvent end
-
-struct BatchBegin <: FitEvent end
-struct BatchEnd <: FitEvent end
+struct BatchBegin <: Event end
+struct BatchEnd <: Event end
 
 """Called between calculating `y_pred` and calculating loss"""
-struct LossBegin <: GradEvent end
+struct LossBegin <: Event end
 """Called between calculating loss and calculating gradients"""
-struct BackwardBegin <: GradEvent end
+struct BackwardBegin <: Event end
 """Called between calculating gradients and updating parameters"""
-struct BackwardEnd <: FitEvent end
+struct BackwardEnd <: Event end
 
 
 export
-    # asbtract
-    FitEvent, GradEvent,
+    # abstract
+    Event,
     # concrete
     Init,
-    FitBegin, FitEnd,
     EpochBegin, EpochEnd,
     BatchBegin, BatchEnd,
     LossBegin,
