@@ -63,13 +63,16 @@ Base.show(io::IO, logger::Logger) = print(io, "Logger(", join(string.(logger.bac
 
 
 runafter(::Logger) = (Metrics, Scheduler)
-stateaccess(::Logger) = (cbstate = (
+stateaccess(::Logger) = (
+    cbstate = (
         loggerbackends = Write(),
         history = Read(),
         metricsepoch = Read(),
         metricsstep = Read(),
         hyperparams = Read(),
-    ),)
+    ),
+    model = Read(),
+    )
 
 
 function on(::Init, phase, logger::Logger, learner)
@@ -125,13 +128,15 @@ function on(::EpochEnd, phase, logger::Logger, learner)
                 group = ("Epoch", string(typeof(phase)), "Metrics"))
         end
     end
-    
+
+    #=
     log_parameters(
         logger.backends,
         learner.model,
         "Model",
         history.epochs,
         group = ("Epoch", string(typeof(phase))))
+    =#
 end
 
 
