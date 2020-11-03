@@ -26,23 +26,24 @@
         <input id="search-input" placeholder="Search">
         <select id="version-selector"></select>
     </div>
-    <main id="page"><article><div class='docs' id='TensorBoardBackend'>
-<p><code>public</code> <code>TensorBoardBackend</code> — <code>struct</code></p>
+    <main id="page"><article><div class='docs' id='LogMetrics'>
+<p><code>public</code> <code>LogMetrics</code> — <code>struct</code></p>
 <div class='doc' id='1'>
-<pre><code>TensorBoardBackend(logdir[, tb_overwrite];
-    time=time(),
-    purge_step=nothing,
-    step_increment=1,
-    min_level=Logging.Info)
+<pre><code>LogMetrics(backends...) &lt;: Callback
 </code></pre>
-<p>TensorBoard backend for logging callbacks. Takes the same arguments
-as <a href="https://philipvinc.github.io/TensorBoardLogger.jl/dev/"><code>TensorBoardLogger.TBLogger</code></a>.</p>
+<p>Callback that logs step and epoch metrics to one or more <a href="FluxTraining.LoggerBackend.html"><code>LoggerBackend</code></a>s.</p>
+<p>See also <a href="FluxTraining.LoggerBackend.html"><code>LoggerBackend</code></a>, <a href="FluxTraining.Loggables.Loggable.html"><code>Loggables.Loggable</code></a>, <a href="FluxTraining.log_to.html"><code>log_to</code></a>,
+<a href="FluxTraining.TensorBoardBackend.html"><code>TensorBoardBackend</code></a></p>
+<p>Example:</p>
+<pre><code class="language-julia">logcb = LogMetrics(TensorBoardBackend(&quot;tblogs&quot;))
+Learner(model, data, opt, lossfn, Metrics(accuracy), logcb)
+</code></pre>
 </div>
 </div>
 </article>
         <div id="page-navigation">
-            <a id="previous-page" title="Previous" href="FluxTraining.StopOnNaNLoss.html"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M16.2426 6.34317L14.8284 4.92896L7.75739 12L14.8285 19.0711L16.2427 17.6569L10.5858 12L16.2426 6.34317Z" fill="currentColor" /></svg></a>
-            <a id="next-page" title="Next" href="FluxTraining.accesses.html"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10.5858 6.34317L12 4.92896L19.0711 12L12 19.0711L10.5858 17.6569L16.2427 12L10.5858 6.34317Z" fill="currentColor" /></svg></a>
+            <a id="previous-page" title="Previous" href="FluxTraining.LogHyperParams.html"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M16.2426 6.34317L14.8284 4.92896L7.75739 12L14.8285 19.0711L16.2427 17.6569L10.5858 12L16.2426 6.34317Z" fill="currentColor" /></svg></a>
+            <a id="next-page" title="Next" href="FluxTraining.Loggables.Loggable.html"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10.5858 6.34317L12 4.92896L19.0711 12L12 19.0711L10.5858 17.6569L16.2427 12L10.5858 6.34317Z" fill="currentColor" /></svg></a>
         </div>
     </main>
     <nav id="toc"><p><a href="../README.html">README</a></p>

@@ -39,7 +39,13 @@ learner = Learner(model, data, opt, lossfn, cb)
 <h2 id="hyperparameter-scheduling"><a href="#hyperparameter-scheduling" class="anchor"></a>Hyperparameter scheduling</h2>
 <p>The <a href="../docstrings/FluxTraining.Scheduler.html"><code>Scheduler</code></a> callback takes care of hyperparameter scheduling. See the [Hyperparameter scheduling tutorial] and also <a href="../docstrings/FluxTraining.Scheduler.html"><code>Scheduler</code></a>, <a href="../docstrings/FluxTraining.Schedule.html"><code>Schedule</code></a>, <a href="../docstrings/FluxTraining.HyperParameter.html"><code>HyperParameter</code></a>.</p>
 <h2 id="logging"><a href="#logging" class="anchor"></a>Logging</h2>
-<p>For logging, use the <a href="../docstrings/FluxTraining.Logger.html"><code>Logger</code></a> callback. It can have multiple backends but right now only <a href="../docstrings/FluxTraining.TensorBoardBackend.html"><code>TensorBoardBackend</code></a> is part of <em>FluxTraining.jl</em>. See also <a href="../docstrings/FluxTraining.LoggerBackend.html"><code>LoggerBackend</code></a>, <a href="../docstrings/FluxTraining.log_to.html"><code>log_to</code></a>, and <a href="../docstrings/FluxTraining.Loggables.Loggable.html"><code>Loggables.Loggable</code></a>.</p>
+<p>For logging, use the logging callbacks:</p>
+<ul>
+<li><a href="../docstrings/FluxTraining.LogMetrics.html"><code>LogMetrics</code></a></li>
+<li><a href="../docstrings/FluxTraining.LogHyperParams.html"><code>LogHyperParams</code></a></li>
+<li><a href="../docstrings/FluxTraining.LogHistograms.html"><code>LogHistograms</code></a></li>
+</ul>
+<p>They each can have multiple logging backends, but right now the only one implemented in <em>FluxTraining.jl</em> is <a href="../docstrings/FluxTraining.TensorBoardBackend.html"><code>TensorBoardBackend</code></a>. See also <a href="../docstrings/FluxTraining.LoggerBackend.html"><code>LoggerBackend</code></a>, <a href="../docstrings/FluxTraining.log_to.html"><code>log_to</code></a>, and <a href="../docstrings/FluxTraining.Loggables.Loggable.html"><code>Loggables.Loggable</code></a>.</p>
 <h2 id="checkpointing"><a href="#checkpointing" class="anchor"></a>Checkpointing</h2>
 <p>Use the <a href="../docstrings/FluxTraining.Checkpointer.html"><code>Checkpointer</code></a> callback to create model checkpoints after every epoch.</p>
 </article>
