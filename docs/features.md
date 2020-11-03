@@ -23,7 +23,13 @@ The [`Scheduler`](#) callback takes care of hyperparameter scheduling. See the [
 
 ## Logging
 
-For logging, use the [`Logger`](#) callback. It can have multiple backends but right now only [`TensorBoardBackend`](#) is part of *FluxTraining.jl*. See also [`LoggerBackend`](#), [`log_to`](#), and [`Loggables.Loggable`](#).
+For logging, use the logging callbacks:
+
+- [`LogMetrics`](#)
+- [`LogHyperParams`](#)
+- [`LogHistograms`](#)
+
+They each can have multiple logging backends, but right now the only one implemented in *FluxTraining.jl* is [`TensorBoardBackend`](#). See also [`LoggerBackend`](#), [`log_to`](#), and [`Loggables.Loggable`](#).
 
 ## Checkpointing
 

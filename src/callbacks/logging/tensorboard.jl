@@ -6,8 +6,8 @@
         step_increment=1,
         min_level=Logging.Info)
 
-TensorBoard backend for [`Logger`](#). Takes the same arguments
-as `TensorBoardLogger.TBLogger`.
+TensorBoard backend for logging callbacks. Takes the same arguments
+as [`TensorBoardLogger.TBLogger`](https://philipvinc.github.io/TensorBoardLogger.jl/dev/).
 """
 struct TensorBoardBackend <: LoggerBackend
     logger::TBLogger
