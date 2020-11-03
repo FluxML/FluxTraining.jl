@@ -19,6 +19,7 @@ using TensorBoardLogger: TBLogger, log_value, log_image, log_text, log_histogram
 using Zygote: Grads, gradient
 using ValueHistories
 using DataStructures: DefaultDict
+using PrettyTables
 
 
 # functional
