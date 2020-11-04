@@ -129,7 +129,7 @@ end
 
 # TODO: add support for logging histograms of layer activations and gradients
 """
-    LogHyperParams(backends...[; freq = 100]) <: Callback
+    LogHistograms(backends...[; freq = 100]) <: Callback
 
 Callback that logs histograms of model weights to [`LoggerBackend`](#)s
 `backends` every `freq` steps.
@@ -151,7 +151,7 @@ end
 stateaccess(::LogHistograms) = (model = Read(), cbstate = (history = Read(),))
 
 
-function on(::BatchEnd, phase, logger::LogHistograms, learner)
+function on(::BatchEnd, phase::AbstractTrainingPhase, logger::LogHistograms, learner)
     history = learner.cbstate.history
     log_parameters(
         logger.backends,
@@ -181,4 +181,41 @@ function log_parameters(backends, x, name, epochs; group)
                 group = group)
         end
     end
+end
+
+
+"""
+    LogVisualization(visfn, backends...[; freq = 100])
+
+Logs images created by `visfn(learner.batch)` to `backends` every `freq` steps.
+
+See also [`BatchState`](#).
+"""
+struct LogVisualization <: Callback
+    visfn
+    backends::Tuple
+    function LogVisualization(visfn, backends...; freq = 100)
+        cb = new(visfn, backends)
+        if isnothing(freq)
+            return throttle(cb, BatchEnd, freq = 100)
+        else
+            return cb
+        end
+    end
+
+end
+
+
+stateaccess(::LogVisualization) = (batch = Read(), cbstate = (history = Read(),))
+
+function on(::BatchEnd, phase::AbstractTrainingPhase, logger::LogVisualization, learner)
+    history = learner.cbstate.history
+    image = logger.visfn(learner.batch)
+
+    log_to(
+        logger.backends,
+        Loggables.Image(image),
+        "Visualization",
+        history.steps,
+        group = ("Step",))
 end

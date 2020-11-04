@@ -21,8 +21,6 @@ end
 Base.show(io::IO, backend::TensorBoardBackend) = print(
     io, "TensorBoardBackend(", backend.logger.logdir, ")")
 
-canlog(::TensorBoardBackend) = (Text, Image, Value)
-
 
 function log_to(backend::TensorBoardBackend, value::Loggables.Value, name, i; group = ())
     name = _combinename(name, group)
