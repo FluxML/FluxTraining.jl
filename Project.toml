@@ -37,6 +37,5 @@ julia = "1"
 
 [publish]
 title = "FluxTraining.jl"
+theme = "theme"
 
-    [publish.html]
-    css = ["docs/custom.css"]

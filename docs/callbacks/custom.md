@@ -93,7 +93,7 @@ Luckily, there already is a callback that tracks this kind of statistics, the [`
 
 !!! info "Callback state"
 
-    `learner.cbstate` is a dictionary where callbacks can store state that they want to make available to other callbacks. Like any other piece of state, the callback writing to it needs to add a `Write()` permission to it using [`stateaccess`](#).
+    `learner.cbstate` is an object where callbacks can store state that they want to make available to other callbacks. Like any other piece of state, the callback writing to it needs to add a `Write()` permission to it using [`stateaccess`](#).
 
     What makes `cbstate` special is that when creating the callback graph, it is checked that every entry in `cbstate` that is accessed is being created first.
 
@@ -105,7 +105,7 @@ function FluxTraining.on(
         phase::Phase,
         printer::Printer,
         learner)
-    step = learner.cbstate[:history].nstepsepoch  # steps completed in current epoch
+    step = learner.cbstate.history.nstepsepoch  # steps completed in current epoch
     println("Step ", , " loss:", learner.batch.loss)
 end
 ```
@@ -127,7 +127,9 @@ And that's it, pass `Printer` to a `Learner` and test it out! The upside of jump
 
 When creating a `Learner`, a dependency graph is created. The graph is then analyzed to find possible conflicts (for example, when two callbacks update the same state).
 Conflicts are detected automatically and will result in an error. Conflicts happen when the same state is being modified by multiple callbacks and it is unclear which order of running them (if any) is valid.
-#### Resolving conflicts
+
+### Resolving conflicts
+
 There are two methods for resolving conflicts, `runafter` and `resolveconflict`.
 `runafter` allows you to define list of callbacks that should run before the callback. For example, `Recorder` needs to run after all metrics:
 ```julia
@@ -146,7 +148,7 @@ resolveconflict(cb1::C1, cb2::C2) = RunFirst(cb1) # `cb1` must run before `cb2`.
                                                   # Equivalent to `runafter(::C2) = (C1,)
 ```
 
-#### Execution
+## Callback execution
 
 By default, a a topological ordering of the callbacks is created from the dependency graph and the callbacks are executed serially.
 This behavior can be overwritten with custom callback executors, for example to create a *Dagger.jl* node from the graph to allow callbacks to safely run in parallel where valid.
