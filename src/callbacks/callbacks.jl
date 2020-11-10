@@ -38,12 +38,19 @@ function on(::EpochEnd,
         cb::MetricsPrinter,
         learner)
     mvhistory = learner.cbstate.metricsepoch[phase]
-    for key in keys(mvhistory)
-        println(key, ": ", last(mvhistory, key)[2])
-    end
+    epoch = learner.cbstate.history.epochs
+    print_epoch_table(mvhistory, epoch, phase)
 end
 
-stateaccess(::MetricsPrinter) = (; cbstate = (; metricsepoch = Read()))
+
+function print_epoch_table(mvhistory, epoch, phase)
+    header = vcat(["Phase", "Epoch"], string.(keys(mvhistory)))
+    vals = [last(mvhistory, key) |> last for key in keys(mvhistory)]
+    data = reshape(vcat([string(typeof(phase)), epoch], vals), 1, :)
+    pretty_table(data, header, formatters = PrettyTables.ft_round(5))
+end
+
+stateaccess(::MetricsPrinter) = (; cbstate = (metricsepoch = Read(), history = Read()))
 runafter(::MetricsPrinter) = (Metrics,)
 
 # StopOnNaNLoss
@@ -96,6 +103,7 @@ end
 stateaccess(::ToGPU) = (model = Write(), params = Write(), batch = (xs = Write(), ys = Write()),)
 
 function on(::BatchBegin, ::Phase, cb::ToGPU, learner)
+
     learner.batch.xs = gpu(learner.batch.xs)
     learner.batch.ys = gpu(learner.batch.ys)
 end

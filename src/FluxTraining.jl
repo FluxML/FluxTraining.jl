@@ -15,10 +15,11 @@ using Statistics: mean
 using UUIDs
 using Zygote
 using Animations
-using TensorBoardLogger: TBLogger, log_value, log_image, log_text, log_histogram
+using TensorBoardLogger: TBLogger, log_value, log_image, log_text, log_histogram, tb_overwrite
 using Zygote: Grads, gradient
 using ValueHistories
 using DataStructures: DefaultDict
+using PrettyTables
 
 
 # functional
@@ -78,7 +79,10 @@ export AbstractCallback,
     ValidationPhase,
     Schedule,
     Scheduler,
-    Logger,
+    LogMetrics,
+    LogHistograms,
+    LogHyperParams,
+    LogVisualization,
     TensorBoardBackend,
     StopOnNaNLoss,
     LearningRate,

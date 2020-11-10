@@ -59,13 +59,11 @@ end
 
 function findconflicts(accesses1, accesses2)
     conflicts = []
-    for (i, as1) in enumerate(accesses1)
-        for (j, as2) in enumerate(accesses2[i + 1:end])
-            for a1 in as1
-                for a2 in as2
-                    if hasconflict(a1, a2)
-                        push!(conflicts, (i, j+i, a1, a2))
-                    end
+    for (i, j) in Iterators.product(1:length(accesses1), 1:length(accesses2))
+        if i != j
+            for (a1, a2) in Iterators.product(accesses1[i], accesses2[j])
+                if hasconflict(a1, a2)
+                    push!(conflicts, (i, j, a1, a2))
                 end
             end
         end
@@ -160,3 +158,12 @@ function errorwriteconflict(cb1, cb2, access1, access2; resolvable = true)
 end
 
 formataccess(access) = join(string.(access), '.')
+
+
+"""
+    iterpairs(a)
+
+Iterators over the Cartesian product of `a` with itself,
+skipping any pairs `(a, b)` where `a == b`.
+"""
+iterpairs(a::AbstractArray) = filter(((i, j),) -> i != j, Iterators.product(1:9, 1:9) |> collect)

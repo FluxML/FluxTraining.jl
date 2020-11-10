@@ -5,13 +5,13 @@ import .Loggables
 """
     abstract type LoggerBackend
 
-Backend for the [`Logger`](#) callback.
+Backend for logging callbacks like.
 
 To add support for logging [`Loggables.Loggable`](#) `L` to backend `B`, implement
 
 [`log_to`](#)`(backend::B, loggable::L, names, i)`
 
-See also [`Logger`](#), [`log_to`](#)
+See also [`LogMetrics`](#), [`LogHyperParams`](#), [`log_to`](#)
 """
 abstract type LoggerBackend end
 
@@ -35,103 +35,130 @@ end
 
 
 """
-    Logger(backends...) <: Callback
+    LogMetrics(backends...) <: Callback
 
-Callback that logs training data to one or many [`LoggerBackend`](#)s.
+Callback that logs step and epoch metrics to one or more [`LoggerBackend`](#)s.
 
-Logs metrics data if `cbstate.metrics` exists (i.e. [`Metrics`](#) is used)
-and hyperparameters if `cbstate.hyperparams` exists (i.e. [`Scheduler`](#) is used).
-
-Also publishes its backends to `cbstate.loggerbackends` so that other callbacks
-may use them to publish other data like images.
-
-See also [`LoggerBackend`](#), [`Loggables.Loggable`](#), [`log_to`](#), [`TensorBoardBackend`](#)
+See also [`LoggerBackend`](#), [`Loggables.Loggable`](#), [`log_to`](#),
+[`TensorBoardBackend`](#)
 
 Example:
 
 ```julia
-logger = Logger(TensorBoardBackend("tblogs"))
-Learner(model, data, opt, lossfn, Metrics(accuracy), logger)
+logcb = LogMetrics(TensorBoardBackend("tblogs"))
+Learner(model, data, opt, lossfn, Metrics(accuracy), logcb)
 ```
 """
-struct Logger <: Callback
+struct LogMetrics <: Callback
     backends::Tuple
-    Logger(backends...) = new(backends)
+    LogMetrics(backends...) = new(backends)
 end
 
-Base.show(io::IO, logger::Logger) = print(io, "Logger(", join(string.(logger.backends), ", "), ")")
+stateaccess(::LogMetrics) = (
+    cbstate = (history = Read(), metricsstep = Read(), metricsepoch = Read()),)
 
 
-runafter(::Logger) = (Metrics, Scheduler)
-stateaccess(::Logger) = (cbstate = (
-        loggerbackends = Write(),
-        history = Read(),
-        metricsepoch = Read(),
-        metricsstep = Read(),
-        hyperparams = Read(),
-    ),)
-
-
-function on(::Init, phase, logger::Logger, learner)
-    learner.cbstate.loggerbackends = logger.backends
-end
-
-
-function on(::BatchEnd, phase, logger::Logger, learner)
+function on(::BatchEnd, phase, logger::LogMetrics, learner)
     history = learner.cbstate.history
-
-    # log metrics
-    if haskey(learner.cbstate, :metricsstep)
-        metricsstep = learner.cbstate.metricsstep
-        for metric in keys(metricsstep)
-            _, val = last(metricsstep, metric)
-            log_to(
-                logger.backends,
-                Loggables.Value(val),
-                string(metric),
-                history.steps,
-                group = ("Step", "Metrics"))
-        end
+    metricsstep = learner.cbstate.metricsstep
+    for metric in keys(metricsstep)
+        val = last(last(metricsstep, metric))
+        log_to(
+            logger.backends,
+            Loggables.Value(val),
+            string(metric),
+            history.steps,
+            group = ("Step", "Metrics"))
     end
+end
 
-    # log hyperparameters
-    if haskey(learner.cbstate, :hyperparams)
-        hyperparams = learner.cbstate.hyperparams
-        for hparam in keys(hyperparams)
-            _, val = last(hyperparams, hparam)
-            log_to(
-                logger.backends,
-                Loggables.Value(val),
-                string(hparam),
-                history.steps,
-                group = ("Step", "HParams"))
+
+function on(::EpochEnd, phase, logger::LogMetrics, learner)
+    history = learner.cbstate.history
+    metricsepoch = learner.cbstate.metricsepoch[phase]
+    for metric in keys(metricsepoch)
+        _, val = last(metricsepoch, metric)
+        log_to(
+            logger.backends,
+            Loggables.Value(val),
+            string(metric),
+            history.epochs,
+            group = ("Epoch", string(typeof(phase)), "Metrics"))
+    end
+end
+
+
+
+"""
+    LogHyperParams(backends...) <: Callback
+
+Callback that logs hyperparameters to one or more [`LoggerBackend`](#)s.
+
+See also [`LoggerBackend`](#), [`Loggables.Loggable`](#), [`log_to`](#),
+[`TensorBoardBackend`](#)
+
+Example:
+
+```julia
+logcb = LogHyperParams(TensorBoardBackend("tblogs"))
+schedule = ...
+Learner(model, data, opt, lossfn, Scheduler(LearningRate => schedule), logcb)
+"""
+struct LogHyperParams <: Callback
+    backends::Tuple
+    LogHyperParams(backends...) = new(backends)
+end
+
+stateaccess(::LogHyperParams) = (
+    cbstate = (history = Read(), hyperparams = Read()),)
+
+function on(::BatchEnd, phase, logger::LogHyperParams, learner)
+    history = learner.cbstate.history
+    hyperparams = learner.cbstate.hyperparams
+    for hparam in keys(hyperparams)
+        val = last(last(hyperparams, hparam))
+        log_to(
+            logger.backends,
+            Loggables.Value(val),
+            string(hparam),
+            history.steps,
+            group = ("Step", "HParams"))
+    end
+end
+
+
+# TODO: add support for logging histograms of layer activations and gradients
+"""
+    LogHistograms(backends...[; freq = 100]) <: Callback
+
+Callback that logs histograms of model weights to [`LoggerBackend`](#)s
+`backends` every `freq` steps.
+
+If histograms should be logged every step, pass `freq = nothing`
+"""
+struct LogHistograms <: Callback
+    backends::Tuple
+    function LogHistograms(backends...; freq = 100)
+        if isnothing(freq)
+            return new(backends)
+        else
+            return throttle(new(backends), BatchEnd, freq = freq)
         end
     end
 end
 
 
-function on(::EpochEnd, phase, logger::Logger, learner)
-    history = learner.cbstate.history
+stateaccess(::LogHistograms) = (model = Read(), cbstate = (history = Read(),))
 
-    if haskey(learner.cbstate, :metricsepoch)
-        metricsepoch = learner.cbstate.metricsepoch[phase]
-        for metric in keys(metricsepoch)
-            _, val = last(metricsepoch, metric)
-            log_to(
-                logger.backends,
-                Loggables.Value(val),
-                string(metric),
-                history.epochs,
-                group = ("Epoch", string(typeof(phase)), "Metrics"))
-        end
-    end
-    
+
+function on(::BatchEnd, phase::AbstractTrainingPhase, logger::LogHistograms, learner)
+    history = learner.cbstate.history
     log_parameters(
         logger.backends,
         learner.model,
         "Model",
-        history.epochs,
-        group = ("Epoch", string(typeof(phase))))
+        history.steps,
+        group = ("Step", "Histograms", "Weights"))
 end
 
 
@@ -154,4 +181,41 @@ function log_parameters(backends, x, name, epochs; group)
                 group = group)
         end
     end
+end
+
+
+"""
+    LogVisualization(visfn, backends...[; freq = 100])
+
+Logs images created by `visfn(learner.batch)` to `backends` every `freq` steps.
+
+See also [`BatchState`](#).
+"""
+struct LogVisualization <: Callback
+    visfn
+    backends::Tuple
+    function LogVisualization(visfn, backends...; freq = 100)
+        cb = new(visfn, backends)
+        if isnothing(freq)
+            return throttle(cb, BatchEnd, freq = 100)
+        else
+            return cb
+        end
+    end
+
+end
+
+
+stateaccess(::LogVisualization) = (batch = Read(), cbstate = (history = Read(),))
+
+function on(::BatchEnd, phase::AbstractTrainingPhase, logger::LogVisualization, learner)
+    history = learner.cbstate.history
+    image = logger.visfn(learner.batch)
+
+    log_to(
+        logger.backends,
+        Loggables.Image(image),
+        "Visualization",
+        history.steps,
+        group = ("Step",))
 end
