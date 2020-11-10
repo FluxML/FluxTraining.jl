@@ -8,8 +8,7 @@
     <title>FluxTraining.jl</title>
     <link rel="stylesheet" href="..&#x2F;..&#x2F;normalize.css" />
     <link rel="stylesheet" href="..&#x2F;..&#x2F;tabulator_simple.min.css" />
-    <link rel="stylesheet" href="..&#x2F;..&#x2F;publish.css" />
-    <link rel="stylesheet" href="..&#x2F;..&#x2F;default.min.css" />
+    <link rel="stylesheet" href="..&#x2F;..&#x2F;lorenzo.css" />
     <script src="..&#x2F;..&#x2F;versions.js"></script>
     <script src="..&#x2F;..&#x2F;lunr.js"></script>
     <script src="..&#x2F;..&#x2F;highlight.min.js"></script>
@@ -17,8 +16,17 @@
     <script src="..&#x2F;..&#x2F;julia.min.js"></script>
     <script src="..&#x2F;..&#x2F;julia-repl.min.js"></script>
     <script src="..&#x2F;..&#x2F;publish.js"></script>
-    <link rel="stylesheet" href="..&#x2F;custom.css" />
     
+    <link href="https://fonts.googleapis.com/css2?family=Lora:ital@1&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+
+    <!-- 
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.js" integrity="sha384-g7c+Jr9ZivxKLnZTDUhnkOnsh30B4H0rpLUpJ4jAIKs4fnJI+sEnkvrMWph2EDg4" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/contrib/auto-render.min.js" integrity="sha384-mll67QQFJfxn0IYznZYonOWZ644AWYC+Pt2cHqMaRhXVrursRwvLnLaebdGIlYNa" crossorigin="anonymous"
+        onload="renderMathInElement(document.body);"></script>
+        -->
+
 </head>
 <body>
     <div class="menu">
@@ -85,7 +93,7 @@ Because of that, <em>FluxTraining.jl</em> prevents callbacks from reading and mo
 <p>For that we need to know what the current step number is. One way to go about this is to add a field to <code>Printer</code> that starts at <code>0</code> and is incremented every batch.
 Luckily, there already is a callback that tracks this kind of statistics, the <a href="../../docstrings/FluxTraining.Recorder.html"><code>Recorder</code></a>. It uses a special piece of state, <code>learner.cbstate</code>, to store a <a href="../../docstrings/FluxTraining.History.html"><code>History</code></a> with this information.</p>
 <div class="admonition info"><p class="admonition-title">Callback state</p>
-<p><code>learner.cbstate</code> is a dictionary where callbacks can store state that they want to make available to other callbacks. Like any other piece of state, the callback writing to it needs to add a <code>Write()</code> permission to it using <a href="../../docstrings/FluxTraining.stateaccess.html"><code>stateaccess</code></a>.</p>
+<p><code>learner.cbstate</code> is an object where callbacks can store state that they want to make available to other callbacks. Like any other piece of state, the callback writing to it needs to add a <code>Write()</code> permission to it using <a href="../../docstrings/FluxTraining.stateaccess.html"><code>stateaccess</code></a>.</p>
 <p>What makes <code>cbstate</code> special is that when creating the callback graph, it is checked that every entry in <code>cbstate</code> that is accessed is being created first.</p>
 </div>
 <p>The update to the event handler looks like this:</p>
@@ -94,7 +102,7 @@ Luckily, there already is a callback that tracks this kind of statistics, the <a
         phase::Phase,
         printer::Printer,
         learner)
-    step = learner.cbstate[:history].nstepsepoch  # steps completed in current epoch
+    step = learner.cbstate.history.nstepsepoch  # steps completed in current epoch
     println(&quot;Step &quot;, , &quot; loss:&quot;, learner.batch.loss)
 end
 </code></pre>
@@ -109,7 +117,7 @@ end
 <h2 id="conflict-resolution"><a href="#conflict-resolution" class="anchor"></a>Conflict resolution</h2>
 <p>When creating a <code>Learner</code>, a dependency graph is created. The graph is then analyzed to find possible conflicts (for example, when two callbacks update the same state).
 Conflicts are detected automatically and will result in an error. Conflicts happen when the same state is being modified by multiple callbacks and it is unclear which order of running them (if any) is valid.</p>
-<h4 id="resolving-conflicts"><a href="#resolving-conflicts" class="anchor"></a>Resolving conflicts</h4>
+<h3 id="resolving-conflicts"><a href="#resolving-conflicts" class="anchor"></a>Resolving conflicts</h3>
 <p>There are two methods for resolving conflicts, <code>runafter</code> and <code>resolveconflict</code>.
 <code>runafter</code> allows you to define list of callbacks that should run before the callback. For example, <code>Recorder</code> needs to run after all metrics:</p>
 <pre><code class="language-julia">FluxTraining.runafter(::Recorder) = (AbstractMetric,)
@@ -123,7 +131,7 @@ resolveconflict(::C1, ::C2) = NoConflict()        # there is no conflict, any ru
 resolveconflict(cb1::C1, cb2::C2) = RunFirst(cb1) # `cb1` must run before `cb2`.
                                                   # Equivalent to `runafter(::C2) = (C1,)
 </code></pre>
-<h4 id="execution"><a href="#execution" class="anchor"></a>Execution</h4>
+<h2 id="callback-execution"><a href="#callback-execution" class="anchor"></a>Callback execution</h2>
 <p>By default, a a topological ordering of the callbacks is created from the dependency graph and the callbacks are executed serially.
 This behavior can be overwritten with custom callback executors, for example to create a <em>Dagger.jl</em> node from the graph to allow callbacks to safely run in parallel where valid.</p>
 </article>

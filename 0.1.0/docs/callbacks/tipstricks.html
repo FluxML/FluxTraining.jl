@@ -8,8 +8,7 @@
     <title>FluxTraining.jl</title>
     <link rel="stylesheet" href="..&#x2F;..&#x2F;normalize.css" />
     <link rel="stylesheet" href="..&#x2F;..&#x2F;tabulator_simple.min.css" />
-    <link rel="stylesheet" href="..&#x2F;..&#x2F;publish.css" />
-    <link rel="stylesheet" href="..&#x2F;..&#x2F;default.min.css" />
+    <link rel="stylesheet" href="..&#x2F;..&#x2F;lorenzo.css" />
     <script src="..&#x2F;..&#x2F;versions.js"></script>
     <script src="..&#x2F;..&#x2F;lunr.js"></script>
     <script src="..&#x2F;..&#x2F;highlight.min.js"></script>
@@ -17,8 +16,17 @@
     <script src="..&#x2F;..&#x2F;julia.min.js"></script>
     <script src="..&#x2F;..&#x2F;julia-repl.min.js"></script>
     <script src="..&#x2F;..&#x2F;publish.js"></script>
-    <link rel="stylesheet" href="..&#x2F;custom.css" />
     
+    <link href="https://fonts.googleapis.com/css2?family=Lora:ital@1&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+
+    <!-- 
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.js" integrity="sha384-g7c+Jr9ZivxKLnZTDUhnkOnsh30B4H0rpLUpJ4jAIKs4fnJI+sEnkvrMWph2EDg4" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/contrib/auto-render.min.js" integrity="sha384-mll67QQFJfxn0IYznZYonOWZ644AWYC+Pt2cHqMaRhXVrursRwvLnLaebdGIlYNa" crossorigin="anonymous"
+        onload="renderMathInElement(document.body);"></script>
+        -->
+
 </head>
 <body>
     <div class="menu">
@@ -34,7 +42,7 @@ using FluxTraining.Events, FluxTraining.Phases
 <p>Use <code>Base.methods</code> to check what events a callback handles:</p>
 <pre><code cell="main" class="language-julia">methods(FluxTraining.on, (Any, Any, Recorder, Any))
 </code></pre>
-# 5 methods for generic function <b>on</b>:<ul><li> on(::<b>FluxTraining.Events.BatchEnd</b>, phase::<b>FluxTraining.Phases.AbstractTrainingPhase</b>, recorder::<b>Recorder</b>, learner) in FluxTraining at <a href="https://github.com/lorenzoh/FluxTraining.jl/tree/3a6be6f525076818ffb60822637ade4d3398840a//src/callbacks/recorder.jl#L36" target="_blank">/home/runner/work/FluxTraining.jl/FluxTraining.jl/src/callbacks/recorder.jl:36</a></li> <li> on(::<b>FluxTraining.Events.EpochEnd</b>, phase::<b>FluxTraining.Phases.Phase</b>, recorder::<b>Recorder</b>, learner) in FluxTraining at <a href="https://github.com/lorenzoh/FluxTraining.jl/tree/3a6be6f525076818ffb60822637ade4d3398840a//src/callbacks/recorder.jl#L44" target="_blank">/home/runner/work/FluxTraining.jl/FluxTraining.jl/src/callbacks/recorder.jl:44</a></li> <li> on(::<b>FluxTraining.Events.EpochBegin</b>, ::<b>FluxTraining.Phases.AbstractTrainingPhase</b>, recorder::<b>Recorder</b>, learner) in FluxTraining at <a href="https://github.com/lorenzoh/FluxTraining.jl/tree/3a6be6f525076818ffb60822637ade4d3398840a//src/callbacks/recorder.jl#L31" target="_blank">/home/runner/work/FluxTraining.jl/FluxTraining.jl/src/callbacks/recorder.jl:31</a></li> <li> on(::<b>FluxTraining.Events.Init</b>, ::<b>FluxTraining.Phases.Phase</b>, recorder::<b>Recorder</b>, learner) in FluxTraining at <a href="https://github.com/lorenzoh/FluxTraining.jl/tree/3a6be6f525076818ffb60822637ade4d3398840a//src/callbacks/recorder.jl#L26" target="_blank">/home/runner/work/FluxTraining.jl/FluxTraining.jl/src/callbacks/recorder.jl:26</a></li> <li> on(::<b>FluxTraining.Events.Event</b>, phase, ::<b>FluxTraining.SafeCallback</b>, learner) in FluxTraining at <a href="https://github.com/lorenzoh/FluxTraining.jl/tree/3a6be6f525076818ffb60822637ade4d3398840a//src/callbacks/callback.jl#L66" target="_blank">/home/runner/work/FluxTraining.jl/FluxTraining.jl/src/callbacks/callback.jl:66</a></li> </ul><h3 id="visualize-the-callback-dependency-graph"><a href="#visualize-the-callback-dependency-graph" class="anchor"></a>Visualize the callback dependency graph</h3>
+# 5 methods for generic function <b>on</b>:<ul><li> on(::<b>FluxTraining.Events.EpochEnd</b>, phase::<b>FluxTraining.Phases.Phase</b>, recorder::<b>Recorder</b>, learner) in FluxTraining at <a href="https://github.com/lorenzoh/FluxTraining.jl/tree/8bfec95fd3006f89d2d9935905f7e665df07b59b//src/callbacks/recorder.jl#L44" target="_blank">/home/runner/work/FluxTraining.jl/FluxTraining.jl/src/callbacks/recorder.jl:44</a></li> <li> on(::<b>FluxTraining.Events.BatchEnd</b>, phase::<b>FluxTraining.Phases.AbstractTrainingPhase</b>, recorder::<b>Recorder</b>, learner) in FluxTraining at <a href="https://github.com/lorenzoh/FluxTraining.jl/tree/8bfec95fd3006f89d2d9935905f7e665df07b59b//src/callbacks/recorder.jl#L36" target="_blank">/home/runner/work/FluxTraining.jl/FluxTraining.jl/src/callbacks/recorder.jl:36</a></li> <li> on(::<b>FluxTraining.Events.EpochBegin</b>, ::<b>FluxTraining.Phases.AbstractTrainingPhase</b>, recorder::<b>Recorder</b>, learner) in FluxTraining at <a href="https://github.com/lorenzoh/FluxTraining.jl/tree/8bfec95fd3006f89d2d9935905f7e665df07b59b//src/callbacks/recorder.jl#L31" target="_blank">/home/runner/work/FluxTraining.jl/FluxTraining.jl/src/callbacks/recorder.jl:31</a></li> <li> on(::<b>FluxTraining.Events.Init</b>, ::<b>FluxTraining.Phases.Phase</b>, recorder::<b>Recorder</b>, learner) in FluxTraining at <a href="https://github.com/lorenzoh/FluxTraining.jl/tree/8bfec95fd3006f89d2d9935905f7e665df07b59b//src/callbacks/recorder.jl#L26" target="_blank">/home/runner/work/FluxTraining.jl/FluxTraining.jl/src/callbacks/recorder.jl:26</a></li> <li> on(::<b>FluxTraining.Events.Event</b>, phase, ::<b>FluxTraining.SafeCallback</b>, learner) in FluxTraining at <a href="https://github.com/lorenzoh/FluxTraining.jl/tree/8bfec95fd3006f89d2d9935905f7e665df07b59b//src/callbacks/callback.jl#L66" target="_blank">/home/runner/work/FluxTraining.jl/FluxTraining.jl/src/callbacks/callback.jl:66</a></li> </ul><h3 id="visualize-the-callback-dependency-graph"><a href="#visualize-the-callback-dependency-graph" class="anchor"></a>Visualize the callback dependency graph</h3>
 <p>You can use <a href="https://juliagraphs.github.io/GraphPlot.jl/"><em>GraphPlot.jl</em></a> to visualize the dependencies between callbacks:</p>
 <pre><code output="false" style="display:none" cell="main" result="false" class="language-julia">learner = Learner(
     nothing, (nothing, nothing), nothing, nothing,  # dummy arguments
