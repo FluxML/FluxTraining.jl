@@ -1,28 +1,51 @@
 
-/* # Article container */
-
-article {
-    max-width: 829px;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 32px;
-}
-
-/* the text content is constrained to a legible length, 7/16 */
-article  p, ul, h1, h2, h3, h4, h5 {
-    max-width: 587px;
-}
-
-img {
-    max-width: 829px;
-}
-
 /* font imports */
 
 @font-face {
   font-family: 'VeraMono';
   src: URL('theme/fonts/VeraMono.ttf') format('truetype');
 }
+
+@font-face {
+  font-family: 'Lora';
+  src: URL('theme/fonts/Lora-Italic.ttf') format('truetype');
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'EB Garamond';
+  src: URL('theme/fonts/EBGaramond-Regular.ttf') format('truetype');
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'EB Garamond';
+  src: URL('theme/fonts/EBGaramond-Italic.ttf') format('truetype');
+  font-style: italic;
+}
+
+:root {
+    --content-width: 760px;
+    --margin-width: 240px;
+}
+
+/* # Article container */
+
+article {
+    max-width: var(--content-width);
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 24px;
+}
+
+article  p, ul, h1, h2, h3, h4, h5 {
+    max-width: 829;
+}
+
+img {
+    max-width: var(--content-width);
+}
+
 
 /* fonts */
 
@@ -31,19 +54,20 @@ p, li, td, th {
     font-family: 'EB Garamond', serif;
     font-style: normal;
     font-weight: normal;
-    font-size: 19px;
+    font-size: 20px;
     line-height: 24px;
-    letter-spacing: 0.015em;
 }
 
 h1 {
     font-family: 'EB Garamond', serif;
     font-weight: normal;
     font-size: 40px;
+    color: #333;
 }
 
 h2 {
     margin-top: 48px;
+    font-size: 30px;
 }
 
 
@@ -51,6 +75,7 @@ h2, h3, h4, h5 {
     font-family: Lora, sans-serif;
     font-style: italic;
     font-weight: normal;
+    color: #333;
 }
 
 code {
@@ -60,7 +85,7 @@ code {
     padding: 2px;
     border-radius: 2px;
     background-color: #f8f8f8;
-    color: #111111;
+    color: #222;
 }
 
 pre > code {
@@ -73,11 +98,20 @@ pre > code {
 }
 
 h3 code {
-    font-size: 18px;
+    font-size: 20px;
+}
+
+h2 code {
+    font-size: 24px;
 }
 
 a > code {
-    color: navy;
+    color: black;
+    text-decoration: underline;
+}
+
+h3 a > code {
+    text-decoration: none
 }
 
 code.cell-output {
@@ -86,10 +120,6 @@ code.cell-output {
 }
 
 pre {
-    margin: 8px 0px;
-}
-
-article > pre {
     margin: 8px 0px;
 }
 
@@ -118,21 +148,21 @@ li > * {
 .marginnote {
     float: right;
     font-size: 14px;
-    width: 222px;
+    width: var(--margin-width);
     clear: right;
-    margin-top: 0.3rem;
+    margin-top: 0.25rem;
     margin-bottom: 0;
+    margin-left: calc(var(--content-width) + 20px);
     line-height: 1.3;
     vertical-align: baseline;
-    position: relative;
+    position: absolute;
 }
 
 /* # Menu container */
 
 .menu {
-    max-width: 587px;
+    max-width: var(--content-width);
     margin-left: auto;
-    padding-right: 222px;
     margin-right: auto;
     display: flex;
     flex-direction: row;
@@ -142,17 +172,35 @@ li > * {
 }
 
 #search-input {
-    border: none;
-    border-bottom: 1px solid gray;
+    border: 1px solid #ddd;
     border-radius: 4px;
     font-size: 19px;
-    margin: 0px 16px;
+    margin: 0px 8px;
     flex-grow: 1;
-    padding: 4px;
+    padding: 4px 8px;
 }
-#search-input:focus {
-    outline: none;
-    border-bottom: 1px solid #111111;
+
+#version-selector {
+    border: 1px solid #ddd;
+    padding: 4px;
+    border-radius: 4px;
+}
+
+#page-navigation {
+    max-width: var(--content-width);
+    margin-left: auto;
+    margin-top: 48px;
+    margin-right: auto;
+}
+#page-navigation > a {
+    color: #aaa;
+    padding: 0px 32px;
+    text-decoration: none;
+    background: unset;
+    text-shadow: unset;
+}
+#page-navigation > #next-page {
+    float: right;
 }
 
 /* # Table of contents container */
@@ -172,13 +220,21 @@ nav#toc {
 footer {
     margin-left: auto;
     margin-right: auto;
-    margin-top: 100px;
+    margin-top: 32px;
     margin-bottom: 16px;
     color: #aaa;
     width: 300px;
 }
+@media (max-width: 1260px) {
+    .marginnote {
+        float: none;
+        margin: 18px 8px;
+        width: 100%;
+        position: relative;
+    }
+}
 
-@media (max-width: 829px) {
+@media (max-width: 760px) {
     article {
         margin-left: 8px;
         margin-right: 8px;
@@ -187,6 +243,9 @@ footer {
         float: none;
         margin: 16px 8px;
         width: 100%;
+    }
+    img {
+        max-width: 100%;
     }
     .menu {
         margin-left: 8px;
@@ -201,34 +260,60 @@ from https://github.com/edwardtufte/tufte-css/blob/gh-pages/tufte.css
 
 */
 
+/* Links: replica
+
 /* Links: replicate underline that clears descenders */
 a:link,
 a:visited {
-    text-decoration: dotted;
-    color: navy;
-}
-
-footer a:link, a:visited {
     color: inherit;
-    text-decoration: underline;
 }
 
+.no-tufte-underline:link {
+    background: unset;
+    text-shadow: unset;
+}
+
+a:link, .tufte-underline, .hover-tufte-underline:hover {
+    text-decoration: none;
+    background: -webkit-linear-gradient(#fffff8, #fffff8), -webkit-linear-gradient(#fffff8, #fffff8), -webkit-linear-gradient(currentColor, currentColor);
+    background: linear-gradient(#fffff8, #fffff8), linear-gradient(#fffff8, #fffff8), linear-gradient(currentColor, currentColor);
+    -webkit-background-size: 0.05em 1px, 0.05em 1px, 1px 1px;
+    -moz-background-size: 0.05em 1px, 0.05em 1px, 1px 1px;
+    background-size: 0.05em 1px, 0.05em 1px, 1px 1px;
+    background-repeat: no-repeat, no-repeat, repeat-x;
+    text-shadow: 0.03em 0 #fffff8, -0.03em 0 #fffff8, 0 0.03em #fffff8, 0 -0.03em #fffff8, 0.06em 0 #fffff8, -0.06em 0 #fffff8, 0.09em 0 #fffff8, -0.09em 0 #fffff8, 0.12em 0 #fffff8, -0.12em 0 #fffff8, 0.15em 0 #fffff8, -0.15em 0 #fffff8;
+    background-position: 0% 93%, 100% 93%, 0% 93%;
+}
+
+@media screen and (-webkit-min-device-pixel-ratio: 0) {
+    a:link, .tufte-underline, .hover-tufte-underline:hover {
+        background-position-y: 87%, 87%, 87%;
+    }
+}
+
+a:link::selection,
+a:link::-moz-selection {
+    text-shadow: 0.03em 0 #b4d5fe, -0.03em 0 #b4d5fe, 0 0.03em #b4d5fe, 0 -0.03em #b4d5fe, 0.06em 0 #b4d5fe, -0.06em 0 #b4d5fe, 0.09em 0 #b4d5fe, -0.09em 0 #b4d5fe, 0.12em 0 #b4d5fe, -0.12em 0 #b4d5fe, 0.15em 0 #b4d5fe, -0.15em 0 #b4d5fe;
+    background: #b4d5fe;
+}
 /* code styling
 
 From https://github.com/highlightjs/highlight.js/blob/master/src/styles/atom-one-light.css
 */
-
 .hljs-comment,
 .hljs-quote {
   color: #a0a1a7;
   font-style: italic;
 }
-
 .hljs-doctag,
 .hljs-keyword,
 .hljs-formula {
-  color: #a626a4;
+  color: #666;
 }
+/*
+
+
+
 
 .hljs-section,
 .hljs-name,
@@ -286,3 +371,4 @@ From https://github.com/highlightjs/highlight.js/blob/master/src/styles/atom-one
 .hljs-link {
   text-decoration: underline;
 }
+*/
