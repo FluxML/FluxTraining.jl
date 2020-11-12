@@ -20,3 +20,11 @@ end
     learner = testlearner(Recorder(), Scheduler(), cb)
     @test_nowarn fit!(learner, 5)
 end
+
+@testset ExtendedTestSet "`LogVisualization`" begin
+    cb = LogVisualization(tbbackend(), freq = 5) do batch
+        return rand(RGB, 50, 50)
+    end
+    learner = testlearner(Recorder(), Scheduler(), cb)
+    @test_nowarn fit!(learner, 5)
+end

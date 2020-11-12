@@ -197,9 +197,9 @@ struct LogVisualization <: Callback
     function LogVisualization(visfn, backends...; freq = 100)
         cb = new(visfn, backends)
         if isnothing(freq)
-            return throttle(cb, BatchEnd, freq = 100)
-        else
             return cb
+        else
+            return throttle(cb, BatchEnd, freq = freq)
         end
     end
 
