@@ -11,18 +11,11 @@ training.
 Schedule([0, 2, 10], [0.01, 0.1, 0.001], [sineio(), sineio()])
 ```
 
-`Schedule` is a wrapper around `Animations.Animation`, see the
+`Schedule` is an alias for `Animations.Animation`, see the
 [documentation](https://jkrumbiegel.github.io/Animations.jl/dev)
 for more detailed information.
 """
-struct Schedule{T}
-    animation::Animation{T}
-    unit::Symbol
-end
-
-
-Schedule(args...; unit = :epoch, kwargs...) =
-    Schedule(Animation(args...; kwargs...), unit)
+const Schedule = Animation
 
 """
     Scheduler(schedules...)
@@ -42,8 +35,8 @@ scheduler = Scheduler(
 See also [`Schedule`](#).
 """
 struct Scheduler <: Callback
-    schedules::Dict{Type{<:HyperParameter}, Schedule}
-    Scheduler(args...; kwargs...) = new(Dict(args...; kwargs...))
+    schedules::Dict{Type{<:HyperParameter}, Animations.FiniteLengthAnimation}
+    Scheduler(args...; unit = :epoch, kwargs...) = new(Dict(args...; kwargs...))
 end
 
 Base.show(io::IO, scheduler::Scheduler) = print(
@@ -67,21 +60,14 @@ end
 
 function on(::Init, phase, scheduler::Scheduler, learner)
     learner.cbstate.hyperparams = MVHistory()
-    # convert schedules to use step as a unit
-    epochlength = length(learner.data[1])
-    for (H, schedule) in scheduler.schedules
-        if schedule.unit == :epoch
-            scheduler.schedules[H] = Schedule(schedule.animation * epochlength, :step)
-        end
-    end
 end
 
 
 function on(::BatchBegin, ::AbstractTrainingPhase, scheduler::Scheduler, learner)
     step = learner.cbstate.history.steps + 1
-    for (H, schedule) in scheduler.schedules
-        value = Animations.at(schedule.animation, step)
-        sethyperparameter!(learner, H, Animations.at(schedule.animation, step))
+    for (H, animation) in scheduler.schedules
+        value = Animations.at(animation, step)
+        sethyperparameter!(learner, H, value)
         push!(learner.cbstate.hyperparams, Symbol(H), step, value)
     end
 end
@@ -96,9 +82,9 @@ over `max_val` to `end_val`.
 function onecycle(
         nepochs, max_val,
         start_val = max_val / 10,
-        end_val = max_val / 30,
+        end_val = max_val / 30;
         start_pctg = 0.1)
-    return Schedule(
+    return Animation(
         [0, nepochs * start_pctg, nepochs],
         [start_val, max_val, end_val],
         [Animations.sineio(), Animations.sineio()]
