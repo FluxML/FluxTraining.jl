@@ -43,7 +43,7 @@ training.</p>
 <pre><code class="language-julia"># one-cycle schedule over 10 epochs from 0.01 over 0.1 to 0.001
 Schedule([0, 2, 10], [0.01, 0.1, 0.001], [sineio(), sineio()])
 </code></pre>
-<p><code>Schedule</code> is a wrapper around <code>Animations.Animation</code>, see the
+<p><code>Schedule</code> is an alias for <code>Animations.Animation</code>, see the
 <a href="https://jkrumbiegel.github.io/Animations.jl/dev">documentation</a>
 for more detailed information.</p>
 </div>

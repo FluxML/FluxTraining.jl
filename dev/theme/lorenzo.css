@@ -206,8 +206,8 @@ li > * {
 /* # Table of contents container */
 
 nav#toc {
-    margin-top: 50px;
-    max-width: 829px;
+    margin-top: 24px;
+    max-width: var(--content-width);
     margin-left: auto;
     margin-right: auto;
 }
