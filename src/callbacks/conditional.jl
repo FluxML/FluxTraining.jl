@@ -43,12 +43,16 @@ mutable struct FrequencyThrottle <: CallbackCondition
 end
 
 function shouldrun(c::FrequencyThrottle, event, phase)
-    if c.counter == 1
-        c.counter = c.freq
-        return true
+    if typeof(event) == c.event
+        if c.counter == 1
+            c.counter = c.freq
+            return true
+        else
+            c.counter -= 1
+            return false
+        end
     else
-        c.counter -= 1
-        return false
+        return true
     end
 end
 
@@ -61,10 +65,14 @@ end
 
 
 function shouldrun(c::TimeThrottle, event, phase)
-    if isnothing(c.timer) || (time() - c.timer) > c.seconds
-        c.timer = time()
-        return true
+    if typeof(event) == c.event
+        if isnothing(c.timer) || (time() - c.timer) > c.seconds
+            c.timer = time()
+            return true
+        else
+            return false
+        end
     else
-        return false
+        return true
     end
 end
