@@ -5,27 +5,27 @@
   font-family: 'VeraMono';
   src: URL('theme/fonts/VeraMono.ttf') format('truetype');
 }
-
 @font-face {
-  font-family: 'Lora';
-  src: URL('theme/fonts/Lora-Italic.ttf') format('truetype');
-  font-style: italic;
-}
-
-@font-face {
-  font-family: 'EB Garamond';
-  src: URL('theme/fonts/EBGaramond-Regular.ttf') format('truetype');
+  font-family: 'Charter';
+  src: URL('theme/fonts/Charter Regular.otf') format('opentype');
   font-style: normal;
 }
 
 @font-face {
-  font-family: 'EB Garamond';
-  src: URL('theme/fonts/EBGaramond-Italic.ttf') format('truetype');
+  font-family: 'Charter';
+  src: URL('theme/fonts/Charter Bold.otf') format('opentype');
+  font-weight: bold;
+}
+
+@font-face {
+  font-family: 'Charter';
+  src: URL('theme/fonts/Charter Italic.otf') format('opentype');
   font-style: italic;
 }
 
+
 :root {
-    --content-width: 760px;
+    --content-width: 90ch;
     --margin-width: 240px;
 }
 
@@ -39,7 +39,6 @@ article {
 }
 
 article  p, ul, h1, h2, h3, h4, h5 {
-    max-width: 829;
 }
 
 img {
@@ -51,37 +50,59 @@ img {
 
 p, li, td, th {
     color: #111111;
-    font-family: 'EB Garamond', serif;
+    font-family: 'Charter', 'Source Serif Pro', serif;
     font-style: normal;
     font-weight: normal;
     font-size: 20px;
-    line-height: 24px;
+    line-height: 28px;
 }
 
-h1 {
-    font-family: 'EB Garamond', serif;
-    font-weight: normal;
-    font-size: 40px;
-    color: #333;
+p {
+    margin-block-start: 8px;
+    margin-block-end: 20px;
 }
+
 
 h2 {
     margin-top: 48px;
     font-size: 30px;
 }
 
+h3 {
+    margin-top: 32px;
+    font-size: 24px;
+}
 
-h2, h3, h4, h5 {
-    font-family: Lora, sans-serif;
-    font-style: italic;
-    font-weight: normal;
+
+h1, h2, h3, h4, h5 {
+    font-family: 'Charter', serif;
+    font-size: 22px;
+    font-weight: bold;
     color: #333;
 }
 
+h3 {
+
+    font-weight: bold;
+    font-size: 20px;
+    margin-bottom: 8px;
+}
+
+h1 {
+    font-size: 30px;
+}
+
+hr {
+    margin-top: 50px;
+    margin-bottom: 50px;
+    max-width: 200px;
+    color: #aaa;
+}
+
 code {
-    font-family: 'VeraMono';
+    font-family: 'JuliaMono', 'VeraMono', monospace;
     font-style: normal;
-    font-size: 14px;
+    font-size: 17px;
     padding: 2px;
     border-radius: 2px;
     background-color: #f8f8f8;
@@ -102,7 +123,7 @@ h3 code {
 }
 
 h2 code {
-    font-size: 24px;
+    font-size: 20px;
 }
 
 a > code {
@@ -126,7 +147,7 @@ pre {
 /* Tables */
 
 table {
-    margin: 32px 16px;
+    margin: 16px 16px;
     overflow-x: auto;
     display: block;
 }
@@ -158,6 +179,54 @@ li > * {
     position: absolute;
 }
 
+/*
+Admonitions
+*/
+
+.admonition {
+    margin: 16px 16px;
+    border-top: 1px solid #aaa;
+    border-bottom: 1px solid #aaa;
+}
+
+.admonition-title {
+    font-weight: bold;
+}
+
+.admonition > * {
+    margin-left: 8px;
+    margin-right: 8px;
+}
+
+.admonition.info {
+    background-color: rgba(135, 206, 235, 0.1);
+    
+}
+/*
+Footnotes
+*/
+
+a.footnote {
+    vertical-align: super;
+    font-size: 0.5em;
+    margin-left: 2px;
+}
+
+div.footnote {
+    margin: 16px 16px;
+    border-top: 1px solid #aaa;
+    border-bottom: 1px solid #aaa;
+}
+
+div.footnote > p {
+    margin: 8px;
+    display: inline;
+}
+
+div.footnote > p.footnote-title {
+    display: inline;
+}
+
 /* # Menu container */
 
 .menu {
@@ -171,6 +240,9 @@ li > * {
     height: 40px;
 }
 
+#menu-toggler {
+    cursor: pointer;
+}
 #search-input {
     border: 1px solid #ddd;
     border-radius: 4px;
@@ -236,8 +308,8 @@ footer {
 
 @media (max-width: 760px) {
     article {
-        margin-left: 8px;
-        margin-right: 8px;
+        margin-left: 12px;
+        margin-right: 12px;
     }
     .marginnote {
         float: none;
