@@ -29,7 +29,7 @@ stateaccess(::ProgressPrinter) = (data = Read(), cbstate = (history = Read()),)
 """
     MetricsPrinter()
 
-Prints any metrics after every epoch.
+Prints metrics after every epoch. Relies on [`Metrics`](#).
 """
 struct MetricsPrinter <: Callback end
 
@@ -94,6 +94,11 @@ end
 stateaccess(::EarlyStopping) = (callbacks = Read(), cbstate = (; metricsepoch = Read()))
 
 
+"""
+    ToGPU()
+
+Callback that moves model and batch data to the GPU during training.
+"""
 struct ToGPU <: Callback end
 
 function on(::EpochBegin, ::Phase, ::ToGPU, learner)
@@ -107,7 +112,6 @@ stateaccess(::ToGPU) = (
 )
 
 function on(::BatchBegin, ::Phase, cb::ToGPU, learner)
-
     learner.batch.xs = gpu(learner.batch.xs)
     learner.batch.ys = gpu(learner.batch.ys)
 end
