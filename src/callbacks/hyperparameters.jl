@@ -22,7 +22,8 @@ function sethyperparameter! end
     stateaccess(::Type{HyperParameter})
 
 Defines what `Learner` state is accessed when calling
-`sethyperparameter!` and `gethyperparameter`
+`sethyperparameter!` and `gethyperparameter`. This is needed
+so that [`Scheduler`](#) can access the state.
 """
 stateaccess(::Type{HyperParameter}) = ()
 

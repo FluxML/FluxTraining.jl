@@ -23,6 +23,8 @@ const Schedule = Animation
 Callback for hyperparameter scheduling. Takes pairs of [`HyperParameter`](#)
 types and [`Schedule`](#)s.
 
+See [the tutorial](../docs/tutorials/hyperparameters.md).
+
 ## Example
 
 ```julia

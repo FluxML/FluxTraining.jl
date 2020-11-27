@@ -19,7 +19,7 @@ As an example
 - [`LearningRate`](#) is a hyperparameter type representing the optimizer's step size; and
 - `schedule = Schedule([0, 10], [0.01, 0.001])` represents a linear scheduling over 10 epochs from `0.01` to `0.001` 
 
-We can create the callback scheduling the learning rate according to ``Scheduler(LearningRate => schedule).
+We can create the callback scheduling the learning rate according to `Scheduler(LearningRate => schedule)`.
 
 `Schedule`s are built around [*Animations.jl*](https://jkrumbiegel.github.io/Animations.jl/dev/). See that package's documentation or [`Schedule`](#)'s for more details on how to construct them. 
 
@@ -45,7 +45,7 @@ schedule = Schedule(
 learner = model(model, data, opt, lossfn, Scheduler(LearningRate => schedule))
 ```
 
-For convenience, you can also use the [`onecycle`](#) to create the `Schedule`.
+For convenience, you can also use the [`onecycle`](#) helper to create this `Schedule`.
 
 ## Extending
 
@@ -59,4 +59,4 @@ To do this, you will need to define
 
 !!! info "Kinds of hyperparameters"
 
-    Hyperparameters don't need to belong to the optimizer! For example, you could create a hyperparameter for batch size. It is not included in the package because *FluxTraining.jl* is agnostic of the data iterators and the implementation would differ for every type of iterator.
+    Hyperparameters don't need to belong to the optimizer! For example, you could create a hyperparameter for batch size. That is not implemented here because this package is agnostic of the data iterators and the implementation would differ for every type of iterator.

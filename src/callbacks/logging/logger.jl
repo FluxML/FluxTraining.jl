@@ -97,12 +97,13 @@ Callback that logs hyperparameters to one or more [`LoggerBackend`](#)s.
 See also [`LoggerBackend`](#), [`Loggables.Loggable`](#), [`log_to`](#),
 [`TensorBoardBackend`](#)
 
-Example:
+## Example
 
 ```julia
 logcb = LogHyperParams(TensorBoardBackend("tblogs"))
 schedule = ...
 Learner(model, data, opt, lossfn, Scheduler(LearningRate => schedule), logcb)
+```
 """
 struct LogHyperParams <: Callback
     backends::Tuple
