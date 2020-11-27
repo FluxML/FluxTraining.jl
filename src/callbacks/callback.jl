@@ -42,6 +42,14 @@ one but `(x = Read())` (without the comma) is parsed as an assignment with value
 stateaccess(::Callback) = (;)
 runafter(::AbstractCallback) = ()
 
+"""
+    abstract type ConflictResolution
+
+A conflict resolution strategy for resolving write/write conflicts
+of two callbacks.
+
+See [`resolveconflict`](#).
+"""
 abstract type ConflictResolution end
 struct NotDefined <: ConflictResolution end
 struct Unresolvable <: ConflictResolution end
@@ -56,16 +64,62 @@ function _resolveconflict(cb1, cb2)
         return r
     end
 end
+
+"""
+    resolveconflict(cb1, cb2)
+
+Define a conflict resolution strategy for resolving a write/write conflict
+between two callbacks.
+
+The default is [`NotDefined()`], which will result in an error and a message
+to implement this method.
+
+To implement, dispatch on the callback types that you which to resolve (in any
+order) and return one of the following:
+
+- [`Unresolvable`](#)`()` if the callbacks must not be used together
+- [`RunFirst`](#)`(cb)` if one of the callbacks needs to run first; or
+- [`NoConflict`](#)`()` if the callbacks may run together in any order
+"""
 resolveconflict(::AbstractCallback, ::AbstractCallback) = NotDefined()
 
 
+"""
+    abstract type FitException
+
+Abstract types for exceptions that can be thrown during fitting,
+to change its control flow.
+
+See [`CancelBatchException`](#), [`CancelEpochException`](#), [`CancelFittingException`](#).
+"""
 abstract type FitException <: Exception end
+"""
+    CancelBatchException(msg)
+
+Throw during fitting to cancel the currently running batch.
+"""
 struct CancelBatchException <: FitException
     msg::String
 end
+
+
+"""
+    CancelEpochException(msg)
+
+Throw during fitting to cancel the currently running epoch.
+"""
+
+
 struct CancelEpochException <: FitException
     msg::String
 end
+
+
+"""
+    CancelFittingException(msg)
+
+Throw during fitting to cancel it.
+"""
 struct CancelFittingException <: FitException
     msg::String
 end

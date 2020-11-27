@@ -143,9 +143,6 @@ end
 numsteps(learner::Protected, phase) = numsteps(getfield(learner, :data), phase)
 numsteps(learner, phase) = length(getdataiter(phase, learner))
 
-hascallback(learner::Protected, T) = hascallback(getfield(learner, :data), phase)
-hascallback(learner, T) = any(C <: T for C in typeof.(learner.callbacks.cbs))
-
 
 dataiters(train, val = nothing, test = nothing) = (training = train, validation = val, test = test)
 dataiters(t::Tuple) = dataiters(t...)
