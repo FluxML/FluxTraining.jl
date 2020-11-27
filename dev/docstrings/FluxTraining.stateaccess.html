@@ -43,12 +43,25 @@
 <p>Return a named tuple determining what learner state <code>callback</code>
 can access.</p>
 <p>The default is <code>(;)</code>, the empty named tuple, meaning no state can be accessed.</p>
+<p>Implementations of <code>stateaccess</code> should always return the least permissions
+possible.</p>
+<p>For example, the <a href="FluxTraining.ToGPU.html"><code>ToGPU</code></a> callback needs to write both the model and the batch data,
+so its <code>stateaccess</code> implementation is:</p>
+<pre><code class="language-julia">stateaccess(::ToGPU) = (
+    model = Write(),
+    params = Write(),
+    batch = (xs = Write(), ys = Write()),
+)
+</code></pre>
+<p>Be careful when defining <code>stateaccess</code> that you do return a <code>NamedTuple</code>. <code>(x = Read(),)</code> is
+one but <code>(x = Read())</code> (without the comma) is parsed as an assignment with value <code>Read()</code>.</p>
 </div>
 <div class='doc' id='2'>
 <pre><code>stateaccess(::Type{HyperParameter})
 </code></pre>
 <p>Defines what <code>Learner</code> state is accessed when calling
-<code>sethyperparameter!</code> and <code>gethyperparameter</code></p>
+<code>sethyperparameter!</code> and <code>gethyperparameter</code>. This is needed
+so that <a href="FluxTraining.Scheduler.html"><code>Scheduler</code></a> can access the state.</p>
 </div>
 </div>
 </article>

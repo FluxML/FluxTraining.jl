@@ -42,6 +42,7 @@
 </code></pre>
 <p>Callback for hyperparameter scheduling. Takes pairs of <a href="FluxTraining.HyperParameter.html"><code>HyperParameter</code></a>
 types and <a href="FluxTraining.Schedule.html"><code>Schedule</code></a>s.</p>
+<p>See <a href="../docs/tutorials/hyperparameters.html">the tutorial</a>.</p>
 <h2 id="example"><a href="#example" class="anchor"></a>Example</h2>
 <pre><code class="language-julia">lrschedule = Schedule([0, 10], [0.1, 0.001], Animations.sineio())
 scheduler = Scheduler(

@@ -43,13 +43,12 @@
 <p>Callback that logs hyperparameters to one or more <a href="FluxTraining.LoggerBackend.html"><code>LoggerBackend</code></a>s.</p>
 <p>See also <a href="FluxTraining.LoggerBackend.html"><code>LoggerBackend</code></a>, <a href="FluxTraining.Loggables.Loggable.html"><code>Loggables.Loggable</code></a>, <a href="FluxTraining.log_to.html"><code>log_to</code></a>,
 <a href="FluxTraining.TensorBoardBackend.html"><code>TensorBoardBackend</code></a></p>
-<p>Example:</p>
+<h2 id="example"><a href="#example" class="anchor"></a>Example</h2>
 <pre><code class="language-julia">logcb = LogHyperParams(TensorBoardBackend(&quot;tblogs&quot;))
 schedule = ...
 Learner(model, data, opt, lossfn, Scheduler(LearningRate =&gt; schedule), logcb)
-```{=html}
-&lt;/div&gt;
 </code></pre>
+</div>
 </div>
 </article>
         <div id="page-navigation">

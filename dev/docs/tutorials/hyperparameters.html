@@ -50,7 +50,7 @@
 <li><a href="../../docstrings/FluxTraining.LearningRate.html"><code>LearningRate</code></a> is a hyperparameter type representing the optimizer’s step size; and</li>
 <li><code>schedule = Schedule([0, 10], [0.01, 0.001])</code> represents a linear scheduling over 10 epochs from <code>0.01</code> to <code>0.001</code></li>
 </ul>
-<p>We can create the callback scheduling the learning rate according to ``Scheduler(LearningRate =&gt; schedule).</p>
+<p>We can create the callback scheduling the learning rate according to <code>Scheduler(LearningRate =&gt; schedule)</code>.</p>
 <p><code>Schedule</code>s are built around <a href="https://jkrumbiegel.github.io/Animations.jl/dev/"><em>Animations.jl</em></a>. See that package’s documentation or <a href="../../docstrings/FluxTraining.Schedule.html"><code>Schedule</code></a>’s for more details on how to construct them.</p>
 <h3 id="one-cycle-learning-rate"><a href="#one-cycle-learning-rate" class="anchor"></a>One-cycle learning rate</h3>
 <p>Let’s define a <code>Schedule</code> that follows the above-mentioned cyclical learning rate schedule.</p>
@@ -67,7 +67,7 @@ schedule = Schedule(
 
 learner = model(model, data, opt, lossfn, Scheduler(LearningRate =&gt; schedule))
 </code></pre>
-<p>For convenience, you can also use the <a href="../../docstrings/FluxTraining.onecycle.html"><code>onecycle</code></a> to create the <code>Schedule</code>.</p>
+<p>For convenience, you can also use the <a href="../../docstrings/FluxTraining.onecycle.html"><code>onecycle</code></a> helper to create this <code>Schedule</code>.</p>
 <h2 id="extending"><a href="#extending" class="anchor"></a>Extending</h2>
 <p>You can create and schedule your own hyperparameters.</p>
 <p>To do this, you will need to define</p>
@@ -77,7 +77,7 @@ learner = model(model, data, opt, lossfn, Scheduler(LearningRate =&gt; schedule)
 <li>what state needs to be accessed to set the hyperparameter by implementing <a href="../../docstrings/FluxTraining.stateaccess.html"><code>stateaccess</code></a><code>(::Type{MyParam})</code>. See <a href="../callbacks/custom.html">custom callbacks</a> for more info on why this is needed.</li>
 </ul>
 <div class="admonition info"><p class="admonition-title">Kinds of hyperparameters</p>
-<p>Hyperparameters don’t need to belong to the optimizer! For example, you could create a hyperparameter for batch size. It is not included in the package because <em>FluxTraining.jl</em> is agnostic of the data iterators and the implementation would differ for every type of iterator.</p>
+<p>Hyperparameters don’t need to belong to the optimizer! For example, you could create a hyperparameter for batch size. That is not implemented here because this package is agnostic of the data iterators and the implementation would differ for every type of iterator.</p>
 </div></article>
         <div id="page-navigation">
             <a id="previous-page" title="Previous" href="mnist.html"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M16.2426 6.34317L14.8284 4.92896L7.75739 12L14.8285 19.0711L16.2427 17.6569L10.5858 12L16.2426 6.34317Z" fill="currentColor" /></svg></a>

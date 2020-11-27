@@ -35,18 +35,21 @@
         <input id="search-input" placeholder="Search">
         <select id="version-selector"></select>
     </div>
-    <main id="page"><article><div class='docs' id='MetricsPrinter'>
-<p><code>public</code> <code>MetricsPrinter</code> — <code>struct</code></p>
+    <main id="page"><article><div class='docs' id='ValidationPhase'>
+<p><code>public</code> <code>ValidationPhase</code> — <code>struct</code></p>
 <div class='doc' id='1'>
-<pre><code>MetricsPrinter()
+<pre><code>TrainingPhase()
 </code></pre>
-<p>Prints metrics after every epoch. Relies on <a href="FluxTraining.Metrics.html"><code>Metrics</code></a>.</p>
+<p>A regular validation phase. It iterates over batches
+in <code>learner.data.validation</code> and performs a forward pass.</p>
+<p>Throws the following events: <a href="FluxTraining.Events.EpochBegin.html"><code>EpochBegin</code></a>, <a href="FluxTraining.Events.BatchBegin.html"><code>BatchBegin</code></a>,
+<a href="FluxTraining.Events.LossBegin.html"><code>LossBegin</code></a>, <a href="FluxTraining.Events.BatchEnd.html"><code>BatchEnd</code></a>, <a href="FluxTraining.Events.EpochEnd.html"><code>EpochEnd</code></a>.</p>
 </div>
 </div>
 </article>
         <div id="page-navigation">
-            <a id="previous-page" title="Previous" href="FluxTraining.Metrics.html"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M16.2426 6.34317L14.8284 4.92896L7.75739 12L14.8285 19.0711L16.2427 17.6569L10.5858 12L16.2426 6.34317Z" fill="currentColor" /></svg></a>
-            <a id="next-page" title="Next" href="FluxTraining.Phases.AbstractTrainingPhase.html"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10.5858 6.34317L12 4.92896L19.0711 12L12 19.0711L10.5858 17.6569L16.2427 12L10.5858 6.34317Z" fill="currentColor" /></svg></a>
+            <a id="previous-page" title="Previous" href="FluxTraining.Phases.TrainingPhase.html"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M16.2426 6.34317L14.8284 4.92896L7.75739 12L14.8285 19.0711L16.2427 17.6569L10.5858 12L16.2426 6.34317Z" fill="currentColor" /></svg></a>
+            <a id="next-page" title="Next" href="FluxTraining.Phases.html"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10.5858 6.34317L12 4.92896L19.0711 12L12 19.0711L10.5858 17.6569L16.2427 12L10.5858 6.34317Z" fill="currentColor" /></svg></a>
         </div>
     </main>
     <nav id="toc"><p><a href="../README.html">README</a></p>

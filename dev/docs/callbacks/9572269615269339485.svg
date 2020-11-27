@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg"
+     xmlns:xlink="http://www.w3.org/1999/xlink"
+     version="1.2"
+     width="141.42mm" height="100mm" viewBox="0 0 141.42 100"
+     stroke="none"
+     fill="#000000"
+     stroke-width="0.3"
+     font-size="3.88"
+>
+<defs>
+  <marker id="arrow" markerWidth="15" markerHeight="7" refX="5" refY="3.5" orient="auto" markerUnits="strokeWidth">
+    <path d="M0,0 L15,3.5 L0,7 z" stroke="context-stroke" fill="context-stroke"/>
+  </marker>
+</defs>
+<g stroke-width="1.22" fill="#000000" fill-opacity="0.000" stroke="#D3D3D3" id="img-830ca42c-1">
+  <g transform="translate(98.78,48.59)">
+    <path fill="none" d="M24.93,-2.98 L -24.93 2.98" class="primitive"/>
+  </g>
+  <g transform="translate(70.71,38.68)">
+    <path fill="none" d="M52.98,5.6 L -52.98 -5.6" class="primitive"/>
+  </g>
+  <g transform="translate(103.34,26.62)">
+    <path fill="none" d="M22.01,15.3 L -22.01 -15.3" class="primitive"/>
+  </g>
+  <g transform="translate(54.27,62.06)">
+    <path fill="none" d="M-38.2,-26.62 L 38.2 26.62" class="primitive"/>
+  </g>
+  <g transform="translate(17.84,58.18)">
+    <path fill="none" d="M-5.07,-21.53 L 5.07 21.53" class="primitive"/>
+  </g>
+  <g transform="translate(44.42,20.39)">
+    <path fill="none" d="M-27.3,10.09 L 27.3 -10.09" class="primitive"/>
+  </g>
+  <g transform="translate(86.9,50)">
+    <path fill="none" d="M-8.86,-37.47 L 8.86 37.47" class="primitive"/>
+  </g>
+  <g transform="translate(50.48,46.12)">
+    <path fill="none" d="M23.9,-33.98 L -23.9 33.98" class="primitive"/>
+  </g>
+</g>
+<g stroke-width="1.22" stroke="#D3D3D3" id="img-830ca42c-2">
+  <g transform="translate(77.49,51.14)">
+    <path fill="none" d="M2.16,1.19 L -3.64 0.43 1.48 -1.62" class="primitive"/>
+  </g>
+  <g transform="translate(21.38,33.47)">
+    <path fill="none" d="M1.53,1.6 L -3.65 -0.39 2.12 -1.22" class="primitive"/>
+  </g>
+  <g transform="translate(83.97,13.15)">
+    <path fill="none" d="M-0.1,1.93 L -2.63 -1.83 2.73 -0.1" class="primitive"/>
+  </g>
+  <g transform="translate(89.83,86.85)">
+    <path fill="none" d="M0.1,-1.93 L 2.63 1.83 -2.73 0.1" class="primitive"/>
+  </g>
+  <g transform="translate(22.31,77.14)">
+    <path fill="none" d="M1.68,-1.52 L 0.61 2.57 -2.29 -1.05" class="primitive"/>
+  </g>
+  <g transform="translate(68.45,11.51)">
+    <path fill="none" d="M-2.57,-0.66 L 3.27 -1.21 -0.7 1.87" class="primitive"/>
+  </g>
+  <g transform="translate(95.15,84.9)">
+    <path fill="none" d="M1.68,-1.52 L 0.61 2.57 -2.29 -1.05" class="primitive"/>
+  </g>
+  <g transform="translate(28.22,77.76)">
+    <path fill="none" d="M2.63,-0.53 L -1.64 2.34 -0.98 -1.8" class="primitive"/>
+  </g>
+</g>
+<g font-size="4" stroke="#000000" stroke-opacity="0.000" fill="#000000" id="img-830ca42c-3">
+</g>
+<g stroke-width="0" stroke="#000000" stroke-opacity="0.000" fill="#40E0D0" id="img-830ca42c-4">
+  <g transform="translate(129.64,44.91)">
+    <circle cx="0" cy="0" r="5.77" class="primitive"/>
+  </g>
+  <g transform="translate(96.75,91.67)">
+    <circle cx="0" cy="0" r="5.77" class="primitive"/>
+  </g>
+  <g transform="translate(23.9,83.91)">
+    <circle cx="0" cy="0" r="5.77" class="primitive"/>
+  </g>
+  <g transform="translate(67.92,52.28)">
+    <circle cx="0" cy="0" r="5.77" class="primitive"/>
+  </g>
+  <g transform="translate(11.79,32.45)">
+    <circle cx="0" cy="0" r="5.77" class="primitive"/>
+  </g>
+  <g transform="translate(77.05,8.33)">
+    <circle cx="0" cy="0" r="5.77" class="primitive"/>
+  </g>
+</g>
+<g font-size="4" stroke="#000000" stroke-opacity="0.000" fill="#000000" id="img-830ca42c-5">
+  <g transform="translate(129.64,44.91)">
+    <g class="primitive">
+      <text text-anchor="middle" dy="0.35em">ToGPU()</text>
+    </g>
+  </g>
+  <g transform="translate(96.75,91.67)">
+    <g class="primitive">
+      <text text-anchor="middle" dy="0.35em">ProgressPrinter()</text>
+    </g>
+  </g>
+  <g transform="translate(23.9,83.91)">
+    <g class="primitive">
+      <text text-anchor="middle" dy="0.35em">MetricsPrinter()</text>
+    </g>
+  </g>
+  <g transform="translate(67.92,52.28)">
+    <g class="primitive">
+      <text text-anchor="middle" dy="0.35em">StopOnNaNLoss()</text>
+    </g>
+  </g>
+  <g transform="translate(11.79,32.45)">
+    <g class="primitive">
+      <text text-anchor="middle" dy="0.35em">Recorder()</text>
+    </g>
+  </g>
+  <g transform="translate(77.05,8.33)">
+    <g class="primitive">
+      <text text-anchor="middle" dy="0.35em">Metrics(Loss())</text>
+    </g>
+  </g>
+</g>
+</svg>

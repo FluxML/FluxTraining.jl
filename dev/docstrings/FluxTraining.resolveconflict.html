@@ -35,18 +35,28 @@
         <input id="search-input" placeholder="Search">
         <select id="version-selector"></select>
     </div>
-    <main id="page"><article><div class='docs' id='MetricsPrinter'>
-<p><code>public</code> <code>MetricsPrinter</code> — <code>struct</code></p>
+    <main id="page"><article><div class='docs' id='resolveconflict'>
+<p><code>private</code> <code>resolveconflict</code> — <code>function</code></p>
 <div class='doc' id='1'>
-<pre><code>MetricsPrinter()
+<pre><code>resolveconflict(cb1, cb2)
 </code></pre>
-<p>Prints metrics after every epoch. Relies on <a href="FluxTraining.Metrics.html"><code>Metrics</code></a>.</p>
+<p>Define a conflict resolution strategy for resolving a write/write conflict
+between two callbacks.</p>
+<p>The default is [<code>NotDefined()</code>], which will result in an error and a message
+to implement this method.</p>
+<p>To implement, dispatch on the callback types that you which to resolve (in any
+order) and return one of the following:</p>
+<ul>
+<li><a href="FluxTraining.Unresolvable.html"><code>Unresolvable</code></a><code>()</code> if the callbacks must not be used together</li>
+<li><a href="FluxTraining.RunFirst.html"><code>RunFirst</code></a><code>(cb)</code> if one of the callbacks needs to run first; or</li>
+<li><a href="FluxTraining.NoConflict.html"><code>NoConflict</code></a><code>()</code> if the callbacks may run together in any order</li>
+</ul>
 </div>
 </div>
 </article>
         <div id="page-navigation">
-            <a id="previous-page" title="Previous" href="FluxTraining.Metrics.html"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M16.2426 6.34317L14.8284 4.92896L7.75739 12L14.8285 19.0711L16.2427 17.6569L10.5858 12L16.2426 6.34317Z" fill="currentColor" /></svg></a>
-            <a id="next-page" title="Next" href="FluxTraining.Phases.AbstractTrainingPhase.html"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10.5858 6.34317L12 4.92896L19.0711 12L12 19.0711L10.5858 17.6569L16.2427 12L10.5858 6.34317Z" fill="currentColor" /></svg></a>
+            <a id="previous-page" title="Previous" href="FluxTraining.onecycle.html"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M16.2426 6.34317L14.8284 4.92896L7.75739 12L14.8285 19.0711L16.2427 17.6569L10.5858 12L16.2426 6.34317Z" fill="currentColor" /></svg></a>
+            <a id="next-page" title="Next" href="FluxTraining.sethyperparameter!.html"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10.5858 6.34317L12 4.92896L19.0711 12L12 19.0711L10.5858 17.6569L16.2427 12L10.5858 6.34317Z" fill="currentColor" /></svg></a>
         </div>
     </main>
     <nav id="toc"><p><a href="../README.html">README</a></p>
