@@ -1,5 +1,6 @@
 [deps]
 DataLoaders = "2e981812-ef13-4a9c-bfa0-ab13047b12a9"
 Flux = "587475ba-b771-5e3f-ad9e-33799f191a9c"
+GraphPlot = "a2cc645c-3eea-5389-862e-a155d0052231"
 MLDataPattern = "9920b226-0b2a-5f5f-9153-9aa70a013f8b"
 Publish = "f065f642-d108-4f50-8aa5-6749150a895a"

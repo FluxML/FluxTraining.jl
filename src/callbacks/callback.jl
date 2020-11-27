@@ -1,6 +1,12 @@
 
 abstract type AbstractCallback end
 abstract type SafeCallback <: AbstractCallback end
+"""
+    abstract type Callback
+
+Callbacks can add custom functionality to the training loop.
+See [custom callbacks](../docs/callbacks/custom.md) for more info.
+"""
 const Callback = SafeCallback
 abstract type UnsafeCallback <: AbstractCallback end
 
@@ -16,6 +22,22 @@ can access.
 
 The default is `(;)`, the empty named tuple, meaning no state can be accessed.
 
+Implementations of `stateaccess` should always return the least permissions
+possible.
+
+For example, the [`ToGPU`](#) callback needs to write both the model and the batch data,
+so its `stateaccess` implementation is:
+
+```julia
+stateaccess(::ToGPU) = (
+    model = Write(),
+    params = Write(),
+    batch = (xs = Write(), ys = Write()),
+)
+```
+
+Be careful when defining `stateaccess` that you do return a `NamedTuple`. `(x = Read(),)` is
+one but `(x = Read())` (without the comma) is parsed as an assignment with value `Read()`.
 """
 stateaccess(::Callback) = (;)
 runafter(::AbstractCallback) = ()
@@ -61,7 +83,9 @@ If not overwritten with a more specific method, does nothing.
 
 To see events which an `AbstractCallback` handles, use
 
-    `methods(Training.on, (Any, Any, MyCallbackType, Any)`
+```julia
+methods(Training.on, (Any, Any, MyCallbackType, Any)
+```
 """
 on(::Event, phase, ::Callback, learner) = return
 

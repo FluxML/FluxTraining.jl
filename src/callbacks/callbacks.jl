@@ -60,7 +60,7 @@ runafter(::MetricsPrinter) = (Metrics,)
 
 Stops the training when a NaN loss is encountered.
 """
-struct StopOnNaNLoss <: SafeCallback end
+struct StopOnNaNLoss <: Callback end
 
 function on(::BackwardEnd, ::AbstractTrainingPhase, ::StopOnNaNLoss, learner)
     !isnan(learner.batch.loss) || throw(CancelFittingException("Encountered NaN loss"))
@@ -70,7 +70,7 @@ stateaccess(::StopOnNaNLoss) = (batch = (loss = Read()),)
 
 
 # Early stopping
-mutable struct EarlyStopping <: SafeCallback
+mutable struct EarlyStopping <: Callback
     patience::Int
     waited::Int
     lowest::Float64
@@ -94,13 +94,17 @@ end
 stateaccess(::EarlyStopping) = (callbacks = Read(), cbstate = (; metricsepoch = Read()))
 
 
-struct ToGPU <: SafeCallback end
+struct ToGPU <: Callback end
 
 function on(::EpochBegin, ::Phase, ::ToGPU, learner)
     model!(learner, gpu(learner.model))
 end
 
-stateaccess(::ToGPU) = (model = Write(), params = Write(), batch = (xs = Write(), ys = Write()),)
+stateaccess(::ToGPU) = (
+    model = Write(),
+    params = Write(),
+    batch = (xs = Write(), ys = Write()),
+)
 
 function on(::BatchBegin, ::Phase, cb::ToGPU, learner)
 
