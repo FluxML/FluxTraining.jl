@@ -7,8 +7,8 @@ include("../imports.jl")
     learner = testlearner(coeff = 3, Recorder(), Scheduler(LearningRate => schedule), nbatches = nbatches)
 
     fit!(learner, TrainingPhase())
-    @test last(learner.cbstate.hyperparams[:LearningRate])[2] ≈ ((1e-4 + 1e-6) / 2)
+    @test isapprox(last(learner.cbstate.hyperparams[:LearningRate])[2], ((1e-4 + 1e-6) / 2), atol = 0.1)
 
     fit!(learner, TrainingPhase())
-    @test last(learner.cbstate.hyperparams[:LearningRate])[2] ≈ 1e-6
+    @test isapprox(last(learner.cbstate.hyperparams[:LearningRate])[2], 1e-6, atol =0.1)
 end
