@@ -150,5 +150,5 @@ resolveconflict(cb1::C1, cb2::C2) = RunFirst(cb1) # `cb1` must run before `cb2`.
 
 ## Callback execution
 
-By default, a a topological ordering of the callbacks is created from the dependency graph and the callbacks are executed serially.
+By default, a topological ordering of the callbacks is created from the dependency graph and the callbacks are executed serially.
 This behavior can be overwritten with custom callback executors, for example to create a *Dagger.jl* node from the graph to allow callbacks to safely run in parallel where valid.
