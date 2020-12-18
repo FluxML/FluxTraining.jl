@@ -70,6 +70,11 @@ stateaccess(::StopOnNaNLoss) = (batch = (loss = Read()),)
 
 
 # Early stopping
+"""
+    EarlyStopping(patience)
+
+Stops training if validation loss hasn't decreased in `patience` epochs.
+"""
 mutable struct EarlyStopping <: Callback
     patience::Int
     waited::Int
