@@ -4,17 +4,13 @@
 
 *FluxTraining.jl* comes included with many callbacks. Some of them are added to `Learner` by default, here marked with a *.
 
-### Metrics
-
-- [`Loss`](#)*
-- [`Metric`](#)
-
 ### Logging and I/O
 
 - [`Checkpointer`](#)
+- [`Metrics](#)*
+- [`MetricsPrinter`](#)*
 - [`ProgressPrinter`](#)*
 - [`Recorder`](#)*
-- [`MetricsPrinter`](#)*
 
 ### Training loop
 
