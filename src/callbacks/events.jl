@@ -1,5 +1,3 @@
-
-
 """
     module Events
 
@@ -26,6 +24,8 @@ Events in [`TrainingPhase`](#) and [`ValidationPhase`](#):
 module Events
 
 """
+    abstract type Event
+
 Abstract type for events that callbacks can hook into
 """
 abstract type Event end
@@ -34,20 +34,59 @@ abstract type Event end
     Init <: Event
 
 Called once when the learner is created/the callback is added.
+
+Hook into this for callback initialization that depends on the
+[`Learner`](#)'s state.
 """
 struct Init <: Event end
 
+"""
+    EpochBegin()
+
+[`Event`](#) called at the beginning of an epoch.
+"""
 struct EpochBegin <: Event end
+
+"""
+    EpochEnd()
+
+[`Event`](#) called at the end of an epoch.
+"""
 struct EpochEnd <: Event end
 
+"""
+    BatchBegin()
+
+[`Event`](#) called at the beginning of a batch.
+"""
 struct BatchBegin <: Event end
+
+"""
+    BatchEnd()
+
+[`Event`](#) called at the end of a batch.
+"""
 struct BatchEnd <: Event end
 
-"""Called between calculating `y_pred` and calculating loss"""
+"""
+    LossBegin()
+
+[`Event`](#) called between calculating `y_pred` and calculating loss
+"""
 struct LossBegin <: Event end
-"""Called between calculating loss and calculating gradients"""
+
+"""
+    BackwardBegin()
+
+[`Event`](#) called between calculating loss and calculating gradients
+"""
 struct BackwardBegin <: Event end
-"""Called between calculating gradients and updating parameters"""
+
+"""
+    BackwardEnd()
+
+[`Event`](#) called between calculating gradients and updating parameters.
+"""
 struct BackwardEnd <: Event end
 
 
