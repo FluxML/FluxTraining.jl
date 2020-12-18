@@ -52,7 +52,7 @@ lossfn = Flux.mse
 opt = Flux.ADAM(0.01)
 </code></pre>
 <p>Then we construct a <a href="../docstrings/FluxTraining.Learner.html"><code>Learner</code></a>:</p>
-<pre><code class="language-julia">learner = Learner(model, (traindata, valdata), lossfn, opt)
+<pre><code class="language-julia">learner = Learner(model, (traindata, valdata), opt, lossfn)
 </code></pre>
 <p>And train for 10 epochs:</p>
 <pre><code class="language-julia">fit!(learner, 10)
