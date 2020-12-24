@@ -71,22 +71,16 @@ uuid = "052768ef-5323-5732-b1bb-66c8b64840ba"
 version = "2.3.0"
 
 [[ChainRules]]
-deps = ["ChainRulesCore", "ChainRulesTestUtils", "Compat", "LinearAlgebra", "Random", "Reexport", "Requires", "Statistics"]
-git-tree-sha1 = "097722a98537a738e3e42bec069c63663292f991"
+deps = ["ChainRulesCore", "Compat", "LinearAlgebra", "Random", "Reexport", "Requires", "Statistics"]
+git-tree-sha1 = "93a956cf20a439fe6147d6fb3cda07816afea411"
 uuid = "082447d4-558c-5d27-93f4-14fc19e9eca2"
-version = "0.7.40"
+version = "0.7.41"
 
 [[ChainRulesCore]]
 deps = ["LinearAlgebra", "MuladdMacro", "SparseArrays"]
 git-tree-sha1 = "15081c431bb25848ad9b0d172a65794f3a3e197a"
 uuid = "d360d2e6-b24c-11e9-a2a3-2a2ae2dbcce4"
 version = "0.9.24"
-
-[[ChainRulesTestUtils]]
-deps = ["ChainRulesCore", "Compat", "FiniteDifferences", "LinearAlgebra", "Random", "Test"]
-git-tree-sha1 = "46bffe681346102f3573851204b88ef381a32f43"
-uuid = "cdddcdb0-9152-4a09-a978-84456f9df70a"
-version = "0.5.8"
 
 [[CodecZlib]]
 deps = ["TranscodingStreams", "Zlib_jll"]
@@ -102,9 +96,9 @@ version = "0.10.9"
 
 [[Colors]]
 deps = ["ColorTypes", "FixedPointNumbers", "InteractiveUtils", "Reexport"]
-git-tree-sha1 = "008d6bc68dea6beb6303fdc37188cb557391ebf2"
+git-tree-sha1 = "30b2dd71d1585435c905e3228ca878867eb57e4b"
 uuid = "5ae59095-9a9b-59fe-a467-6f913c188581"
-version = "0.12.4"
+version = "0.12.5"
 
 [[CommonSubexpressions]]
 deps = ["MacroTools", "Test"]
@@ -194,15 +188,9 @@ version = "1.4.5"
 
 [[FillArrays]]
 deps = ["LinearAlgebra", "Random", "SparseArrays"]
-git-tree-sha1 = "c1cf9e87a5c45f0c05dc31ae95757f706e70865a"
+git-tree-sha1 = "ff537e5a3cba92fb48f30fec46723510450f2c0e"
 uuid = "1a297f60-69ca-5386-bcde-b61e274b549b"
-version = "0.10.1"
-
-[[FiniteDifferences]]
-deps = ["ChainRulesCore", "LinearAlgebra", "Printf", "Random", "Richardson"]
-git-tree-sha1 = "9bc8327853f21c9c53eac6935e51b65bcc28c492"
-uuid = "26cc04aa-876d-5657-8c51-4c34ba976000"
-version = "0.11.5"
+version = "0.10.2"
 
 [[FixedPointNumbers]]
 deps = ["Statistics"]
@@ -370,9 +358,9 @@ version = "0.2.2"
 
 [[NNlib]]
 deps = ["Compat", "Libdl", "LinearAlgebra", "Pkg", "Requires", "Statistics"]
-git-tree-sha1 = "bc78eb23ba38a1b7bdac20fb748b383fc73d6a8b"
+git-tree-sha1 = "2b7c3213ed4f2eed686f9f531f85d3ea2f75286f"
 uuid = "872c559c-99b0-510c-b3b7-b6c96a88d5cd"
-version = "0.7.8"
+version = "0.7.9"
 
 [[NaNMath]]
 git-tree-sha1 = "bfe47e760d60b82b66b61d2d44128b62e3a369fb"
@@ -474,12 +462,6 @@ deps = ["UUIDs"]
 git-tree-sha1 = "cfbac6c1ed70c002ec6361e7fd334f02820d6419"
 uuid = "ae029012-a4dd-5104-9daa-d747884805df"
 version = "1.1.2"
-
-[[Richardson]]
-deps = ["LinearAlgebra"]
-git-tree-sha1 = "e03ca566bec93f8a3aeb059c8ef102f268a38949"
-uuid = "708f8203-808e-40c0-ba2d-98a6953ed40d"
-version = "1.4.0"
 
 [[SHA]]
 uuid = "ea8e919c-243c-51af-8825-aaa63cd721ce"
