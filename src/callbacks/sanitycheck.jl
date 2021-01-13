@@ -2,7 +2,7 @@
 struct Check
     checkfn
     name
-    error::Bool
+    throw_error::Bool
     message
 end
 
@@ -33,7 +33,7 @@ function runchecks(checks, learner)
         println(check.message)
     end
 
-    if any(getfield.(failedchecks, :error))
+    if any(getfield.(failedchecks, :throw_error))
         throw(SanityCheckException())
     end
 end
