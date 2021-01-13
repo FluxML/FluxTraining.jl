@@ -80,7 +80,7 @@ const CHECKS = [
         "Has training data iterator",
         true,
 """
-`learner` does not have a training data iterator. You can pass it to
+`learner` training data iterator is `nothing` (not set). You can pass it to
 `Learner` in one of the following ways:
 
 - `Learner(model, traindataiter, opt, lossfn)`
@@ -94,8 +94,8 @@ const CHECKS = [
         "Has validation data iterator",
         false,
 """
-`learner` does not have a validation data iterator. This means
-you won't be able to fit `ValidationPhase`s.
+`learner` validation data iterator is `nothing` (not set).
+It is not mandatory, but you must set it to fit `ValidationPhase`s.
 
 You can pass it to `Learner` like this:
 
@@ -129,12 +129,12 @@ This means that `for (x, y) in dataiter end` works where
         "Model and loss function compatible with data",
         true,
 """
-To perform the optimization step, model and loss function need
+To perform the optimization step, the model and loss function need
 to be compatible with the data. This means the following must work:
 
 - `(x, y), _ = iterate(learner.data.training)`
 - `ŷ = learner.model(x)`
-- `loss = learner.lossfunction(learner.model(x), y)`
+- `loss = learner.lossfunction(ŷ, y)`
 """
         ) do learner
         try
