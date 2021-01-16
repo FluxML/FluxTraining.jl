@@ -75,9 +75,6 @@ end
 # Checks
 
 
-const CHECKS = [
-]
-
 CheckDataIteratorTrain() =
     Check(
         "Has training data iterator",
