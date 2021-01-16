@@ -30,7 +30,8 @@ end
 
 function log_to(backend::TensorBoardBackend, image::Loggables.Image, name, i; group = ())
     name = _combinename(name, group)
-    log_image(backend.logger, name, image.data; step = i)
+    im = ImageCore.clamp01nan!(collect(image.data))
+    log_image(backend.logger, name, im; step = i)
 end
 
 
