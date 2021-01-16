@@ -28,7 +28,7 @@ function runchecks(checks, learner)
 
     for (i, check) in enumerate(failedchecks)
         println("---")
-        println(i, ": ", check.name, " (", check.error ? "ERROR" : "WARNING", ")")
+        println(i, ": ", check.name, " (", check.throw_error ? "ERROR" : "WARNING", ")")
         println()
         println(check.message)
     end
@@ -48,7 +48,7 @@ in addition to the ones you pass in.
 """
 struct SanityCheck <: Callback
     checks::Vector{Check}
-    function SanityCheck(checks = []; usedefault = true)
+    function SanityCheck(checks = []; usedefault = isempty(checks))
         if usedefault
             checks = vcat(checks, CHECKS)
         end
@@ -76,6 +76,9 @@ end
 
 
 const CHECKS = [
+]
+
+CheckDataIteratorTrain() =
     Check(
         "Has training data iterator",
         true,
@@ -89,7 +92,9 @@ const CHECKS = [
 """
         ) do learner
         !isnothing(learner.data.training)
-    end,
+    end
+
+CheckDataIteratorValid() =
     Check(
         "Has validation data iterator",
         false,
@@ -107,7 +112,9 @@ Or if you want to use training data as validation data:
 """
         ) do learner
         !isnothing(learner.data.validation)
-    end,
+    end
+
+CheckIteratesTuples() =
     Check(
         "Data iterators iterate over tuples",
         true,
@@ -124,7 +131,9 @@ This means that `for (x, y) in dataiter end` works where
             return false
         end
         return true
-    end,
+    end
+
+CheckModelLossStep() =
     Check(
         "Model and loss function compatible with data",
         true,
@@ -146,5 +155,12 @@ to be compatible with the data. This means the following must work:
             return false
         end
         return true
-    end,
+    end
+
+
+const CHECKS = [
+    CheckDataIteratorTrain(),
+    CheckDataIteratorValid(),
+    CheckIteratesTuples(),
+    CheckModelLossStep(),
 ]
