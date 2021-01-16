@@ -125,7 +125,7 @@ end
 function garbagecollect()
     GC.gc()
     if Base.Sys.islinux()
-        ccall(:malloc_trim, Cvoid, (Cint,), 0))
+        ccall(:malloc_trim, Cvoid, (Cint,), 0)
     end
 end
 
