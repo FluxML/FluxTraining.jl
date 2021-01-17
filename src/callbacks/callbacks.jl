@@ -141,5 +141,8 @@ Performs an additional C-call on Linux systems that can
 sometimes help.
 """
 function GarbageCollect(nsteps::Int = 100)
-    return throttle(CustomCallback((learner) -> garbagecollect(), BatchEnd()), freq = nsteps)
+    return throttle(
+        CustomCallback((learner) -> garbagecollect(), BatchEnd, Phase),
+        BatchEnd(),
+        freq = nsteps)
 end
