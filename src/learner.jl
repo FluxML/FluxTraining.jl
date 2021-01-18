@@ -121,6 +121,7 @@ defaultcallbacks()::Vector{AbstractCallback} = [
     StopOnNaNLoss(),
     Recorder(),
     Metrics(),
+    SanityCheck(),
 ]
 
 

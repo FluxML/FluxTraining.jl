@@ -11,6 +11,8 @@
 - [`MetricsPrinter`](#)*
 - [`ProgressPrinter`](#)*
 - [`Recorder`](#)*
+- [`SanityCheck`](#)*
+
 
 ### Training loop
 

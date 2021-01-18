@@ -6,6 +6,7 @@ using BSON: @load, @save
 using Flux
 using Flux: Params, onecold
 using Flux.Optimise: update!
+using ImageCore
 using Glob
 import OnlineStats
 using OnlineStats: EqualWeight, Mean, OnlineStat
@@ -46,6 +47,7 @@ include("./callbacks/callbacks.jl")
 include("./callbacks/custom.jl")
 include("./callbacks/metrics.jl")
 include("./callbacks/recorder.jl")
+include("./callbacks/sanitycheck.jl")
 
 # hyperparameter scheduling
 include("./callbacks/hyperparameters.jl")
@@ -87,6 +89,7 @@ export AbstractCallback,
     StopOnNaNLoss,
     LearningRate,
     throttle,
+    SanityCheck,
     accuracy,
     fit!,
     onecycle,
