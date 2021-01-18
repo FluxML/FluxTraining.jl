@@ -50,13 +50,14 @@ model, data, lossfn, optimizer = nothing, nothing, nothing, nothing
 <p>Some useful callbacks are added by default:</p>
 <pre><code output="false" cell="main" class="language-julia">learner.callbacks.cbs
 </code></pre>
-<pre><code class="plaintext cell-output cell-result" class="language-plaintext">6-element Array{FluxTraining.SafeCallback,1}:
+<pre><code class="plaintext cell-output cell-result" class="language-plaintext">7-element Array{FluxTraining.SafeCallback,1}:
  ToGPU()
  Metrics(Loss(), Metric(Accuracy))
  ProgressPrinter()
  MetricsPrinter()
  StopOnNaNLoss()
- Recorder()</code></pre>
+ Recorder()
+ SanityCheck(FluxTraining.Check[Check(&quot;Has training data iterator&quot;), Check(&quot;Has validation data iterator&quot;), Check(&quot;Data iterators iterate over tuples&quot;), Check(&quot;Model and loss function compatible with data&quot;)])</code></pre>
 <p>See <a href="./reference.html">callback reference</a> for a list of all callbacks included in <em>FluxTraining.jl</em> and their documentation.</p>
 <div class="admonition info"><p class="admonition-title">Ordering</p>
 <p>The order the callbacks are passed in doesn’t matter. <em>FluxTraining.jl</em> creates a dependency graph that makes sure the callbacks are run in the correct order. Read <a href="./custom.html">custom callbacks</a> to find out how to create callbacks yourself.</p>
