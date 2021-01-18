@@ -25,87 +25,93 @@
 
 
 :root {
+    /* width of the main article for desktop screens */
     --content-width: 90ch;
+    /* width of the sidebar table of contents on desktop screens */
+    --toc-width: 240px;
+    /* width of margin notes */
     --margin-width: 240px;
 }
 
-/* # Article container */
+/* Positioning, widths, margins and padding for article content */
+
+#page {
+    max-width: calc(var(--content-width) + var(--toc-width) + 16px);
+    margin-left: auto;
+    margin-right: auto;
+}
 
 article {
     max-width: var(--content-width);
-    margin-left: auto;
-    margin-right: auto;
+    min-height: 420px;
     margin-top: 24px;
+    margin-left: var(--toc-width);
 }
 
-article  p, ul, h1, h2, h3, h4, h5 {
-}
-
-img {
-    max-width: var(--content-width);
-}
-
-
-/* fonts */
-
-p, li, td, th {
-    color: #111111;
-    font-family: 'Charter', 'Source Serif Pro', serif;
-    font-style: normal;
-    font-weight: normal;
-    font-size: 18px;
-    line-height: 24px;
-}
-
-p {
+article > p {
     margin-block-start: 8px;
     margin-block-end: 20px;
 }
 
-
-h2 {
-    margin-top: 48px;
-    font-size: 30px;
+article > img {
+    max-width: var(--content-width);
 }
 
-h3 {
+article > h2 {
     margin-top: 32px;
-    font-size: 24px;
 }
 
-
-h1, h2, h3, h4, h5 {
-    font-family: 'Charter', serif;
-    font-size: 22px;
-    font-weight: bold;
-    color: #333;
-}
-
-h3 {
-
-    font-weight: bold;
-    font-size: 20px;
+article > h3 {
+    margin-top: 24px;
     margin-bottom: 8px;
 }
 
-h1 {
-    font-size: 30px;
-}
-
-hr {
+article > hr {
     margin-top: 50px;
     margin-bottom: 50px;
     max-width: 200px;
     color: #aaa;
 }
 
-code {
-    font-family: 'JuliaMono', 'VeraMono', monospace;
+
+/* Typography */
+
+article p, article li, article td, article th {
+    color: #111111;
+    font-family: 'Charter', 'Source Serif Pro', serif;
     font-style: normal;
-    font-size: 15px;
+    font-weight: normal;
+    font-size: 17px;
+    line-height: 22px;
+}
+
+
+article h1, article h2, article h3, article h4, article h5 {
+    font-family: 'Charter', serif;
+    font-style: italic;
+    color: #333;
+}
+
+article > h1 {
+    font-size: 25px;
+}
+
+article > h2 {
+    font-size: 21px;
+}
+
+article > h3 {
+    font-size: 19px;
+}
+
+
+code {
+    font-family: 'VeraMono', monospace;
+    font-style: normal;
+    font-size: 14px;
     padding: 2px;
     border-radius: 2px;
-    background-color: #f8f8f8;
+    background-color: #f3f3f3;
     color: #222;
 }
 
@@ -115,28 +121,12 @@ pre > code {
     line-height: 125%;
     border-radius: 0px;
     padding: 8px;
-    background-color: #f9f9f9;
+    background-color: #f3f3f3;
 }
 
-h3 code {
-    font-size: 20px;
-}
-
-h2 code {
-    font-size: 20px;
-}
-
-a > code {
-    color: black;
-    text-decoration: underline;
-}
-
-h3 a > code {
-    text-decoration: none
-}
 
 code.cell-output {
-    color: #444;
+    color: #111;
     background-color: #ffffff;
 }
 
@@ -146,29 +136,29 @@ pre {
 
 /* Tables */
 
-table {
+article > table {
     margin: 16px 16px;
     overflow-x: auto;
     display: block;
 }
-th + th , td + td{
+article > th + th , article > td + td{
     padding-left: 12px;
 }
 
-th {
+article > th {
     font-style: italic;
     padding-bottom: 8px;
     margin-bottom: 8px;
 }
 
-li > * {
+article > li > * {
     margin-top: 8px;
     margin-bottom: 8px;
 }
 
 .marginnote {
     float: right;
-    font-size: 14px;
+    font-size: 13px;
     width: var(--margin-width);
     clear: right;
     margin-top: 0.25rem;
@@ -184,9 +174,9 @@ Admonitions
 */
 
 .admonition {
-    margin: 16px 16px;
-    border-top: 1px solid #aaa;
-    border-bottom: 1px solid #aaa;
+    margin: 16px 8px;
+    border-left: 1px solid #aaa;
+    padding: 2px;
 }
 
 .admonition-title {
@@ -227,12 +217,20 @@ div.footnote > p.footnote-title {
     display: inline;
 }
 
+/* Project name */
+
+#projectname {
+    width: calc(var(--toc-width) - 32px);
+    float: left;
+    text-align: right;
+    margin-right: 16px;
+    padding-right: 16px;
+    font-size: 22px;
+}
+
 /* # Menu container */
 
 .menu {
-    max-width: var(--content-width);
-    margin-left: auto;
-    margin-right: auto;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -242,27 +240,30 @@ div.footnote > p.footnote-title {
 
 #menu-toggler {
     cursor: pointer;
+    margin-left: 8px;
+    margin-right: 4px;
 }
 #search-input {
     border: 1px solid #ddd;
-    border-radius: 4px;
-    font-size: 19px;
-    margin: 0px 8px;
+    border-radius: 12px;
+    font-size: 17px;
+    margin: 0px;
     flex-grow: 1;
     padding: 4px 8px;
+    padding-top: 5px;
 }
 
 #version-selector {
     border: 1px solid #ddd;
     padding: 4px;
-    border-radius: 4px;
+    margin-left: 8px;
+    border-radius: 412px;
 }
 
 #page-navigation {
     max-width: var(--content-width);
-    margin-left: auto;
+    margin-left: var(--toc-width);
     margin-top: 48px;
-    margin-right: auto;
 }
 #page-navigation > a {
     color: #aaa;
@@ -277,26 +278,71 @@ div.footnote > p.footnote-title {
 
 /* # Table of contents container */
 
-nav#toc {
-    margin-top: 24px;
-    max-width: var(--content-width);
-    margin-left: auto;
-    margin-right: auto;
+#toc {
+    width: calc(var(--toc-width) - 32px);
+    display: block;
+    float: left;
+    margin-top: 76px;
+    border-right: 1px solid #ddd;
+    margin-right: 16px;
+    padding-right: 16px;
 }
 
+#toc:not(:hover) {
+    opacity: 60%;
+}
+
+#toc * {
+    font-family: Charter, serif;
+    font-size: 16px;
+    font-weight: normal;
+    font-style: normal;
+    text-align: right;
+}
+
+#toc ul {
+    list-style-type: none;
+    margin-block-start: 2px;
+    margin-block-end: 2px;
+    padding-inline-start: 4px;
+}
+
+#toc li * {
+    font-size: 14px;
+    line-height: 20px;
+}
+
+#toc h1, #toc h2, #toc h3 {
+    font-style: italic;
+    margin-block-start: 8px;
+    margin-block-end: 4px;
+}
+
+#toc h1 a:link, #toc h2 a:link, #toc h3 a:link {
+    font-style: italic;
+}
+
+#toc h1, #toc h2 {
+    font-size: 17px;
+}
+
+#toc h3 {
+    font-size: 15px;
+}
 
 .katex {
     font-size: 15px;
 }
 
 footer {
-    margin-left: auto;
-    margin-right: auto;
+    margin-left: var(--toc-width);
     margin-top: 32px;
     margin-bottom: 16px;
+    text-align: center;
     color: #aaa;
     width: 300px;
 }
+
 @media (max-width: 1260px) {
     .marginnote {
         float: none;
@@ -307,6 +353,9 @@ footer {
 }
 
 @media (max-width: 760px) {
+    #page {
+        width: 100%;
+    }
     article {
         margin-left: 12px;
         margin-right: 12px;
@@ -324,51 +373,60 @@ footer {
         margin-right: 8px;
         padding-right: 0px;
     }
-}
 
-/* Links
+    #toc {
+        width: 90%;
+        margin: 16px 5%;
+        border: none;
+    }
+    #toc * {
+        text-align: left;
+    }
 
-from https://github.com/edwardtufte/tufte-css/blob/gh-pages/tufte.css
+    #toc:not(:hover) {
+        opacity: 100%;
+    }
 
-*/
-
-/* Links: replica
-
-/* Links: replicate underline that clears descenders */
-a:link,
-a:visited {
-    color: inherit;
-}
-
-.no-tufte-underline:link {
-    background: unset;
-    text-shadow: unset;
-}
-
-a:link, .tufte-underline, .hover-tufte-underline:hover {
-    text-decoration: none;
-    background: -webkit-linear-gradient(#fffff8, #fffff8), -webkit-linear-gradient(#fffff8, #fffff8), -webkit-linear-gradient(currentColor, currentColor);
-    background: linear-gradient(#fffff8, #fffff8), linear-gradient(#fffff8, #fffff8), linear-gradient(currentColor, currentColor);
-    -webkit-background-size: 0.05em 1px, 0.05em 1px, 1px 1px;
-    -moz-background-size: 0.05em 1px, 0.05em 1px, 1px 1px;
-    background-size: 0.05em 1px, 0.05em 1px, 1px 1px;
-    background-repeat: no-repeat, no-repeat, repeat-x;
-    text-shadow: 0.03em 0 #fffff8, -0.03em 0 #fffff8, 0 0.03em #fffff8, 0 -0.03em #fffff8, 0.06em 0 #fffff8, -0.06em 0 #fffff8, 0.09em 0 #fffff8, -0.09em 0 #fffff8, 0.12em 0 #fffff8, -0.12em 0 #fffff8, 0.15em 0 #fffff8, -0.15em 0 #fffff8;
-    background-position: 0% 93%, 100% 93%, 0% 93%;
-}
-
-@media screen and (-webkit-min-device-pixel-ratio: 0) {
-    a:link, .tufte-underline, .hover-tufte-underline:hover {
-        background-position-y: 87%, 87%, 87%;
+    footer, #page-navigation {
+        margin-left: auto;
+        margin-right: auto;
     }
 }
 
-a:link::selection,
-a:link::-moz-selection {
-    text-shadow: 0.03em 0 #b4d5fe, -0.03em 0 #b4d5fe, 0 0.03em #b4d5fe, 0 -0.03em #b4d5fe, 0.06em 0 #b4d5fe, -0.06em 0 #b4d5fe, 0.09em 0 #b4d5fe, -0.09em 0 #b4d5fe, 0.12em 0 #b4d5fe, -0.12em 0 #b4d5fe, 0.15em 0 #b4d5fe, -0.15em 0 #b4d5fe;
-    background: #b4d5fe;
+@media (min-width: 800px) {
+    #menu-toggler {
+        display: none;
+    }
 }
-/* code styling
+
+/* Link styling */
+
+a {
+    text-decoration: none;
+} 
+
+a:link {
+    color: #777777;
+}
+
+a:visited {
+    color: #555555;
+}
+
+a:hover {
+    color: red;
+}
+
+a:not(:hover) > code {
+    color:inherit;
+    font-weight: bold;
+}
+
+a:hover > code {
+    color: red;
+    font-weight: bold;
+}
+/* Code styling
 
 From https://github.com/highlightjs/highlight.js/blob/master/src/styles/atom-one-light.css
 */
