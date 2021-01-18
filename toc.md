@@ -10,12 +10,12 @@
 ### Library
 
 - [Training loop](docs/training/basics.md)
-- Callbacks
-    - [Using callbacks](docs/callbacks/usage.md)
-    - [Callback reference](docs/callbacks/reference.md)
-    - [Custom callbacks](docs/callbacks/custom.md)
-    - [Tips & tricks](docs/callbacks/tipstricks.md)
-- [Docstrings](docstrings.md)
+- [Using callbacks](docs/callbacks/usage.md)
+- [Callback reference](docs/callbacks/reference.md)
+- [Custom callbacks](docs/callbacks/custom.md)
+- [Tips & tricks](docs/callbacks/tipstricks.md)
+
+### [Reference](docstrings.md)
 
 ### Tutorials
 
