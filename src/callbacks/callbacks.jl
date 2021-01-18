@@ -122,14 +122,27 @@ function on(::BatchBegin, ::Phase, cb::ToGPU, learner)
 end
 
 
-garbagecollect() = (GC.gc(); ccall(:malloc_trim, Cvoid, (Cint,), 0))
+function garbagecollect()
+    GC.gc()
+    if Base.Sys.islinux()
+        ccall(:malloc_trim, Cvoid, (Cint,), 0)
+    end
+end
+
 
 """
     GarbageCollect(nsteps)
 
 Every `nsteps` steps, forces garbage collection.
-Use this if you get memory leaks from, for example, parallel data loading.
+Use this if you get memory leaks from, for example,
+parallel data loading.
+
+Performs an additional C-call on Linux systems that can
+sometimes help.
 """
 function GarbageCollect(nsteps::Int = 100)
-    return throttle(CustomCallback((learner) -> garbagecollect(), BatchEnd), freq = nsteps)
+    return throttle(
+        CustomCallback((learner) -> garbagecollect(), BatchEnd, Phase),
+        BatchEnd(),
+        freq = nsteps)
 end
