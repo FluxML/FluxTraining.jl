@@ -11,5 +11,6 @@ include("./imports.jl")
     include("./callbacks/recorder.jl")
     include("./callbacks/scheduler.jl")
     include("./callbacks/checkpointer.jl")
+    include("./callbacks/garbagecollect.jl")
     include("./callbacks/sanitycheck.jl")
 end
