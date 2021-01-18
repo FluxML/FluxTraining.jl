@@ -6,6 +6,7 @@ using BSON: @load, @save
 using Flux
 using Flux: Params, onecold
 using Flux.Optimise: update!
+using ImageCore
 using Glob
 import OnlineStats
 using OnlineStats: EqualWeight, Mean, OnlineStat
