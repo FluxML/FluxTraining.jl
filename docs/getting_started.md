@@ -15,7 +15,7 @@ First we define the necessary pieces:
 ```julia
 model = ...
 traindata, valdata = ...
-lossfn = Flux.mse
+lossfn = Flux.Losses.mse
 opt = Flux.ADAM(0.01)
 ```
 
