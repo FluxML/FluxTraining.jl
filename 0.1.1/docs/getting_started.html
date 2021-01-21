@@ -77,7 +77,7 @@
 <p>First we define the necessary pieces:</p>
 <pre><code class="language-julia">model = ...
 traindata, valdata = ...
-lossfn = Flux.mse
+lossfn = Flux.Losses.mse
 opt = Flux.ADAM(0.01)
 </code></pre>
 <p>Then we construct a <a href="../docstrings/FluxTraining.Learner.html"><code>Learner</code></a>:</p>
