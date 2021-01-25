@@ -60,9 +60,9 @@ uuid = "8bf52ea8-c179-5cab-976a-9e18b702a9bc"
 
 [[CUDA]]
 deps = ["AbstractFFTs", "Adapt", "BFloat16s", "CEnum", "CompilerSupportLibraries_jll", "DataStructures", "ExprTools", "GPUArrays", "GPUCompiler", "LLVM", "Libdl", "LinearAlgebra", "Logging", "MacroTools", "NNlib", "Pkg", "Printf", "Random", "Reexport", "Requires", "SparseArrays", "Statistics", "TimerOutputs"]
-git-tree-sha1 = "39f6f584bec264ace76f924d1c8637c85617697e"
+git-tree-sha1 = "6ccc73b2d8b671f7a65c92b5f08f81422ebb7547"
 uuid = "052768ef-5323-5732-b1bb-66c8b64840ba"
-version = "2.4.0"
+version = "2.4.1"
 
 [[ChainRules]]
 deps = ["ChainRulesCore", "Compat", "LinearAlgebra", "Random", "Reexport", "Requires", "Statistics"]
@@ -72,9 +72,9 @@ version = "0.7.49"
 
 [[ChainRulesCore]]
 deps = ["Compat", "LinearAlgebra", "SparseArrays"]
-git-tree-sha1 = "89a0b14325d0f02f9caed7c8ba91181a5d254874"
+git-tree-sha1 = "53fed426c9af1eb68e63b3999e96454c2db79757"
 uuid = "d360d2e6-b24c-11e9-a2a3-2a2ae2dbcce4"
-version = "0.9.26"
+version = "0.9.27"
 
 [[CodecZlib]]
 deps = ["TranscodingStreams", "Zlib_jll"]
@@ -95,10 +95,10 @@ uuid = "5ae59095-9a9b-59fe-a467-6f913c188581"
 version = "0.12.6"
 
 [[CommonMark]]
-deps = ["Crayons", "JSON", "URIParser"]
-git-tree-sha1 = "c1f1514d7cc1ad243a103b403d896ee184c91b62"
+deps = ["Crayons", "JSON", "URIs"]
+git-tree-sha1 = "0a9c92f99fc50f3d68fdfa2c6c129f92c83d4914"
 uuid = "a80b9123-70ca-4bc0-993e-6e3bcb318db6"
-version = "0.6.4"
+version = "0.7.1"
 
 [[CommonSubexpressions]]
 deps = ["MacroTools", "Test"]
@@ -142,11 +142,11 @@ version = "1.4.0"
 
 [[DataLoaders]]
 deps = ["DocStringExtensions", "LearnBase", "MLDataPattern", "Parameters", "Random", "ThreadPools"]
-git-tree-sha1 = "6d656539a96ca9284bc132805423018092f54e46"
+git-tree-sha1 = "5ca678562d2cbb0417f56b31ef083b31c654c9ce"
 repo-rev = "master"
 repo-url = "https://github.com/lorenzoh/DataLoaders.jl"
 uuid = "2e981812-ef13-4a9c-bfa0-ab13047b12a9"
-version = "0.1.1"
+version = "0.1.2"
 
 [[DataStructures]]
 deps = ["Compat", "InteractiveUtils", "OrderedCollections"]
@@ -287,10 +287,16 @@ uuid = "a2bd30eb-e257-5431-a919-1863eab51364"
 version = "1.0.2"
 
 [[HTTP]]
-deps = ["Base64", "Dates", "IniFile", "MbedTLS", "Sockets"]
-git-tree-sha1 = "c7ec02c4c6a039a98a15f955462cd7aea5df4508"
+deps = ["Base64", "Dates", "IniFile", "MbedTLS", "Sockets", "URIs"]
+git-tree-sha1 = "63055ee44b5c2b95ec1921edcf856c60124ff0c3"
 uuid = "cd3eb016-35fb-5094-929b-558a96fad6f3"
-version = "0.8.19"
+version = "0.9.2"
+
+[[IOCapture]]
+deps = ["Logging"]
+git-tree-sha1 = "c5bda97d826d29ac2c485e078458b063ac937df3"
+uuid = "b5f81e59-6552-4d32-b1f0-c071b021bf89"
+version = "0.2.0"
 
 [[IRTools]]
 deps = ["InteractiveUtils", "MacroTools", "Test"]
@@ -377,9 +383,9 @@ uuid = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
 
 [[LiveServer]]
 deps = ["Crayons", "FileWatching", "HTTP", "Pkg", "Sockets", "Test"]
-git-tree-sha1 = "41b8ef80352c22135016c3431518969101f359f3"
+git-tree-sha1 = "7c2f32edab7941184a58ef56d589dac14e0ffa23"
 uuid = "16fef848-5104-11e9-1b77-fb7a48bbb589"
-version = "0.5.7"
+version = "0.6.0"
 
 [[Logging]]
 uuid = "56ddb016-857b-54e1-b83d-db4d58db5568"
@@ -504,15 +510,15 @@ version = "1.3.2"
 
 [[PaddedViews]]
 deps = ["OffsetArrays"]
-git-tree-sha1 = "91d229e113e8975a399e40d7c0b1ddf4da6d3c59"
+git-tree-sha1 = "0fa5e78929aebc3f6b56e1a88cf505bb00a354c4"
 uuid = "5432bcbf-9aad-5242-b902-cca2824c8663"
-version = "0.5.7"
+version = "0.5.8"
 
 [[Parameters]]
 deps = ["OrderedCollections", "UnPack"]
-git-tree-sha1 = "38b2e970043613c187bd56a995fe2e551821eb4a"
+git-tree-sha1 = "2276ac65f1e236e0a6ea70baff3f62ad4c625345"
 uuid = "d96e819e-fc66-5662-9728-84c9c7592b0a"
-version = "0.12.1"
+version = "0.12.2"
 
 [[Parsers]]
 deps = ["Dates"]
@@ -551,10 +557,10 @@ uuid = "3349acd9-ac6a-5e09-bcdb-63829b23a429"
 version = "0.10.0"
 
 [[Publish]]
-deps = ["CommonMark", "DataStructures", "FilePathsBase", "FileTrees", "HTTP", "IterTools", "JSON", "LiveServer", "Logging", "Mustache", "Pkg", "Requires", "Tectonic"]
-git-tree-sha1 = "d549d6239aea0046f6082a2f919e900fa988fe31"
+deps = ["Base64", "CommonMark", "DataStructures", "FilePathsBase", "FileTrees", "HTTP", "IOCapture", "IterTools", "JSON", "LiveServer", "Logging", "Mustache", "Pkg", "PrettyTables", "Requires", "Tectonic"]
+git-tree-sha1 = "350819a2a082a71d41bad44372cb40bb6b1ac34e"
 uuid = "f065f642-d108-4f50-8aa5-6749150a895a"
-version = "0.4.0"
+version = "0.6.0"
 
 [[REPL]]
 deps = ["InteractiveUtils", "Markdown", "Sockets"]
@@ -652,15 +658,15 @@ version = "1.0.0"
 
 [[Tables]]
 deps = ["DataAPI", "DataValueInterfaces", "IteratorInterfaceExtensions", "LinearAlgebra", "TableTraits", "Test"]
-git-tree-sha1 = "240d19b8762006ff04b967bdd833269ad642d550"
+git-tree-sha1 = "8dc2bb7d3548e315d890706547b24502ed79504f"
 uuid = "bd369af6-aec1-5ad0-b16a-f7cc5008161c"
-version = "1.2.2"
+version = "1.3.1"
 
 [[Tectonic]]
 deps = ["Pkg"]
-git-tree-sha1 = "e3e5e7dfbe3b7d9ff767264f84e5eca487e586cb"
+git-tree-sha1 = "91f0ca2f49572ce342df94a1027bf65c181b8cd1"
 uuid = "9ac5f52a-99c6-489f-af81-462ef484790f"
-version = "0.2.0"
+version = "0.3.0"
 
 [[TensorBoardLogger]]
 deps = ["CRC32c", "ColorTypes", "FileIO", "FixedPointNumbers", "ImageCore", "ProtoBuf", "Requires", "StatsBase"]
@@ -690,11 +696,10 @@ git-tree-sha1 = "7c53c35547de1c5b9d46a4797cf6d8253807108c"
 uuid = "3bb67fe8-82b1-5028-8e26-92a6c54297fa"
 version = "0.9.5"
 
-[[URIParser]]
-deps = ["Unicode"]
-git-tree-sha1 = "53a9f49546b8d2dd2e688d216421d050c9a31d0d"
-uuid = "30578b45-9adc-5946-b283-645ec420af67"
-version = "0.4.1"
+[[URIs]]
+git-tree-sha1 = "7855809b88d7b16e9b029afd17880930626f54a2"
+uuid = "5c2747f8-b7ea-4ff2-ba2e-563bfd36b1d4"
+version = "1.2.0"
 
 [[UUIDs]]
 deps = ["Random", "SHA"]
@@ -728,9 +733,9 @@ version = "1.2.11+18"
 
 [[Zygote]]
 deps = ["AbstractFFTs", "ChainRules", "DiffRules", "Distributed", "FillArrays", "ForwardDiff", "IRTools", "InteractiveUtils", "LinearAlgebra", "MacroTools", "NaNMath", "Random", "Requires", "SpecialFunctions", "Statistics", "ZygoteRules"]
-git-tree-sha1 = "52032f3eb3bf383df34f5455c031457632e8c6d4"
+git-tree-sha1 = "746c9de7fb87a341c809437007cbd172c4d494b4"
 uuid = "e88e6eb3-aa80-5325-afca-941959d7151f"
-version = "0.6.1"
+version = "0.6.2"
 
 [[ZygoteRules]]
 deps = ["MacroTools"]
