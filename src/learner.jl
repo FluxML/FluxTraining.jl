@@ -150,10 +150,59 @@ dataiters(t::Tuple) = dataiters(t...)
 dataiters(t::NamedTuple) = keys(t) == (:training, :validation, :test) ? t : error("Wrong keys.")
 
 
+# Callback utilities
+
+
+"""
+    setcallbacks!(learner, callbacks)
+
+Set `learner`'s callbacks to `callbacks`.
+"""
 function setcallbacks!(learner, callbacks)
     learner.callbacks = Callbacks(callbacks)
 end
 
+
+"""
+    addcallback!(learner, callback)
+
+Adds `callback` to `learner` and updates the dependency graph.
+"""
 function addcallback!(learner, callback)
     learner.callbacks = Callbacks(vcat(learner.callbacks.cbs, callback))
+end
+
+
+"""
+    getcallback(learner, C)
+
+Find callback of type `C` in `learner`'s callbacks and return it.
+If there is none, return `nothing`.
+"""
+function getcallback(learner, C::Type{<:FluxTraining.Callback})
+    cbidx = findfirst(isa.(learner.callbacks.cbs, C))
+    return isnothing(cbidx) ? nothing : learner.callbacks.cbs[cbidx]
+end
+
+
+"""
+    replacecallback!(learner, callback::C)
+
+Replace existing callback of type `C` on learner with `callback`.
+Return the replaced callback.
+
+If `learner` doesn't have a callback of type `C`, add `callback` and
+return `nothing`.
+"""
+function replacecallback!(learner, callback::C) where {C<:FluxTraining.Callback}
+    cbidx = findfirst(isa.(learner.callbacks.cbs, C))
+    if isnothing(cbidx)
+        FluxTraining.addcallback!(learner, callback)
+        return nothing
+    else
+        oldcb = learner.callbacks.cbs[cbidx]
+        learner.callbacks.cbs[cbidx] = callback
+        FluxTraining.setcallbacks!(learner, learner.callbacks.cbs)
+        return oldcb
+    end
 end
