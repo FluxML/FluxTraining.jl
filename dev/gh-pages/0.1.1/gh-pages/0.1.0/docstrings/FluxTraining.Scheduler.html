@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="Publish.jl" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="" />
+    <title>FluxTraining.jl</title>
+    <link rel="stylesheet" href="..&#x2F;normalize.css" />
+    <link rel="stylesheet" href="..&#x2F;tabulator_simple.min.css" />
+    <link rel="stylesheet" href="..&#x2F;lorenzo.css" />
+    <script src="..&#x2F;versions.js"></script>
+    <script src="..&#x2F;lunr.js"></script>
+    <script src="..&#x2F;highlight.min.js"></script>
+    <script src="..&#x2F;tabulator.min.js"></script>
+    <script src="..&#x2F;julia.min.js"></script>
+    <script src="..&#x2F;julia-repl.min.js"></script>
+    <script src="..&#x2F;publish.js"></script>
+    
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+Pro&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Lora:wght@700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Lora:wght@500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital@1&family=Source+Sans+Pro:wght@700&display=swap" rel="stylesheet">
+    <!-- 
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.js" integrity="sha384-g7c+Jr9ZivxKLnZTDUhnkOnsh30B4H0rpLUpJ4jAIKs4fnJI+sEnkvrMWph2EDg4" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/contrib/auto-render.min.js" integrity="sha384-mll67QQFJfxn0IYznZYonOWZ644AWYC+Pt2cHqMaRhXVrursRwvLnLaebdGIlYNa" crossorigin="anonymous"
+        onload="renderMathInElement(document.body);"></script>
+        -->
+
+</head>
+<body>
+    <div class="menu">
+        <svg id="menu-toggler" title="Contents" onclick="toggleIndexPage();" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 6C2 5.44772 2.44772 5 3 5H21C21.5523 5 22 5.44772 22 6C22 6.55228 21.5523 7 21 7H3C2.44772 7 2 6.55228 2 6Z" fill="currentColor" /><path d="M2 12.0322C2 11.4799 2.44772 11.0322 3 11.0322H21C21.5523 11.0322 22 11.4799 22 12.0322C22 12.5845 21.5523 13.0322 21 13.0322H3C2.44772 13.0322 2 12.5845 2 12.0322Z" fill="currentColor" /><path d="M3 17.0645C2.44772 17.0645 2 17.5122 2 18.0645C2 18.6167 2.44772 19.0645 3 19.0645H21C21.5523 19.0645 22 18.6167 22 18.0645C22 17.5122 21.5523 17.0645 21 17.0645H3Z" fill="currentColor" /></svg>
+        <input id="search-input" placeholder="Search">
+        <select id="version-selector"></select>
+    </div>
+    <main id="page"><article><div class='docs' id='Scheduler'>
+<p><code>public</code> <code>Scheduler</code> — <code>struct</code></p>
+<div class='doc' id='1'>
+<pre><code>Scheduler(schedules...)
+</code></pre>
+<p>Callback for hyperparameter scheduling. Takes pairs of <a href="FluxTraining.HyperParameter.html"><code>HyperParameter</code></a>
+types and <a href="FluxTraining.Schedule.html"><code>Schedule</code></a>s.</p>
+<p>See <a href="../docs/tutorials/hyperparameters.html">the tutorial</a>.</p>
+<h2 id="example"><a href="#example" class="anchor"></a>Example</h2>
+<pre><code class="language-julia">lrschedule = Schedule([0, 10], [0.1, 0.001], Animations.sineio())
+scheduler = Scheduler(
+    LearningRate =&gt; lrschedule
+)
+</code></pre>
+<p>See also <a href="FluxTraining.Schedule.html"><code>Schedule</code></a>.</p>
+</div>
+</div>
+</article>
+        <div id="page-navigation">
+            <a id="previous-page" title="Previous" href="FluxTraining.Schedule.html"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M16.2426 6.34317L14.8284 4.92896L7.75739 12L14.8285 19.0711L16.2427 17.6569L10.5858 12L16.2426 6.34317Z" fill="currentColor" /></svg></a>
+            <a id="next-page" title="Next" href="FluxTraining.StopOnNaNLoss.html"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10.5858 6.34317L12 4.92896L19.0711 12L12 19.0711L10.5858 17.6569L16.2427 12L10.5858 6.34317Z" fill="currentColor" /></svg></a>
+        </div>
+    </main>
+    <nav id="toc"><p><a href="../README.html">README</a></p>
+<h3 id="start-here"><a href="../#start-here" class="anchor"></a>Start here</h3>
+<ul>
+<li><a href="../docs/getting_started.html">Getting started</a></li>
+<li><a href="../docs/overview.html">User guide</a></li>
+<li><a href="../docs/features.html">Features</a></li>
+</ul>
+<h3 id="library"><a href="../#library" class="anchor"></a>Library</h3>
+<ul>
+<li><a href="../docs/training/basics.html">Training loop</a></li>
+<li>Callbacks
+<ul>
+<li><a href="../docs/callbacks/usage.html">Using callbacks</a></li>
+<li><a href="../docs/callbacks/reference.html">Callback reference</a></li>
+<li><a href="../docs/callbacks/custom.html">Custom callbacks</a></li>
+<li><a href="../docs/callbacks/tipstricks.html">Tips &amp; tricks</a></li>
+</ul>
+</li>
+<li><a href="../docstrings.html">Docstrings</a></li>
+</ul>
+<h3 id="tutorials"><a href="../#tutorials" class="anchor"></a>Tutorials</h3>
+<ul>
+<li><a href="../docs/tutorials/mnist.html">MNIST training</a></li>
+<li><a href="../docs/tutorials/hyperparameters.html">Hyperparameter scheduling</a></li>
+</ul>
+<h3 id="other"><a href="../#other" class="anchor"></a>Other</h3>
+<ul>
+<li><a href="../docs/status.html">Project status</a></li>
+<li><a href="../docs/ecosystem.html">Ecosystem</a></li>
+</ul>
+</nav>
+    <footer>
+        Built with <a target="_blank" href="https://github.com/MichaelHatherly/Publish.jl">Publish.jl</a> and the <a target="_blank" href="https://julialang.org">Julia Language.</a>
+    </footer>
+    <script>hljs.initHighlightingOnLoad();</script>
+</body>
+</html>
