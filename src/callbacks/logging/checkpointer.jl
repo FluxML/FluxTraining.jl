@@ -23,7 +23,7 @@ stateaccess(::Checkpointer) = (
 
 function on(::EpochEnd, phase::AbstractTrainingPhase, checkpointer::Checkpointer, learner)
     loss = last(learner.cbstate.metricsepoch[phase], :Loss)[2]
-    epoch = learner.cbstate.history.epochs
+    epoch = learner.cbstate.history[phase].epochs
     filename = "checkpoint_epoch_$(lpad(string(epoch), 3, '0'))_loss_$loss.bson"
     savemodel(learner.model, joinpath(checkpointer.folder, filename))
 end

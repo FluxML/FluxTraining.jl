@@ -7,6 +7,6 @@ include("../imports.jl")
     end
     learner = testlearner(Recorder(), cb, coeff = 3)
     fit!(learner, TrainingPhase())
-    @test learner.cbstate.history.epochs == 0
-    @test learner.cbstate.history.steps == 0
+    @test learner.cbstate.history[TrainingPhase()].epochs == 0
+    @test learner.cbstate.history[TrainingPhase()].steps == 0
 end

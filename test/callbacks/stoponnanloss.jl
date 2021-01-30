@@ -5,5 +5,5 @@ include("../imports.jl")
     learner = testlearner(coeff = NaN, Recorder(), StopOnNaNLoss())
     # Epoch will be cancelled
     @test_nowarn fit!(learner, 1)
-    @test learner.cbstate.history.epochs == 0
+    @test learner.cbstate.history[TrainingPhase()].epochs == 0
 end

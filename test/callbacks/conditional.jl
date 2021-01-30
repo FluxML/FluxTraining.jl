@@ -11,5 +11,5 @@ include("../imports.jl")
     learner = testlearner(Recorder(), throttledcb, coeff = 3)
     fit!(learner, TrainingPhase())
     # should have made 8 steps instead of 16
-    @test learner.cbstate.history.steps == 8
+    @test learner.cbstate.history[TrainingPhase()].steps == 8
 end

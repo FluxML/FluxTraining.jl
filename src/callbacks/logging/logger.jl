@@ -59,8 +59,8 @@ stateaccess(::LogMetrics) = (
 
 
 function on(::BatchEnd, phase, logger::LogMetrics, learner)
-    history = learner.cbstate.history
-    metricsstep = learner.cbstate.metricsstep
+    history = learner.cbstate.history[phase]
+    metricsstep = learner.cbstate.metricsstep[phase]
     for metric in keys(metricsstep)
         val = last(last(metricsstep, metric))
         log_to(
@@ -68,13 +68,13 @@ function on(::BatchEnd, phase, logger::LogMetrics, learner)
             Loggables.Value(val),
             string(metric),
             history.steps,
-            group = ("Step", "Metrics"))
+            group = ("Step", string(typeof(phase)), "Metrics"))
     end
 end
 
 
 function on(::EpochEnd, phase, logger::LogMetrics, learner)
-    history = learner.cbstate.history
+    history = learner.cbstate.history[phase]
     metricsepoch = learner.cbstate.metricsepoch[phase]
     for metric in keys(metricsepoch)
         _, val = last(metricsepoch, metric)
@@ -114,7 +114,7 @@ stateaccess(::LogHyperParams) = (
     cbstate = (history = Read(), hyperparams = Read()),)
 
 function on(::BatchEnd, phase, logger::LogHyperParams, learner)
-    history = learner.cbstate.history
+    history = learner.cbstate.history[phase]
     hyperparams = learner.cbstate.hyperparams
     for hparam in keys(hyperparams)
         val = last(last(hyperparams, hparam))
@@ -153,7 +153,7 @@ stateaccess(::LogHistograms) = (model = Read(), cbstate = (history = Read(),))
 
 
 function on(::BatchEnd, phase::AbstractTrainingPhase, logger::LogHistograms, learner)
-    history = learner.cbstate.history
+    history = learner.cbstate.history[phase]
     log_parameters(
         logger.backends,
         learner.model,
@@ -210,7 +210,7 @@ end
 stateaccess(::LogVisualization) = (batch = Read(), cbstate = (history = Read(),))
 
 function on(::BatchEnd, phase::AbstractTrainingPhase, logger::LogVisualization, learner)
-    history = learner.cbstate.history
+    history = learner.cbstate.history[phase]
     image = logger.visfn(learner.batch)
 
     log_to(
