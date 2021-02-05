@@ -224,15 +224,3 @@ function removecallback!(learner, C::Type{<:FluxTraining.Callback})
     learner.callbacks = Callbacks(learner.callbacks.cbs)
     return cb
 end
-
-
-"""
-    getcallback(learner, C)
-
-Find callback of type `C` in `learner`'s callbacks and return it.
-If there is none, return `nothing`.
-"""
-function getcallback(learner, C::Type{<:FluxTraining.Callback})
-    cbidx = findfirst(isa.(learner.callbacks.cbs, C))
-    return isnothing(cbidx) ? nothing : learner.callbacks.cbs[cbidx]
-end
