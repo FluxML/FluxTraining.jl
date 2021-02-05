@@ -16,7 +16,7 @@ function on(::EpochBegin,
         phase::Phase,
         cb::ProgressPrinter,
         learner)
-    e = learner.cbstate.history.epochs + 1
+    e = learner.cbstate.history[phase].epochs + 1
     cb.p = Progress(numsteps(learner, phase), "Epoch $(e) $(phase): ")
 end
 
@@ -38,7 +38,7 @@ function on(::EpochEnd,
         cb::MetricsPrinter,
         learner)
     mvhistory = learner.cbstate.metricsepoch[phase]
-    epoch = learner.cbstate.history.epochs
+    epoch = learner.cbstate.history[phase].epochs
     print_epoch_table(mvhistory, epoch, phase)
 end
 
@@ -82,7 +82,7 @@ mutable struct EarlyStopping <: Callback
 end
 EarlyStopping(patience) = EarlyStopping(patience, 0, Inf64)
 
-function on(::EpochEnd, ::ValidationPhase, cb::EarlyStopping, learner)
+function on(::EpochEnd, phase::ValidationPhase, cb::EarlyStopping, learner)
     valloss = last(learner.cbstate.metricsepoch[phase], :Loss)[2]
     if (valloss > cb.lowest)
         if !(cb.waited < cb.patience)

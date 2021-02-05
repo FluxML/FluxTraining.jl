@@ -32,8 +32,13 @@ Base.show(io::IO, metrics::Metrics) = print(io, "Metrics(", join(string.(metrics
 
 # store metrics in `cbstate` so other callbacks can access them
 function on(::Init, ::Phase, metrics::Metrics, learner)
-    learner.cbstate.metricsstep = MVHistory()
-    learner.cbstate.metricsepoch = DefaultDict{Phase, MVHistory}(() -> MVHistory())
+    length(metrics.metrics) == length(unique(metricname.(metrics.metrics))) || error("Multiple metrics have the same name!")
+    if !haskey(learner.cbstate, :metricsstep)
+        learner.cbstate.metricsstep = DefaultDict{Phase, MVHistory}(() -> MVHistory())
+    end
+    if !haskey(learner.cbstate, :metricsepoch)
+        learner.cbstate.metricsepoch = DefaultDict{Phase, MVHistory}(() -> MVHistory())
+    end
 end
 
 
@@ -41,21 +46,19 @@ end
 on(::EpochBegin, ::Phase, metrics::Metrics, learner) = foreach(reset!, metrics.metrics)
 
 function on(::BatchEnd, phase, metrics::Metrics, learner)
-    metricsstep = learner.cbstate.metricsstep
-    step = learner.cbstate.history.steps
+    metricsstep = learner.cbstate.metricsstep[phase]
+    step = learner.cbstate.history[phase].steps
     for metric in metrics.metrics
         step!(metric, learner)
-        if phase isa AbstractTrainingPhase
-            push!(metricsstep, Symbol(metricname(metric)), step, stepvalue(metric))
-        end
+        push!(metricsstep, Symbol(metricname(metric)), step, stepvalue(metric))
     end
 end
 
 function on(::EpochEnd, phase, metrics::Metrics, learner)
-    metricsepoch = learner.cbstate.metricsepoch
-    epoch = learner.cbstate.history.epochs
+    metricsepoch = learner.cbstate.metricsepoch[phase]
+    epoch = learner.cbstate.history[phase].epochs
     for metric in metrics.metrics
-        push!(metricsepoch[phase], Symbol(metricname(metric)), epoch, epochvalue(metric))
+        push!(metricsepoch, Symbol(metricname(metric)), epoch, epochvalue(metric))
     end
 end
 
@@ -154,26 +157,41 @@ metricname(metric::Metric) = metric.name
 # Loss Metric
 
 mutable struct Loss <: AbstractMetric
-    sum
+    statistic
+    _statistic
     last
-    count
+    name
 end
 
-Loss() = Loss(0, Inf, 0)
-Base.show(io::IO, loss::Loss) = print(io, "Loss()")
 
-function reset!(metric::Loss)
-    metric.last = nothing
-    metric.sum = 0.
-    metric.count = 0
+function Loss(weight = EqualWeight(); name = "Loss")
+    stat = Mean(weight = weight)
+    return Loss(deepcopy(stat), stat, nothing, name)
 end
+
+
+function reset!(loss::Loss)
+    loss.statistic = deepcopy(loss._statistic)
+end
+
 
 function step!(metric::Loss, learner)
     metric.last = learner.batch.loss
-    metric.sum += learner.batch.loss
-    metric.count += 1
+    OnlineStats.fit!(metric.statistic, metric.last)
 end
 
+
+Base.show(io::IO, loss::Loss) = print(io, "Loss()")
+
+
 stepvalue(metric::Loss) = metric.last
-epochvalue(metric::Loss) = metric.sum / metric.count
-metricname(metric::Loss) = "Loss"
+epochvalue(metric::Loss) = OnlineStats.value(metric.statistic)
+metricname(metric::Loss) = metric.name
+
+
+# Utility
+
+
+function SmoothLoss(β = 0.02)
+    return Loss(OnlineStats.ExponentialWeight(1-β), name = "SmoothLoss")
+end

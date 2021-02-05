@@ -1,3 +1,9 @@
+function initlearner!(learner, phases)
+    if !(learner.callbacks.initialized)
+        handle(Init(), learner, phases[1])
+        learner.callbacks.initialized = true
+    end
+end
 """
     fit!(learner, phases)
 
@@ -5,10 +11,7 @@ Fit `learner` with [`Phase`](#)s `phases`. See [`./docs/training/basics.md`] for
 info on the training loop.
 """
 function fit!(learner::Learner, phases::AbstractVector{<:Phase})
-    if !(learner.callbacks.initialized)
-        handle(Init(), learner, phases[1])
-        learner.callbacks.initialized = true
-    end
+    initlearner!(learner, phases)
     try
         for phase in phases
             fitepoch!(learner, phase)

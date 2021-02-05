@@ -105,7 +105,7 @@ function FluxTraining.on(
         phase::Phase,
         printer::Printer,
         learner)
-    step = learner.cbstate.history.nstepsepoch  # steps completed in current epoch
+    step = learner.cbstate.history[phase].stepsepoch  # steps completed in current epoch
     println("Step ", , " loss:", learner.batch.loss)
 end
 ```

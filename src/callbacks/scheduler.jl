@@ -61,12 +61,14 @@ end
 
 
 function on(::Init, phase, scheduler::Scheduler, learner)
-    learner.cbstate.hyperparams = MVHistory()
+    if !haskey(learner.cbstate, :hyperparams)
+        learner.cbstate.hyperparams = MVHistory()
+    end
 end
 
 
-function on(::BatchBegin, ::AbstractTrainingPhase, scheduler::Scheduler, learner)
-    step = learner.cbstate.history.steps + 1
+function on(::BatchBegin, phase::AbstractTrainingPhase, scheduler::Scheduler, learner)
+    step = learner.cbstate.history[phase].steps + 1
     for (H, animation) in scheduler.schedules
         value = Animations.at(animation, step)
         sethyperparameter!(learner, H, value)
@@ -82,12 +84,12 @@ Creates a one-cycle [`Schedule`](#) over `nepochs` epochs from `start_val`
 over `max_val` to `end_val`.
 """
 function onecycle(
-        nepochs, max_val,
-        start_val = max_val / 10,
-        end_val = max_val / 30;
-        start_pctg = 0.1)
+        nepochs, max_val;
+        pct_start = 0.25,
+        div=25, divfinal=1e5,
+        start_val = max_val/div, end_val = max_val/divfinal)
     return Animation(
-        [0, nepochs * start_pctg, nepochs],
+        [0, nepochs * pct_start, nepochs],
         [start_val, max_val, end_val],
         [Animations.sineio(), Animations.sineio()]
     )

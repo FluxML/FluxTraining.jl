@@ -46,13 +46,14 @@ Callback that runs sanity [`Check`](#)s when the `Learner` is initialized.
 If `usedefault` is `true`, it will run all checks in FluxTraining.CHECKS
 in addition to the ones you pass in.
 """
-struct SanityCheck <: Callback
+mutable struct SanityCheck <: Callback
     checks::Vector{Check}
+    checked::Bool
     function SanityCheck(checks = []; usedefault = isempty(checks))
         if usedefault
             checks = vcat(checks, CHECKS)
         end
-        return new(checks)
+        return new(checks, false)
     end
 end
 
@@ -68,7 +69,10 @@ stateaccess(::SanityCheck) = (
 
 
 function on(::Init, phase::AbstractTrainingPhase, cb::SanityCheck, learner)
-    runchecks(cb.checks, learner)
+    if !cb.checked
+        runchecks(cb.checks, learner)
+        cb.checked = true
+    end
 end
 
 
@@ -140,7 +144,7 @@ to be compatible with the data. This means the following must work:
 
 - `(x, y), _ = iterate(learner.data.training)`
 - `ŷ = learner.model(x)`
-- `loss = learner.lossfunction(ŷ, y)`
+- `loss = learner.lossfn(ŷ, y)`
 """
         ) do learner
         try
