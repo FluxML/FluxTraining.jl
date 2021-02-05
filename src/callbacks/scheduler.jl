@@ -61,7 +61,9 @@ end
 
 
 function on(::Init, phase, scheduler::Scheduler, learner)
-    learner.cbstate.hyperparams = MVHistory()
+    if !haskey(learner.cbstate, :hyperparams)
+        learner.cbstate.hyperparams = MVHistory()
+    end
 end
 
 

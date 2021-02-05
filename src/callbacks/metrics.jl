@@ -33,8 +33,12 @@ Base.show(io::IO, metrics::Metrics) = print(io, "Metrics(", join(string.(metrics
 # store metrics in `cbstate` so other callbacks can access them
 function on(::Init, ::Phase, metrics::Metrics, learner)
     length(metrics.metrics) == length(unique(metricname.(metrics.metrics))) || error("Multiple metrics have the same name!")
-    learner.cbstate.metricsstep = DefaultDict{Phase, MVHistory}(() -> MVHistory())
-    learner.cbstate.metricsepoch = DefaultDict{Phase, MVHistory}(() -> MVHistory())
+    if !haskey(learner.cbstate, :metricsstep)
+        learner.cbstate.metricsstep = DefaultDict{Phase, MVHistory}(() -> MVHistory())
+    end
+    if !haskey(learner.cbstate, :metricsepoch)
+        learner.cbstate.metricsepoch = DefaultDict{Phase, MVHistory}(() -> MVHistory())
+    end
 end
 
 

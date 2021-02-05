@@ -24,7 +24,9 @@ stateaccess(::Recorder) = (
 
 
 function on(::Init, ::Phase, recorder::Recorder, learner)
-    learner.cbstate.history = DefaultDict{Phase, History}(() -> History())
+    if !haskey(learner.cbstate, :history)
+        learner.cbstate.history = DefaultDict{Phase, History}(() -> History())
+    end
 end
 
 
