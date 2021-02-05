@@ -209,8 +209,17 @@ function replacecallback!(learner, callback::C) where {C<:FluxTraining.Callback}
 end
 
 
-function removecallback!(learner, callback::C) where {C<:FluxTraining.Callback}
+"""
+    removecallback!(learner, C)
+
+Remove the first callback of type `C` from `learner` and return it.
+If there is none, return `nothing`.
+"""
+function removecallback!(learner, C::Type{<:FluxTraining.Callback})
     cbidx = findfirst(isa.(learner.callbacks.cbs, C))
+    if isnothing(cbidx)
+        return nothing
+    end
     cb = popat!(learner.callbacks.cbs, cbidx)
     learner.callbacks = Callbacks(learner.callbacks.cbs)
     return cb
