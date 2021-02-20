@@ -75,14 +75,13 @@
 <li>(Optionally) define dependencies on other callbacks with <a href="../../docstrings/FluxTraining.runafter.html"><code>runafter</code></a></li>
 </ol>
 <p>Let’s go through them one at a time by implementing a simple callback that prints something after every batch.</p>
-<h3 id="callback-struct"><a href="#callback-struct" class="anchor"></a>1. Callback <code>struct</code></h3>
+<h3 id="callback-struct"><a href="#callback-struct" class="anchor"></a>Callback <code>struct</code></h3>
 <p>A callback definition has to subtype the abstract <code>Callback</code> type. It can include fields to use as internal state, but we don’t need that here.</p>
 <pre><code class="language-julia">struct Printer &lt;: Callback
 end
 </code></pre>
-<h3 id="event-handlers"><a href="#event-handlers" class="anchor"></a>2. Event handlers</h3>
-<p>Now we need to add an event handler so that <code>Printer</code> can run some code when a batch ends.</p>
-<p>Event handlers can be defined by adding a method to <code>FluxTraining.on</code>. It takes as arguments an <a href="#events">event</a>, a <a href="#phases">phase</a>, the callback and the learner:</p>
+<h3 id="event-handlers"><a href="#event-handlers" class="anchor"></a>Event handlers</h3>
+<p>Now we need to add an event handler so that <code>Printer</code> can run some code when a batch ends. Event handlers can be defined by adding a method to <code>FluxTraining.on</code>. It takes as arguments an <a href="#events">event</a>, a <a href="#phases">phase</a>, the callback and the learner:</p>
 <p><code>on(event::Event, phase::Phase, callback::Callback, learner)</code></p>
 <p>The <code>event</code>, <code>phase</code> and <code>callback</code> are used to dispatch.</p>
 <p>In this case, we want to run code at the end of a batch, so the event we need to dispatch on is <a href="../../docstrings/FluxTraining.Events.BatchEnd.html"><code>BatchEnd</code></a>. We want it to run in any phase, so we use the abstract type <code>Phase</code>. The third argument type is the callback we want to add an event handler to. This gives us:</p>
@@ -95,9 +94,8 @@ end
 end
 </code></pre>
 <p>We can now pass an instance of <code>Printer</code> when creating a <code>Learner</code> and the message will be printed at the end of every batch.</p>
-<h3 id="state"><a href="#state" class="anchor"></a>3. State</h3>
-<p>As seen above, the callback handler <code>on</code> receives as the last argument a <code>Learner</code> instance, allowing the callback to access and modify state.</p>
-<p>If we wanted to print the last batch’s loss instead of a generic message, we could update our definition of <code>on</code>:</p>
+<h3 id="state"><a href="#state" class="anchor"></a>State</h3>
+<p>As seen above, the callback handler <code>on</code> receives as the last argument a <code>Learner</code> instance, allowing the callback to access and modify state. If we wanted to print the last batch’s loss instead of a generic message, we could update our definition of <code>on</code>:</p>
 <pre><code class="language-julia">function FluxTraining.on(
         event::EpochEnd,
         phase::Phase,
@@ -111,16 +109,13 @@ end
 Because of that, <em>FluxTraining.jl</em> prevents callbacks from reading and modifying state by default. If we tried to use the above redefinition of <code>on</code>, we would get the following error:</p>
 <pre><code class="language-julia">FluxTraining.ProtectedException(&quot;Read access to Learner.batch.loss disallowed.&quot;)
 </code></pre>
-<p>To fix that error, we need to implement <code>stateaccess</code>, a function that specifies what state a callback is allowed to read and write.</p>
-<p>In our case, we want to read the loss of the current batch:</p>
+<p>To fix that error, we need to implement <code>stateaccess</code>, a function that specifies what state a callback is allowed to read and write. In our case, we want to read the loss of the current batch:</p>
 <pre><code class="language-julia">FluxTraining.stateaccess(::Printer) = (batch = (loss = Read(),),)
 </code></pre>
 <p><em>(see <a href="../../docstrings/FluxTraining.stateaccess.html"><code>stateaccess</code></a> for more information on how to implement it)</em></p>
-<p>After that definition, the above code will run fine.</p>
-<p>This might seem bothersome, but this extra information makes it possible to analyze state dependencies before any code is run and saves you from running into nasty, hard-to-find bugs that can occur when using many callbacks together.</p>
-<h3 id="dependencies"><a href="#dependencies" class="anchor"></a>4. Dependencies</h3>
-<p>Let’s improve our callback a bit by adding the current step number to the printed message, so it will look like this: <code>&quot;Step 14 loss: 0.0032&quot;</code>.</p>
-<p>For that we need to know what the current step number is. One way to go about this is to add a field to <code>Printer</code> that starts at <code>0</code> and is incremented every batch.
+<p>After that definition, the above code will run fine. This might seem bothersome, but this extra information makes it possible to analyze state dependencies before any code is run and saves you from running into nasty, hard-to-find bugs that can occur when using many callbacks together.</p>
+<h3 id="dependencies"><a href="#dependencies" class="anchor"></a>Dependencies</h3>
+<p>Let’s improve our callback a bit by adding the current step number to the printed message, so it will look like this: <code>&quot;Step 14 loss: 0.0032&quot;</code>. For that we need to know what the current step number is. One way to go about this is to add a field to <code>Printer</code> that starts at <code>0</code> and is incremented every batch.
 Luckily, there already is a callback that tracks this kind of statistics, the <a href="../../docstrings/FluxTraining.Recorder.html"><code>Recorder</code></a>. It uses a special piece of state, <code>learner.cbstate</code>, to store a <a href="../../docstrings/FluxTraining.History.html"><code>History</code></a> with this information.</p>
 <div class="admonition info"><p class="admonition-title">Callback state</p>
 <p><code>learner.cbstate</code> is an object where callbacks can store state that they want to make available to other callbacks. Like any other piece of state, the callback writing to it needs to add a <code>Write()</code> permission to it using <a href="../../docstrings/FluxTraining.stateaccess.html"><code>stateaccess</code></a>.</p>
@@ -142,11 +137,9 @@ end
     cbstate = (history = Read(),),
 )
 </code></pre>
-<p>Since <code>Printer</code> depends on <code>Recorder</code> now, an error will be thrown if you try to use <code>Printer</code> without <code>Recorder</code>.</p>
-<p>And that’s it, pass <code>Printer</code> to a <code>Learner</code> and test it out! The upside of jumping through some additional hoops is that using the callback in the wrong context will always result in an error, so the user can have peace of mind.</p>
+<p>Since <code>Printer</code> depends on <code>Recorder</code> now, an error will be thrown if you try to use <code>Printer</code> without <code>Recorder</code>. And that’s it, pass <code>Printer</code> to a <code>Learner</code> and test it out! The upside of jumping through some additional hoops is that using the callback in the wrong context will always result in an error, so the user can have peace of mind.</p>
 <h2 id="conflict-resolution"><a href="#conflict-resolution" class="anchor"></a>Conflict resolution</h2>
-<p>When creating a <code>Learner</code>, a dependency graph is created. The graph is then analyzed to find possible conflicts (for example, when two callbacks update the same state).
-Conflicts are detected automatically and will result in an error. Conflicts happen when the same state is being modified by multiple callbacks and it is unclear which order of running them (if any) is valid.</p>
+<p>When creating a <code>Learner</code>, a dependency graph is created. The graph is then analyzed to find possible conflicts (for example, when two callbacks update the same state). Conflicts are detected automatically and will result in an error. Conflicts happen when the same state is being modified by multiple callbacks and it is unclear which order of running them (if any) is valid.</p>
 <h3 id="resolving-conflicts"><a href="#resolving-conflicts" class="anchor"></a>Resolving conflicts</h3>
 <p>There are two methods for resolving conflicts, <code>runafter</code> and <code>resolveconflict</code>.
 <code>runafter</code> allows you to define list of callbacks that should run before the callback. For example, <code>Recorder</code> needs to run after all metrics:</p>
@@ -162,8 +155,7 @@ resolveconflict(cb1::C1, cb2::C2) = RunFirst(cb1) # `cb1` must run before `cb2`.
                                                   # Equivalent to `runafter(::C2) = (C1,)
 </code></pre>
 <h2 id="callback-execution"><a href="#callback-execution" class="anchor"></a>Callback execution</h2>
-<p>By default, a topological ordering of the callbacks is created from the dependency graph and the callbacks are executed serially.
-This behavior can be overwritten with custom callback executors, for example to create a <em>Dagger.jl</em> node from the graph to allow callbacks to safely run in parallel where valid.</p>
+<p>By default, a topological ordering of the callbacks is created from the dependency graph and the callbacks are executed serially. This behavior can be overwritten with custom callback executors, for example to create a <em>Dagger.jl</em> node from the graph to allow callbacks to safely run in parallel where valid.</p>
 </article>
         <div id="page-navigation">
             <a id="previous-page" title="Previous" href="reference.html"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M16.2426 6.34317L14.8284 4.92896L7.75739 12L14.8285 19.0711L16.2427 17.6569L10.5858 12L16.2426 6.34317Z" fill="currentColor" /></svg></a>
