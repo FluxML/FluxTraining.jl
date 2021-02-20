@@ -13,7 +13,7 @@ There are 4 things you need to do to implement a custom callback:
 
 Let's go through them one at a time by implementing a simple callback that prints something after every batch.
 
-### 1. Callback `struct`
+### Callback `struct`
 
 A callback definition has to subtype the abstract `Callback` type. It can include fields to use as internal state, but we don't need that here.
 
@@ -22,11 +22,9 @@ struct Printer <: Callback
 end
 ```
 
-### 2. Event handlers
+### Event handlers
 
-Now we need to add an event handler so that `Printer` can run some code when a batch ends.
-
-Event handlers can be defined by adding a method to `FluxTraining.on`. It takes as arguments an [event](#events), a [phase](#phases), the callback and the learner:
+Now we need to add an event handler so that `Printer` can run some code when a batch ends. Event handlers can be defined by adding a method to `FluxTraining.on`. It takes as arguments an [event](#events), a [phase](#phases), the callback and the learner:
 
 `on(event::Event, phase::Phase, callback::Callback, learner)`
 
@@ -46,11 +44,9 @@ end
 
 We can now pass an instance of `Printer` when creating a `Learner` and the message will be printed at the end of every batch.
 
-### 3. State
+### State
 
-As seen above, the callback handler `on` receives as the last argument a `Learner` instance, allowing the callback to access and modify state.
-
-If we wanted to print the last batch's loss instead of a generic message, we could update our definition of `on`:
+As seen above, the callback handler `on` receives as the last argument a `Learner` instance, allowing the callback to access and modify state. If we wanted to print the last batch's loss instead of a generic message, we could update our definition of `on`:
 
 ```julia
 function FluxTraining.on(
@@ -70,25 +66,18 @@ Because of that, *FluxTraining.jl* prevents callbacks from reading and modifying
 FluxTraining.ProtectedException("Read access to Learner.batch.loss disallowed.")
 ```
 
-To fix that error, we need to implement `stateaccess`, a function that specifies what state a callback is allowed to read and write.
-
-
-In our case, we want to read the loss of the current batch:
+To fix that error, we need to implement `stateaccess`, a function that specifies what state a callback is allowed to read and write. In our case, we want to read the loss of the current batch:
 
 ```julia
 FluxTraining.stateaccess(::Printer) = (batch = (loss = Read(),),)
 ```
 *(see [`stateaccess`](#) for more information on how to implement it)*
 
-After that definition, the above code will run fine.
+After that definition, the above code will run fine. This might seem bothersome, but this extra information makes it possible to analyze state dependencies before any code is run and saves you from running into nasty, hard-to-find bugs that can occur when using many callbacks together.
 
-This might seem bothersome, but this extra information makes it possible to analyze state dependencies before any code is run and saves you from running into nasty, hard-to-find bugs that can occur when using many callbacks together.
+### Dependencies
 
-### 4. Dependencies
-
-Let's improve our callback a bit by adding the current step number to the printed message, so it will look like this: `"Step 14 loss: 0.0032"`.
-
-For that we need to know what the current step number is. One way to go about this is to add a field to `Printer` that starts at `0` and is incremented every batch.
+Let's improve our callback a bit by adding the current step number to the printed message, so it will look like this: `"Step 14 loss: 0.0032"`. For that we need to know what the current step number is. One way to go about this is to add a field to `Printer` that starts at `0` and is incremented every batch.
 Luckily, there already is a callback that tracks this kind of statistics, the [`Recorder`](#). It uses a special piece of state, `learner.cbstate`, to store a [`History`](#) with this information.
 
 !!! info "Callback state"
@@ -119,14 +108,11 @@ FluxTraining.stateaccess(::Printer) = (
 )
 ```
 
-Since `Printer` depends on `Recorder` now, an error will be thrown if you try to use `Printer` without `Recorder`.
-
-And that's it, pass `Printer` to a `Learner` and test it out! The upside of jumping through some additional hoops is that using the callback in the wrong context will always result in an error, so the user can have peace of mind.
+Since `Printer` depends on `Recorder` now, an error will be thrown if you try to use `Printer` without `Recorder`. And that's it, pass `Printer` to a `Learner` and test it out! The upside of jumping through some additional hoops is that using the callback in the wrong context will always result in an error, so the user can have peace of mind.
 
 ## Conflict resolution
 
-When creating a `Learner`, a dependency graph is created. The graph is then analyzed to find possible conflicts (for example, when two callbacks update the same state).
-Conflicts are detected automatically and will result in an error. Conflicts happen when the same state is being modified by multiple callbacks and it is unclear which order of running them (if any) is valid.
+When creating a `Learner`, a dependency graph is created. The graph is then analyzed to find possible conflicts (for example, when two callbacks update the same state). Conflicts are detected automatically and will result in an error. Conflicts happen when the same state is being modified by multiple callbacks and it is unclear which order of running them (if any) is valid.
 
 ### Resolving conflicts
 
@@ -150,5 +136,4 @@ resolveconflict(cb1::C1, cb2::C2) = RunFirst(cb1) # `cb1` must run before `cb2`.
 
 ## Callback execution
 
-By default, a topological ordering of the callbacks is created from the dependency graph and the callbacks are executed serially.
-This behavior can be overwritten with custom callback executors, for example to create a *Dagger.jl* node from the graph to allow callbacks to safely run in parallel where valid.
+By default, a topological ordering of the callbacks is created from the dependency graph and the callbacks are executed serially. This behavior can be overwritten with custom callback executors, for example to create a *Dagger.jl* node from the graph to allow callbacks to safely run in parallel where valid.
