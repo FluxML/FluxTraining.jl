@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg"
+     xmlns:xlink="http://www.w3.org/1999/xlink"
+     version="1.2"
+     width="141.42mm" height="100mm" viewBox="0 0 141.42 100"
+     stroke="none"
+     fill="#000000"
+     stroke-width="0.3"
+     font-size="3.88"
+>
+<defs>
+  <marker id="arrow" markerWidth="15" markerHeight="7" refX="5" refY="3.5" orient="auto" markerUnits="strokeWidth">
+    <path d="M0,0 L15,3.5 L0,7 z" stroke="context-stroke" fill="context-stroke"/>
+  </marker>
+</defs>
+<g stroke-width="1.13" fill="#000000" fill-opacity="0.000" stroke="#D3D3D3" id="img-f78df535-1">
+  <g transform="translate(105.29,78.29)">
+    <path fill="none" d="M19.95,-10.96 L-19.95,10.96 " class="primitive"/>
+  </g>
+  <g transform="translate(100.14,57.46)">
+    <path fill="none" d="M24.25,6.13 L-24.25,-6.13 " class="primitive"/>
+  </g>
+  <g transform="translate(75.81,70.84)">
+    <path fill="none" d="M48.33,-5.32 L-48.33,5.32 " class="primitive"/>
+  </g>
+  <g transform="translate(124.55,44.1)">
+    <path fill="none" d="M4.14,16.94 L-4.14,-16.94 " class="primitive"/>
+  </g>
+  <g transform="translate(65.61,29.17)">
+    <path fill="none" d="M4.1,16.96 L-4.1,-16.96 " class="primitive"/>
+  </g>
+  <g transform="translate(41.22,42.54)">
+    <path fill="none" d="M24.19,6.14 L-24.19,-6.14 " class="primitive"/>
+  </g>
+  <g transform="translate(46.31,63.39)">
+    <path fill="none" d="M19.94,-10.96 L-19.94,10.96 " class="primitive"/>
+  </g>
+  <g transform="translate(41.27,42.55)">
+    <path fill="none" d="M-17.23,30.56 L17.23,-30.56 " class="primitive"/>
+  </g>
+  <g transform="translate(16.88,55.92)">
+    <path fill="none" d="M4.15,16.97 L-4.15,-16.97 " class="primitive"/>
+  </g>
+</g>
+<g stroke-width="1.13" stroke="#D3D3D3" id="img-f78df535-2">
+  <g transform="translate(88.25,87.65)">
+    <path fill="none" d="M2.69,0.32 L-2.92,1.6 0.22,-1.93 " class="primitive"/>
+  </g>
+  <g transform="translate(79.36,52.21)">
+    <path fill="none" d="M1.06,1.78 L-3.48,-0.88 2.42,-0.9 " class="primitive"/>
+  </g>
+  <g transform="translate(31.13,75.76)">
+    <path fill="none" d="M2.13,1.21 L-3.65,0.4 1.51,-1.61 " class="primitive"/>
+  </g>
+  <g transform="translate(121.04,29.73)">
+    <path fill="none" d="M-1.67,1.53 L-0.63,-2.57 2.3,1.04 " class="primitive"/>
+  </g>
+  <g transform="translate(62.13,14.79)">
+    <path fill="none" d="M-1.68,1.53 L-0.62,-2.57 2.3,1.05 " class="primitive"/>
+  </g>
+  <g transform="translate(20.5,37.28)">
+    <path fill="none" d="M1.06,1.78 L-3.47,-0.88 2.42,-0.9 " class="primitive"/>
+  </g>
+  <g transform="translate(29.29,72.75)">
+    <path fill="none" d="M2.69,0.32 L-2.91,1.6 0.22,-1.93 " class="primitive"/>
+  </g>
+  <g transform="translate(57.14,14.41)">
+    <path fill="none" d="M-2.56,0.68 L1.37,-2.42 1.19,1.74 " class="primitive"/>
+  </g>
+  <g transform="translate(13.36,41.52)">
+    <path fill="none" d="M-1.67,1.53 L-0.63,-2.57 2.3,1.04 " class="primitive"/>
+  </g>
+</g>
+<g font-size="4" stroke="#000000" stroke-opacity="0.000" fill="#000000" id="img-f78df535-3">
+</g>
+<g stroke-width="0" stroke="#000000" stroke-opacity="0.000" fill="#40E0D0" id="img-f78df535-4">
+  <g transform="translate(129.64,64.92)">
+    <circle cx="0" cy="0" r="5.35" class="primitive"/>
+  </g>
+  <g transform="translate(60.57,8.33)">
+    <circle cx="0" cy="0" r="5.35" class="primitive"/>
+  </g>
+  <g transform="translate(11.79,35.07)">
+    <circle cx="0" cy="0" r="5.35" class="primitive"/>
+  </g>
+  <g transform="translate(80.93,91.67)">
+    <circle cx="0" cy="0" r="5.35" class="primitive"/>
+  </g>
+  <g transform="translate(70.65,50.01)">
+    <circle cx="0" cy="0" r="5.35" class="primitive"/>
+  </g>
+  <g transform="translate(21.98,76.76)">
+    <circle cx="0" cy="0" r="5.35" class="primitive"/>
+  </g>
+  <g transform="translate(119.47,23.28)">
+    <circle cx="0" cy="0" r="5.35" class="primitive"/>
+  </g>
+</g>
+<g font-size="4" stroke="#000000" stroke-opacity="0.000" fill="#000000" id="img-f78df535-5">
+  <g transform="translate(129.64,64.92)">
+    <g class="primitive">
+      <text text-anchor="middle" dy="0.35em">ToGPU()</text>
+    </g>
+  </g>
+  <g transform="translate(60.57,8.33)">
+    <g class="primitive">
+      <text text-anchor="middle" dy="0.35em">ProgressPrinter()</text>
+    </g>
+  </g>
+  <g transform="translate(11.79,35.07)">
+    <g class="primitive">
+      <text text-anchor="middle" dy="0.35em">MetricsPrinter()</text>
+    </g>
+  </g>
+  <g transform="translate(80.93,91.67)">
+    <g class="primitive">
+      <text text-anchor="middle" dy="0.35em">StopOnNaNLoss()</text>
+    </g>
+  </g>
+  <g transform="translate(70.65,50.01)">
+    <g class="primitive">
+      <text text-anchor="middle" dy="0.35em">Recorder()</text>
+    </g>
+  </g>
+  <g transform="translate(21.98,76.76)">
+    <g class="primitive">
+      <text text-anchor="middle" dy="0.35em">Metrics(Loss())</text>
+    </g>
+  </g>
+  <g transform="translate(119.47,23.28)">
+    <g class="primitive">
+      <text text-anchor="middle" dy="0.35em">SanityCheck(FluxTraining.Check[Check("Has training data iterator"), Check("Has validation data iterator"), Check("Data iterators iterate over tuples"), Check("Model and loss function compatible with data")], false)</text>
+    </g>
+  </g>
+</g>
+</svg>

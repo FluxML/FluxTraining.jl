@@ -86,7 +86,7 @@ model, data, lossfn, optimizer = nothing, nothing, nothing, nothing
  MetricsPrinter()
  StopOnNaNLoss()
  Recorder()
- SanityCheck(FluxTraining.Check[Check(&quot;Has training data iterator&quot;), Check(&quot;Has validation data iterator&quot;), Check(&quot;Data iterators iterate over tuples&quot;), Check(&quot;Model and loss function compatible with data&quot;)])</code></pre>
+ SanityCheck(FluxTraining.Check[Check(&quot;Has training data iterator&quot;), Check(&quot;Has validation data iterator&quot;), Check(&quot;Data iterators iterate over tuples&quot;), Check(&quot;Model and loss function compatible with data&quot;)], false)</code></pre>
 <p>See <a href="./reference.html">callback reference</a> for a list of all callbacks included in <em>FluxTraining.jl</em> and their documentation.</p>
 <div class="admonition info"><p class="admonition-title">Ordering</p>
 <p>The order the callbacks are passed in doesn’t matter. <em>FluxTraining.jl</em> creates a dependency graph that makes sure the callbacks are run in the correct order. Read <a href="./custom.html">custom callbacks</a> to find out how to create callbacks yourself.</p>
