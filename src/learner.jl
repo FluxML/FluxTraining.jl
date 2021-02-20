@@ -170,6 +170,7 @@ Adds `callback` to `learner` and updates the dependency graph.
 """
 function addcallback!(learner, callback)
     learner.callbacks = Callbacks(vcat(learner.callbacks.cbs, callback))
+    initlearner!(learner, [TrainingPhase()])
 end
 
 
@@ -205,4 +206,21 @@ function replacecallback!(learner, callback::C) where {C<:FluxTraining.Callback}
         FluxTraining.setcallbacks!(learner, learner.callbacks.cbs)
         return oldcb
     end
+end
+
+
+"""
+    removecallback!(learner, C)
+
+Remove the first callback of type `C` from `learner` and return it.
+If there is none, return `nothing`.
+"""
+function removecallback!(learner, C::Type{<:FluxTraining.Callback})
+    cbidx = findfirst(isa.(learner.callbacks.cbs, C))
+    if isnothing(cbidx)
+        return nothing
+    end
+    cb = popat!(learner.callbacks.cbs, cbidx)
+    learner.callbacks = Callbacks(learner.callbacks.cbs)
+    return cb
 end

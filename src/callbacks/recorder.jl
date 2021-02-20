@@ -24,17 +24,19 @@ stateaccess(::Recorder) = (
 
 
 function on(::Init, ::Phase, recorder::Recorder, learner)
-    learner.cbstate.history = History()
+    if !haskey(learner.cbstate, :history)
+        learner.cbstate.history = DefaultDict{Phase, History}(() -> History())
+    end
 end
 
 
-function on(::EpochBegin, ::AbstractTrainingPhase, recorder::Recorder, learner)
-    learner.cbstate.history.stepsepoch = 0
+function on(::EpochBegin, phase::Phase, recorder::Recorder, learner)
+    learner.cbstate.history[phase].stepsepoch = 0
 end
 
 
-function on(::BatchEnd, phase::AbstractTrainingPhase, recorder::Recorder, learner)
-    history = learner.cbstate.history
+function on(::BatchEnd, phase::Phase, recorder::Recorder, learner)
+    history = learner.cbstate.history[phase]
     history.steps += 1
     history.stepsepoch += 1
     history.samples += size(learner.batch.xs)[end]
@@ -42,8 +44,6 @@ end
 
 
 function on(::EpochEnd, phase::Phase, recorder::Recorder, learner)
-    history = learner.cbstate.history
-    if phase isa AbstractTrainingPhase
-        history.epochs += 1
-    end
+    history = learner.cbstate.history[phase]
+    history.epochs += 1
 end
