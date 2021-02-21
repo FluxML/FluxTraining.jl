@@ -88,7 +88,7 @@ methods to make it compatible with [`Metrics`](#):
 """
 abstract type AbstractMetric end
 
-mutable struct Metric{T}
+mutable struct Metric{T} <: AbstractMetric
     metricfn
     statistic::OnlineStat{T}
     _statistic
