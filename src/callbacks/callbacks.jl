@@ -69,36 +69,6 @@ end
 stateaccess(::StopOnNaNLoss) = (batch = (loss = Read()),)
 
 
-# Early stopping
-"""
-    EarlyStopping(patience)
-
-Stops training if validation loss hasn't decreased in `patience` epochs.
-"""
-mutable struct EarlyStopping <: Callback
-    patience::Int
-    waited::Int
-    lowest::Float64
-end
-EarlyStopping(patience) = EarlyStopping(patience, 0, Inf64)
-
-function on(::EpochEnd, phase::ValidationPhase, cb::EarlyStopping, learner)
-    valloss = last(learner.cbstate.metricsepoch[phase], :Loss)[2]
-    if (valloss > cb.lowest)
-        if !(cb.waited < cb.patience)
-            throw(CancelFittingException("Validation loss did not improve for $(cb.patience) epochs"))
-        else
-            cb.waited += 1
-        end
-    else
-        cb.waited = 0
-        cb.lowest = valloss
-    end
-end
-
-stateaccess(::EarlyStopping) = (callbacks = Read(), cbstate = (; metricsepoch = Read()))
-
-
 """
     ToGPU()
 
