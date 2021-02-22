@@ -88,7 +88,7 @@ methods to make it compatible with [`Metrics`](#):
 """
 abstract type AbstractMetric end
 
-mutable struct Metric{T}
+mutable struct Metric{T} <: AbstractMetric
     metricfn
     statistic::OnlineStat{T}
     _statistic
@@ -144,7 +144,7 @@ function reset!(metric::Metric)
 end
 
 function step!(metric::Metric, learner)
-    ŷs, ys = learner.batch.ŷs, learner.batch.ys
+    ŷs, ys = metric.device((learner.batch.ŷs, learner.batch.ys))
     metric.last = metric.metricfn(ŷs, ys)
     OnlineStats.fit!(metric.statistic, metric.last)
 end
