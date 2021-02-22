@@ -34,3 +34,7 @@ They each can have multiple logging backends, but right now the only one impleme
 ## Checkpointing
 
 Use the [`Checkpointer`](#) callback to create model checkpoints after every epoch.
+
+## Early Stopping
+
+Use [`EarlyStopping`](#) to stop when a stopping criterion is met. Supports all criteria in [EarlyStopping.jl](https://github.com/ablaom/EarlyStopping.jl).
