@@ -1,0 +1,22 @@
+theme = "lorenzo"
+
+[html]
+default_css = [
+    "normalize.css",
+    "tabulator_simple.min.css",
+    "lorenzo.css",
+]
+default_js = [
+    "versions.js",
+    "lunr.js",
+    "highlight.min.js",
+    "tabulator.min.js",
+    "julia.min.js",
+    "julia-repl.min.js",
+    "publish.js",
+]
+template = {file = "html.mustache"}
+
+[latex]
+documentclass = "scrartcl"
+template = {file = "latex.mustache"}

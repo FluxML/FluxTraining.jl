@@ -1,0 +1,64 @@
+\documentclass{${latex.documentclass}}
+
+\usepackage[dvipsnames]{xcolor}
+
+\usepackage{fontspec}
+\usepackage{amssymb,amsmath}
+\defaultfontfeatures{Scale=MatchLowercase}
+\defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\usepackage{hyperref}
+\usepackage{tcolorbox}
+\usepackage{longtable}
+
+\newtcolorbox{admonition@info}[2][]{
+    colbacktitle=Aquamarine!60!white, colback=Aquamarine!10!white, coltitle=black,
+    title={#2}, fonttitle=\bfseries, #1
+}
+\newtcolorbox{admonition@tip}[2][]{
+    colbacktitle=ForestGreen!60!white, colback=ForestGreen!10!white, coltitle=black,
+    title={#2}, fonttitle=\bfseries, #1
+}
+\newtcolorbox{admonition@warning}[2][]{
+    colbacktitle=BurntOrange!60!white, colback=BurntOrange!10!white, coltitle=black,
+    title={#2}, fonttitle=\bfseries, #1
+}
+\newtcolorbox{admonition@danger}[2][]{
+    colbacktitle=Red!60!white, colback=Red!10!white, coltitle=black,
+    title={#2}, fonttitle=\bfseries, #1
+}
+\newtcolorbox{admonition@compat}[2][]{
+    colbacktitle=Purple!60!white, colback=Purple!10!white, coltitle=black,
+    title={#2}, fonttitle=\bfseries, #1
+}
+
+${#title}
+\title{%
+    ${title} \\
+    ${#subtitle}\large ${subtitle}${/subtitle}}
+${/title}
+\author{${#authors}${.}${^.[end]} \and ${/.[end]}${/authors}}
+${#date}
+\date{${date}}
+${/date}
+
+${{latex.preamble}}
+
+\newcommand{\hyperlabel}[1]{\label{#1}} % TODO: fix upstream
+
+\begin{document}
+
+${#title}
+\maketitle
+${/title}
+
+${#abstract}
+\begin{abstract}
+${abstract}
+\end{abstract}
+${/abstract}
+
+\tableofcontents
+
+${{body}}
+
+\end{document}
