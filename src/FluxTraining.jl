@@ -8,6 +8,10 @@ using Flux: Params, onecold
 using Flux.Optimise: update!
 using ImageCore
 using Glob
+module ES
+    using Reexport
+    @reexport using EarlyStopping
+end
 import OnlineStats
 using OnlineStats: EqualWeight, Mean, OnlineStat
 using Parameters
@@ -44,6 +48,7 @@ include("./callbacks/logging/checkpointer.jl")
 # callback implementations
 include("./callbacks/conditional.jl")
 include("./callbacks/callbacks.jl")
+include("./callbacks/earlystopping.jl")
 include("./callbacks/custom.jl")
 include("./callbacks/metrics.jl")
 include("./callbacks/recorder.jl")
