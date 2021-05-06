@@ -10,11 +10,27 @@ Stop training early when `criteria` are met. See [EarlyStopping.jl]
 criteria.
 
 Passing an integer `n` uses the simple patience criterion: stop if the
-out-of-sample loss hasn't increased for `n` epochs.
+validation loss hasn't increased for `n` epochs.
+
+See [EarlyStopping.jl](https://github.com/JuliaAI/EarlyStopping.jl) for
+documentation of all available criteria.
 
 You can control which phases are taken to measure the out-of-sample loss
 and the training loss with keyword arguments `trainphase` (default
 [`AbstractTrainingPhase`](#)) and `testphase` (default [`ValidationPhase`](#)).
+
+## Examples
+
+```julia
+Learner(model, data, optimizer, lossfn, EarlyStopping(3))
+```
+
+```julia
+import FluxTraining.ES: Disjunction, InvalidValue, TimeLimit
+
+callback = EarlyStopping(Disjunction(InvalidValue(), TimeLimit(0.5)))
+Learner(model, data, optimizer, lossfn, callback)
+```
 """
 mutable struct EarlyStopping <: Callback
     criterion::ES.StoppingCriterion
