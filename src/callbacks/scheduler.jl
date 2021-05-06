@@ -8,11 +8,12 @@ training.
 
 ```julia
 # one-cycle schedule over 10 epochs from 0.01 over 0.1 to 0.001
-Schedule([0, 2, 10], [0.01, 0.1, 0.001], [sineio(), sineio()])
+es = length(learner.data.training)
+Schedule([0es, 2es, 10es], [0.01, 0.1, 0.001], [sineio(), sineio()])
 ```
 
 `Schedule` is an alias for `Animations.Animation`, see the
-[documentation](https://jkrumbiegel.github.io/Animations.jl/dev)
+[Animations.jl documentation](https://jkrumbiegel.github.io/Animations.jl/dev)
 for more detailed information.
 """
 const Schedule = Animation
@@ -28,7 +29,8 @@ See [the tutorial](../docs/tutorials/hyperparameters.md).
 ## Example
 
 ```julia
-lrschedule = Schedule([0, 10], [0.1, 0.001], Animations.sineio())
+es = length(learner.data.training)
+lrschedule = Schedule([0es, 10es], [0.1, 0.001], Animations.sineio())
 scheduler = Scheduler(
     LearningRate => lrschedule
 )
@@ -78,13 +80,13 @@ end
 
 
 """
-    onecycle(nepochs, max_val, [start_val, end_val; start_pctg])
+    onecycle(nepochs, epochlength, max_val, [start_val, end_val; start_pctg])
 
 Creates a one-cycle [`Schedule`](#) over `nepochs` epochs from `start_val`
 over `max_val` to `end_val`.
 """
 function onecycle(
-        nepochs, max_val;
+        nepochs, epochlength, max_val;
         pct_start = 0.25,
         div=25, divfinal=1e5,
         start_val = max_val/div, end_val = max_val/divfinal)
@@ -92,6 +94,6 @@ function onecycle(
         [0, nepochs * pct_start, nepochs],
         [start_val, max_val, end_val],
         [Animations.sineio(), Animations.sineio()]
-    )
+    ) * epochlength
 
 end

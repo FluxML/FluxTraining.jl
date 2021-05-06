@@ -1,14 +1,16 @@
 # Getting started
 
-In `FluxTraining`, a [`Learner`](#) holds all state necessary for training. To get started, you need
+*FluxTraining.jl* focuses on a powerful and customizable training loop, and as such models and datasets are not included. It powers the training in [FastAI.jl](https://github.com/FluxML/FastAI.jl), which covers every part of the deep learning pipeline.
+
+---
+
+
+Let's look at a simple training example. In *FluxTraining.jl*, a [`Learner`](#) holds all state necessary for training. To get started, you need
+
 - a *model*
 - training and validation *data iterators*
 - a *loss function*; and
 - an *optimizer*
-
-Models and datasets are not included with FluxTraining.jl, so see [ecosystem](ecosystem.md) for supporting packages.
-
-Let's look at a simple training example.
 
 First we define the necessary pieces:
 
