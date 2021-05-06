@@ -3,7 +3,7 @@
 """
     Checkpointer(folder)
 
-Saves `learner.model` to `folder` after every [`AbstractTrainingPhase`].
+Saves `learner.model` to `folder` after every [`AbstractTrainingPhase`](#).
 
 Use `FluxTraining.`[`loadmodel`](#) to load a model.
 """

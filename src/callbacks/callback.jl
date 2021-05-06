@@ -18,15 +18,12 @@ abstract type UnsafeCallback <: AbstractCallback end
     stateaccess(callback)
 
 Return a named tuple determining what learner state `callback`
-can access.
+can access. The default is `(;)`, the empty named tuple, meaning
+no state can be accessed. Implementations of `stateaccess` should
+always return the least permissions possible.
 
-The default is `(;)`, the empty named tuple, meaning no state can be accessed.
-
-Implementations of `stateaccess` should always return the least permissions
-possible.
-
-For example, the [`ToGPU`](#) callback needs to write both the model and the batch data,
-so its `stateaccess` implementation is:
+For example, the [`ToGPU`](#) callback needs to write both the model and
+the batch data, so its `stateaccess` implementation is:
 
 ```julia
 stateaccess(::ToGPU) = (
@@ -36,8 +33,9 @@ stateaccess(::ToGPU) = (
 )
 ```
 
-Be careful when defining `stateaccess` that you do return a `NamedTuple`. `(x = Read(),)` is
-one but `(x = Read())` (without the comma) is parsed as an assignment with value `Read()`.
+When defining `stateaccess`, be careful that you do return a `NamedTuple`.
+`(x = Read(),)` is one but `(x = Read())` (without the comma) is parsed as
+an assignment with value `Read()`.
 """
 stateaccess(::Callback) = (;)
 runafter(::AbstractCallback) = ()
