@@ -36,8 +36,10 @@ In code, that looks like this:
 ```julia
 using Animations: sineio  # for cosine annealing
 
+es = length(traindl)     # number of steps in an epoch
+
 schedule = Schedule(
-    [0, 3, 10],          # the time steps (in epochs)
+    [0es, 3es, 10es],          # the time steps (in training steps)
     [0.01, 0.1, 0.001],  # the valus at the time steps
     sineio(),            # the annealing function
 )

@@ -1,17 +1,12 @@
 # Features
 
-This page gives a run-down of many features *FluxTraining.jl* brings to the table.
-
-Most features are implemented as callbacks and using them is as simple as passing the callback when constructing the [`Learner`](#):
+This page gives a run-down of many features *FluxTraining.jl* brings to the table.  Most features are implemented as callbacks and using them is as simple as passing the callback when constructing a [`Learner`](#) and training with [`fit!`](#):
 
 ```julia
 cb = CoolFeature🕶️Callback()
 learner = Learner(model, data, opt, lossfn, cb)
+fit!(learner, nepochs)
 ```
-
-## Basics
-
-[`Learner`](#) holds all training state. Use `fit!(learner, n)` to train it for `n` epochs.
 
 ## Metrics
 
@@ -19,7 +14,7 @@ By default, `Learner` will track only the loss function. You can track other met
 
 ## Hyperparameter scheduling
 
-The [`Scheduler`](#) callback takes care of hyperparameter scheduling. See the [Hyperparameter scheduling tutorial] and also [`Scheduler`](#), [`Schedule`](#), [`HyperParameter`](#).
+The [`Scheduler`](#) callback takes care of hyperparameter scheduling. See the [Hyperparameter scheduling tutorial](tutorials/hyperparameters.md) and also [`Scheduler`](#), [`Schedule`](#), [`HyperParameter`](#).
 
 ## Logging
 

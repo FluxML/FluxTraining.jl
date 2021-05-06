@@ -2,7 +2,7 @@
 
 # Early stopping
 """
-    EarlyStopping(criteria...; <kwargs>)
+    EarlyStopping(criteria...; kwargs...)
     EarlyStopping(n)
 
 Stop training early when `criteria` are met. See [EarlyStopping.jl]

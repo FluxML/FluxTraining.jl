@@ -78,13 +78,13 @@ end
 
 
 """
-    onecycle(nepochs, max_val, [start_val, end_val; start_pctg])
+    onecycle(nepochs, epochlength, max_val, [start_val, end_val; start_pctg])
 
 Creates a one-cycle [`Schedule`](#) over `nepochs` epochs from `start_val`
 over `max_val` to `end_val`.
 """
 function onecycle(
-        nepochs, max_val;
+        nepochs, epochlength, max_val;
         pct_start = 0.25,
         div=25, divfinal=1e5,
         start_val = max_val/div, end_val = max_val/divfinal)
@@ -92,6 +92,6 @@ function onecycle(
         [0, nepochs * pct_start, nepochs],
         [start_val, max_val, end_val],
         [Animations.sineio(), Animations.sineio()]
-    )
+    ) * epochlength
 
 end
