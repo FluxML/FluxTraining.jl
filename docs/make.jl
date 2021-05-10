@@ -1,4 +1,5 @@
 using Pollen
+using GraphPlot
 using FluxTraining
 using FilePathsBase
 
