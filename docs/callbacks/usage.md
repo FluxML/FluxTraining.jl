@@ -5,11 +5,11 @@ using FluxTraining: Callback, Read, Write, stateaccess
 model, data, lossfn, optimizer = nothing, nothing, nothing, nothing
 ```
 
-# Using callbacks
+# How to use callbacks
 
 Callbacks allow injecting functionality at many points during the training loop.
 
-To use them, pass a list of callbacks to `Learner`:
+To use them, simply pass each callback to `Learner`:
 
 {cell=main, output=false}
 ```julia

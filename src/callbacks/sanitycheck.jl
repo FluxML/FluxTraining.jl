@@ -58,6 +58,10 @@ mutable struct SanityCheck <: Callback
 end
 
 
+Base.show(io::IO, cb::SanityCheck) = print(io,
+    "SanityCheck(", length(cb.checks), " checks)")
+
+
 
 stateaccess(::SanityCheck) = (
     data = Read(),

@@ -1,7 +1,6 @@
-using Publish
+using Pollen
 using FluxTraining
+using FilePathsBase
 
-p = Publish.Project(FluxTraining)
-rm("dev", recursive = true, force = true)
-rm(p.env["version"], recursive = true, force = true)
-deploy(FluxTraining; root = "/FluxTraining.jl", force = true, label = "dev")
+project = Pollen.documentationproject(FluxTraining)
+Pollen.fullbuild(project, Pollen.FileBuilder(Pollen.HTML(), p"dev/"))
