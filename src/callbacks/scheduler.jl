@@ -80,7 +80,7 @@ end
 
 
 """
-    onecycle(nsteps, epochlength, max_val, [start_val, end_val; start_pctg])
+    onecycle(nsteps, max_val, [start_val, end_val; start_pctg])
 
 Creates a one-cycle [`Schedule`](#) over `nsteps` steps from `start_val`
 over `max_val` to `end_val`.
