@@ -24,17 +24,17 @@ end
 
 ### Event handlers
 
-Now we need to add an event handler so that `Printer` can run some code when a batch ends. Event handlers can be defined by adding a method to `FluxTraining.on`. It takes as arguments an [event](#events), a [phase](#phases), the callback and the learner:
+Now we need to add an event handler so that `Printer` can run some code when a step ends. Event handlers can be defined by adding a method to `FluxTraining.on`. It takes as arguments an [event](#events), a [phase](#phases), the callback and the learner:
 
 `on(event::Event, phase::Phase, callback::Callback, learner)`
 
 The `event`, `phase` and `callback` are used to dispatch.
 
-In this case, we want to run code at the end of a batch, so the event we need to dispatch on is [`BatchEnd`](#). We want it to run in any phase, so we use the abstract type `Phase`. The third argument type is the callback we want to add an event handler to. This gives us:
+In this case, we want to run code at the end of a step, so the event we need to dispatch on is [`StepEnd`](#). We want it to run in any phase, so we use the abstract type `Phase`. The third argument type is the callback we want to add an event handler to. This gives us:
 
 ```julia
 function FluxTraining.on(
-        event::BatchEnd,
+        event::StepEnd,
         phase::Phase,
         printer::Printer,
         learner)
@@ -42,11 +42,11 @@ function FluxTraining.on(
 end
 ```
 
-We can now pass an instance of `Printer` when creating a `Learner` and the message will be printed at the end of every batch.
+We can now pass an instance of `Printer` when creating a `Learner` and the message will be printed at the end of every step.
 
 ### State
 
-As seen above, the callback handler `on` receives as the last argument a `Learner` instance, allowing the callback to access and modify state. If we wanted to print the last batch's loss instead of a generic message, we could update our definition of `on`:
+As seen above, the callback handler `on` receives as the last argument a `Learner` instance, allowing the callback to access and modify state. If we wanted to print the last step's loss instead of a generic message, we could update our definition of `on`:
 
 ```julia
 function FluxTraining.on(
@@ -54,7 +54,7 @@ function FluxTraining.on(
         phase::Phase,
         printer::Printer,
         learner)
-    println("Step loss:", learner.batch.loss)
+    println("Step loss:", learner.step.loss)
 end
 ```
 *(see [`Learner`](#) for in-depth documentation of the `Learner`'s state)*
@@ -63,13 +63,13 @@ The ability to modify any state is very powerful, but it can quickly become prob
 Because of that, *FluxTraining.jl* prevents callbacks from reading and modifying state by default. If we tried to use the above redefinition of `on`, we would get the following error:
 
 ```julia
-FluxTraining.ProtectedException("Read access to Learner.batch.loss disallowed.")
+FluxTraining.ProtectedException("Read access to Learner.step.loss disallowed.")
 ```
 
-To fix that error, we need to implement `stateaccess`, a function that specifies what state a callback is allowed to read and write. In our case, we want to read the loss of the current batch:
+To fix that error, we need to implement `stateaccess`, a function that specifies what state a callback is allowed to read and write. In our case, we want to read the loss of the current step:
 
 ```julia
-FluxTraining.stateaccess(::Printer) = (batch = (loss = Read(),),)
+FluxTraining.stateaccess(::Printer) = (step = (loss = Read(),),)
 ```
 *(see [`stateaccess`](#) for more information on how to implement it)*
 
@@ -77,7 +77,7 @@ After that definition, the above code will run fine. This might seem bothersome,
 
 ### Dependencies
 
-Let's improve our callback a bit by adding the current step number to the printed message, so it will look like this: `"Step 14 loss: 0.0032"`. For that we need to know what the current step number is. One way to go about this is to add a field to `Printer` that starts at `0` and is incremented every batch.
+Let's improve our callback a bit by adding the current step number to the printed message, so it will look like this: `"Step 14 loss: 0.0032"`. For that we need to know what the current number of steps is. One way to go about this is to add a field to `Printer` that starts at `0` and is incremented every step.
 Luckily, there already is a callback that tracks this kind of statistics, the [`Recorder`](#). It uses a special piece of state, `learner.cbstate`, to store a [`History`](#) with this information.
 
 !!! info "Callback state"
@@ -95,7 +95,7 @@ function FluxTraining.on(
         printer::Printer,
         learner)
     step = learner.cbstate.history[phase].stepsepoch  # steps completed in current epoch
-    println("Step ", , " loss:", learner.batch.loss)
+    println("Step ", , " loss:", learner.step.loss)
 end
 ```
 
@@ -103,7 +103,7 @@ We also need to update the definition of `stateaccess` now:
 
 ```julia
 FluxTraining.stateaccess(::Printer) = (
-    batch = (loss = Read(),),
+    step = (loss = Read(),),
     cbstate = (history = Read(),),
 )
 ```

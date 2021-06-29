@@ -69,7 +69,7 @@ function on(::Init, phase, scheduler::Scheduler, learner)
 end
 
 
-function on(::BatchBegin, phase::AbstractTrainingPhase, scheduler::Scheduler, learner)
+function on(::StepBegin, phase::AbstractTrainingPhase, scheduler::Scheduler, learner)
     step = learner.cbstate.history[phase].steps + 1
     for (H, animation) in scheduler.schedules
         value = Animations.at(animation, step)

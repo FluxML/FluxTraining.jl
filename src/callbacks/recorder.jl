@@ -19,7 +19,7 @@ struct Recorder <: Callback end
 
 stateaccess(::Recorder) = (
     cbstate = (history = Write(),),
-    batch = Read(),
+    step = Read(),
     )
 
 
@@ -35,11 +35,11 @@ function on(::EpochBegin, phase::Phase, recorder::Recorder, learner)
 end
 
 
-function on(::BatchEnd, phase::Phase, recorder::Recorder, learner)
+function on(::StepEnd, phase::Phase, recorder::Recorder, learner)
     history = learner.cbstate.history[phase]
     history.steps += 1
     history.stepsepoch += 1
-    history.samples += size(learner.batch.xs)[end]
+    history.samples += size(learner.step.xs)[end]
 end
 
 

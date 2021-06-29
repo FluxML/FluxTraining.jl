@@ -4,6 +4,7 @@ function initlearner!(learner, phases)
         learner.callbacks.initialized = true
     end
 end
+initlearner!(learner, phase::Phase) = initlearner!(learner, (phase,))
 """
     fit!(learner, phases)
 
@@ -53,12 +54,12 @@ end
 
 
 function fitbatch!(learner, batch, phase)
-    learner.batch = BatchState()
+    learner.step = StepState()
     try
         fitbatchphase!(learner, batch, phase)
     catch e
-        if e isa CancelBatchException
-            @debug "Batch was cancelled" error=e
+        if e isa CancelStepException
+            @debug "Step was cancelled" error=e
         else
             rethrow()
         end
@@ -97,10 +98,10 @@ function fitbatchphase!(
         phase::AbstractTrainingPhase,
     )
 
-    b = learner.batch
+    b = learner.step
     b.xs, b.ys = batch
 
-    handle(BatchBegin(), learner, phase)
+    handle(StepBegin(), learner, phase)
 
     b.grads = gradient(learner.params) do
         b.ŷs = learner.model(b.xs)
@@ -115,7 +116,7 @@ function fitbatchphase!(
 
     update!(learner.optimizer, learner.params, b.grads)
 
-    handle(BatchEnd(), learner, phase)
+    handle(StepEnd(), learner, phase)
     return learner
 end
 
@@ -125,14 +126,14 @@ function fitbatchphase!(
         batch,
         phase::ValidationPhase,
     )
-    b = learner.batch
+    b = learner.step
     b.xs, b.ys = batch
-    handle(BatchBegin(), learner, phase)
+    handle(StepBegin(), learner, phase)
 
     b.ŷs = learner.model(b.xs)
 
     handle(LossBegin(), learner, phase)
     b.loss = learner.lossfn(b.ŷs, b.ys)
 
-    handle(BatchEnd(), learner, phase)
+    handle(StepEnd(), learner, phase)
 end

@@ -29,8 +29,8 @@ A regular training phase. It iterates over batches
 in `learner.data.training` and updates the model parameters
 using `learner.optim` after calculating the gradients.
 
-Throws the following events: [`EpochBegin`](#), [`BatchBegin`](#),
-[`LossBegin`](#), [`BackwardBegin`](#), [`BackwardEnd`](#), [`BatchEnd`](#),
+Throws the following events: [`EpochBegin`](#), [`StepBegin`](#),
+[`LossBegin`](#), [`BackwardBegin`](#), [`BackwardEnd`](#), [`StepEnd`](#),
 [`EpochEnd`](#).
 """
 struct TrainingPhase <: AbstractTrainingPhase end
@@ -41,8 +41,8 @@ struct TrainingPhase <: AbstractTrainingPhase end
 A regular validation phase. It iterates over batches
 in `learner.data.validation` and performs a forward pass.
 
-Throws the following events: [`EpochBegin`](#), [`BatchBegin`](#),
-[`LossBegin`](#), [`BatchEnd`](#), [`EpochEnd`](#).
+Throws the following events: [`EpochBegin`](#), [`StepBegin`](#),
+[`LossBegin`](#), [`StepEnd`](#), [`EpochEnd`](#).
 """
 struct ValidationPhase <: Phase end
 struct TestPhase <: Phase end

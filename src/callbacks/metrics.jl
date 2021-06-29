@@ -24,7 +24,7 @@ end
 runafter(::Metrics) = (Recorder,)
 stateaccess(::Metrics) = (
     cbstate = (metricsstep = Write(), metricsepoch = Write(), history = Read()),
-    batch = Read()
+    step = Read()
 )
 
 Base.show(io::IO, metrics::Metrics) = print(io, "Metrics(", join(string.(metrics.metrics), ", "), ")")
@@ -45,7 +45,7 @@ end
 
 on(::EpochBegin, ::Phase, metrics::Metrics, learner) = foreach(reset!, metrics.metrics)
 
-function on(::BatchEnd, phase, metrics::Metrics, learner)
+function on(::StepEnd, phase, metrics::Metrics, learner)
     metricsstep = learner.cbstate.metricsstep[phase]
     step = learner.cbstate.history[phase].steps
     for metric in metrics.metrics
@@ -144,7 +144,7 @@ function reset!(metric::Metric)
 end
 
 function step!(metric::Metric, learner)
-    ŷs, ys = metric.device((learner.batch.ŷs, learner.batch.ys))
+    ŷs, ys = metric.device((learner.step.ŷs, learner.step.ys))
     metric.last = metric.metricfn(ŷs, ys)
     OnlineStats.fit!(metric.statistic, metric.last)
 end
@@ -176,7 +176,7 @@ end
 
 
 function step!(metric::Loss, learner)
-    metric.last = learner.batch.loss
+    metric.last = learner.step.loss
     OnlineStats.fit!(metric.statistic, metric.last)
 end
 

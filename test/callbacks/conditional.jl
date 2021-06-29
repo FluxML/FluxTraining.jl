@@ -2,11 +2,11 @@ include("../imports.jl")
 
 
 @testset ExtendedTestSet "`throttle` steps" begin
-    cb = CustomCallback(Events.BatchBegin, TrainingPhase) do learner
-            throw(CancelBatchException("test"))
+    cb = CustomCallback(Events.StepBegin, TrainingPhase) do learner
+            throw(CancelStepException("test"))
     end
     # only cancel every second batch
-    throttledcb = throttle(cb, Events.BatchBegin, freq = 2)
+    throttledcb = throttle(cb, Events.StepBegin, freq = 2)
 
     learner = testlearner(Recorder(), throttledcb, coeff = 3)
     fit!(learner, TrainingPhase())

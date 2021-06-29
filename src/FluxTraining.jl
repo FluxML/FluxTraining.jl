@@ -68,7 +68,7 @@ include("./train.jl")
 export AbstractCallback,
     Loss,
     ConditionalCallback,
-    CancelBatchException,
+    CancelStepException,
     CancelEpochException,
     CancelFittingException,
     Checkpointer,

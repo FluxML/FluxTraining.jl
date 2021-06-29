@@ -10,9 +10,9 @@ Callbacks(cbs, runner = LinearRunner()) = Callbacks(cbs, runner, callbackgraph(c
 
 
 """
-    mutable struct BatchState
+    mutable struct StepState
 
-Stores data of the last processed batch.
+Stores data of the last processed step.
 
 # Fields
 
@@ -25,7 +25,7 @@ Stores data of the last processed batch.
 (!) If used in callbacks, some fields may be `nothing` as
 they are reset after every step.
 """
-@with_kw mutable struct BatchState
+@with_kw mutable struct StepState
     xs = nothing
     ys = nothing
     ŷs = nothing
@@ -40,7 +40,7 @@ mutable struct Learner
     optimizer
     lossfn
     params
-    batch::BatchState
+    step::StepState
     callbacks::Callbacks
     cbstate::PropDict
 end
@@ -76,13 +76,13 @@ optimizing `lossfn` with `optimizer` on `data`.
 - `data` is a `NamedTuple` of `(training = ..., validation = ..., test = ...)`.
     Some values might be `nothing` if you didn't pass in multiple data iterators.
 - `params`: an instance of `model`'s parameters of type `Flux.Params`
-- `batch`: State of the current batch, including:
+- `step`: State of the current step, including:
 
-    - `batch.xs`: model inputs
-    - `batch.ys`: target outputs
-    - `batch.ŷs`: model outputs, i.e. `model(xs)`
-    - `batch.loss`: batch loss, i.e. `lossfn(ŷs, ys)`
-    - `batch.gs`: batch gradients, instance of `Zygote.Grads`
+    - `step.xs`: model inputs
+    - `step.ys`: target outputs
+    - `step.ŷs`: model outputs, i.e. `model(xs)`
+    - `step.loss`: step loss, i.e. `lossfn(ŷs, ys)`
+    - `step.gs`: step gradients, instance of `Zygote.Grads`
 
     (!) Note: Depending on the progress of the step, some fields may be `nothing`,
     e.g. the `gs` before the backward pass.
@@ -108,7 +108,7 @@ function Learner(
     return Learner(
         model, dataiters(data), optimizer, lossfn,
         Flux.params(model),
-        BatchState(),
+        StepState(),
         Callbacks(callbacks, cbrunner),
         PropDict())
 end

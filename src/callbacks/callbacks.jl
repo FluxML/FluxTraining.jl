@@ -20,7 +20,7 @@ function on(::EpochBegin,
     cb.p = Progress(numsteps(learner, phase), "Epoch $(e) $(phase): ")
 end
 
-on(::BatchEnd, ::Phase, cb::ProgressPrinter, learner) = next!(cb.p)
+on(::StepEnd, ::Phase, cb::ProgressPrinter, learner) = next!(cb.p)
 
 runafter(::ProgressPrinter) = (Recorder,)
 stateaccess(::ProgressPrinter) = (data = Read(), cbstate = (history = Read()),)
@@ -63,10 +63,10 @@ Stops the training when a NaN loss is encountered.
 struct StopOnNaNLoss <: Callback end
 
 function on(::BackwardEnd, ::AbstractTrainingPhase, ::StopOnNaNLoss, learner)
-    !isnan(learner.batch.loss) || throw(CancelFittingException("Encountered NaN loss"))
+    !isnan(learner.step.loss) || throw(CancelFittingException("Encountered NaN loss"))
 end
 
-stateaccess(::StopOnNaNLoss) = (batch = (loss = Read()),)
+stateaccess(::StopOnNaNLoss) = (step = (loss = Read()),)
 
 
 """
@@ -83,12 +83,12 @@ end
 stateaccess(::ToGPU) = (
     model = Write(),
     params = Write(),
-    batch = (xs = Write(), ys = Write()),
+    step = (xs = Write(), ys = Write()),
 )
 
-function on(::BatchBegin, ::Phase, cb::ToGPU, learner)
-    learner.batch.xs = gpu(learner.batch.xs)
-    learner.batch.ys = gpu(learner.batch.ys)
+function on(::StepBegin, ::Phase, cb::ToGPU, learner)
+    learner.step.xs = gpu(learner.step.xs)
+    learner.step.ys = gpu(learner.step.ys)
 end
 
 
@@ -112,7 +112,7 @@ sometimes help.
 """
 function GarbageCollect(nsteps::Int = 100)
     return throttle(
-        CustomCallback((learner) -> garbagecollect(), BatchEnd, Phase),
-        BatchEnd(),
+        CustomCallback((learner) -> garbagecollect(), StepEnd, Phase),
+        StepEnd(),
         freq = nsteps)
 end

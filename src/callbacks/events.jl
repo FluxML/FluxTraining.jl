@@ -10,7 +10,7 @@ Events in [`TrainingPhase`](#) and [`ValidationPhase`](#):
 
 - [`EpochBegin`](#) and [`EpochEnd`](#), called at the beginning and end of each
   epoch.
-- [`BatchBegin`](#) and [`BatchEnd`](#), called at the beginning and end of each
+- [`StepBegin`](#) and [`StepEnd`](#), called at the beginning and end of each
   batch.
 - [`LossBegin`](#), called after the forward pass but before the loss calculation.
 
@@ -55,18 +55,18 @@ struct EpochBegin <: Event end
 struct EpochEnd <: Event end
 
 """
-    BatchBegin()
+    StepBegin()
 
 [`Event`](#) called at the beginning of a batch.
 """
-struct BatchBegin <: Event end
+struct StepBegin <: Event end
 
 """
-    BatchEnd()
+    StepEnd()
 
 [`Event`](#) called at the end of a batch.
 """
-struct BatchEnd <: Event end
+struct StepEnd <: Event end
 
 """
     LossBegin()
@@ -96,7 +96,7 @@ export
     # concrete
     Init,
     EpochBegin, EpochEnd,
-    BatchBegin, BatchEnd,
+    StepBegin, StepEnd,
     LossBegin,
     BackwardBegin, BackwardEnd
 
