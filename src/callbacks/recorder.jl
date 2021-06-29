@@ -5,8 +5,6 @@
     steps::Int = 0
     # number of completed steps in current epoch
     stepsepoch::Int = 0
-    # number of seen samples during training, usually `nsteps * batchsize`
-    samples::Int = 0
 end
 
 """
@@ -39,7 +37,6 @@ function on(::StepEnd, phase::Phase, recorder::Recorder, learner)
     history = learner.cbstate.history[phase]
     history.steps += 1
     history.stepsepoch += 1
-    history.samples += size(learner.step.xs)[end]
 end
 
 
