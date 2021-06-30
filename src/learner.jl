@@ -6,41 +6,18 @@ mutable struct Callbacks
     graph::SimpleDiGraph
     initialized::Bool
 end
-Callbacks(cbs, runner = LinearRunner()) = Callbacks(cbs, runner, callbackgraph(cbs), false)
+Callbacks(cbs, runner=LinearRunner()) = Callbacks(cbs, runner, callbackgraph(cbs), false)
 
-
-"""
-    mutable struct StepState
-
-Stores data of the last processed step.
-
-# Fields
-
-- `xs`
-- `ys`
-- `ŷs`
-- `loss`
-- `grads`
-
-(!) If used in callbacks, some fields may be `nothing` as
-they are reset after every step.
-"""
-@with_kw mutable struct StepState
-    xs = nothing
-    ys = nothing
-    ŷs = nothing
-    loss = nothing
-    grads = nothing
-end
+init!(cbs::Callbacks, learner) = foreach(cb -> init!(cb, learner), cbs.cbs)
 
 
 mutable struct Learner
     model
-    data
+    data::PropDict
     optimizer
     lossfn
     params
-    step::StepState
+    step::PropDict
     callbacks::Callbacks
     cbstate::PropDict
 end
@@ -54,9 +31,10 @@ optimizing `lossfn` with `optimizer` on `data`.
 
 ## Arguments
 
-- `model`
-- `data`: Tuple of data iterators in the order `(traindata, valdata, [testdata])`.
-    Must be iterable and return tuples of `(xs, ys)`
+- `model`: A Flux.jl model or a `NamedTuple` of models.
+- `data`: Tuple of data iterators in the order `(traindata, valdata)`.
+    A data iterator is an iterable over batches. For regular supervised training,
+    each batch should be a tuple `(xs, ys)`.
 - `lossfn`: Function with signature `lossfn(model(x), y) -> Number`
 - `optimizer`
 - `callbacks...`: Any other unnamed arguments are callbacks
@@ -75,17 +53,10 @@ optimizing `lossfn` with `optimizer` on `data`.
 - `model`, `optimizer`, and `lossfn` are stored as passed in
 - `data` is a `NamedTuple` of `(training = ..., validation = ..., test = ...)`.
     Some values might be `nothing` if you didn't pass in multiple data iterators.
-- `params`: an instance of `model`'s parameters of type `Flux.Params`
-- `step`: State of the current step, including:
-
-    - `step.xs`: model inputs
-    - `step.ys`: target outputs
-    - `step.ŷs`: model outputs, i.e. `model(xs)`
-    - `step.loss`: step loss, i.e. `lossfn(ŷs, ys)`
-    - `step.gs`: step gradients, instance of `Zygote.Grads`
-
-    (!) Note: Depending on the progress of the step, some fields may be `nothing`,
-    e.g. the `gs` before the backward pass.
+- `params`: An instance of `model`'s parameters of type `Flux.Params`. If `model` is
+    a `NamedTuple`, then `params` is a `NamedTuple` as well.
+- `step::`[`PropDict`](#): State of the last step. Contents depend on the last run
+    [`Phase`](#).
 - `cbstate::`[`PropDict`](#): Special state container that callbacks can
     save state to for other callbacks. Its keys depend on what callbacks
     are being used. See the [custom callbacks guide](../docs/callbacks/custom.md)
@@ -93,7 +64,7 @@ optimizing `lossfn` with `optimizer` on `data`.
 """
 function Learner(
         model, data, optimizer, lossfn, callbacks::Vararg{<:Callback};
-        usedefaultcallbacks = true, cbrunner = LinearRunner()
+        usedefaultcallbacks=true, cbrunner=LinearRunner()
     )
     callbacks = collect(Callback, callbacks)
 
@@ -105,15 +76,25 @@ function Learner(
         end
     end
 
-    return Learner(
-        model, dataiters(data), optimizer, lossfn,
-        Flux.params(model),
-        StepState(),
-        Callbacks(callbacks, cbrunner),
+    cbs = Callbacks(callbacks, cbrunner)
+
+    learner = Learner(
+        model,
+        _dataiters(data),
+        optimizer,
+        lossfn,
+        paramsrec(model),
+        PropDict(),
+        cbs,
         PropDict())
+    init!(cbs, learner)
+    return learner
 end
 
+
 Base.show(io::IO, learner::Learner) = print(io, "Learner()")
+
+
 
 defaultcallbacks()::Vector{AbstractCallback} = [
     ProgressPrinter(),
@@ -131,96 +112,35 @@ handle(event, learner, phase) = handle(learner.callbacks.runner, event, phase, l
 
 # Other
 
-getdataiter(phase::AbstractTrainingPhase, learner) = learner.data.training
-getdataiter(phase::ValidationPhase, learner) = learner.data.validation
+phasedataiter(::AbstractTrainingPhase) = :training
+phasedataiter(::AbstractValidationPhase) = :validation
 
 
 function model!(learner, model)
     learner.model = model
-    learner.params = Flux.params(model)
+    learner.params = Flux.paramsrec(model)
 end
 
 
 numsteps(learner::Protected, phase) = numsteps(getfield(learner, :data), phase)
-numsteps(learner, phase) = length(getdataiter(phase, learner))
+numsteps(learner, phase) = length(learner.data[phasedataiter(phase)])
+
+_dataiters(d::PropDict) = d
+_dataiters(t::NamedTuple) = PropDict(pairs(t))
+function _dataiters(t::Tuple)
+    if length(t) == 0
+        return PropDict(Dict{Symbol,Any}())
+    elseif length(t) == 1
+        return _dataiters((training = t[1]))
+    elseif length(t) == 2
+        return _dataiters((training = t[1], validation = t[2]))
+    else
+        error("Please pass a `NamedTuple` or `PropDict` as `data`.")
+    end
+end
 
 
-dataiters(train, val = nothing, test = nothing) = (training = train, validation = val, test = test)
-dataiters(t::Tuple) = dataiters(t...)
-dataiters(t::NamedTuple) = keys(t) == (:training, :validation, :test) ? t : error("Wrong keys.")
-
+paramsrec(m) = params(m)
+paramsrec(t::Union{Tuple,NamedTuple}) = map(paramsrec, t)
 
 # Callback utilities
-
-
-"""
-    setcallbacks!(learner, callbacks)
-
-Set `learner`'s callbacks to `callbacks`.
-"""
-function setcallbacks!(learner, callbacks)
-    learner.callbacks = Callbacks(callbacks)
-end
-
-
-"""
-    addcallback!(learner, callback)
-
-Adds `callback` to `learner` and updates the dependency graph.
-"""
-function addcallback!(learner, callback)
-    learner.callbacks = Callbacks(vcat(learner.callbacks.cbs, callback))
-    initlearner!(learner, [TrainingPhase()])
-end
-
-
-"""
-    getcallback(learner, C)
-
-Find callback of type `C` in `learner`'s callbacks and return it.
-If there is none, return `nothing`.
-"""
-function getcallback(learner, C::Type{<:FluxTraining.Callback})
-    cbidx = findfirst(isa.(learner.callbacks.cbs, C))
-    return isnothing(cbidx) ? nothing : learner.callbacks.cbs[cbidx]
-end
-
-
-"""
-    replacecallback!(learner, callback::C)
-
-Replace existing callback of type `C` on learner with `callback`.
-Return the replaced callback.
-
-If `learner` doesn't have a callback of type `C`, add `callback` and
-return `nothing`.
-"""
-function replacecallback!(learner, callback::C) where {C<:FluxTraining.Callback}
-    cbidx = findfirst(isa.(learner.callbacks.cbs, C))
-    if isnothing(cbidx)
-        FluxTraining.addcallback!(learner, callback)
-        return nothing
-    else
-        oldcb = learner.callbacks.cbs[cbidx]
-        learner.callbacks.cbs[cbidx] = callback
-        FluxTraining.setcallbacks!(learner, learner.callbacks.cbs)
-        return oldcb
-    end
-end
-
-
-"""
-    removecallback!(learner, C)
-
-Remove the first callback of type `C` from `learner` and return it.
-If there is none, return `nothing`.
-"""
-function removecallback!(learner, C::Type{<:FluxTraining.Callback})
-    cbidx = findfirst(isa.(learner.callbacks.cbs, C))
-    if isnothing(cbidx)
-        return nothing
-    end
-    cb = popat!(learner.callbacks.cbs, cbidx)
-    learner.callbacks = Callbacks(learner.callbacks.cbs)
-    return cb
-end

@@ -61,8 +61,9 @@ include("./callbacks/scheduler.jl")
 
 # learner
 include("./learner.jl")
+include("./callbackutils.jl")
 
-include("./train.jl")
+include("./training.jl")
 
 
 export AbstractCallback,
@@ -98,6 +99,8 @@ export AbstractCallback,
     SanityCheck,
     accuracy,
     fit!,
+    epoch!,
+    step!,
     onecycle,
     loadmodel,
     savemodel

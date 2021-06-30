@@ -38,9 +38,10 @@ scheduler = Scheduler(
 
 See also [`Schedule`](#).
 """
-struct Scheduler <: Callback
-    schedules::Dict{Type{<:HyperParameter}, Animations.FiniteLengthAnimation}
-    Scheduler(args...; unit = :epoch, kwargs...) = new(Dict(args...; kwargs...))
+mutable struct Scheduler <: Callback
+    schedules::Dict{Type{<:HyperParameter},Animations.FiniteLengthAnimation}
+    step::Int
+    Scheduler(args...; kwargs...) = new(Dict(args...; kwargs...), 1)
 end
 
 Base.show(io::IO, scheduler::Scheduler) = print(
@@ -56,13 +57,13 @@ function stateaccess(scheduler::Scheduler)
         hpstateaccess = merge(stateaccess.(keys(scheduler.schedules))...)
     end
     return (
-        data = Read(), cbstate = (history = Read(), hyperparams = Write()),
+        data = Read(), cbstate = (; hyperparams=Write()),
         hpstateaccess...
     )
 end
 
 
-function on(::Init, phase, scheduler::Scheduler, learner)
+function init!(::Scheduler, learner)
     if !haskey(learner.cbstate, :hyperparams)
         learner.cbstate.hyperparams = MVHistory()
     end
@@ -70,12 +71,13 @@ end
 
 
 function on(::StepBegin, phase::AbstractTrainingPhase, scheduler::Scheduler, learner)
-    step = learner.cbstate.history[phase].steps + 1
+    step = scheduler.step
     for (H, animation) in scheduler.schedules
         value = Animations.at(animation, step)
         sethyperparameter!(learner, H, value)
         push!(learner.cbstate.hyperparams, Symbol(H), step, value)
     end
+    scheduler.step += 1
 end
 
 
@@ -87,9 +89,9 @@ over `max_val` to `end_val`.
 """
 function onecycle(
         nsteps, max_val;
-        pct_start = 0.25,
+        pct_start=0.25,
         div=25, divfinal=1e5,
-        start_val = max_val/div, end_val = max_val/divfinal)
+        start_val=max_val / div, end_val=max_val / divfinal)
     return Animation(
         [0, nsteps * pct_start, nsteps],
         [start_val, max_val, end_val],

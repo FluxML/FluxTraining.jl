@@ -3,9 +3,6 @@
 
 Provides the abstract [`Event`](#) type and concrete event types.
 
-- [`Init`](#) is called once for every callback. Use for initialization code
-  that needs access to some `Learner` state.
-
 Events in [`TrainingPhase`](#) and [`ValidationPhase`](#):
 
 - [`EpochBegin`](#) and [`EpochEnd`](#), called at the beginning and end of each
@@ -30,15 +27,6 @@ Abstract type for events that callbacks can hook into
 """
 abstract type Event end
 
-"""
-    Init <: Event
-
-Called once when the learner is created/the callback is added.
-
-Hook into this for callback initialization that depends on the
-[`Learner`](#)'s state.
-"""
-struct Init <: Event end
 
 """
     EpochBegin()
@@ -94,7 +82,6 @@ export
     # abstract
     Event,
     # concrete
-    Init,
     EpochBegin, EpochEnd,
     StepBegin, StepEnd,
     LossBegin,

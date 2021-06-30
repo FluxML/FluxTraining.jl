@@ -189,8 +189,6 @@ end
     LogVisualization(visfn, backends...[; freq = 100])
 
 Logs images created by `visfn(learner.step)` to `backends` every `freq` steps.
-
-See also [`StepState`](#).
 """
 struct LogVisualization <: Callback
     visfn

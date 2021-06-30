@@ -19,7 +19,7 @@ include("../imports.jl")
         @test_nowarn fit!(learner, 1)
         cb = SanityCheck([CHECKS[3]], usedefault = false)
         learner = testlearner(cb)
-        learner.data = (training = nothing,)
+        learner.data.training = nothing
         @test_throws Exception (@suppress fit!(learner, 1))
     end
 
@@ -30,7 +30,7 @@ include("../imports.jl")
 
         cb = SanityCheck([CHECKS[3]], usedefault = false)
         learner = testlearner(cb)
-        learner.data = (training = 1:16,)
+        learner.data.training = 1:16
         @test_throws SanityCheckException (@suppress fit!(learner, 1))
     end
 @testset ExtendedTestSet "Optimization step" begin

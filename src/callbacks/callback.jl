@@ -148,3 +148,13 @@ function _on(e, p, cb::SafeCallback, learner)
     end
     on(e, p, cb, protect(learner, perms))
 end
+
+
+"""
+    init!(callback, learner)
+
+Initialization method that can be extended for a `callback`. Default does nothing.
+Can be used to create fields in `learner.cbstate` that need to be accessed when
+events occur.
+"""
+init!(cb::Callback, learner) = return
