@@ -32,7 +32,10 @@ optimizing `lossfn` with `optimizer` on `data`.
 ## Arguments
 
 - `model`: A Flux.jl model or a `NamedTuple` of models.
-- `data`: Tuple of data iterators in the order `(traindata, valdata)`.
+- `data`: Data iterators. A 2-tuple will be treated as `(trainingdataiter, validdataiter)`.
+    You can also pass in an empty tuple `()` and use the [`epoch!`](#) method with a
+    `dataiter` as third argument.
+
     A data iterator is an iterable over batches. For regular supervised training,
     each batch should be a tuple `(xs, ys)`.
 - `lossfn`: Function with signature `lossfn(model(x), y) -> Number`
@@ -51,8 +54,7 @@ optimizing `lossfn` with `optimizer` on `data`.
 *(Use this as a reference when implementing callbacks)*
 
 - `model`, `optimizer`, and `lossfn` are stored as passed in
-- `data` is a `NamedTuple` of `(training = ..., validation = ..., test = ...)`.
-    Some values might be `nothing` if you didn't pass in multiple data iterators.
+- `data` is a `PropDict` of data iterators, usually `:training` and `:validation`.
 - `params`: An instance of `model`'s parameters of type `Flux.Params`. If `model` is
     a `NamedTuple`, then `params` is a `NamedTuple` as well.
 - `step::`[`PropDict`](#): State of the last step. Contents depend on the last run
@@ -93,7 +95,6 @@ end
 
 
 Base.show(io::IO, learner::Learner) = print(io, "Learner()")
-
 
 
 defaultcallbacks()::Vector{AbstractCallback} = [
