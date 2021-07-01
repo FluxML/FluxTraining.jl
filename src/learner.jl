@@ -119,7 +119,7 @@ phasedataiter(::AbstractValidationPhase) = :validation
 
 function model!(learner, model)
     learner.model = model
-    learner.params = Flux.paramsrec(model)
+    learner.params = paramsrec(model)
 end
 
 
