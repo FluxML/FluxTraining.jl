@@ -15,9 +15,9 @@ end
 
 Adds `callback` to `learner` and updates the dependency graph.
 """
-function addcallback!(learner, callback)
+function addcallback!(learner, callback::AbstractCallback)
     learner.callbacks = Callbacks(vcat(learner.callbacks.cbs, callback))
-    initlearner!(learner, [TrainingPhase()])
+    init!(callback, learner)
 end
 
 
