@@ -17,10 +17,16 @@ function on(::EpochBegin,
         cb::ProgressPrinter,
         learner)
     e = learner.cbstate.history[phase].epochs + 1
-    cb.p = Progress(numsteps(learner, phase), "Epoch $(e) $(phase): ")
+    dataiter = get(learner.data, phasedataiter(phase), nothing)
+    if isnothing(dataiter)
+        cb.p = nothing
+        println("Epoch $(e) $(phase) ...")
+    else
+        cb.p = Progress(length(dataiter), "Epoch $(e) $(phase): ")
+    end
 end
 
-on(::StepEnd, ::Phase, cb::ProgressPrinter, learner) = next!(cb.p)
+on(::StepEnd, ::Phase, cb::ProgressPrinter, learner) = isnothing(cb.p) || next!(cb.p)
 
 runafter(::ProgressPrinter) = (Recorder,)
 stateaccess(::ProgressPrinter) = (data = Read(), cbstate = (history = Read()),)

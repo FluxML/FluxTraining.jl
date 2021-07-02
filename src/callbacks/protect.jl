@@ -91,5 +91,6 @@ Base.haskey(d::PropDict, key) = haskey(getfield(d, :d), key)
 Base.getindex(d::FluxTraining.PropDict{Any}, i::Symbol) = getproperty(d, i)
 Base.keys(d::PropDict) = keys(getfield(d, :d))
 Base.values(d::PropDict) = values(getfield(d, :d))
+Base.get(d::PropDict, args...; kwargs...) = get(getfield(d, :d), args...; kwargs...)
 
 PropDict(args...) = PropDict(Dict{Symbol, Any}(args...))
