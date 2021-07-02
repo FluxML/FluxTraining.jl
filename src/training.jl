@@ -30,8 +30,8 @@ function step! end
 
 
 function step!(learner, phase::TrainingPhase, batch)
-    runstep(learner, phase) do handle, state
-        state.xs, state.ys = batch
+    xs, ys = batch
+    runstep(learner, phase, (; xs=xs, ys=ys)) do handle, state
         state.grads = gradient(learner.params) do
             state.ŷs = learner.model(state.xs)
             handle(LossBegin())
@@ -46,7 +46,8 @@ end
 
 
 function step!(learner, phase::ValidationPhase, batch)
-    runstep(learner, phase) do _, state
+    xs, ys = batch
+    runstep(learner, phase, (;xs=xs, ys=ys)) do _, state
         state.xs, state.ys = batch
         state.ŷs = learner.model(state.xs)
         state.loss = learner.lossfn(state.ŷs, state.ys)
@@ -89,8 +90,8 @@ which step data, gradients and losses can be written to. Return `state`.
 Takes care of dispatching [`StepBegin`](#) and [`StepEnd`](#)
 events as well as handling [`CancelStepException`](#)s.
 """
-function runstep(stepfn, learner, phase::Phase)
-    state = PropDict()
+function runstep(stepfn, learner, phase::Phase, initialstate = (;))
+    state = PropDict(pairs(initialstate))
     handlefn(e) = handle(learner.callbacks.runner, e, phase, learner)
     try
         learner.step = state
