@@ -103,7 +103,6 @@ defaultcallbacks()::Vector{AbstractCallback} = [
     StopOnNaNLoss(),
     Recorder(),
     Metrics(),
-    SanityCheck(),
 ]
 
 
@@ -122,9 +121,6 @@ function model!(learner, model)
     learner.params = paramsrec(model)
 end
 
-
-numsteps(learner::Protected, phase) = numsteps(getfield(learner, :data), phase)
-numsteps(learner, phase) = length(learner.data[phasedataiter(phase)])
 
 _dataiters(d::PropDict) = d
 _dataiters(t::NamedTuple) = PropDict(pairs(t))
