@@ -1,4 +1,4 @@
-<HTML><head><title>imagenette_demo</title><link href=../template/hugobook.css rel=stylesheet ></link><meta content=Type=text/html; charset=utf-8 http-equiv=Content-Type ></meta></head><body><input onclick=toggleMenu() id=menu-control class=hidden toggle type=checkbox ></input><input id=toc-control type=checkbox class=hidden toggle ></input><main class=container flex ><aside id=menu-container class=book-menu ><nav class=book-menu-content ><h2 id=title >FluxTraining.jl</h2><div id=sidebar ><div class=doctree ><body><ul><li><p><a href=../README.md.html title= >README</a></p></li><li><p><a href=getting_started.md.html title= >Getting started</a></p></li><li><p><a href=features.md.html title= >Features</a></p></li><li><p>Tutorials</p><ul><li><p><a href=tutorials/mnist.ipynb.html title= >Training an image classifier</a></p></li><li><p><a href=tutorials/hyperparameters.md.html title= >Hyperparameter scheduling</a></p></li><li><p><a href=callbacks/custom.md.html title= >Writing a custom callback</a></p></li></ul></li><li><p>How to</p><ul><li><p><a href=callbacks/usage.md.html title= >Use callbacks</a></p></li><li><p><a href=callbacks/tipstricks.md.html title= >Tips &amp; tricks</a></p></li></ul></li><li><p>Reference</p><ul><li><p><a href=../REFERENCE.html title= >Docstrings</a></p></li><li><p><a href=training/basics.md.html title= >Training loop</a></p></li><li><p><a href=callbacks/reference.md.html title= >Callbacks</a></p></li></ul></li></ul></body></div></div></nav></aside><div class=book-page ><header class=book-header ></header><article><pre lang=julia ><code>using DataLoaders
+<HTML><head><title>imagenette_demo</title><link href=../template/hugobook.css rel=stylesheet ></link><link href=../template/ansi.css rel=stylesheet ></link><meta content=Type=text/html; charset=utf-8 http-equiv=Content-Type ></meta></head><body><input onclick=toggleMenu() id=menu-control class=hidden toggle type=checkbox ></input><input id=toc-control type=checkbox class=hidden toggle ></input><main class=container flex ><aside id=menu-container class=book-menu ><nav class=book-menu-content ><h2 id=title >FluxTraining.jl</h2><div id=sidebar ><div class=doctree ><body><ul><li><p><a href=../README.md.html title= >README</a></p></li><li><p><a href=getting_started.md.html title= >Getting started</a></p></li><li><p><a href=features.md.html title= >Features</a></p></li><li><p>Tutorials</p><ul><li><p><a href=tutorials/mnist.ipynb.html title= >Training an image classifier</a></p></li><li><p><a href=tutorials/hyperparameters.md.html title= >Hyperparameter scheduling</a></p></li><li><p><a href=callbacks/custom.md.html title= >Writing a custom callback</a></p></li></ul></li><li><p>How to</p><ul><li><p><a href=callbacks/usage.md.html title= >Use callbacks</a></p></li><li><p><a href=callbacks/tipstricks.md.html title= >Tips &amp; tricks</a></p></li></ul></li><li><p>Reference</p><ul><li><p><a href=../REFERENCE.html title= >Docstrings</a></p></li><li><p><a href=training/basics.md.html title= >Training loop</a></p></li><li><p><a href=callbacks/reference.md.html title= >Callbacks</a></p></li></ul></li></ul></body></div></div></nav></aside><div class=book-page ><header class=book-header ></header><article><pre lang=julia ><code>using DataLoaders
 using Flux
 using DataAugmentation
 using DeepLearningTasks
@@ -20,64 +20,64 @@ valdl = taskdataloader(task, valds, 2bs; obsfn);</code></pre><pre lang=julia ><c
     callbacks = [ToGPU()],
     metrics = [Metric(accuracy)],
     schedule = Schedules(onecycleschedule(10 * length(traindl), 0.01))
-);</code></pre><pre lang=julia ><code>FluxTraining.fit!(learner, 10)</code></pre><pre class=codeoutput ><code>[32mEpoch 1 TrainingPhase(): 100%|██████████████████████████| Time: 0:01:02[39m
+);</code></pre><pre lang=julia ><code>FluxTraining.fit!(learner, 10)</code></pre><pre class=codeoutput ><code><span class="sgr32">Epoch 1 TrainingPhase(): 100%|██████████████████████████| Time: 0:01:02</span>
 loss: 1.3166474935148849
 accuracy: 0.5757865646258504
-[32mEpoch 2 ValidationPhase(): 100%|████████████████████████| Time: 0:00:13[39m
+<span class="sgr32">Epoch 2 ValidationPhase(): 100%|████████████████████████| Time: 0:00:13</span>
 loss: 1.9421841899553935
 accuracy: 0.471875
-[32mEpoch 2 TrainingPhase(): 100%|██████████████████████████| Time: 0:01:05[39m
+<span class="sgr32">Epoch 2 TrainingPhase(): 100%|██████████████████████████| Time: 0:01:05</span>
 loss: 1.001848922700298
 accuracy: 0.678146258503401
-[32mEpoch 3 ValidationPhase(): 100%|████████████████████████| Time: 0:00:13[39m
+<span class="sgr32">Epoch 3 ValidationPhase(): 100%|████████████████████████| Time: 0:00:13</span>
 loss: 1.044497122367223
 accuracy: 0.6622395833333337
-[32mEpoch 3 TrainingPhase(): 100%|██████████████████████████| Time: 0:01:06[39m
+<span class="sgr32">Epoch 3 TrainingPhase(): 100%|██████████████████████████| Time: 0:01:06</span>
 loss: 0.8365915733940748
 accuracy: 0.7292729591836736
-[32mEpoch 4 ValidationPhase(): 100%|████████████████████████| Time: 0:00:13[39m
+<span class="sgr32">Epoch 4 ValidationPhase(): 100%|████████████████████████| Time: 0:00:13</span>
 loss: 0.9936108271280925
 accuracy: 0.6783854166666666
-[32mEpoch 4 TrainingPhase(): 100%|██████████████████████████| Time: 0:01:04[39m
+<span class="sgr32">Epoch 4 TrainingPhase(): 100%|██████████████████████████| Time: 0:01:04</span>
 loss: 0.7450118934621617
 accuracy: 0.7589285714285718
-[32mEpoch 5 ValidationPhase(): 100%|████████████████████████| Time: 0:00:13[39m
+<span class="sgr32">Epoch 5 ValidationPhase(): 100%|████████████████████████| Time: 0:00:13</span>
 loss: 1.0524701436360677
 accuracy: 0.6640625000000001
-[32mEpoch 5 TrainingPhase(): 100%|██████████████████████████| Time: 0:01:05[39m
+<span class="sgr32">Epoch 5 TrainingPhase(): 100%|██████████████████████████| Time: 0:01:05</span>
 loss: 0.6489803444366066
 accuracy: 0.7909226190476191
-[32mEpoch 6 ValidationPhase(): 100%|████████████████████████| Time: 0:00:12[39m
+<span class="sgr32">Epoch 6 ValidationPhase(): 100%|████████████████████████| Time: 0:00:12</span>
 loss: 0.8496215959390004
 accuracy: 0.7190104166666665
-[32mEpoch 6 TrainingPhase(): 100%|██████████████████████████| Time: 0:01:06[39m
+<span class="sgr32">Epoch 6 TrainingPhase(): 100%|██████████████████████████| Time: 0:01:06</span>
 loss: 0.5658585832637995
 accuracy: 0.8167517006802718
-[32mEpoch 7 ValidationPhase(): 100%|████████████████████████| Time: 0:00:13[39m
+<span class="sgr32">Epoch 7 ValidationPhase(): 100%|████████████████████████| Time: 0:00:13</span>
 loss: 0.7595664302508036
 accuracy: 0.7575520833333333
-[32mEpoch 7 TrainingPhase(): 100%|██████████████████████████| Time: 0:01:05[39m
+<span class="sgr32">Epoch 7 TrainingPhase(): 100%|██████████████████████████| Time: 0:01:05</span>
 loss: 0.5101636230540113
 accuracy: 0.8338647959183668
-[32mEpoch 8 ValidationPhase(): 100%|████████████████████████| Time: 0:00:12[39m
+<span class="sgr32">Epoch 8 ValidationPhase(): 100%|████████████████████████| Time: 0:00:12</span>
 loss: 0.8600163320700328
 accuracy: 0.7414062499999998
-[32mEpoch 8 TrainingPhase(): 100%|██████████████████████████| Time: 0:01:05[39m
+<span class="sgr32">Epoch 8 TrainingPhase(): 100%|██████████████████████████| Time: 0:01:05</span>
 loss: 0.45264889228911626
 accuracy: 0.8527848639455782
-[32mEpoch 9 ValidationPhase(): 100%|████████████████████████| Time: 0:00:13[39m
+<span class="sgr32">Epoch 9 ValidationPhase(): 100%|████████████████████████| Time: 0:00:13</span>
 loss: 0.8109628856182098
 accuracy: 0.753125
-[32mEpoch 9 TrainingPhase(): 100%|██████████████████████████| Time: 0:01:05[39m
+<span class="sgr32">Epoch 9 TrainingPhase(): 100%|██████████████████████████| Time: 0:01:05</span>
 loss: 0.40744140095451253
 accuracy: 0.8603316326530616
-[32mEpoch 10 ValidationPhase(): 100%|███████████████████████| Time: 0:00:12[39m
+<span class="sgr32">Epoch 10 ValidationPhase(): 100%|███████████████████████| Time: 0:00:12</span>
 loss: 0.6673034459352494
 accuracy: 0.7921874999999999
-[32mEpoch 10 TrainingPhase(): 100%|█████████████████████████| Time: 0:01:04[39m
+<span class="sgr32">Epoch 10 TrainingPhase(): 100%|█████████████████████████| Time: 0:01:04</span>
 loss: 0.3401108379063963
 accuracy: 0.885841836734694
-[32mEpoch 11 ValidationPhase(): 100%|███████████████████████| Time: 0:00:12[39m
+<span class="sgr32">Epoch 11 ValidationPhase(): 100%|███████████████████████| Time: 0:00:12</span>
 loss: 0.7720626552899679
 accuracy: 0.7669270833333333
 </code></pre><pre class=coderesult ><code>Learner
