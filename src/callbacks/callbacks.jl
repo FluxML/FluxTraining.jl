@@ -74,21 +74,36 @@ stateaccess(::StopOnNaNLoss) = (step = (loss = Read()),)
 
 Callback that moves model and batch data to the GPU during training.
 """
-struct ToGPU <: Callback end
+ToGPU() = ToDevice(gpu, gpu)
+"""
+    ToDevice(movefn[, movemodelfn]) <: Callback
 
-function on(::EpochBegin, ::Phase, ::ToGPU, learner)
-    model!(learner, gpu(learner.model))
+Moves model and step data to a device using `movedatafn` for step data
+and `movemodelfn` for the model. For example `ToDevice(Flux.gpu, Flux.gpu)`,
+moves them to a GPU if available. See [`ToGPU`](#).
+
+By default, only moves `step.xs` and `step.ys`, but this can be extended
+to other state by implementing `on(::StepBegin, ::MyCustomPhase, ::ToDevice, learner)`.
+"""
+struct ToDevice <: Callback
+    movedatafn
+    movemodelfn
 end
 
-stateaccess(::ToGPU) = (
+
+function on(::EpochBegin, ::Phase, cb::ToDevice, learner)
+    model!(learner, cb.movemodelfn(learner.model))
+end
+
+stateaccess(::ToDevice) = (
     model = Write(),
     params = Write(),
-    step = (xs = Write(), ys = Write()),
+    step = Write(),
 )
 
-function on(::StepBegin, ::Phase, cb::ToGPU, learner)
-    learner.step.xs = gpu(learner.step.xs)
-    learner.step.ys = gpu(learner.step.ys)
+function on(::StepBegin, ::Phase, cb::ToDevice, learner)
+    learner.step.xs = cb.movedatafn(learner.step.xs)
+    learner.step.ys = cb.movedatafn(learner.step.ys)
 end
 
 
