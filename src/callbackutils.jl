@@ -3,7 +3,7 @@
 """
     setcallbacks!(learner, callbacks)
 
-Set `learner`'s callbacks to `callbacks`.
+Set `learner`'s callbacks to `callbacks`, removing all current callbacks.
 """
 function setcallbacks!(learner, callbacks)
     learner.callbacks = Callbacks(callbacks)
@@ -18,6 +18,7 @@ Adds `callback` to `learner` and updates the dependency graph.
 function addcallback!(learner, callback::AbstractCallback)
     learner.callbacks = Callbacks(vcat(learner.callbacks.cbs, callback))
     init!(callback, learner)
+    return
 end
 
 
