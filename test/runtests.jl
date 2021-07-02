@@ -15,4 +15,5 @@ include("./imports.jl")
     include("./callbacks/garbagecollect.jl")
     include("./callbacks/sanitycheck.jl")
     include("./callbacks/earlystopping.jl")
+    include("./callbackutils.jl")
 end
