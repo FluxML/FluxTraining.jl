@@ -43,8 +43,8 @@ Now we can already train a model using this implementation, for example using [`
 
 ```julia
 function step!(learner, phase::MyTrainingPhase, batch)
-    step(learner, phase, batch) do handle, state
-        state.xs, state.ys = batch
+    xs, ys = batch
+    runstep(learner, phase, (xs=xs, ys=ys)) do handle, state
         state.grads = gradient(learner.params) do
             state.ŷs = learner.model(state.xs)
             state.loss = learner.lossfn(state.ŷs, state.ys)
@@ -61,8 +61,8 @@ Now callbacks like [`Metrics`](#) can access variables like `ys` through `learne
 using FluxTraining.Events: LossBegin, BackwardBegin, BackwardEnd
 
 function step!(learner, phase::MyTrainingPhase, batch)
-    step(learner, phase, batch) do handle, state
-        state.xs, state.ys = batch
+    xs, ys = batch
+    runstep(learner, phase, (xs=xs, ys=ys)) do handle, state
         state.grads = gradient(learner.params) do
             state.ŷs = learner.model(state.xs)
             handle(LossBegin())
@@ -92,8 +92,8 @@ The implementation of [`ValidationPhase`](#) is even simpler; it runs the forwar
 struct ValidationPhase <: AbstractValidationPhase end
 
 function step!(learner, phase::ValidationPhase, batch)
-    runstep(learner, phase) do _, state
-        state.xs, state.ys = batch
+    xs, ys = batch
+    runstep(learner, phase, (xs=xs, ys=ys)) do _, state
         state.ŷs = learner.model(state.xs)
         state.loss = learner.lossfn(state.ŷs, state.ys)
     end
