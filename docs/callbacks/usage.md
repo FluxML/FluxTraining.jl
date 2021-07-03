@@ -2,7 +2,7 @@
 ```julia
 using FluxTraining
 using FluxTraining: Callback, Read, Write, stateaccess
-model, data, lossfn, optimizer = nothing, nothing, nothing, nothing
+model, data, lossfn, optimizer = nothing, (), nothing, nothing
 ```
 
 # How to use callbacks

@@ -24,7 +24,7 @@ end
 
 
 
-function testlearner(args...; opt = Descent(0.001), nbatches = 16, coeff = 3, batchsize = 8, kwargs...)
+function testlearner(args...; opt = Descent(0.001), nbatches = 16, coeff = 3, batchsize = 8, usedefaultkallbacks = false, kwargs...)
     model = TestModel(rand())
     data = collect(testbatches(nbatches, coeff, batchsize))
     Learner(
@@ -33,6 +33,6 @@ function testlearner(args...; opt = Descent(0.001), nbatches = 16, coeff = 3, ba
         opt,
         Flux.mae,
         args...;
-        usedefaultcallbacks = false,
+        usedefaultcallbacks = usedefaultkallbacks,
         kwargs...)
 end

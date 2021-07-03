@@ -22,12 +22,21 @@
 | [`LogHistograms`](#)    | Logs model weight histograms to a logging backend                   |
 
 
-There are also some callback utilities:
+There are also some utilities for creating callbacks:
 
 - [`CustomCallback`](#) to quickly hook a function into an event
 - [`throttle`](#) to run a callback only after every `n` events or every `t` seconds
 
-## API
+And for working with callbacks on an existing [`Learner`](#):
+
+- [`setcallbacks!`](#)
+- [`addcallback!`](#)
+- [`getcallback`](#)
+- [`replacecallback!`](#)
+- [`removecallback!`](#)
+
+
+## Extension API
 
 The following types and functions can be used to create custom callbacks. Read the [custom callbacks guide](./custom.md) for more context.
 

@@ -17,7 +17,7 @@ documentation of all available criteria.
 
 You can control which phases are taken to measure the out-of-sample loss
 and the training loss with keyword arguments `trainphase` (default
-[`AbstractTrainingPhase`](#)) and `testphase` (default [`ValidationPhase`](#)).
+[`AbstractTrainingPhase`](#)) and `testphase` (default [`AbstractValidationPhase`](#)).
 
 ## Examples
 
@@ -41,7 +41,7 @@ end
 
 function EarlyStopping(
         criterion;
-        testphase = ValidationPhase,
+        testphase = AbstractValidationPhase,
         trainphase = AbstractTrainingPhase)
     if (testphase isa trainphase) || (trainphase isa testphase)
         error("`trainphase` and `testphase` must not be subtypes of one another")

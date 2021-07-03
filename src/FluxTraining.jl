@@ -61,19 +61,21 @@ include("./callbacks/scheduler.jl")
 
 # learner
 include("./learner.jl")
+include("./callbackutils.jl")
 
-include("./train.jl")
+include("./training.jl")
 
 
 export AbstractCallback,
     Loss,
     ConditionalCallback,
-    CancelBatchException,
+    CancelStepException,
     CancelEpochException,
     CancelFittingException,
     Checkpointer,
     CustomCallback,
     EarlyStopping,
+    ToDevice,
     ToGPU,
     GarbageCollect,
     Learner,
@@ -98,6 +100,8 @@ export AbstractCallback,
     SanityCheck,
     accuracy,
     fit!,
+    epoch!,
+    step!,
     onecycle,
     loadmodel,
     savemodel

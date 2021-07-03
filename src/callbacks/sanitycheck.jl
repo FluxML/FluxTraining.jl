@@ -72,7 +72,7 @@ stateaccess(::SanityCheck) = (
 )
 
 
-function on(::Init, phase::AbstractTrainingPhase, cb::SanityCheck, learner)
+function on(::EpochBegin, phase::AbstractTrainingPhase, cb::SanityCheck, learner)
     if !cb.checked
         runchecks(cb.checks, learner)
         cb.checked = true

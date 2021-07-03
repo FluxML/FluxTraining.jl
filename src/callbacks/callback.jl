@@ -29,7 +29,7 @@ the batch data, so its `stateaccess` implementation is:
 stateaccess(::ToGPU) = (
     model = Write(),
     params = Write(),
-    batch = (xs = Write(), ys = Write()),
+    step = (xs = Write(), ys = Write()),
 )
 ```
 
@@ -88,15 +88,15 @@ resolveconflict(::AbstractCallback, ::AbstractCallback) = NotDefined()
 Abstract types for exceptions that can be thrown during fitting,
 to change its control flow.
 
-See [`CancelBatchException`](#), [`CancelEpochException`](#), [`CancelFittingException`](#).
+See [`CancelStepException`](#), [`CancelEpochException`](#), [`CancelFittingException`](#).
 """
 abstract type FitException <: Exception end
 """
-    CancelBatchException(msg)
+    CancelStepException(msg)
 
 Throw during fitting to cancel the currently running batch.
 """
-struct CancelBatchException <: FitException
+struct CancelStepException <: FitException
     msg::String
 end
 
@@ -148,3 +148,13 @@ function _on(e, p, cb::SafeCallback, learner)
     end
     on(e, p, cb, protect(learner, perms))
 end
+
+
+"""
+    init!(callback, learner)
+
+Initialization method that can be extended for a `callback`. Default does nothing.
+Can be used to create fields in `learner.cbstate` that need to be accessed when
+events occur.
+"""
+init!(cb::Callback, learner) = return

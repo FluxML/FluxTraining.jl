@@ -17,11 +17,11 @@ struct Recorder <: Callback end
 
 stateaccess(::Recorder) = (
     cbstate = (history = Write(),),
-    batch = Read(),
+    step = Read(),
     )
 
 
-function on(::Init, ::Phase, recorder::Recorder, learner)
+function init!(::Recorder, learner)
     if !haskey(learner.cbstate, :history)
         learner.cbstate.history = DefaultDict{Phase, History}(() -> History())
     end
@@ -33,7 +33,7 @@ function on(::EpochBegin, phase::Phase, recorder::Recorder, learner)
 end
 
 
-function on(::BatchEnd, phase::Phase, recorder::Recorder, learner)
+function on(::StepEnd, phase::Phase, recorder::Recorder, learner)
     history = learner.cbstate.history[phase]
     history.steps += 1
     history.stepsepoch += 1
