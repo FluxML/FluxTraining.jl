@@ -119,6 +119,14 @@ end
 Train `learner` for `nepochs` of training and validation each. Use data
 iterators that are passed in. If none are given, use `learner.data.training`
 and `learner.data.validation`.
+
+## Examples
+
+```julia
+fit!(learner, 10)
+fit!(learner, 10, (traindl, valdl))
+```
+
 """
 function fit!(learner, nepochs::Int, (trainiter, validiter))
     for i in 1:nepochs
