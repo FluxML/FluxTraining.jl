@@ -57,7 +57,7 @@ function stateaccess(scheduler::Scheduler)
         hpstateaccess = merge(stateaccess.(keys(scheduler.schedules))...)
     end
     return (
-        data = Read(), cbstate = (; hyperparams=Write()),
+        data = Read(), cbstate = (; hyperparams=Write(), history = Read()),
         hpstateaccess...
     )
 end
@@ -73,16 +73,20 @@ end
 function on(::StepBegin, phase::AbstractTrainingPhase, scheduler::Scheduler, learner)
     step = scheduler.step
     for (H, animation) in scheduler.schedules
-        value = Animations.at(animation, step)
+        value = Animations.at(animation, scheduler.step)
         sethyperparameter!(learner, H, value)
-        push!(learner.cbstate.hyperparams, Symbol(H), step, value)
+        push!(
+            learner.cbstate.hyperparams,
+            Symbol(H),
+            learner.cbstate.history[phase].steps,
+            value)
     end
     scheduler.step += 1
 end
 
 
 """
-    onecycle(nsteps, max_val, [start_val, end_val; start_pctg])
+    onecycle(nsteps, max_val, [start_val, end_val; pct_start])
 
 Creates a one-cycle [`Schedule`](#) over `nsteps` steps from `start_val`
 over `max_val` to `end_val`.
