@@ -1,4 +1,4 @@
-<HTML><head><title>FluxTraining.jl demo</title><link href=../template/ansi.css rel=stylesheet ></link><link href=../template/hugobook.css rel=stylesheet ></link><meta content=Type=text/html; charset=utf-8 http-equiv=Content-Type ></meta></head><body><input onclick=toggleMenu() id=menu-control class=hidden toggle type=checkbox ></input><input id=toc-control type=checkbox class=hidden toggle ></input><main class=container flex ><aside id=menu-container class=book-menu ><nav class=book-menu-content ><h2 id=title >FluxTraining.jl</h2><div id=sidebar ><div class=doctree ><body><ul><li><p><a href=../README.md.html title= >README</a></p></li><li><p><a href=../docs/getting_started.md.html title= >Getting started</a></p></li><li><p><a href=../docs/features.md.html title= >Features</a></p></li><li><p>Tutorials</p><ul><li><p><a href=../docs/tutorials/mnist.ipynb.html title= >Training an image classifier</a></p></li><li><p><a href=../docs/tutorials/hyperparameters.md.html title= >Hyperparameter scheduling</a></p></li><li><p><a href=../docs/callbacks/custom.md.html title= >Custom callbacks</a></p></li><li><p><a href=../docs/tutorials/training.md.html title= >Custom training loops</a></p></li></ul></li><li><p>How to</p><ul><li><p><a href=../docs/callbacks/usage.md.html title= >Use callbacks</a></p></li><li><p><a href=../docs/callbacks/tipstricks.md.html title= >Tips &amp; tricks</a></p></li></ul></li><li><p>Reference</p><ul><li><p><a href=../REFERENCE.html title= >Docstrings</a></p></li><li><p><a href=../docs/callbacks/reference.md.html title= >Callbacks</a></p></li><li><p><a href=../CHANGELOG.md.html title= >Changelog</a></p></li></ul></li></ul></body></div></div></nav></aside><div class=book-page ><header class=book-header ></header><article><h1 id=fluxtrainingjl-demo >FluxTraining.jl demo</h1><p>This is a quick-and-dirty demo for <a href=https://github.com/lorenzoh/FluxTraining.jl title= >FluxTraining.jl</a> that shows that it’s already possible to easily and quickly train a large convolutional network on a dataset bigger than MNIST.</p><p>(training on a GTX 1080 ti)</p><p>Note, however, that large parts of the interfaces of the packages are unclean and unstable.</p><h3 id=setup >Setup</h3><p>Install packages with</p><pre lang=julia ><code>
+<HTML><head><title>FluxTraining.jl demo</title><link href=../template/hugobook.css rel=stylesheet ></link><link href=../template/ansi.css rel=stylesheet ></link><meta content=Type=text/html; charset=utf-8 http-equiv=Content-Type ></meta></head><body><input onclick=toggleMenu() id=menu-control class=hidden toggle type=checkbox ></input><input id=toc-control type=checkbox class=hidden toggle ></input><main class=container flex ><aside id=menu-container class=book-menu ><nav class=book-menu-content ><h2 id=title >FluxTraining.jl</h2><div id=sidebar ><div class=doctree ><body><ul><li><p><a href=../README.md.html title= >README</a></p></li><li><p><a href=../docs/getting_started.md.html title= >Getting started</a></p></li><li><p><a href=../docs/features.md.html title= >Features</a></p></li><li><p>Tutorials</p><ul><li><p><a href=../docs/tutorials/mnist.ipynb.html title= >Training an image classifier</a></p></li><li><p><a href=../docs/tutorials/hyperparameters.md.html title= >Hyperparameter scheduling</a></p></li><li><p><a href=../docs/callbacks/custom.md.html title= >Custom callbacks</a></p></li><li><p><a href=../docs/tutorials/training.md.html title= >Custom training loops</a></p></li></ul></li><li><p>How to</p><ul><li><p><a href=../docs/callbacks/usage.md.html title= >Use callbacks</a></p></li><li><p><a href=../docs/callbacks/tipstricks.md.html title= >Tips &amp; tricks</a></p></li></ul></li><li><p>Reference</p><ul><li><p><a href=../REFERENCE.html title= >Docstrings</a></p></li><li><p><a href=../docs/callbacks/reference.md.html title= >Callbacks</a></p></li><li><p><a href=../CHANGELOG.md.html title= >Changelog</a></p></li></ul></li></ul></body></div></div></nav></aside><div class=book-page ><header class=book-header ></header><article><h1 id=fluxtrainingjl-demo >FluxTraining.jl demo</h1><p>This is a quick-and-dirty demo for <a href=https://github.com/lorenzoh/FluxTraining.jl title= >FluxTraining.jl</a> that shows that it’s already possible to easily and quickly train a large convolutional network on a dataset bigger than MNIST.</p><p>(training on a GTX 1080 ti)</p><p>Note, however, that large parts of the interfaces of the packages are unclean and unstable.</p><h3 id=setup >Setup</h3><p>Install packages with</p><pre lang=julia ><code>
 ] add https://github.com/lorenzoh/DataAugmentation.jl#master
 
 ] add https://github.com/lorenzoh/FluxTraining.jl#master
@@ -37,7 +37,67 @@ tfm_val = toxy ∘ XYPipeline(xtfm_val, ytfm) ∘ toitem;</code></pre><h2 id=tra
     Flux.crossentropy;
     callbacks = [ProgressBarLogger(), MetricsLogger()],
     metrics = [Accuracy()],
-    schedule = onecycleschedule(10, 0.01));</code></pre><pre lang=julia ><code>fit!(learner, 10);</code></pre><pre lang=julia ><code>using Plots</code></pre><pre lang=julia ><code>learner.recorder.stepstats[1]</code></pre><pre class=coderesult ><code>Dict{String,Any} with 6 entries:
+    schedule = onecycleschedule(10, 0.01));</code></pre><pre lang=julia ><code>fit!(learner, 10);</code></pre><pre class=codeoutput ><code><span class="sgr32">Epoch 1 TrainingPhase(): 100%|██████████████████████████| Time: 0:02:02</span>
+loss: 1.5778563671015404
+accuracy: 0.47103631
+<span class="sgr32">Epoch 1 ValidationPhase(): 100%|████████████████████████| Time: 0:00:16</span>
+loss: 3.3181119888059554
+accuracy: 0.32268867
+<span class="sgr32">Epoch 2 TrainingPhase(): 100%|██████████████████████████| Time: 0:01:05</span>
+loss: 1.3035759817104082
+accuracy: 0.5727882
+<span class="sgr32">Epoch 2 ValidationPhase(): 100%|████████████████████████| Time: 0:00:15</span>
+loss: 1.8861041165167285
+accuracy: 0.468366
+<span class="sgr32">Epoch 3 TrainingPhase(): 100%|██████████████████████████| Time: 0:01:05</span>
+loss: 1.0385415896370604
+accuracy: 0.6644813
+<span class="sgr32">Epoch 3 ValidationPhase(): 100%|████████████████████████| Time: 0:00:12</span>
+loss: 1.129819675799339
+accuracy: 0.6344925
+<span class="sgr32">Epoch 4 TrainingPhase(): 100%|██████████████████████████| Time: 0:01:04</span>
+loss: 0.8565590895108275
+accuracy: 0.7263915
+<span class="sgr32">Epoch 4 ValidationPhase(): 100%|████████████████████████| Time: 0:00:13</span>
+loss: 3.12705865598494
+accuracy: 0.45174494
+<span class="sgr32">Epoch 5 TrainingPhase(): 100%|██████████████████████████| Time: 0:01:05</span>
+loss: 0.6922305103492092
+accuracy: 0.7778385
+<span class="sgr32">Epoch 5 ValidationPhase(): 100%|████████████████████████| Time: 0:00:14</span>
+loss: 0.7410931923697072
+accuracy: 0.75471634
+<span class="sgr32">Epoch 6 TrainingPhase(): 100%|██████████████████████████| Time: 0:01:04</span>
+loss: 0.5856515228546955
+accuracy: 0.81267846
+<span class="sgr32">Epoch 6 ValidationPhase(): 100%|████████████████████████| Time: 0:00:13</span>
+loss: 0.5528364955417572
+accuracy: 0.82304865
+<span class="sgr32">Epoch 7 TrainingPhase(): 100%|██████████████████████████| Time: 0:01:05</span>
+loss: 0.458257605397218
+accuracy: 0.8497239
+<span class="sgr32">Epoch 7 ValidationPhase(): 100%|████████████████████████| Time: 0:00:13</span>
+loss: 0.5323935350583445
+accuracy: 0.8341013
+<span class="sgr32">Epoch 8 TrainingPhase(): 100%|██████████████████████████| Time: 0:01:04</span>
+loss: 0.3379245350464574
+accuracy: 0.88951486
+<span class="sgr32">Epoch 8 ValidationPhase(): 100%|████████████████████████| Time: 0:00:13</span>
+loss: 0.45464788954104146
+accuracy: 0.8570468
+<span class="sgr32">Epoch 9 TrainingPhase(): 100%|██████████████████████████| Time: 0:01:04</span>
+loss: 0.2443488886630213
+accuracy: 0.919414
+<span class="sgr32">Epoch 9 ValidationPhase(): 100%|████████████████████████| Time: 0:00:13</span>
+loss: 0.3976359540416348
+accuracy: 0.87800014
+<span class="sgr32">Epoch 10 TrainingPhase(): 100%|█████████████████████████| Time: 0:01:03</span>
+loss: 0.1911556464179444
+accuracy: 0.940329
+<span class="sgr32">Epoch 10 ValidationPhase(): 100%|███████████████████████| Time: 0:00:13</span>
+loss: 0.3977572710043
+accuracy: 0.8807963
+</code></pre><pre lang=julia ><code>using Plots</code></pre><pre lang=julia ><code>learner.recorder.stepstats[1]</code></pre><pre class=coderesult ><code>Dict{String,Any} with 6 entries:
   "step"                => 1
   "opt/FluxTraining.LR" => 0.000400043
   "phase"               => TrainingPhase
@@ -889,4 +949,14 @@ M1989.93 251.724 L2280.76 251.724 L2280.76 130.764 L1989.93 130.764  Z
 <text style="fill:#000000; fill-opacity:1; font-family:Arial,Helvetica Neue,Helvetica,sans-serif; font-size:48px; text-anchor:start;" transform="rotate(0, 2181.93, 208.744)" x="2181.93" y="208.744">y1</text>
 </g>
 </svg>
-</div><h2 id=appendix >Appendix</h2><pre lang=julia ><code>versioninfo()</code></pre></article><footer class=book-footer ></footer></div><aside class=book-toc ><nav id=toc class=book-toc-content ><ul><li><a href=#fluxtrainingjl-demo >FluxTraining.jl demo</a><ul><li><a href=#transform-data >Transform data</a><ul></ul></li><li><a href=#appendix >Appendix</a><ul></ul></li></ul></li></ul></nav></aside></main></body></HTML>
+</div><h2 id=appendix >Appendix</h2><pre lang=julia ><code>versioninfo()</code></pre><pre class=codeoutput ><code>Julia Version 1.3.0
+Commit 46ce4d7933 (2019-11-26 06:09 UTC)
+Platform Info:
+  OS: Linux (x86_64-pc-linux-gnu)
+  CPU: AMD Ryzen Threadripper 1920X 12-Core Processor
+  WORD_SIZE: 64
+  LIBM: libopenlibm
+  LLVM: libLLVM-6.0.1 (ORCJIT, znver1)
+Environment:
+  JULIA_NUM_THREADS = 12
+</code></pre></article><footer class=book-footer ></footer></div><aside class=book-toc ><nav id=toc class=book-toc-content ><ul><li><a href=#fluxtrainingjl-demo >FluxTraining.jl demo</a><ul><li><a href=#transform-data >Transform data</a><ul></ul></li><li><a href=#appendix >Appendix</a><ul></ul></li></ul></li></ul></nav></aside></main></body></HTML>
