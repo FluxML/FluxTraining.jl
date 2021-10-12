@@ -166,7 +166,7 @@ end
 function log_parameters(backends, x, name, epochs; group)
     params = Flux.trainable(x)
     if isempty(params) && x isa AbstractArray
-        log_to(
+       log_to(
             backends,
             Loggables.Histogram(vec(x)),
             name,
