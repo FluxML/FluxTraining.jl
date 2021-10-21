@@ -53,7 +53,7 @@ function EarlyStopping(n::Int; kwargs...)
     return EarlyStopping(ES.Patience(n); kwargs...)
 end
 
-Base.show(io::IO, cb::EarlyStopping) = print(io, "EarlyStopping(", cb.stopper.criterion, ")")
+Base.show(io::IO, cb::EarlyStopping) = print(io, "EarlyStopping(", cb.criterion, ")")
 
 function on(::EpochEnd, phase::Phase, cb::EarlyStopping, learner)
     loss = last(learner.cbstate.metricsepoch[phase], :Loss)[2]
