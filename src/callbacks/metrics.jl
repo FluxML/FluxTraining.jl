@@ -46,19 +46,25 @@ end
 on(::EpochBegin, ::Phase, metrics::Metrics, learner) = foreach(reset!, metrics.metrics)
 
 function on(::StepEnd, phase, metrics::Metrics, learner)
-    metricsstep = learner.cbstate.metricsstep[phase]
     step = learner.cbstate.history[phase].steps
     for metric in metrics.metrics
-        step!(metric, learner)
-        push!(metricsstep, Symbol(metricname(metric)), step, stepvalue(metric))
+        step!(metric, learner, phase)
+        val = stepvalue(metric)
+        if val !== nothing
+            metricsstep = learner.cbstate.metricsstep[phase]
+            push!(metricsstep, Symbol(metricname(metric)), step, val)
+        end
     end
 end
 
 function on(::EpochEnd, phase, metrics::Metrics, learner)
-    metricsepoch = learner.cbstate.metricsepoch[phase]
     epoch = learner.cbstate.history[phase].epochs
     for metric in metrics.metrics
-        push!(metricsepoch, Symbol(metricname(metric)), epoch, epochvalue(metric))
+        val = epochvalue(metric)
+        if val !== nothing
+            metricsepoch = learner.cbstate.metricsepoch[phase]
+            push!(metricsepoch, Symbol(metricname(metric)), epoch, val)
+        end
     end
 end
 
@@ -94,6 +100,7 @@ mutable struct Metric{T} <: AbstractMetric
     _statistic
     name
     device
+    TPhase
     last::Union{Nothing, T}
 end
 
@@ -126,7 +133,8 @@ function Metric(
         metricfn;
         name = uppercasefirst(string(metricfn)),
         statistic = Mean(),
-        device = cpu)
+        device = cpu,
+        phase = Phase)
 
     return Metric(
         metricfn,
@@ -134,6 +142,7 @@ function Metric(
         statistic,
         name,
         device,
+        phase,
         nothing,
     )
 end
@@ -143,14 +152,24 @@ function reset!(metric::Metric)
     metric.statistic = deepcopy(metric._statistic)
 end
 
-function step!(metric::Metric, learner)
-    ŷs, ys = metric.device((learner.step.ŷs, learner.step.ys))
-    metric.last = metric.metricfn(ŷs, ys)
-    OnlineStats.fit!(metric.statistic, metric.last)
+function step!(metric::Metric, learner, phase)
+    if phase isa metric.TPhase
+        ŷs, ys = metric.device((learner.step.ŷs, learner.step.ys))
+        metric.last = metric.metricfn(ŷs, ys)
+        OnlineStats.fit!(metric.statistic, metric.last)
+    else
+        metric.last = nothing
+    end
 end
 
 stepvalue(metric::Metric) = metric.last
-epochvalue(metric::Metric) = OnlineStats.value(metric.statistic)
+function epochvalue(metric::Metric)
+    if isnothing(metric.last)
+        nothing
+    else
+        OnlineStats.value(metric.statistic)
+    end
+end
 metricname(metric::Metric) = metric.name
 
 
@@ -175,7 +194,7 @@ function reset!(loss::Loss)
 end
 
 
-function step!(metric::Loss, learner)
+function step!(metric::Loss, learner, phase)
     metric.last = learner.step.loss
     OnlineStats.fit!(metric.statistic, metric.last)
 end
