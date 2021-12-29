@@ -1,7 +1,7 @@
 <HTML><head><title>Tips &amp; tricks</title><script src=../../template/highlight.min.js ></script><script src=../../template/julia.min.js ></script><script src=../../template/loadhighlightjs.js ></script><link href=../../template/ansi.css rel=stylesheet ></link><link href=../../template/hugobook.css rel=stylesheet ></link><meta content=Type=text/html; charset=utf-8 http-equiv=Content-Type ></meta><meta name=viewport content=width=device-width, initial-scale=1 ></meta></head><body><input onclick=toggleMenu() id=menu-control class=hidden toggle type=checkbox ></input><input id=toc-control type=checkbox class=hidden toggle ></input><main class=container flex ><aside id=menu-container class=book-menu ><nav class=book-menu-content ><h2 id=title >FluxTraining.jl</h2><div id=sidebar ><div class=doctree ><body><ul><li><p><a href=../../README.md.html title= >README</a></p></li><li><p><a href=../getting_started.md.html title= >Getting started</a></p></li><li><p><a href=../features.md.html title= >Features</a></p></li><li><p>Tutorials</p><ul><li><p><a href=../tutorials/mnist.ipynb.html title= >Training an image classifier</a></p></li><li><p><a href=../tutorials/hyperparameters.md.html title= >Hyperparameter scheduling</a></p></li><li><p><a href=custom.md.html title= >Custom callbacks</a></p></li><li><p><a href=../tutorials/training.md.html title= >Custom training loops</a></p></li></ul></li><li><p>How to</p><ul><li><p><a href=usage.md.html title= >Use callbacks</a></p></li><li><p><a href=tipstricks.md.html title= >Tips &amp; tricks</a></p></li></ul></li><li><p>Reference</p><ul><li><p><a href=../../REFERENCE.html title= >Docstrings</a></p></li><li><p><a href=reference.md.html title= >Callbacks</a></p></li><li><p><a href=../../CHANGELOG.md.html title= >Changelog</a></p></li></ul></li></ul></body></div></div></nav></aside><div class=book-page ><header class=book-header ></header><article><div result=false output=false class=cellcontainer cell=main lang=julia style=display:none ><pre result=false output=false class=codecell cell=main lang=julia style=display:none ><code>using FluxTraining
 using FluxTraining.Events, FluxTraining.Phases
 </code></pre></div><h1 id=tips--tricks >Tips &amp; tricks</h1><h2 id=listing-event-handlers-for-a-callback >Listing event handlers for a callback</h2><p>Use <code>Base.methods</code> to check what events a callback handles:</p><div class=cellcontainer cell=main lang=julia ><pre class=codecell cell=main lang=julia ><code>methods(FluxTraining.on, (Any, Any, Recorder, Any))
-</code></pre><div class=coderesult ># 4 methods for generic function <b>on</b>:<ul><li> on(::<b>FluxTraining.Events.StepEnd</b>, phase::<b>FluxTraining.Phases.Phase</b>, recorder::<b>Recorder</b>, learner) in FluxTraining at <a href="https://github.com/FluxML/FluxTraining.jl/tree/53c42c3b06e5763ee21277bb564c523c18dfc2c8//src/callbacks/recorder.jl#L36" target="_blank">/home/runner/work/FluxTraining.jl/FluxTraining.jl/src/callbacks/recorder.jl:36</a></li> <li> on(::<b>FluxTraining.Events.EpochEnd</b>, phase::<b>FluxTraining.Phases.Phase</b>, recorder::<b>Recorder</b>, learner) in FluxTraining at <a href="https://github.com/FluxML/FluxTraining.jl/tree/53c42c3b06e5763ee21277bb564c523c18dfc2c8//src/callbacks/recorder.jl#L43" target="_blank">/home/runner/work/FluxTraining.jl/FluxTraining.jl/src/callbacks/recorder.jl:43</a></li> <li> on(::<b>FluxTraining.Events.EpochBegin</b>, phase::<b>FluxTraining.Phases.Phase</b>, recorder::<b>Recorder</b>, learner) in FluxTraining at <a href="https://github.com/FluxML/FluxTraining.jl/tree/53c42c3b06e5763ee21277bb564c523c18dfc2c8//src/callbacks/recorder.jl#L31" target="_blank">/home/runner/work/FluxTraining.jl/FluxTraining.jl/src/callbacks/recorder.jl:31</a></li> <li> on(::<b>FluxTraining.Events.Event</b>, phase, ::<b>FluxTraining.SafeCallback</b>, learner) in FluxTraining at <a href="https://github.com/FluxML/FluxTraining.jl/tree/53c42c3b06e5763ee21277bb564c523c18dfc2c8//src/callbacks/callback.jl#L142" target="_blank">/home/runner/work/FluxTraining.jl/FluxTraining.jl/src/callbacks/callback.jl:142</a></li> </ul></div></div><h2 id=visualize-the-callback-dependency-graph >Visualize the callback dependency graph</h2><p>You can use <a href=https://juliagraphs.github.io/GraphPlot.jl/ title= ><em>GraphPlot.jl</em></a> to visualize the dependencies between callbacks:</p><div result=false output=false class=cellcontainer cell=main lang=julia style=display:none ><pre result=false output=false class=codecell cell=main lang=julia style=display:none ><code>learner = Learner(
+</code></pre><div class=coderesult ># 4 methods for generic function <b>on</b>:<ul><li> on(::<b>FluxTraining.Events.StepEnd</b>, phase::<b>FluxTraining.Phases.Phase</b>, recorder::<b>Recorder</b>, learner) in FluxTraining at <a href="https://github.com/FluxML/FluxTraining.jl/tree/808a9b7676df39cacd9df462e1ad3041d4a45524//src/callbacks/recorder.jl#L36" target="_blank">/home/runner/work/FluxTraining.jl/FluxTraining.jl/src/callbacks/recorder.jl:36</a></li> <li> on(::<b>FluxTraining.Events.EpochEnd</b>, phase::<b>FluxTraining.Phases.Phase</b>, recorder::<b>Recorder</b>, learner) in FluxTraining at <a href="https://github.com/FluxML/FluxTraining.jl/tree/808a9b7676df39cacd9df462e1ad3041d4a45524//src/callbacks/recorder.jl#L43" target="_blank">/home/runner/work/FluxTraining.jl/FluxTraining.jl/src/callbacks/recorder.jl:43</a></li> <li> on(::<b>FluxTraining.Events.EpochBegin</b>, phase::<b>FluxTraining.Phases.Phase</b>, recorder::<b>Recorder</b>, learner) in FluxTraining at <a href="https://github.com/FluxML/FluxTraining.jl/tree/808a9b7676df39cacd9df462e1ad3041d4a45524//src/callbacks/recorder.jl#L31" target="_blank">/home/runner/work/FluxTraining.jl/FluxTraining.jl/src/callbacks/recorder.jl:31</a></li> <li> on(::<b>FluxTraining.Events.Event</b>, phase, ::<b>FluxTraining.SafeCallback</b>, learner) in FluxTraining at <a href="https://github.com/FluxML/FluxTraining.jl/tree/808a9b7676df39cacd9df462e1ad3041d4a45524//src/callbacks/callback.jl#L142" target="_blank">/home/runner/work/FluxTraining.jl/FluxTraining.jl/src/callbacks/callback.jl:142</a></li> </ul></div></div><h2 id=visualize-the-callback-dependency-graph >Visualize the callback dependency graph</h2><p>You can use <a href=https://juliagraphs.github.io/GraphPlot.jl/ title= ><em>GraphPlot.jl</em></a> to visualize the dependencies between callbacks:</p><div result=false output=false class=cellcontainer cell=main lang=julia style=display:none ><pre result=false output=false class=codecell cell=main lang=julia style=display:none ><code>learner = Learner(
     nothing, (nothing, nothing), nothing, nothing,  # dummy arguments
     ToGPU(),
 );
@@ -22,107 +22,107 @@ gplot(learner.callbacks.graph, nodelabel = learner.callbacks.cbs, layout = stres
     <path d="M0,0 L15,3.5 L0,7 z" stroke="context-stroke" fill="context-stroke"/>
   </marker>
 </defs>
-<g stroke-width="1.22" fill="#000000" fill-opacity="0.000" stroke="#D3D3D3" id="img-b00cc759-1">
-  <g transform="translate(87.11,69.32)">
-    <path fill="none" d="M-37.7,19.81 L37.7,-19.81 " class="primitive"/>
+<g stroke-width="1.22" fill="#000000" fill-opacity="0.000" stroke="#D3D3D3" id="img-6c076891-1">
+  <g transform="translate(59.51,29.16)">
+    <path fill="none" d="M-42.21,12.99 L42.21,-12.99 " class="primitive"/>
+  </g>
+  <g transform="translate(30.04,26.09)">
+    <path fill="none" d="M-14.72,14.32 L14.72,-14.32 " class="primitive"/>
+  </g>
+  <g transform="translate(23,64.68)">
+    <path fill="none" d="M-9.07,-16.86 L9.07,16.86 " class="primitive"/>
   </g>
   <g transform="translate(70.72,50)">
-    <path fill="none" d="M-23.7,37.78 L23.7,-37.78 " class="primitive"/>
+    <path fill="none" d="M-20.28,-37.69 L20.28,37.69 " class="primitive"/>
   </g>
-  <g transform="translate(41.26,51.51)">
-    <path fill="none" d="M2.98,35.91 L-2.98,-35.91 " class="primitive"/>
+  <g transform="translate(88.97,32.24)">
+    <path fill="none" d="M-36.05,-21.19 L36.05,21.19 " class="primitive"/>
   </g>
-  <g transform="translate(100.18,48.49)">
-    <path fill="none" d="M-2.98,-35.91 L2.98,35.91 " class="primitive"/>
+  <g transform="translate(41.26,46.92)">
+    <path fill="none" d="M6.27,-34.37 L-6.27,34.37 " class="primitive"/>
   </g>
-  <g transform="translate(54.32,30.68)">
-    <path fill="none" d="M37.71,-19.81 L-37.71,19.81 " class="primitive"/>
+  <g transform="translate(63.68,88.59)">
+    <path fill="none" d="M-23.51,-2.46 L23.51,2.46 " class="primitive"/>
   </g>
-  <g transform="translate(67.39,9.85)">
-    <path fill="none" d="M23.46,-1.21 L-23.46,1.21 " class="primitive"/>
-  </g>
-  <g transform="translate(70.72,50.01)">
-    <path fill="none" d="M-29.7,-35 L29.7,35 " class="primitive"/>
-  </g>
-  <g transform="translate(24.86,32.2)">
-    <path fill="none" d="M10.63,-16.95 L-10.63,16.95 " class="primitive"/>
+  <g transform="translate(81.93,70.83)">
+    <path fill="none" d="M-42.2,12.99 L42.2,-12.99 " class="primitive"/>
   </g>
 </g>
-<g stroke-width="1.22" stroke="#D3D3D3" id="img-b00cc759-2">
-  <g transform="translate(121.85,51.07)">
-    <path fill="none" d="M-2.68,-0.37 L2.96,-1.56 -0.28,1.92 " class="primitive"/>
+<g stroke-width="1.22" stroke="#D3D3D3" id="img-6c076891-2">
+  <g transform="translate(98.33,17.21)">
+    <path fill="none" d="M-2.5,-0.79 L3.38,-1.04 -0.89,1.83 " class="primitive"/>
   </g>
-  <g transform="translate(92.92,14.61)">
-    <path fill="none" d="M-2.59,0.62 L1.5,-2.39 1.09,1.77 " class="primitive"/>
+  <g transform="translate(42.59,13.88)">
+    <path fill="none" d="M-2.72,0.22 L2.17,-2.11 0.54,1.89 " class="primitive"/>
   </g>
-  <g transform="translate(38.5,18.21)">
-    <path fill="none" d="M-1.9,1.39 L-0.22,-2.61 2.12,1.22 " class="primitive"/>
+  <g transform="translate(30.76,79.1)">
+    <path fill="none" d="M1.23,-1.73 L1.31,2.44 -2.54,-0.71 " class="primitive"/>
   </g>
-  <g transform="translate(102.94,81.8)">
-    <path fill="none" d="M1.9,-1.39 L0.22,2.61 -2.12,-1.22 " class="primitive"/>
+  <g transform="translate(89.69,85.25)">
+    <path fill="none" d="M1.23,-1.73 L1.31,2.44 -2.54,-0.71 " class="primitive"/>
   </g>
-  <g transform="translate(19.58,48.94)">
-    <path fill="none" d="M2.68,0.37 L-2.96,1.56 0.28,-1.92 " class="primitive"/>
+  <g transform="translate(122.17,51.76)">
+    <path fill="none" d="M-0.13,-1.93 L2.84,1.67 -2.71,0.26 " class="primitive"/>
   </g>
-  <g transform="translate(47.61,10.87)">
-    <path fill="none" d="M1.99,1.33 L-3.68,0.19 1.69,-1.52 " class="primitive"/>
+  <g transform="translate(35.46,78.7)">
+    <path fill="none" d="M2.23,-1.11 L-0.47,2.59 -1.76,-1.48 " class="primitive"/>
   </g>
-  <g transform="translate(98.52,82.77)">
-    <path fill="none" d="M0.78,-1.85 L1.9,2.24 -2.68,-0.39 " class="primitive"/>
+  <g transform="translate(83.54,90.66)">
+    <path fill="none" d="M-1.53,-1.6 L3.65,0.38 -2.12,1.22 " class="primitive"/>
   </g>
-  <g transform="translate(15.72,46.76)">
-    <path fill="none" d="M2.59,-0.62 L-1.5,2.39 -1.09,-1.77 " class="primitive"/>
+  <g transform="translate(120.74,58.88)">
+    <path fill="none" d="M-2.5,-0.79 L3.38,-1.04 -0.89,1.83 " class="primitive"/>
   </g>
 </g>
-<g font-size="4" stroke="#000000" stroke-opacity="0.000" fill="#000000" id="img-b00cc759-3">
+<g font-size="4" stroke="#000000" stroke-opacity="0.000" fill="#000000" id="img-6c076891-3">
 </g>
-<g stroke-width="0" stroke="#000000" stroke-opacity="0.000" fill="#40E0D0" id="img-b00cc759-4">
-  <g transform="translate(44.58,91.67)">
+<g stroke-width="0" stroke="#000000" stroke-opacity="0.000" fill="#40E0D0" id="img-6c076891-4">
+  <g transform="translate(11.79,43.85)">
     <circle cx="0" cy="0" r="5.77" class="primitive"/>
   </g>
-  <g transform="translate(103.51,88.65)">
+  <g transform="translate(93.14,91.67)">
     <circle cx="0" cy="0" r="5.77" class="primitive"/>
   </g>
-  <g transform="translate(11.79,53.03)">
+  <g transform="translate(129.64,56.14)">
     <circle cx="0" cy="0" r="5.77" class="primitive"/>
   </g>
-  <g transform="translate(129.64,46.98)">
+  <g transform="translate(107.23,14.48)">
     <circle cx="0" cy="0" r="5.77" class="primitive"/>
   </g>
-  <g transform="translate(96.85,8.33)">
+  <g transform="translate(48.3,8.33)">
     <circle cx="0" cy="0" r="5.77" class="primitive"/>
   </g>
-  <g transform="translate(37.93,11.36)">
+  <g transform="translate(34.21,85.51)">
     <circle cx="0" cy="0" r="5.77" class="primitive"/>
   </g>
 </g>
-<g font-size="4" stroke="#000000" stroke-opacity="0.000" fill="#000000" id="img-b00cc759-5">
-  <g transform="translate(44.58,91.67)">
+<g font-size="4" stroke="#000000" stroke-opacity="0.000" fill="#000000" id="img-6c076891-5">
+  <g transform="translate(11.79,43.85)">
     <g class="primitive">
       <text text-anchor="middle" dy="0.35em">ToDevice(Flux.gpu, Flux.gpu)</text>
     </g>
   </g>
-  <g transform="translate(103.51,88.65)">
+  <g transform="translate(93.14,91.67)">
     <g class="primitive">
       <text text-anchor="middle" dy="0.35em">ProgressPrinter()</text>
     </g>
   </g>
-  <g transform="translate(11.79,53.03)">
+  <g transform="translate(129.64,56.14)">
     <g class="primitive">
       <text text-anchor="middle" dy="0.35em">MetricsPrinter()</text>
     </g>
   </g>
-  <g transform="translate(129.64,46.98)">
+  <g transform="translate(107.23,14.48)">
     <g class="primitive">
       <text text-anchor="middle" dy="0.35em">StopOnNaNLoss()</text>
     </g>
   </g>
-  <g transform="translate(96.85,8.33)">
+  <g transform="translate(48.3,8.33)">
     <g class="primitive">
       <text text-anchor="middle" dy="0.35em">Recorder()</text>
     </g>
   </g>
-  <g transform="translate(37.93,11.36)">
+  <g transform="translate(34.21,85.51)">
     <g class="primitive">
       <text text-anchor="middle" dy="0.35em">Metrics(Loss())</text>
     </g>
