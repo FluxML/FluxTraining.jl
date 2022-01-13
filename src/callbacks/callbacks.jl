@@ -134,6 +134,6 @@ sometimes help.
 function GarbageCollect(nsteps::Int = 100)
     return throttle(
         CustomCallback((learner) -> garbagecollect(), StepEnd, Phase),
-        StepEnd(),
+        StepEnd,
         freq = nsteps)
 end
