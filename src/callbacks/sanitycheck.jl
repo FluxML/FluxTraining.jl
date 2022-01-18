@@ -12,7 +12,7 @@ struct SanityCheckException <: Exception end
 Base.show(io::IO, check::Check) = print(io, "Check(\"", check.name, "\")")
 
 
-function runchecks(checks, learner)
+function runchecks(checks, learner; verbose::Bool = false)
     failed = trues(length(checks))
     for (i, check) in enumerate(checks)
         failed[i] = !check.checkfn(learner)
@@ -20,17 +20,34 @@ function runchecks(checks, learner)
 
     failedchecks = checks[failed]
 
-    if isempty(failedchecks)
-        return
-    end
+    if !verbose
+        if isempty(failedchecks)
+            return
+        end
 
-    println("$(length(failedchecks))/$(length(checks)) sanity checks failed:")
+        Base.printstyled("$(length(failedchecks))/$(length(checks)) sanity checks failed:\n"; color = :red, bold = true)
 
-    for (i, check) in enumerate(failedchecks)
-        println("---")
-        println(i, ": ", check.name, " (", check.throw_error ? "ERROR" : "WARNING", ")")
-        println()
-        println(check.message)
+        for (i, check) in enumerate(failedchecks)
+            println("---")
+            Base.printstyled(i, ": ", check.name, " (", check.throw_error ? "ERROR" : "WARNING", ")\n"; color = :red, bold = true)
+            println()
+            println(check.message)
+        end
+    else
+        Base.printstyled("$(length(failedchecks))/$(length(checks)) sanity checks failed:\n"; color = length(failedchecks) > 0 ? :red : :green, bold = true)
+
+        for (i, check) in enumerate(checks)
+            if failed[i]
+                println("---")
+                Base.printstyled(i, ": ", check.name, " (", check.throw_error ? "ERROR" : "WARNING", ")\n"; color = :red, bold = true)
+                println()
+                println(check.message)
+            else
+                println("---")
+                Base.printstyled(i, ": ", check.name, " (SUCCESS)\n"; color = :green, bold = true)
+                println()
+            end
+        end    
     end
 
     if any(getfield.(failedchecks, :throw_error))
@@ -49,11 +66,12 @@ in addition to the ones you pass in.
 mutable struct SanityCheck <: Callback
     checks::Vector{Check}
     checked::Bool
-    function SanityCheck(checks = []; usedefault = isempty(checks))
+    verbose::Bool
+    function SanityCheck(checks = []; usedefault = isempty(checks), verbose::Bool = false)
         if usedefault
             checks = vcat(checks, CHECKS)
         end
-        return new(checks, false)
+        return new(checks, false, verbose)
     end
 end
 
@@ -74,7 +92,7 @@ stateaccess(::SanityCheck) = (
 
 function on(::EpochBegin, phase::AbstractTrainingPhase, cb::SanityCheck, learner)
     if !cb.checked
-        runchecks(cb.checks, learner)
+        runchecks(cb.checks, learner; verbose = cb.verbose)
         cb.checked = true
     end
 end
@@ -165,7 +183,7 @@ to be compatible with the data. This means the following must work:
 
 CheckModelGradientStep() =
     Check(
-        "Backpropagation working for the model",
+        "Backpropagation is compatible with model, data and loss function",
         true,
 """
 To perform the optimization step, the model and loss function need
