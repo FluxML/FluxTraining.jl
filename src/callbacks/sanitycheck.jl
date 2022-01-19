@@ -25,7 +25,7 @@ function runchecks(checks, learner; verbose::Bool = false)
             return
         end
 
-        Base.printstyled("$(length(failedchecks))/$(length(checks)) sanity checks failed:\n"; color = :red, bold = true)
+        Base.printstyled("[SanityCheck]: $(length(failedchecks))/$(length(checks)) sanity checks failed:\n"; color = :red, bold = true)
 
         for (i, check) in enumerate(failedchecks)
             println("---")
@@ -33,8 +33,10 @@ function runchecks(checks, learner; verbose::Bool = false)
             println()
             println(check.message)
         end
+
+        println()
     else
-        Base.printstyled("$(length(failedchecks))/$(length(checks)) sanity checks failed:\n"; color = length(failedchecks) > 0 ? :red : :green, bold = true)
+        Base.printstyled("[SanityCheck]: $(length(failedchecks))/$(length(checks)) sanity checks failed:\n"; color = length(failedchecks) > 0 ? :red : :green, bold = true)
 
         for (i, check) in enumerate(checks)
             if failed[i]
@@ -45,9 +47,10 @@ function runchecks(checks, learner; verbose::Bool = false)
             else
                 println("---")
                 Base.printstyled(i, ": ", check.name, " (SUCCESS)\n"; color = :green, bold = true)
-                println()
             end
-        end    
+        end
+
+        println()
     end
 
     if any(getfield.(failedchecks, :throw_error))
