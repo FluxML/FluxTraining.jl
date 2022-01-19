@@ -59,6 +59,61 @@ end
 stateaccess(::MetricsPrinter) = (; cbstate = (metricsepoch = Read(), history = Read()))
 runafter(::MetricsPrinter) = (Metrics,)
 
+# Logging Results to CSV file
+struct CSVMetricsLogger <: Callback
+    verbose::Bool
+    basedir::String
+    basename::String
+    # When do I close the file handles?
+    file_handles::Dict{String,IOStream}
+
+    function CSVMetricsLogger(;basedir::String = "./", basename::String = "", verbose::Bool = false)
+        if !isdir(basedir)
+            throw(ArgumentError("CSVMetricsLogger: basedir '$(basedir)' does not exist"))
+        end
+        return new(verbose, basedir, basename, Dict{String,IOStream}())
+    end
+end
+
+function get_file_handle(cb::CSVMetricsLogger, phase::Phase)
+    phasename = string(typeof(phase))
+    if !haskey(cb.file_handles, phasename)
+        filename = (length(cb.basename) == 0 ? "" : (cb.basename * "-")) * phasename * "-" * string(now()) * ".csv"
+        path = joinpath(cb.basedir, filename)
+        if cb.verbose
+            Base.printstyled("[CSVMetricsLogger]: $(phasename) is being logged to $(path)\n"; color = :blue, bold = true)
+        end
+        cb.file_handles[phasename] = open(path, "w")
+        return cb.file_handles[phasename], false
+    end
+    return cb.file_handles[phasename], true
+end
+
+function on(::EpochEnd,
+        phase::Phase,
+        cb::CSVMetricsLogger,
+        learner)
+    iostream, header_written = get_file_handle(cb, phase)
+
+    mvhistory = learner.cbstate.metricsepoch[phase]
+    epoch = learner.cbstate.history[phase].epochs
+    
+    if !header_written
+        header = join(vcat(["Epoch"], string.(keys(mvhistory))), ",")
+        println(iostream, header)
+    end
+
+    vals = [last(mvhistory, key) |> last for key in keys(mvhistory)]
+    data = join(vcat([epoch], vals), ",")
+    println(iostream, data)
+
+    flush(iostream)
+    return
+end
+
+stateaccess(::CSVMetricsLogger) = (; cbstate = (metricsepoch = Read(), history = Read()))
+runafter(::CSVMetricsLogger) = (Metrics,)
+
 # StopOnNaNLoss
 
 """

@@ -25,6 +25,7 @@ using Zygote: Grads, gradient
 using ValueHistories
 using DataStructures: DefaultDict
 using PrettyTables
+using Dates
 
 
 # functional
@@ -84,6 +85,7 @@ export AbstractCallback,
     ProgressPrinter,
     Metrics,
     MetricsPrinter,
+    CSVMetricsLogger,
     TrainingPhase,
     ValidationPhase,
     Schedule,
