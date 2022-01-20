@@ -54,6 +54,7 @@ include("./callbacks/custom.jl")
 include("./callbacks/metrics.jl")
 include("./callbacks/recorder.jl")
 include("./callbacks/sanitycheck.jl")
+include("./callbacks/timer.jl")
 
 # hyperparameter scheduling
 include("./callbacks/hyperparameters.jl")
@@ -101,6 +102,7 @@ export AbstractCallback,
     LearningRate,
     throttle,
     SanityCheck,
+    TimingRecorder,
     accuracy,
     fit!,
     epoch!,

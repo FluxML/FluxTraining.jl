@@ -57,7 +57,7 @@ function print_epoch_table(mvhistory, epoch, phase)
 end
 
 stateaccess(::MetricsPrinter) = (; cbstate = (metricsepoch = Read(), history = Read()))
-runafter(::MetricsPrinter) = (Metrics,)
+runafter(::MetricsPrinter) = (Metrics, TimingRecorder)
 
 # Logging Results to CSV file
 struct CSVMetricsLogger <: Callback
@@ -112,7 +112,7 @@ function on(::EpochEnd,
 end
 
 stateaccess(::CSVMetricsLogger) = (; cbstate = (metricsepoch = Read(), history = Read()))
-runafter(::CSVMetricsLogger) = (Metrics,)
+runafter(::CSVMetricsLogger) = (Metrics, TimingRecorder)
 
 # StopOnNaNLoss
 
