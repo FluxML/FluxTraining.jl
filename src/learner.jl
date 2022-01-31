@@ -94,10 +94,11 @@ function Learner(
 end
 
 
-Base.show(io::IO, learner::Learner) = print(io, "Learner()")
+Base.show(io::IO, ::Learner) = print(io, "Learner()")
 
 
 defaultcallbacks()::Vector{AbstractCallback} = [
+    SanityCheck(),
     ProgressPrinter(),
     MetricsPrinter(),
     StopOnNaNLoss(),

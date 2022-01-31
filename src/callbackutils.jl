@@ -1,4 +1,27 @@
+"""
+    is_root_process()
 
+If training is DDP then checks if the process is the root. The rank of the root process must be 0.
+For standard training, `true` is returned.
+"""
+@inline function is_root_process()
+    !is_distributed_data_parallel() && return true
+    return local_rank() == 0
+end
+
+"""
+    is_distributed_data_parallel()
+
+Is FluxMPI being used for distributed data parallelism
+"""
+@inline is_distributed_data_parallel() = FluxMPI.Initialized()
+
+"""
+    is_ddp()
+
+Is FluxMPI being used for distributed data parallelism
+"""
+@inline is_ddp() = is_distributed_data_parallel()
 
 """
     setcallbacks!(learner, callbacks)

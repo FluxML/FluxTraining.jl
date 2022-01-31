@@ -20,9 +20,9 @@ function on(::EpochBegin,
     dataiter = get(learner.data, phasedataiter(phase), nothing)
     if isnothing(dataiter)
         cb.p = nothing
-        println("Epoch $(e) $(phase) ...")
+        is_root_process() && println("Epoch $(e) $(phase) ...")
     else
-        cb.p = Progress(length(dataiter), "Epoch $(e) $(phase): ")
+        cb.p = is_root_process() ? Progress(length(dataiter), "Epoch $(e) $(phase): ") : nothing
     end
 end
 
@@ -43,9 +43,11 @@ function on(::EpochEnd,
         phase::Phase,
         cb::MetricsPrinter,
         learner)
-    mvhistory = learner.cbstate.metricsepoch[phase]
-    epoch = learner.cbstate.history[phase].epochs
-    print_epoch_table(mvhistory, epoch, phase)
+    if is_root_process()
+        mvhistory = learner.cbstate.metricsepoch[phase]
+        epoch = learner.cbstate.history[phase].epochs
+        print_epoch_table(mvhistory, epoch, phase)
+    end
 end
 
 

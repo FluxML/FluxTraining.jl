@@ -13,6 +13,8 @@ module ES
     @reexport using EarlyStopping
 end
 import OnlineStats
+using FluxMPI
+using MPI
 using OnlineStats: EqualWeight, Mean, OnlineStat
 using Parameters
 using ProgressMeter: Progress, next!
