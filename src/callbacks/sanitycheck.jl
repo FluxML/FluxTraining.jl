@@ -174,7 +174,7 @@ to be compatible with the data. This means the following must work:
         ) do learner
         try
             dev = ToGPU() in learner.callbacks.cbs ? gpu : identity
-            x, y = dev(iterate(learner.data.training)[1])
+            x, y = dev.(iterate(learner.data.training)[1])
             ŷ = dev(learner.model)(x)
             @assert learner.lossfn(ŷ, y) isa Number
         catch
@@ -198,7 +198,7 @@ to be compatible with the data. This means the following must work:
     ) do learner
         try
             dev = ToGPU() in learner.callbacks.cbs ? gpu : identity
-            x, y = dev(iterate(learner.data.training)[1])
+            x, y = dev.(iterate(learner.data.training)[1])
             _model = dev(learner.model)
             gradient(() -> learner.lossfn(_model(x), y), Flux.params(_model))
         catch

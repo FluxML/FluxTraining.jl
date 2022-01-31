@@ -1,4 +1,4 @@
-
+# FIXME: Metric(Accuracy) will give incorrect results and cannot be report in papers.
 function accuracy(y_pred, y)
     matches = onecold(y_pred) .== onecold(y)
     match_count = sum(matches)
