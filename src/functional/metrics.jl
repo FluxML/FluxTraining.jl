@@ -5,9 +5,7 @@ function accuracy(y_pred, y)
     count = length(y_oc)
     if is_distributed_data_parallel()
         res = [match_count, count]
-        clean_println(res)
         MPIExtensions.Allreduce!(res, +, MPI.COMM_WORLD)
-        clean_println(res)
         return res[1] / res[2]
     else
         return match_count / count
