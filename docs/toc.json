@@ -1,0 +1,10 @@
+{
+    "Overview": "documents/README.md",
+    "How-to": {
+        "Use callbacks": "documents/docs/callbacks/usage.md"
+    },
+    "Reference": {
+        "Module": "references/FluxTraining",
+        "Callbacks": "documents/docs/callbacks/reference.md"
+    }
+}

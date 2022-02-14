@@ -1,4 +1,3 @@
-
 # Overview
 
 You decide what you want to read next!
@@ -16,8 +15,6 @@ You decide what you want to read next!
 ### Training loop
 
 Find out how [the training loop](training/basics.md) is built and how to customize it.
-
-
 
 ### Callbacks
 
