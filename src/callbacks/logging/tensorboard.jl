@@ -7,7 +7,7 @@
         min_level=Logging.Info)
 
 TensorBoard backend for logging callbacks. Takes the same arguments
-as [`TensorBoardLogger.TBLogger`](https://philipvinc.github.io/TensorBoardLogger.jl/dev/).
+as [`TensorBoardLogger.TBLogger`](https://julialogging.github.io/TensorBoardLogger.jl/dev/).
 """
 struct TensorBoardBackend <: LoggerBackend
     logger::TBLogger
