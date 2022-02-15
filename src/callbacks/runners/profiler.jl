@@ -56,7 +56,7 @@ end
 
 ProfileRunner() = ProfileRunner(
     StructArray{TimingBetween}(
-        phase = Phase[],
+        phase = Type{<:Phase}[],
         eventstart = Type{<:Event}[],
         eventend = Type{<:Event}[],
         timestart = Float64[],
@@ -64,7 +64,7 @@ ProfileRunner() = ProfileRunner(
         duration = Float64[],
     ),
     StructArray{TimingCallback}(
-        phase = Phase[],
+        phase = Type{<:Phase}[],
         cb = FluxTraining.Callback[],
         event = Type{<:Event}[],
         timestart = Float64[],
@@ -84,7 +84,7 @@ function FluxTraining.handle(runner::ProfileRunner, event, phase, learner)
         if lastphase == phase
             Zygote.ignore() do
                 timing = TimingBetween(
-                    phase, typeof(lastevent), typeof(event), lasttime, t)
+                    typeof(phase), typeof(lastevent), typeof(event), lasttime, t)
                 push!(runner.timesbetween, timing)
             end
         end
@@ -99,7 +99,7 @@ function FluxTraining.handle(runner::ProfileRunner, event, phase, learner)
 		starttime = Zygote.ignore(() -> Base.time())
         FluxTraining._on(event, phase, cb, learner)
 		Zygote.ignore() do
-            timing = TimingCallback(phase, cb, typeof(event), starttime, Base.time())
+            timing = TimingCallback(typeof(phase), cb, typeof(event), starttime, Base.time())
             push!(runner.timescallbacks, timing)
 		end
     end

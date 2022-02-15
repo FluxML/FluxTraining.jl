@@ -37,6 +37,7 @@ include("./callbacks/events.jl")
 include("./callbacks/callback.jl")
 include("./callbacks/graph.jl")
 include("./callbacks/execution.jl")
+include("./callbacks/runners/profiler.jl")
 
 # logging
 include("./callbacks/logging/Loggables.jl")
