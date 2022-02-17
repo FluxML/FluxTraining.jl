@@ -2,14 +2,15 @@
 
 [Docs (master)](https://fluxml.ai/FluxTraining.jl/dev/)
 
+
 A powerful, extensible neural net training library.
 
 *FluxTraining.jl* gives you an endlessly extensible training loop for deep learning inspired by [fastai](https://docs.fast.ai)'s training loop. It is the training backend for [FastAI.jl](https://github.com/FluxML/FastAI.jl).
 
 It exposes a small set of extensible interfaces and uses them to implement
 
-- hyperparameter scheduling
-- metrics
+- [hyperparameter scheduling](docs/tutorials/hyperparameters.md)
+- [metrics](docs/callbacks/custom.md)
 - logging
 - training history; and
 - model checkpointing

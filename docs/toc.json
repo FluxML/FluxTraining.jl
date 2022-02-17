@@ -1,7 +1,11 @@
 {
     "Overview": "documents/README.md",
+    "Tutorials": {
+        "Training an image classifier": "documents/docs/tutorials/mnist.ipynb"
+    },
     "How-to": {
-        "Use callbacks": "documents/docs/callbacks/usage.md"
+        "Use callbacks": "documents/docs/callbacks/usage.md",
+        "Write custom training loops": "documents/docs/tutorials/training.md"
     },
     "Reference": {
         "Module": "references/FluxTraining",
