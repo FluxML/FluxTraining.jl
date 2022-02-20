@@ -1,13 +1,8 @@
 using Pkg
 using Pollen
 
-# import your package here
 using FluxTraining
 const PACKAGE = FluxTraining
-
-
-# Create target folder
-DIR = abspath(mkpath(ARGS[1]))
 
 
 # Create Project
@@ -29,15 +24,7 @@ project = Project(
     ],
 )
 
-@info "Rewriting documents..."
-Pollen.rewritesources!(project)
 
-@info "Writing to disk at \"$DIR\"..."
-builder = Pollen.FileBuilder(
-    Pollen.JSON(),
-    DIR,
-)
-Pollen.build(
-    builder,
-    project,
-)
+DIR = mktempdir()
+@info "Serving from directory $DIR"
+Pollen.serve(project, DIR, lazy=false, format = Pollen.JSON())
