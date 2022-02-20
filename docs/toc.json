@@ -1,14 +1,22 @@
 {
     "Overview": "documents/README.md",
+    "Getting started": "documents/docs/getting_started.md",
+    "Features": "documents/docs/features.md",
     "Tutorials": {
-        "Training an image classifier": "documents/docs/tutorials/mnist.ipynb"
+        "Train an image classifier": "documents/docs/tutorials/mnist.ipynb",
+        "Write a custom callback": "documents/docs/callbacks/custom.md"
     },
-    "How-to": {
+    "How to": {
         "Use callbacks": "documents/docs/callbacks/usage.md",
-        "Write custom training loops": "documents/docs/tutorials/training.md"
+        "Tips & Tricks": "documents/docs/callbacks/tipstricks.md"
     },
     "Reference": {
         "Module": "references/FluxTraining",
-        "Callbacks": "documents/docs/callbacks/reference.md"
+        "List of callbacks": "documents/docs/callbacks/reference.md",
+        "Training loop API": "documents/docs/reference/training.md"
+    },
+    "Backround": {
+        "Hyperparameter scheduling": "documents/docs/tutorials/hyperparameters.md",
+        "Custom training loops": "documents/docs/tutorials/training.md"
     }
 }

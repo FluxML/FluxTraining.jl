@@ -1,7 +1,7 @@
 module FluxTraining
 
 
-using LightGraphs
+using Graphs
 using BSON: @load, @save
 using Flux
 using Flux: Params, onecold
