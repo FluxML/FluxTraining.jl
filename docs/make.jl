@@ -1,7 +1,7 @@
 using Pkg
 using Pollen
 
-# import your package here
+using GraphPlot
 using FluxTraining
 const PACKAGE = FluxTraining
 

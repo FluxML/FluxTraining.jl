@@ -17,10 +17,16 @@ function on(::EpochBegin,
         cb::ProgressPrinter,
         learner)
     e = learner.cbstate.history[phase].epochs + 1
-    cb.p = Progress(numsteps(learner, phase), "Epoch $(e) $(phase): ")
+    dataiter = get(learner.data, phasedataiter(phase), nothing)
+    if isnothing(dataiter)
+        cb.p = nothing
+        println("Epoch $(e) $(phase) ...")
+    else
+        cb.p = Progress(length(dataiter), "Epoch $(e) $(phase): ")
+    end
 end
 
-on(::BatchEnd, ::Phase, cb::ProgressPrinter, learner) = next!(cb.p)
+on(::StepEnd, ::Phase, cb::ProgressPrinter, learner) = isnothing(cb.p) || next!(cb.p)
 
 runafter(::ProgressPrinter) = (Recorder,)
 stateaccess(::ProgressPrinter) = (data = Read(), cbstate = (history = Read()),)
@@ -47,7 +53,7 @@ function print_epoch_table(mvhistory, epoch, phase)
     header = vcat(["Phase", "Epoch"], string.(keys(mvhistory)))
     vals = [last(mvhistory, key) |> last for key in keys(mvhistory)]
     data = reshape(vcat([string(typeof(phase)), epoch], vals), 1, :)
-    pretty_table(data, header, formatters = PrettyTables.ft_round(5))
+    pretty_table(data; header = header, formatters = PrettyTables.ft_round(5))
 end
 
 stateaccess(::MetricsPrinter) = (; cbstate = (metricsepoch = Read(), history = Read()))
@@ -63,10 +69,10 @@ Stops the training when a NaN loss is encountered.
 struct StopOnNaNLoss <: Callback end
 
 function on(::BackwardEnd, ::AbstractTrainingPhase, ::StopOnNaNLoss, learner)
-    !isnan(learner.batch.loss) || throw(CancelFittingException("Encountered NaN loss"))
+    !isnan(learner.step.loss) || throw(CancelFittingException("Encountered NaN loss"))
 end
 
-stateaccess(::StopOnNaNLoss) = (batch = (loss = Read()),)
+stateaccess(::StopOnNaNLoss) = (step = (loss = Read()),)
 
 
 """
@@ -74,21 +80,36 @@ stateaccess(::StopOnNaNLoss) = (batch = (loss = Read()),)
 
 Callback that moves model and batch data to the GPU during training.
 """
-struct ToGPU <: Callback end
+ToGPU() = ToDevice(gpu, gpu)
+"""
+    ToDevice(movefn[, movemodelfn]) <: Callback
 
-function on(::EpochBegin, ::Phase, ::ToGPU, learner)
-    model!(learner, gpu(learner.model))
+Moves model and step data to a device using `movedatafn` for step data
+and `movemodelfn` for the model. For example `ToDevice(Flux.gpu, Flux.gpu)`,
+moves them to a GPU if available. See [`ToGPU`](#).
+
+By default, only moves `step.xs` and `step.ys`, but this can be extended
+to other state by implementing `on(::StepBegin, ::MyCustomPhase, ::ToDevice, learner)`.
+"""
+struct ToDevice <: Callback
+    movedatafn
+    movemodelfn
 end
 
-stateaccess(::ToGPU) = (
+
+function on(::EpochBegin, ::Phase, cb::ToDevice, learner)
+    model!(learner, cb.movemodelfn(learner.model))
+end
+
+stateaccess(::ToDevice) = (
     model = Write(),
     params = Write(),
-    batch = (xs = Write(), ys = Write()),
+    step = Write(),
 )
 
-function on(::BatchBegin, ::Phase, cb::ToGPU, learner)
-    learner.batch.xs = gpu(learner.batch.xs)
-    learner.batch.ys = gpu(learner.batch.ys)
+function on(::StepBegin, ::Phase, cb::ToDevice, learner)
+    learner.step.xs = cb.movedatafn(learner.step.xs)
+    learner.step.ys = cb.movedatafn(learner.step.ys)
 end
 
 
@@ -112,7 +133,7 @@ sometimes help.
 """
 function GarbageCollect(nsteps::Int = 100)
     return throttle(
-        CustomCallback((learner) -> garbagecollect(), BatchEnd, Phase),
-        BatchEnd(),
+        CustomCallback((learner) -> garbagecollect(), StepEnd, Phase),
+        StepEnd(),
         freq = nsteps)
 end

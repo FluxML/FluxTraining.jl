@@ -1,6 +1,6 @@
 # FluxTraining.jl
 
-[Docs (master)](https://lorenzoh.github.io/FluxTraining.jl/dev)
+[Docs (master)](https://fluxml.ai/FluxTraining.jl/dev/)
 
 A powerful, extensible neural net training library.
 

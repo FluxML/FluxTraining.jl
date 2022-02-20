@@ -26,6 +26,8 @@ For logging, use the logging callbacks:
 
 They each can have multiple logging backends, but right now the only one implemented in *FluxTraining.jl* is [`TensorBoardBackend`](#). See also [`LoggerBackend`](#), [`log_to`](#), and [`Loggables.Loggable`](#).
 
+There is also an external package [Wandb.jl](https://github.com/avik-pal/Wandb.jl) that implements a logging backend for [Weights&Biases](www.wandb.ai).
+
 ## Checkpointing
 
 Use the [`Checkpointer`](#) callback to create model checkpoints after every epoch.

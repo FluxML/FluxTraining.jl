@@ -4,11 +4,12 @@
 - Tutorials
     - [Training an image classifier](docs/tutorials/mnist.ipynb)
     - [Hyperparameter scheduling](docs/tutorials/hyperparameters.md)
-    - [Writing a custom callback](docs/callbacks/custom.md)
+    - [Custom callbacks](docs/callbacks/custom.md)
+    - [Custom training loops](docs/tutorials/training.md)
 - How to
     - [Use callbacks](docs/callbacks/usage.md)
     - [Tips & tricks](docs/callbacks/tipstricks.md)
 - Reference
     - [Docstrings](REFERENCE)
-    - [Training loop](docs/training/basics.md)
     - [Callbacks](docs/callbacks/reference.md)
+    - [Changelog](CHANGELOG.md)

@@ -58,7 +58,7 @@ stateaccess(::LogMetrics) = (
     cbstate = (history = Read(), metricsstep = Read(), metricsepoch = Read()),)
 
 
-function on(::BatchEnd, phase, logger::LogMetrics, learner)
+function on(::StepEnd, phase, logger::LogMetrics, learner)
     history = learner.cbstate.history[phase]
     metricsstep = learner.cbstate.metricsstep[phase]
     for metric in keys(metricsstep)
@@ -113,7 +113,7 @@ end
 stateaccess(::LogHyperParams) = (
     cbstate = (history = Read(), hyperparams = Read()),)
 
-function on(::BatchEnd, phase, logger::LogHyperParams, learner)
+function on(::StepEnd, phase, logger::LogHyperParams, learner)
     history = learner.cbstate.history[phase]
     hyperparams = learner.cbstate.hyperparams
     for hparam in keys(hyperparams)
@@ -143,7 +143,7 @@ struct LogHistograms <: Callback
         if isnothing(freq)
             return new(backends)
         else
-            return throttle(new(backends), BatchEnd, freq = freq)
+            return throttle(new(backends), StepEnd, freq = freq)
         end
     end
 end
@@ -152,7 +152,7 @@ end
 stateaccess(::LogHistograms) = (model = Read(), cbstate = (history = Read(),))
 
 
-function on(::BatchEnd, phase::AbstractTrainingPhase, logger::LogHistograms, learner)
+function on(::StepEnd, phase::AbstractTrainingPhase, logger::LogHistograms, learner)
     history = learner.cbstate.history[phase]
     log_parameters(
         logger.backends,
@@ -166,7 +166,7 @@ end
 function log_parameters(backends, x, name, epochs; group)
     params = Flux.trainable(x)
     if isempty(params) && x isa AbstractArray
-        log_to(
+       log_to(
             backends,
             Loggables.Histogram(vec(x)),
             name,
@@ -188,9 +188,7 @@ end
 """
     LogVisualization(visfn, backends...[; freq = 100])
 
-Logs images created by `visfn(learner.batch)` to `backends` every `freq` steps.
-
-See also [`BatchState`](#).
+Logs images created by `visfn(learner.step)` to `backends` every `freq` steps.
 """
 struct LogVisualization <: Callback
     visfn
@@ -200,18 +198,18 @@ struct LogVisualization <: Callback
         if isnothing(freq)
             return cb
         else
-            return throttle(cb, BatchEnd, freq = freq)
+            return throttle(cb, StepEnd, freq = freq)
         end
     end
 
 end
 
 
-stateaccess(::LogVisualization) = (batch = Read(), cbstate = (history = Read(),))
+stateaccess(::LogVisualization) = (step = Read(), cbstate = (history = Read(),))
 
-function on(::BatchEnd, phase::AbstractTrainingPhase, logger::LogVisualization, learner)
+function on(::StepEnd, phase::AbstractTrainingPhase, logger::LogVisualization, learner)
     history = learner.cbstate.history[phase]
-    image = logger.visfn(learner.batch)
+    image = logger.visfn(learner.step)
 
     log_to(
         logger.backends,

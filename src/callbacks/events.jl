@@ -3,14 +3,11 @@
 
 Provides the abstract [`Event`](#) type and concrete event types.
 
-- [`Init`](#) is called once for every callback. Use for initialization code
-  that needs access to some `Learner` state.
-
 Events in [`TrainingPhase`](#) and [`ValidationPhase`](#):
 
 - [`EpochBegin`](#) and [`EpochEnd`](#), called at the beginning and end of each
   epoch.
-- [`BatchBegin`](#) and [`BatchEnd`](#), called at the beginning and end of each
+- [`StepBegin`](#) and [`StepEnd`](#), called at the beginning and end of each
   batch.
 - [`LossBegin`](#), called after the forward pass but before the loss calculation.
 
@@ -30,15 +27,6 @@ Abstract type for events that callbacks can hook into
 """
 abstract type Event end
 
-"""
-    Init <: Event
-
-Called once when the learner is created/the callback is added.
-
-Hook into this for callback initialization that depends on the
-[`Learner`](#)'s state.
-"""
-struct Init <: Event end
 
 """
     EpochBegin()
@@ -55,18 +43,18 @@ struct EpochBegin <: Event end
 struct EpochEnd <: Event end
 
 """
-    BatchBegin()
+    StepBegin()
 
 [`Event`](#) called at the beginning of a batch.
 """
-struct BatchBegin <: Event end
+struct StepBegin <: Event end
 
 """
-    BatchEnd()
+    StepEnd()
 
 [`Event`](#) called at the end of a batch.
 """
-struct BatchEnd <: Event end
+struct StepEnd <: Event end
 
 """
     LossBegin()
@@ -94,9 +82,8 @@ export
     # abstract
     Event,
     # concrete
-    Init,
     EpochBegin, EpochEnd,
-    BatchBegin, BatchEnd,
+    StepBegin, StepEnd,
     LossBegin,
     BackwardBegin, BackwardEnd
 

@@ -78,17 +78,9 @@ protect(x, perms) = Protected(x, perms)
     PropDict(dict)
 
 Like a `Dict{Symbol}`, but attribute syntax can be used to access values.
-
-## Examples
-
-
-
 """
 struct PropDict{V}
-    d::Dict
-    function PropDict(d::Dict{K, V}) where {K, V}
-        return new{V}(d)
-    end
+    d::Dict{Symbol, V}
 end
 
 Base.getproperty(d::PropDict, field::Symbol) = getfield(d, :d)[field]
@@ -96,5 +88,9 @@ Base.setproperty!(d::PropDict, field::Symbol, val) = (getfield(d, :d)[field] = v
 Base.propertynames(d::PropDict) = Tuple(keys(getfield(d, :d)))
 
 Base.haskey(d::PropDict, key) = haskey(getfield(d, :d), key)
+Base.getindex(d::FluxTraining.PropDict{Any}, i::Symbol) = getproperty(d, i)
+Base.keys(d::PropDict) = keys(getfield(d, :d))
+Base.values(d::PropDict) = values(getfield(d, :d))
+Base.get(d::PropDict, args...; kwargs...) = get(getfield(d, :d), args...; kwargs...)
 
 PropDict(args...) = PropDict(Dict{Symbol, Any}(args...))
