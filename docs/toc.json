@@ -16,7 +16,7 @@
         "Training loop API": "documents/docs/reference/training.md"
     },
     "Backround": {
-        "Hyperparameter scheduling": "documents/docs/hyperparameters.md",
-        "Custom training loops": "documents/training/basics.md"
+        "Hyperparameter scheduling": "documents/docs/tutorials/hyperparameters.md",
+        "Custom training loops": "documents/docs/tutorials/training.md"
     }
 }
