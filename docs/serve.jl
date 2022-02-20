@@ -7,7 +7,7 @@ const PACKAGE = FluxTraining
 
 # Create Project
 m = PACKAGE
-ms = [PACKAGE,]
+ms = [m, m.Events, m.Phases, m.Loggables]
 
 
 @info "Creating project..."

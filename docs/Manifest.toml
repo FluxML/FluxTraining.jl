@@ -553,9 +553,7 @@ uuid = "a63ad114-7e13-5084-954f-fe012c677804"
 
 [[ModuleInfo]]
 deps = ["CodeTracking", "StructArrays"]
-git-tree-sha1 = "d1cd33870f88631f31eb95da3068731bd0d686a7"
-repo-rev = "main"
-repo-url = "https://github.com/lorenzoh/ModuleInfo.jl"
+path = "../../ModuleInfo"
 uuid = "3c3ff5e7-c68c-4a09-80d1-9526a1e9878a"
 version = "0.1.0"
 
@@ -625,9 +623,7 @@ uuid = "44cfe95a-1eb2-52ea-b672-e2afdf69b78f"
 
 [[Pollen]]
 deps = ["ANSIColoredPrinters", "AbstractTrees", "CSTParser", "CommonMark", "DataFrames", "DataStructures", "FilePathsBase", "Graphs", "Gumbo", "HTTP", "IJulia", "IOCapture", "InlineTest", "JSON3", "JuliaFormatter", "LiveServer", "MetaGraphs", "ModuleInfo", "Mustache", "Parameters", "Revise", "TOML"]
-git-tree-sha1 = "23c1f5bd29babb5352808a93ce1f7773cd741388"
-repo-rev = "frontend"
-repo-url = "https://github.com/lorenzoh/Pollen.jl"
+path = "../../Pollen"
 uuid = "c88717ad-5130-4874-a664-5a9aba5ec443"
 version = "0.1.0"
 

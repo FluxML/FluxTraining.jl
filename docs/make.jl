@@ -12,7 +12,7 @@ DIR = abspath(mkpath(ARGS[1]))
 
 # Create Project
 m = PACKAGE
-ms = [PACKAGE,]
+ms = [m, m.Events, m.Phases, m.Loggables]
 
 
 @info "Creating project..."

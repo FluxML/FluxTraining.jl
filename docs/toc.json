@@ -12,7 +12,8 @@
     },
     "Reference": {
         "Module": "references/FluxTraining",
-        "List of callbacks": "documents/docs/callbacks/reference.md"
+        "List of callbacks": "documents/docs/callbacks/reference.md",
+        "Training loop API": "documents/docs/reference/training.md"
     },
     "Backround": {
         "Hyperparameter scheduling": "documents/docs/hyperparameters.md",
