@@ -1,0 +1,1 @@
+import{S as e,i as t,s as n}from"../../chunks/vendor-ec47df3e.js";import{b as r}from"../../chunks/paths-4b3c6e7e.js";const u=!0,d=!1;async function l(){return{status:302,redirect:`${r}/docs/dev/`}}class i extends e{constructor(s){super();t(this,s,null,null,n,{})}}export{i as default,d as hydrate,l as load,u as prerender};
