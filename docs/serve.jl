@@ -1,11 +1,30 @@
-using FluxTraining
+using Pkg
 using Pollen
-using GraphPlot
+
+using FluxTraining
+const PACKAGE = FluxTraining
 
 
-project = Pollen.documentationproject(FluxTraining;
-    refmodules = [FluxTraining, FluxTraining.Phases], watchpackage=true)
+# Create Project
+m = PACKAGE
+ms = [m, m.Events, m.Phases, m.Loggables]
 
-##
 
-Pollen.serve(project)
+@info "Creating project..."
+project = Project(
+    Pollen.Rewriter[
+        Pollen.DocumentFolder(pkgdir(m), prefix = "documents"),
+        Pollen.ParseCode(),
+        Pollen.ExecuteCode(),
+        Pollen.PackageDocumentation(ms),
+        Pollen.DocumentGraph(),
+        Pollen.SearchIndex(),
+        Pollen.SaveAttributes((:title,)),
+        Pollen.LoadFrontendConfig(pkgdir(m))
+    ],
+)
+
+
+DIR = mktempdir()
+@info "Serving from directory $DIR"
+Pollen.serve(project, DIR, lazy=false, format = Pollen.JSON())
