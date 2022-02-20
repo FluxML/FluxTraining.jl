@@ -3,6 +3,10 @@ module FluxTraining
 
 using LightGraphs
 using BSON: @load, @save
+using Colors: @colorant_str
+using ColorSchemes: ColorScheme, colorschemes
+using DataFrames: DataFrame, groupby, select, subset, combine
+using DataFrames.PooledArrays: PooledArray
 using Flux
 using Flux: Params, onecold
 using Flux.Optimise: update!
@@ -16,7 +20,7 @@ import OnlineStats
 using OnlineStats: EqualWeight, Mean, OnlineStat
 using Parameters
 using ProgressMeter: Progress, next!
-using Statistics: mean
+using Statistics: mean, median
 using UUIDs
 using Zygote
 using Animations
@@ -105,5 +109,6 @@ export AbstractCallback,
     step!,
     onecycle,
     loadmodel,
-    savemodel
+    savemodel,
+    ProfileRunner
 end # module
