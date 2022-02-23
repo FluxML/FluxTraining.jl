@@ -1,15 +1,22 @@
-
-
-
-
 """
     epoch!(learner, phase[, dataiter])
 
 Train `learner` for one epoch on `dataiter`. Iterates through
-`dataiter` and [`step!`](#)s for each batch/item. If no data iterator
-is passed in, use `learner.data[phasedataiter(phase)]`.
+`dataiter` and [`step!`](#)s for each batch/item.
 
-This behavior can be overloaded using a custom [`Phase`](#).
+If no data iterator is passed in, use `learner.data[phasedataiter(phase)]`.
+
+## Extending
+
+The default implementation iterates over every batch in `dataiter`
+and calls [`step!`](#) for each. This behavior can be overloaded
+by implementing `epoch!(learner, ::MyPhase, dataiter)`.
+
+If you're implementing a custom `epoch!` method, it is recommended
+you make use of [`runepoch`](#) to get begin and end events as well
+as proper handling of [`CancelEpochException`](#)s.
+
+See the default implementation for reference.
 """
 function epoch!(learner, phase::Phase, dataiter=learner.data[phasedataiter(phase)])
     runepoch(learner, phase) do _
@@ -23,8 +30,18 @@ end
 """
     step!(learner, phase::Phase, batch)
 
-Run one step of training for `learner` on batch. Behavior is customized
-through `phase`.
+Run one step of training for `learner` on batch.
+Behavior is customized through `phase`.
+
+## Extending
+
+This is a required method for custom [`Phase`](#)s to implement.
+To implement `step!`, it is recommended you make use of [`runstep`](#)
+to get begin and end events as well as proper handling of
+[`CancelStepException`](#)s.
+
+See the implementations of [`TrainingPhase`](#) and [`ValidationPhase`](#)
+for reference.
 """
 function step! end
 
