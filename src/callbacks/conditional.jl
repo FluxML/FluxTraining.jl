@@ -2,11 +2,30 @@
 # High-level interface
 
 """
-    throttle(callback, event, freq = 1)
-    throttle(callback, event, seconds = 1)
+    throttle(callback, Event, freq = 1)
+    throttle(callback, Event, seconds = 1)
 
-Throttle `event` for `callback` so that it is triggered either only every
+Throttle `Event` type for `callback` so that it is triggered either only every
 `freq`'th time  or every `seconds` seconds.
+
+## Examples
+
+If you want to only sporadically log metrics ([`LogMetrics`](#)) or images
+([`LogVisualization`](#)), `throttle` can be used as follows.
+
+Every 10 steps:
+
+```julia
+callback = throttle(LogMetrics(TensorBoardBackend()), StepEnd, freq = 10)
+learner = Learner(<args>, callback)
+```
+
+Or every 5 seconds:
+
+```julia
+callback = throttle(LogMetrics(TensorBoardBackend()), StepEnd, seconds = 5)
+learner = Learner(<args>, callback)
+```
 """
 function throttle(callback, event::Type{<:Event}; freq = nothing, seconds = nothing)
     xor(isnothing(freq), isnothing(seconds)) || error("Pass either `every` OR `seconds`.")
