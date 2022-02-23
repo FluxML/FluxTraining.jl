@@ -73,6 +73,7 @@ function runepoch(epochfn, learner, phase::Phase)
     catch e
         if e isa CancelEpochException
             @debug "Epoch skipped" error = e
+            handlefn(EpochEnd())
         else
             rethrow()
         end
