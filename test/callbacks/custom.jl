@@ -1,7 +1,7 @@
 include("../imports.jl")
 
 
-@testset ExtendedTestSet "`CustomCallback`" begin
+@testset "`CustomCallback`" begin
     cb = CustomCallback(Events.StepEnd, TrainingPhase) do learner
         throw(CancelFittingException("test"))
     end

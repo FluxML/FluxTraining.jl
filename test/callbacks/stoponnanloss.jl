@@ -1,7 +1,7 @@
 include("../imports.jl")
 
 
-@testset ExtendedTestSet "`StopOnNanLoss`" begin
+@testset "`StopOnNanLoss`" begin
     learner = testlearner(coeff = NaN, Recorder(), StopOnNaNLoss())
     # Epoch will be cancelled
     @test_throws CancelFittingException fit!(learner, 1)

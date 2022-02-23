@@ -1,19 +1,19 @@
 include("imports.jl")
 
-@testset ExtendedTestSet "getcallback" begin
+@testset "getcallback" begin
     learner = testlearner(usedefaultcallbacks = true)
     @test getcallback(learner, Metrics) isa Metrics
     @test getcallback(learner, Checkpointer) isa Nothing
 end
 
-@testset ExtendedTestSet "removecallback!" begin
+@testset "removecallback!" begin
     learner = testlearner(usedefaultcallbacks = true)
     @test removecallback!(learner, Metrics) isa Metrics
     @test getcallback(learner, Metrics) isa Nothing
 
 end
 
-@testset ExtendedTestSet "replacecallback!" begin
+@testset "replacecallback!" begin
     learner = testlearner(usedefaultcallbacks = true)
     cb = getcallback(learner, Metrics)
     cbtaken = replacecallback!(learner, Metrics(accuracy))
@@ -24,7 +24,7 @@ end
 end
 
 
-@testset ExtendedTestSet "addcallback!" begin
+@testset "addcallback!" begin
     learner = testlearner(usedefaultcallbacks = true)
     cb = Checkpointer(mktempdir())
     @test getcallback(learner, Checkpointer) isa Nothing
@@ -33,7 +33,7 @@ end
 end
 
 
-@testset ExtendedTestSet "setcallbacks!" begin
+@testset "setcallbacks!" begin
     learner = testlearner(usedefaultcallbacks = true)
     @test length(learner.callbacks.cbs) != 1
     @test_nowarn setcallbacks!(learner, [Metrics(accuracy)])

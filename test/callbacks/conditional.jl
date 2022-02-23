@@ -1,7 +1,7 @@
 include("../imports.jl")
 
 
-@testset ExtendedTestSet "`throttle` steps" begin
+@testset "`throttle` steps" begin
     cb = CustomCallback(Events.StepBegin, TrainingPhase) do learner
             throw(CancelStepException("test"))
     end

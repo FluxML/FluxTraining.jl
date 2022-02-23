@@ -7,6 +7,7 @@ using Flux
 using Flux: Params, onecold
 using Flux.Optimise: update!
 using ImageCore
+using InlineTest
 using Glob
 module ES
     using Reexport
@@ -25,7 +26,6 @@ using Zygote: Grads, gradient
 using ValueHistories
 using DataStructures: DefaultDict
 using PrettyTables
-
 
 # functional
 include("./functional/metrics.jl")
@@ -65,6 +65,7 @@ include("./callbackutils.jl")
 
 include("./training.jl")
 
+include("testutils.jl")
 
 export AbstractCallback,
     Loss,
