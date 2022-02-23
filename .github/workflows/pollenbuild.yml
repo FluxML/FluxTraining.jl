@@ -1,4 +1,4 @@
-name: pollenexport
+name: pollenbuild
 
 on:
   push:
