@@ -154,14 +154,14 @@ Keyword:
     the callback works if `metricfn` doesn't support arrays from other device
     types. If, for example, `metricfn` works on `CurArray`s, you can pass
     `device = Flux.gpu`.
-- `P = Phase`: a (sub)type of [`Phase`](#) that restricts for which phases the
+- `phase = Phase`: a (sub)type of [`Phase`](#) that restricts for which phases the
     metric is computed.
 
 ## Examples
 
-```julia
-cb = Metric(accuracy)
-```
+- `Metric(accuracy)`
+- `Metric(Flux.mse, device = gpu, name = "Mean Squared Error")`
+- `Metric(Flux.mae, device = gpu)`
 
 ```julia
 cb = Metric(Flux.mse, device = gpu, name = "Mean Squared Error")
