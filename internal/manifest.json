@@ -1,6 +1,6 @@
 {
   ".svelte-kit/runtime/client/start.js": {
-    "file": "start-ad002fef.js",
+    "file": "start-8c2906d0.js",
     "src": ".svelte-kit/runtime/client/start.js",
     "isEntry": true,
     "imports": [
@@ -12,7 +12,7 @@
       ".svelte-kit/runtime/components/error.svelte",
       "src/routes/index.svelte",
       "src/routes/[version]/index.svelte",
-      "src/routes/[version]/interactive.svelte",
+      "src/routes/[version]/i.svelte",
       "src/routes/[version]/[...documentId].svelte"
     ]
   },
@@ -25,7 +25,7 @@
       "_vendor-02f5c973.js"
     ],
     "css": [
-      "assets/pages/__layout.svelte-24499499.css"
+      "assets/pages/__layout.svelte-7a60fd52.css"
     ]
   },
   ".svelte-kit/runtime/components/error.svelte": {
@@ -38,12 +38,13 @@
     ]
   },
   "src/routes/index.svelte": {
-    "file": "pages/index.svelte-2ed8f172.js",
+    "file": "pages/index.svelte-f67a7475.js",
     "src": "src/routes/index.svelte",
     "isEntry": true,
     "isDynamicEntry": true,
     "imports": [
-      "_vendor-02f5c973.js"
+      "_vendor-02f5c973.js",
+      "_paths-4b3c6e7e.js"
     ]
   },
   "src/routes/[version]/index.svelte": {
@@ -55,28 +56,28 @@
       "_vendor-02f5c973.js"
     ]
   },
-  "src/routes/[version]/interactive.svelte": {
-    "file": "pages/_version_/interactive.svelte-15b2239c.js",
-    "src": "src/routes/[version]/interactive.svelte",
+  "src/routes/[version]/i.svelte": {
+    "file": "pages/_version_/i.svelte-65762e15.js",
+    "src": "src/routes/[version]/i.svelte",
     "isEntry": true,
     "isDynamicEntry": true,
     "imports": [
       "_vendor-02f5c973.js",
       "_paths-4b3c6e7e.js",
-      "_documentloader-b267f332.js"
+      "_documentloader-0eee263e.js"
     ],
     "css": [
-      "assets/pages/_version_/interactive.svelte-355f21a9.css"
+      "assets/pages/_version_/i.svelte-d1360655.css"
     ]
   },
   "src/routes/[version]/[...documentId].svelte": {
-    "file": "pages/_version_/_...documentId_.svelte-2f120ce9.js",
+    "file": "pages/_version_/_...documentId_.svelte-1b988523.js",
     "src": "src/routes/[version]/[...documentId].svelte",
     "isEntry": true,
     "isDynamicEntry": true,
     "imports": [
       "_vendor-02f5c973.js",
-      "_documentloader-b267f332.js",
+      "_documentloader-0eee263e.js",
       "_paths-4b3c6e7e.js"
     ]
   },
@@ -86,8 +87,8 @@
   "_paths-4b3c6e7e.js": {
     "file": "chunks/paths-4b3c6e7e.js"
   },
-  "_documentloader-b267f332.js": {
-    "file": "chunks/documentloader-b267f332.js",
+  "_documentloader-0eee263e.js": {
+    "file": "chunks/documentloader-0eee263e.js",
     "imports": [
       "_vendor-02f5c973.js"
     ],
