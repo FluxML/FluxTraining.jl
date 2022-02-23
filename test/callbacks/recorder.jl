@@ -1,7 +1,7 @@
 include("../imports.jl")
 
 
-@testset ExtendedTestSet "`Recorder`" begin
+@testset "`Recorder`" begin
     learner = testlearner(coeff = 3, Recorder())
     h = learner.cbstate.history[TrainingPhase()]
     @test h.epochs == 0

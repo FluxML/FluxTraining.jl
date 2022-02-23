@@ -1,7 +1,7 @@
 include("../imports.jl")
 
 
-@testset ExtendedTestSet "`Checkpointer`" begin
+@testset "`Checkpointer`" begin
     checkpointer = Checkpointer(mktempdir())
     learner = testlearner(Recorder(), Metrics(), checkpointer)
     @test length(readdir(checkpointer.folder)) == 0
