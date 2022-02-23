@@ -8,7 +8,7 @@
 Throttle `event` for `callback` so that it is triggered either only every
 `freq`'th time  or every `seconds` seconds.
 """
-function throttle(callback, event; freq = nothing, seconds = nothing)
+function throttle(callback, event::Type{<:Event}; freq = nothing, seconds = nothing)
     xor(isnothing(freq), isnothing(seconds)) || error("Pass either `every` OR `seconds`.")
     if !isnothing(freq)
         return ConditionalCallback(callback, FrequencyThrottle(freq, event))
@@ -27,6 +27,7 @@ struct ConditionalCallback <: Callback
 end
 
 stateaccess(cc::ConditionalCallback) = stateaccess(cc.callback)
+init!(cc::ConditionalCallback, learner) = init!(cc.callback, learner)
 
 function on(event::Event, phase::Phase, cb::ConditionalCallback, learner)
     if shouldrun(cb.condition, event, phase)
@@ -39,7 +40,7 @@ mutable struct FrequencyThrottle <: CallbackCondition
     freq
     event
     counter
-    FrequencyThrottle(f, e, c = 1) = new(f, e, c)
+    FrequencyThrottle(f, e) = new(f, e, 1)
 end
 
 function shouldrun(c::FrequencyThrottle, event, phase)
@@ -74,5 +75,26 @@ function shouldrun(c::TimeThrottle, event, phase)
         end
     else
         return true
+    end
+end
+
+
+@testset "throttle" begin
+    function train(cb)
+        learner = testlearner(cb)
+        epoch!(learner, TrainingPhase())
+        return learner.cbstate.history[TrainingPhase()]
+    end
+
+
+    @test train(Recorder()).steps == 16
+    @testset "freq" begin
+        @test train(throttle(Recorder(), StepEnd, freq = 2)).steps == 8
+        @test train(throttle(Recorder(), StepEnd, freq = 16)).steps == 1
+    end
+
+    @testset "seconds" begin
+        @test train(throttle(Recorder(), StepEnd, seconds = 0)).steps == 16
+        @test train(throttle(Recorder(), StepEnd, seconds = 10)).steps == 1
     end
 end
