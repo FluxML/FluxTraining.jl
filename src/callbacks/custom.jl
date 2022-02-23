@@ -1,19 +1,30 @@
 
 """
-    CustomCallback(f, TEvent, [TPhase = Phase, access = (;)])
+    CustomCallback(f, Event, [TPhase = Phase, access = (;)])
 
-A callback that runs `f(learner)` every time `TEvent` is triggered
-in `TPhase`.
+A callback that runs `f(learner)` every time an event of type `Event`
+during a phase of type in `Phase`.
 
 If `f` needs to access learner state, pass `access`, a named tuple
 in the same form as [`stateaccess`](#).
+
+Instead of using [`CustomCallback`](#) it is recommended to properly
+implement a [`Callback`](#).
+
+## Examples
+
+We can get a quick idea of when a new epoch starts as follows:
+
+```julia
+cb = CustomCallback(learner -> println("New epoch!"), EpochBegin)
+```
 """
 mutable struct CustomCallback{E<:Event,P<:Phase} <: Callback
     f::Any
     access
 end
 
-function CustomCallback(f, E::Type{<:Event}, P::Type{<:Phase}, access = (;))
+function CustomCallback(f, E::Type{<:Event}, P::Type{<:Phase} = Phase, access = (;))
     return CustomCallback{E, P}(f, access)
 end
 
