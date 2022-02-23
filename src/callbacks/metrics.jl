@@ -254,7 +254,7 @@ function SmoothLoss(β = 0.02)
 end
 
 @testset "Metric" begin
-    cb = Metrics(Metric(accuracy, P = ValidationPhase))
+    cb = Metrics(Metric(accuracy, phase = ValidationPhase))
     learner = testlearner(Recorder(), cb)
     @test_nowarn fit!(learner, 1)
     @test :Accuracy ∈ keys(learner.cbstate.metricsstep[ValidationPhase()])
