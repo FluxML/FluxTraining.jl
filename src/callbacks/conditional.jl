@@ -126,8 +126,10 @@ end
         @test train(throttle(Recorder(), StepEnd, freq = 16)).steps == 1
     end
 
-    @testset "seconds" begin
-        @test train(throttle(Recorder(), StepEnd, seconds = 0)).steps == 16
-        @test train(throttle(Recorder(), StepEnd, seconds = 10)).steps == 1
+    if !Base.Sys.iswindows()
+        @testset "seconds" begin
+            @test train(throttle(Recorder(), StepEnd, seconds = 0)).steps == 16
+            @test train(throttle(Recorder(), StepEnd, seconds = 10)).steps == 1
+        end
     end
 end
