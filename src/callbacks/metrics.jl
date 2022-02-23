@@ -1,17 +1,34 @@
 """
-    Metrics(metrics...)
+    Metrics(metrics...) <: Callback
 
 Callback that tracks metrics during training.
 
-`metrics` can be both [`AbstractMetric`](#)s or functions
-like `f(ŷs, ys)` which will be converted to [`Metric`](#)s.
+You can pass any number of `metrics` with every argument being
+- an [`AbstractMetric`](#)s; or
+- a function `f(ŷs, ys) -> val`
 
-A metric tracking `lossfn` is included by default.
+A metric tracking `learner.lossfn` [`Loss`](#) is included by default. See
+also [`Metric`](#).
+
+The computed metrics can be access in `learner.cbstate.metricsstep` and
+`learner.cbstate.metricsepoch` for steps and epochs, respectively.
 
 ## Examples
 
-- `metrics = Metrics(accuracy)`
-- `metrics = Metrics(Metric(Flux.mse, device = gpu), Metric(Flux.mae, device = gpu))`
+Track [`accuracy`](#):
+
+```julia
+cb = Metrics(accuracy)
+```
+
+Pass in [`Metric`]s:
+
+```julia
+cb = Metrics(
+    Metric(Flux.mse, device = gpu),
+    Metric(Flux.mae, device = gpu)
+)
+```
 
 """
 struct Metrics <: Callback
@@ -105,20 +122,28 @@ Base.show(io::IO, metric::Metric{T}) where T = print(io, "Metric(", metric.name,
 Implementation of [`AbstractMetric`](#) that can be used with the
 [`Metrics`](#) callback.
 
+
 ## Arguments
 
+Positional:
+
 - `metricfn(ŷs, ys)` should return a number.
+
+Keyword:
+
 - `statistic` is a `OnlineStats.Statistic` that is updated after every step.
     The default is `OnlineStats.Mean()`
 - `name` is used for printing.
-- `device = cpu` is a function applied to `ys` and `ŷs` before calling
-    `metricfn`. If `metricfn` works on the GPU, you may want to pass
-    `Flux.gpu` here for better performance.
+- `device` is a function applied to `ŷs` and `ys`
+    before passing them to `metricfn`. The default is `Flux.cpu` so that
+    the callback works if `metricfn` doesn't support arrays from other device
+    types. If, for example, `metricfn` works on `CurArray`s, you can pass
+    `device = Flux.gpu`.
 
 ## Examples
 
 - `Metric(accuracy)`
-- `Metric(Flux.mse, device = gpu)`
+- `Metric(Flux.mse, device = gpu, name = "Mean Squared Error")`
 - `Metric(Flux.mae, device = gpu)`
 
 """

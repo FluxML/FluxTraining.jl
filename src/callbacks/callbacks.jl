@@ -75,12 +75,7 @@ end
 stateaccess(::StopOnNaNLoss) = (step = (loss = Read()),)
 
 
-"""
-    ToGPU()
 
-Callback that moves model and batch data to the GPU during training.
-"""
-ToGPU() = ToDevice(gpu, gpu)
 """
     ToDevice(movefn[, movemodelfn]) <: Callback
 
@@ -106,6 +101,15 @@ stateaccess(::ToDevice) = (
     params = Write(),
     step = Write(),
 )
+
+"""
+    ToGPU()
+
+Callback that moves model and batch data to the GPU during training.
+Convenience for [`ToDevice`](#)`(Flux.gpu)`.
+"""
+ToGPU() = ToDevice(gpu, gpu)
+
 
 function on(::StepBegin, ::Phase, cb::ToDevice, learner)
     learner.step.xs = cb.movedatafn(learner.step.xs)
