@@ -35,3 +35,24 @@ stateaccess(cc::CustomCallback) = cc.access
 function on(::E, ::P, cb::CustomCallback{E,P}, learner) where {E<:Event,P<:Phase}
     cb.f(learner)
 end
+
+
+@testset "CustomCallback" begin
+    @testset "Basic" begin
+        x = 0
+        cb = CustomCallback(learner -> (x += 1;), StepBegin)
+        learner = testlearner(cb)
+        epoch!(learner, TrainingPhase())
+        @test x == 16
+    end
+
+    @testset "Interrupt" begin
+        cb = CustomCallback(Events.StepEnd, TrainingPhase) do learner
+            throw(CancelFittingException("test"))
+        end
+        learner = testlearner(Recorder(), cb, coeff = 3)
+        @test_throws CancelFittingException epoch!(learner, TrainingPhase())
+        @test learner.cbstate.history[TrainingPhase()].epochs == 0
+        @test learner.cbstate.history[TrainingPhase()].steps == 0
+    end
+end
