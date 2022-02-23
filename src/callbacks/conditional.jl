@@ -38,8 +38,23 @@ end
 
 # Implementation
 
+"""
+    abstract type CallbackCondition
+
+Supertype for conditions to use with [`ConditionalCallback`](#).
+To implement a `CallbackCondition`, implement
+[`shouldrun`](#)`(::MyCondition, event, phase)`.
+
+See [`FrequencyThrottle`](#), [`TimeThrottle`](#) and [`throttle`](#).
+"""
 abstract type CallbackCondition end
 
+"""
+    ConditionalCallback(callback, condition) <: Callback
+
+Wrapper callback that only forwards events to the wrapped callback
+if [`CallbackCondition`](#) `condition` is met. See [`throttle`](#).
+"""
 struct ConditionalCallback <: Callback
     callback::Callback
     condition::CallbackCondition
@@ -104,7 +119,6 @@ end
         epoch!(learner, TrainingPhase())
         return learner.cbstate.history[TrainingPhase()]
     end
-
 
     @test train(Recorder()).steps == 16
     @testset "freq" begin
