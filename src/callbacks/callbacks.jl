@@ -33,9 +33,13 @@ stateaccess(::ProgressPrinter) = (data = Read(), cbstate = (history = Read()),)
 
 
 """
-    MetricsPrinter()
+    MetricsPrinter() <: Callback
 
-Prints metrics after every epoch. Relies on [`Metrics`](#).
+Callback that prints metrics after every epoch. Relies on the metrics computed by
+[`Metrics`](#), so will error if no `Metrics` callback is used.
+
+This callback is added by default to every [`Learner`](#) unless you pass in
+`usedefaultcallbacks = false`.
 """
 struct MetricsPrinter <: Callback end
 
@@ -65,6 +69,9 @@ runafter(::MetricsPrinter) = (Metrics,)
     StopOnNaNLoss()
 
 Stops the training when a NaN loss is encountered.
+
+This callback is added by default to every [`Learner`](#) unless you pass in
+`usedefaultcallbacks = false`.
 """
 struct StopOnNaNLoss <: Callback end
 

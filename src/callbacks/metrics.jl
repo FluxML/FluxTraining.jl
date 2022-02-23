@@ -4,11 +4,12 @@
 Callback that tracks metrics during training.
 
 You can pass any number of `metrics` with every argument being
-- an [`AbstractMetric`](#)s; or
+- an [`AbstractMetric`](#) like [`Metric`](#); or
 - a function `f(ŷs, ys) -> val`
 
-A metric tracking `learner.lossfn` [`Loss`](#) is included by default. See
-also [`Metric`](#).
+This callback is added by default to every [`Learner`](#) unless you pass in
+`usedefaultcallbacks = false`. A metric tracking `learner.lossfn` [`Loss`](#)
+is included by default.
 
 The computed metrics can be access in `learner.cbstate.metricsstep` and
 `learner.cbstate.metricsepoch` for steps and epochs, respectively.
