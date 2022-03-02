@@ -5,7 +5,7 @@ abstract type SafeCallback <: AbstractCallback end
     abstract type Callback
 
 Callbacks can add custom functionality to the training loop.
-See [custom callbacks](../docs/callbacks/custom.md) for more info.
+See [custom callbacks](/documents/docs/callbacks/custom.md) for more info.
 """
 const Callback = SafeCallback
 abstract type UnsafeCallback <: AbstractCallback end
