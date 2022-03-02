@@ -33,9 +33,13 @@ stateaccess(::ProgressPrinter) = (data = Read(), cbstate = (history = Read()),)
 
 
 """
-    MetricsPrinter()
+    MetricsPrinter() <: Callback
 
-Prints metrics after every epoch. Relies on [`Metrics`](#).
+Callback that prints metrics after every epoch. Relies on the metrics computed by
+[`Metrics`](#), so will error if no `Metrics` callback is used.
+
+This callback is added by default to every [`Learner`](#) unless you pass in
+`usedefaultcallbacks = false`.
 """
 struct MetricsPrinter <: Callback end
 
@@ -65,6 +69,9 @@ runafter(::MetricsPrinter) = (Metrics,)
     StopOnNaNLoss()
 
 Stops the training when a NaN loss is encountered.
+
+This callback is added by default to every [`Learner`](#) unless you pass in
+`usedefaultcallbacks = false`.
 """
 struct StopOnNaNLoss <: Callback end
 
@@ -75,12 +82,7 @@ end
 stateaccess(::StopOnNaNLoss) = (step = (loss = Read()),)
 
 
-"""
-    ToGPU()
 
-Callback that moves model and batch data to the GPU during training.
-"""
-ToGPU() = ToDevice(gpu, gpu)
 """
     ToDevice(movefn[, movemodelfn]) <: Callback
 
@@ -106,6 +108,15 @@ stateaccess(::ToDevice) = (
     params = Write(),
     step = Write(),
 )
+
+"""
+    ToGPU()
+
+Callback that moves model and batch data to the GPU during training.
+Convenience for [`ToDevice`](#)`(Flux.gpu)`.
+"""
+ToGPU() = ToDevice(gpu, gpu)
+
 
 function on(::StepBegin, ::Phase, cb::ToDevice, learner)
     learner.step.xs = cb.movedatafn(learner.step.xs)
@@ -134,6 +145,6 @@ sometimes help.
 function GarbageCollect(nsteps::Int = 100)
     return throttle(
         CustomCallback((learner) -> garbagecollect(), StepEnd, Phase),
-        StepEnd(),
+        StepEnd,
         freq = nsteps)
 end

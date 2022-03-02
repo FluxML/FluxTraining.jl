@@ -90,6 +90,15 @@ end
 
 Creates a one-cycle [`Schedule`](#) over `nsteps` steps from `start_val`
 over `max_val` to `end_val`.
+
+## Examples
+
+```julia
+
+epochlength = length(traindataiter)
+cb = Scheduler(LearningRate => onecycle(10epochlength, 0.01))
+learner = Learner(<args>..., cb)
+```
 """
 function onecycle(
         nsteps, max_val;
