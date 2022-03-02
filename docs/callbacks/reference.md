@@ -2,7 +2,7 @@
 
 ## Included callbacks
 
-*FluxTraining.jl* comes included with many callbacks. Some of them are added to `Learner` by default, here marked with a *.
+*FluxTraining.jl* comes with many callbacks included. Some of them are added to `Learner` by default, here marked with a *.
 
 | **Callback**            | **Description**                                                     |
 | ----------------------- | ------------------------------------------------------------------- |
