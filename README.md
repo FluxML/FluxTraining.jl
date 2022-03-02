@@ -6,10 +6,10 @@ A Julia package for using and writing powerful, extensible training loops for de
 
 ## What does it do?
 
-- Implements common training loops to take the boilerplate out of training deep learning models
-- Lets you add features to training loops through reusable callbacks
-- Comes with callbacks for many common use cases like hyperparameter scheduling, metrics tracking, checkpointing, early stopping, and more
-- Is extensible by creating custom, reusable callbacks or even custom training loops
+- Implements a training loop to take the boilerplate out of training deep learning models
+- Lets you add features to training loops through reusable [callbacks](/documents/docs/callbacks/usage.md)
+- Comes with callbacks for many common use cases like [hyperparameter scheduling](/documents/docs/tutorials/hyperparameters.md), [metrics](/references/FluxTraining.Metrics) tracking and [logging](/references/FluxTraining.LogMetrics), [checkpointing](/references/FluxTraining.Checkpointer), [early stopping](/references/FluxTraining.EarlyStopping), and [more...](/documents/docs/callbacks/reference.md)
+- Is extensible by creating [custom, reusable callbacks](/documents/docs/callbacks/custom.md) or even [custom training loops](/documents/docs/tutorials/training.md)
 
 ## When should you use FluxTraining.jl?
 
@@ -39,7 +39,7 @@ fit!(learner, 10)
 
 - [Getting started](docs/getting_started.md)
 - [A full example training an image classifier on the MNIST dataset](docs/tutorials/mnist.ipynb)
-- The [FastAI.jl documentation](https://fluxml.github.io/FastAI.jl/dev) which features many end-to-end examples
+- The [documentation of FastAI.jl](https://fluxml.github.io/FastAI.jl/dev) which features many end-to-end examples
 
 ## Acknowledgements
 
