@@ -1,6 +1,6 @@
 # Custom callbacks
 
-*FluxTraining.jl*'s callback system is built around multiple dispatch, so you specify which part of the training you want to "hook into" by dispatching on [`Phase`](#)s and `Event`s. See [Training loop](../training/basics.md) and [`Events`](#) as a reference to phases and events.
+*FluxTraining.jl*'s callback system is built around multiple dispatch, so you specify which part of the training you want to "hook into" by dispatching on [`Phase`](#)s and `Event`s. See [Training loop](/documents/docs/tutorials/training.md) and [`Events`](#) as a reference to phases and events.
 
 ## A guided example
 
@@ -24,7 +24,7 @@ end
 
 ### Event handlers
 
-Now we need to add an event handler so that `Printer` can run some code when a step ends. Event handlers can be defined by adding a method to `FluxTraining.on`. It takes as arguments an [event](#events), a [phase](#phases), the callback and the learner:
+Now we need to add an event handler so that `Printer` can run some code when a step ends. Event handlers can be defined by adding a method to `FluxTraining.on`. It takes as arguments an [`Event`](#), a [`Phase`](#), the callback and the learner:
 
 `on(event::Event, phase::Phase, callback::Callback, learner)`
 

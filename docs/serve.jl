@@ -4,6 +4,7 @@ using Pollen
 using FluxTraining
 const PACKAGE = FluxTraining
 
+LAZY = get(ENV, "POLLEN_LAZY", "false") == "true"
 
 # Create Project
 m = PACKAGE
@@ -27,4 +28,4 @@ project = Project(
 
 DIR = mktempdir()
 @info "Serving from directory $DIR"
-Pollen.serve(project, DIR, lazy=false, format = Pollen.JSON())
+Pollen.serve(project, DIR, lazy=LAZY, format = Pollen.JSON())

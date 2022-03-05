@@ -20,7 +20,7 @@ Any `Callback` can be used by passing it to [`Learner`](#). See
 
 ## Extending
 
-See [Custom callbacks](documents/docs/callbacks/custom.md) for a less
+See [Custom callbacks](/documents/docs/callbacks/custom.md) for a less
 succinct tutorial format.
 
 1. Create a `struct MyCallback` that subtypes `FluxTraining.Callback`.
@@ -41,7 +41,6 @@ succinct tutorial format.
    `stateaccess`.
 4. If the callback needs some one-time initialization, you can implement [`init!`](#)
    which will be run at least once before any step is run.
-
 """
 const Callback = SafeCallback
 

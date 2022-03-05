@@ -1,20 +1,46 @@
 # FluxTraining.jl
 
-[Docs (master)](https://fluxml.ai/FluxTraining.jl/dev/)
+[Docs (master)](https://fluxml.ai/FluxTraining.jl/dev/i)
+
+A Julia package for using and writing powerful, extensible training loops for deep learning models.
+
+## What does it do?
+
+- Implements a training loop to take the boilerplate out of training deep learning models
+- Lets you add features to training loops through reusable [callbacks](/documents/docs/callbacks/usage.md)
+- Comes with callbacks for many common use cases like [hyperparameter scheduling](/documents/docs/tutorials/hyperparameters.md), [metrics](/references/FluxTraining.Metrics) tracking and [logging](/references/FluxTraining.LogMetrics), [checkpointing](/references/FluxTraining.Checkpointer), [early stopping](/references/FluxTraining.EarlyStopping), and [more...](/documents/docs/callbacks/reference.md)
+- Is extensible by creating [custom, reusable callbacks](/documents/docs/callbacks/custom.md) or even [custom training loops](/documents/docs/tutorials/training.md)
+
+## When should you use FluxTraining.jl?
+
+- You don't want to implement your own metrics tracking and hyperparameter scheduling or _insert common training feature here_ for the 10th time
+- You want to use composable and reusable components that enhance your training loop
+- You want a simple training loop with reasonable defaults that can grow to the needs of your project
 
 
-A powerful, extensible neural net training library.
+### How do you use it?
 
-*FluxTraining.jl* gives you an endlessly extensible training loop for deep learning inspired by [fastai](https://docs.fast.ai)'s training loop. It is the training backend for [FastAI.jl](https://github.com/FluxML/FastAI.jl).
+Install like any other Julia package using the package manager:
 
-It exposes a small set of extensible interfaces and uses them to implement
+```julia-repl
+]add FluxTraining
+```
 
-- [hyperparameter scheduling](docs/tutorials/hyperparameters.md)
-- [metrics](docs/callbacks/custom.md)
-- logging
-- training history; and
-- model checkpointing
+After installation, import it, create a `Learner` from a [Flux.jl](https://github.com/FluxML/Flux.jl) model, data iterators, an optimizer, and a loss function. Finally train with [`fit!`](#).
 
-Install using `]add FluxTraining`.
+```julia
+using FluxTraining
 
-Read [getting started](docs/getting_started.md) first and the [user guide](docs/overview.md) if you want to know more.
+learner = Learner(model, (trainiter, validiter), optim, lossfn)
+fit!(learner, 10)
+```
+
+## Next, you may want to read
+
+- [Getting started](docs/getting_started.md)
+- [A full example training an image classifier on the MNIST dataset](docs/tutorials/mnist.ipynb)
+- The [documentation of FastAI.jl](https://fluxml.github.io/FastAI.jl/dev) which features many end-to-end examples
+
+## Acknowledgements
+
+The design of FluxTraining.jl's two-way callbacks is adapted from [fastai](https://docs.fast.ai)'s training loop.
