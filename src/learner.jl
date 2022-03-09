@@ -137,7 +137,7 @@ function _dataiters(t::Tuple)
 end
 
 
-paramsrec(m) = params(m)
+paramsrec(m) = Flux.params(m)
 paramsrec(t::Union{Tuple,NamedTuple}) = map(paramsrec, t)
 
 # Callback utilities
