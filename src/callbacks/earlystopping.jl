@@ -19,14 +19,14 @@ and the training loss with keyword arguments `trainphase` (default
 ## Examples
 
 ```julia
-Learner(model, data, optimizer, lossfn, EarlyStopping(3))
+Learner(model, lossfn, callbacks=[EarlyStopping(3)])
 ```
 
 ```julia
 import FluxTraining.ES: Disjunction, InvalidValue, TimeLimit
 
 callback = EarlyStopping(Disjunction(InvalidValue(), TimeLimit(0.5)))
-Learner(model, data, optimizer, lossfn, callback)
+Learner(model, lossfn, callbacks=[callback])
 ```
 """
 mutable struct EarlyStopping <: Callback

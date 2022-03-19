@@ -31,8 +31,8 @@ After installation, import it, create a `Learner` from a [Flux.jl](https://githu
 ```julia
 using FluxTraining
 
-learner = Learner(model, (trainiter, validiter), optim, lossfn)
-fit!(learner, 10)
+learner = Learner(model, lossfn)
+fit!(learner, 10, (trainiter, validiter))
 ```
 
 ## Next, you may want to read

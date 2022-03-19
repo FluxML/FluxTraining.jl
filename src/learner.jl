@@ -24,26 +24,29 @@ end
 
 
 """
-    Learner(model, data, optimizer, lossfn, [callbacks...; kwargs...])
+    Learner(model, lossfn; [callbacks = [], optimizer = ADAM(), kwargs...])
 
 Holds and coordinates all state of the training. `model` is trained by
 optimizing `lossfn` with `optimizer` on `data`.
 
 ## Arguments
 
+Positional arguments:
+
 - `model`: A Flux.jl model or a `NamedTuple` of models.
-- `data`: Data iterators. A 2-tuple will be treated as `(trainingdataiter, validdataiter)`.
+- `lossfn`: Loss function with signature `lossfn(model(x), y) -> Number`.
+
+Keyword arguments (optional):
+
+- `data = ()`: Data iterators. A 2-tuple will be treated as `(trainingdataiter, validdataiter)`.
     You can also pass in an empty tuple `()` and use the [`epoch!`](#) method with a
     `dataiter` as third argument.
 
     A data iterator is an iterable over batches. For regular supervised training,
     each batch should be a tuple `(xs, ys)`.
-- `lossfn`: Function with signature `lossfn(model(x), y) -> Number`
-- `optimizer`
-- `callbacks...`: Any other unnamed arguments are callbacks
-
-## Keyword arguments
-
+- `optimizer = ADAM()`: The optimizer used to update the `model`'s weights
+- `callbacks = []`: A list of callbacks that should be used. If `usedefaultcallbacks == true`,
+    this will be extended by the default callbacks
 - `usedefaultcallbacks = true`: Whether to add some basic callbacks. Included
     are [`Metrics`](#), [`Recorder`](#), [`ProgressPrinter`](#),
     [`StopOnNaNLoss`](#), and [`MetricsPrinter`](#).
@@ -63,6 +66,14 @@ optimizing `lossfn` with `optimizer` on `data`.
     save state to for other callbacks. Its keys depend on what callbacks
     are being used. See the [custom callbacks guide](/documents/docs/callbacks/custom.md)
     for more info.
+"""
+function Learner(model, lossfn; callbacks = [], data = (), optimizer = ADAM(), kwargs...)
+    return Learner(model, data, optimizer, lossfn, callbacks...; kwargs...)
+end
+
+
+"""
+    Learner(model, data, optimizer, lossfn, [callbacks...; kwargs...])
 """
 function Learner(
         model, data, optimizer, lossfn, callbacks::Vararg{<:Callback};

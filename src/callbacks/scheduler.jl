@@ -97,7 +97,7 @@ over `max_val` to `end_val`.
 
 epochlength = length(traindataiter)
 cb = Scheduler(LearningRate => onecycle(10epochlength, 0.01))
-learner = Learner(<args>..., cb)
+learner = Learner(<args>...; callbacks=[cb])
 ```
 """
 function onecycle(
