@@ -17,11 +17,11 @@ In recent years, it has also become common practice to schedule some hyperparame
 As an example
 
 - [`LearningRate`](#) is a hyperparameter type representing the optimizer's step size; and
-- `schedule = Schedule([0, 10], [0.01, 0.001])` represents a linear scheduling over 10 epochs from `0.01` to `0.001` 
+- `schedule = Exp(γ=0.9)` represents an exponential decay scheduling
 
 We can create the callback scheduling the learning rate according to `Scheduler(LearningRate => schedule)`.
 
-`Schedule`s are built around [*Animations.jl*](https://jkrumbiegel.github.io/Animations.jl/dev/). See that package's documentation or [`Schedule`](#)'s for more details on how to construct them. 
+`Schedule`s are built around [*ParameterSchedulers.jl*](https://darsnack.github.io/ParameterSchedulers.jl/dev/). See that package's documentation for more details on how to construct them.
 
 ### One-cycle learning rate
 
@@ -34,20 +34,18 @@ For example, we could start with a learning rate of 0.01, increase it to 0.1 ove
 In code, that looks like this:
 
 ```julia
-using Animations: sineio  # for cosine annealing
+using ParameterSchedulers: CosAnneal  # for cosine annealing
 
 es = length(traindl)     # number of steps in an epoch
 
-schedule = Schedule(
-    [0es, 3es, 10es],          # the time steps (in training steps)
-    [0.01, 0.1, 0.001],  # the valus at the time steps
-    sineio(),            # the annealing function
+schedule = CosAnneal(
+    λ0=0.01, # initial learning rate
+    λ1=0.001, # final learning rate
+    period=10es #
 )
 
 learner = model(model, data, opt, lossfn, Scheduler(LearningRate => schedule))
 ```
-
-For convenience, you can also use the [`onecycle`](#) helper to create this `Schedule`.
 
 ## Extending
 
