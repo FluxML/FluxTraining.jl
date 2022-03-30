@@ -1,6 +1,6 @@
 using ReTest
 using FluxTraining
-using Animations
+using ParameterSchedulers
 using Colors
 using ImageIO
 using FluxTraining: protect, Events, Phases, runstep, runepoch, epoch!, step!, testlearner, SanityCheckException
