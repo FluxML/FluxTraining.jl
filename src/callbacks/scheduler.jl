@@ -84,9 +84,6 @@ function onecycle(
         pct_start=0.25,
         div=25, divfinal=1e5,
         start_val=max_val / div, end_val=max_val / divfinal)
-    # return Animation(
-    #     [0, nsteps * pct_start, nsteps],
-    #     [start_val, max_val, end_val],
-    #     [Animations.sineio(), Animations.sineio()]
-    # )
+
+    Sequence([Sin(;λ0=max_val, λ1=start_val, period=ceil(Int, nsteps*pct_start)), CosAnneal(;λ0=end_val, λ1=max_val, period=floor(Int, (nsteps*(1-pct_start))), restart=false)], [nsteps*pct_start, nsteps * (1-pct_start)])
 end
