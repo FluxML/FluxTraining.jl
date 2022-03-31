@@ -19,7 +19,7 @@ opt = Flux.ADAM(0.01)
 Then we construct a [`Learner`](#):
 
 ```julia
-learner = Learner(model, (traindata, valdata), opt, lossfn)
+learner = Learner(model, lossfn; data=(traindata, valdata))
 ```
 
 And train for 10 epochs:

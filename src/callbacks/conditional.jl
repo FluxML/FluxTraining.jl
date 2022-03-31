@@ -17,14 +17,14 @@ Every 10 steps:
 
 ```julia
 callback = throttle(LogMetrics(TensorBoardBackend()), StepEnd, freq = 10)
-learner = Learner(<args>, callback)
+learner = Learner(<args>; callbacks=[callback])
 ```
 
 Or every 5 seconds:
 
 ```julia
 callback = throttle(LogMetrics(TensorBoardBackend()), StepEnd, seconds = 5)
-learner = Learner(<args>, callback)
+learner = Learner(<args>; callbacks=[callback])
 ```
 """
 function throttle(callback, event::Type{<:Event}; freq = nothing, seconds = nothing)

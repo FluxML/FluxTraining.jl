@@ -46,7 +46,7 @@ Example:
 
 ```julia
 logcb = LogMetrics(TensorBoardBackend("tblogs"))
-Learner(model, data, opt, lossfn, Metrics(accuracy), logcb)
+Learner(model, lossfn; callbacks=[Metrics(accuracy), logcb])
 ```
 """
 struct LogMetrics <: Callback
@@ -102,7 +102,7 @@ See also [`LoggerBackend`](#), [`Loggables.Loggable`](#), [`log_to`](#),
 ```julia
 logcb = LogHyperParams(TensorBoardBackend("tblogs"))
 schedule = ...
-Learner(model, data, opt, lossfn, Scheduler(LearningRate => schedule), logcb)
+Learner(model, lossfn; callbacks=[Scheduler(LearningRate => schedule), logcb])
 ```
 """
 struct LogHyperParams <: Callback

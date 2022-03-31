@@ -4,7 +4,7 @@ This page gives a run-down of many features *FluxTraining.jl* brings to the tabl
 
 ```julia
 cb = CoolFeature🕶️Callback()
-learner = Learner(model, data, opt, lossfn, cb)
+learner = Learner(model, lossfn; callbacks=[cb], data=(trainiter, validiter))
 fit!(learner, nepochs)
 ```
 
