@@ -55,6 +55,7 @@ learner = model(model, data, opt, lossfn, Scheduler(LearningRate => schedule))
 ```
 
 For convenience, you can also use the [`onecycle`](#) helper to create this `Schedule`.
+See [ParameterSchedulers.jl documentation](https://darsnack.github.io/ParameterSchedulers.jl/dev/docs/tutorials/warmup-schedules.html) for more details on warm-up schedules.
 
 ## Extending
 
