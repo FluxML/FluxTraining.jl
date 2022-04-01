@@ -34,18 +34,27 @@ For example, we could start with a learning rate of 0.01, increase it to 0.1 ove
 In code, that looks like this:
 
 ```julia
-using ParameterSchedulers: CosAnneal  # for cosine annealing
+using ParameterSchedulers: Shifted, Sin  # for cosine annealing
 
 es = length(traindl)     # number of steps in an epoch
 
-schedule = CosAnneal(
-    λ0=0.01, # initial learning rate
-    λ1=0.001, # final learning rate
-    period=10es #
+schedule = Sequence(
+    Sin(λ0=0.01, # initial learning rate
+        λ1=0.1, # max learning rate
+        period=2*3es #
+        ) => 3es,
+    Shifted(
+        Sin(λ0=0.1, # max learning rate
+            λ1=0.001, # end learning rate
+            period=2*7es 
+        ), 7es+1
+    ) => 7es
 )
 
 learner = model(model, data, opt, lossfn, Scheduler(LearningRate => schedule))
 ```
+
+For convenience, you can also use the [`onecycle`](#) helper to create this `Schedule`.
 
 ## Extending
 
