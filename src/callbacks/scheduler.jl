@@ -80,10 +80,13 @@ learner = Learner(<args>...; callbacks=[cb])
 ```
 """
 function onecycle(
-        nsteps, max_val;
-        pct_start=0.25,
-        div=25, divfinal=1e5,
-        start_val=max_val / div, end_val=max_val / divfinal)
+    nsteps, max_val;
+    pct_start=0.25,
+    div=25, divfinal=1e5,
+    start_val=max_val / div, end_val=max_val / divfinal)
+    warmup = ceil(Int, nsteps * pct_start)
+    warmdown = nsteps - warmup
 
-    Sequence([Sin(;λ0=max_val, λ1=start_val, period=ceil(Int, nsteps*pct_start)), CosAnneal(;λ0=end_val, λ1=max_val, period=floor(Int, (nsteps*(1-pct_start))), restart=false)], [nsteps*pct_start, nsteps * (1-pct_start)])
+    Sequence(Sin(λ0=max_val, λ1=start_val, period=2*warmup) => warmup,
+             Shifted(Sin(λ0=max_val, λ1=end_val, period=2*warmdown), warmdown + 1) => warmdown)
 end
