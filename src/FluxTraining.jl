@@ -103,6 +103,7 @@ export AbstractCallback,
     fit!,
     epoch!,
     step!,
+    onecycle,
     loadmodel,
     savemodel
 end # module
