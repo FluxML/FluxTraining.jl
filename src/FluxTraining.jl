@@ -1,7 +1,7 @@
 module FluxTraining
 
 
-using LightGraphs
+using Graphs
 using BSON: @load, @save
 using Colors: @colorant_str
 using ColorSchemes: ColorScheme, colorschemes
@@ -11,6 +11,7 @@ using Flux
 using Flux: Params, onecold
 using Flux.Optimise: update!
 using ImageCore
+using InlineTest
 using Glob
 module ES
     using Reexport
@@ -23,7 +24,7 @@ using ProgressMeter: Progress, next!
 using Statistics: mean, median
 using UUIDs
 using Zygote
-using Animations
+using ParameterSchedulers
 using TensorBoardLogger: TBLogger, log_value, log_image, log_text, log_histogram, tb_overwrite
 using Zygote: Grads, gradient
 using ValueHistories
@@ -70,6 +71,7 @@ include("./callbackutils.jl")
 
 include("./training.jl")
 
+include("testutils.jl")
 
 export AbstractCallback,
     Loss,

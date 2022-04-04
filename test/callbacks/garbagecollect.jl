@@ -1,7 +1,7 @@
 
 include("../imports.jl")
 
-@testset ExtendedTestSet "`GarbageCollect`" begin
+@testset "`GarbageCollect`" begin
     cb = GarbageCollect()
     learner = testlearner(Recorder(), Metrics(), cb)
     @test_nowarn fit!(learner, 1)

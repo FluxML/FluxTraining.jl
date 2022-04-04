@@ -1,7 +1,4 @@
-
-# Overview
-
-You decide what you want to read next!
+# Getting started
 
 - There are some user-centric tutorials that will introduce you to features of *FluxTraining.jl* one at a time
 - Alternatively you can read more about how *FluxTraining.jl* is implemented and how you can extend it
@@ -16,8 +13,6 @@ You decide what you want to read next!
 ### Training loop
 
 Find out how [the training loop](training/basics.md) is built and how to customize it.
-
-
 
 ### Callbacks
 

@@ -2,9 +2,9 @@ include("./imports.jl")
 
 
 
-@testset ExtendedTestSet "runstep, runepoch" begin
+@testset "runstep, runepoch" begin
     learner = testlearner(coeff = 3)
-    struct TestPhase <: Phase end
+    struct TestPhase <: AbstractTrainingPhase end
     state = runstep(learner, TestPhase()) do handle, state
         state.xs, state.ys = learner.data.training[1]
         state.loss = sum(abs.(state.xs - state.ys))
@@ -17,7 +17,7 @@ include("./imports.jl")
 end
 
 
-@testset ExtendedTestSet "TrainingPhase" begin
+@testset "TrainingPhase" begin
     learner = testlearner(coeff = 3)
     runepoch(learner, TrainingPhase()) do _
         state = step!(learner, TrainingPhase(), learner.data.training[1])
@@ -30,7 +30,7 @@ end
 end
 
 
-@testset ExtendedTestSet "ValidationPhase" begin
+@testset "ValidationPhase" begin
     learner = testlearner(coeff = 3)
     runepoch(learner, ValidationPhase()) do _
         state = step!(learner, ValidationPhase(), learner.data.validation[1])
@@ -42,7 +42,7 @@ end
 end
 
 
-@testset ExtendedTestSet "Basic `Learner` convergence" begin
+@testset "Basic `Learner` convergence" begin
     learner = testlearner(coeff = 3)
     fit!(learner, 5)
     @test learner.model.coeff[1] ≈ 3 atol = 0.1

@@ -1,16 +1,14 @@
-using Test
-using TestSetExtensions
+using ReTest
 using FluxTraining
-using Animations
+using ParameterSchedulers
 using Colors
-using FluxTraining: EpochEnd, LearningRate, protect, Protected,
-    ProtectedException, Read, Write, Events, Phases, runstep, runepoch, epoch!, step!
+using ImageIO
+using FluxTraining: protect, Events, Phases, runstep, runepoch, epoch!, step!, testlearner, SanityCheckException
 using FluxTraining: getcallback, setcallbacks!, replacecallback!, removecallback!, addcallback!
+using .Phases: Phase, AbstractTrainingPhase
 
-import FluxTraining.Phases: Phase
 using Flux: trainable
+using Flux.Optimise: Descent
 using Suppressor
-using FluxTraining: CHECKS, SanityCheckException
+using FluxTraining: CHECKS
 using Zygote
-
-include("./testdata.jl");

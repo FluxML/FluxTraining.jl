@@ -25,8 +25,8 @@ You can use [*GraphPlot.jl*](https://juliagraphs.github.io/GraphPlot.jl/) to vis
 {cell=main, output=false, result=false, style="display:none"}
 ```julia
 learner = Learner(
-    nothing, (nothing, nothing), nothing, nothing,  # dummy arguments
-    ToGPU(),
+    nothing, nothing,  # dummy arguments
+    callbacks=[ToGPU()],
 );
 ```
 
