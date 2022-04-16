@@ -8,7 +8,7 @@ using FluxTraining.Events, FluxTraining.Phases
 
 
 
-### Listing event handlers for a callback
+## Listing event handlers for a callback
 
 Use `Base.methods` to check what events a callback handles:
 
@@ -18,7 +18,7 @@ methods(FluxTraining.on, (Any, Any, Recorder, Any))
 ```
 
 
-### Visualize the callback dependency graph
+## Visualize the callback dependency graph
 
 You can use [*GraphPlot.jl*](https://juliagraphs.github.io/GraphPlot.jl/) to visualize the dependencies between callbacks:
 
@@ -33,7 +33,10 @@ learner = Learner(
 {cell=main}
 ```julia
 using GraphPlot
-gplot(learner.callbacks.graph, nodelabel = learner.callbacks.cbs, layout = stressmajorize_layout)
+gplot(
+    learner.callbacks.graph,
+    nodelabel = learner.callbacks.cbs,
+    layout = stressmajorize_layout)
 ```
 
 *(the target of an arrow depends on the origin)*

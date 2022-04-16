@@ -138,7 +138,7 @@ If not overwritten with a more specific method, does nothing.
 To see events which an `AbstractCallback` handles, use
 
 ```julia
-methods(Training.on, (Any, Any, MyCallbackType, Any)
+methods(Training.on, (Any, Any, MyCallbackType, Any))
 ```
 """
 on(::Event, phase, ::Callback, learner) = return

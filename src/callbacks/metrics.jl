@@ -10,8 +10,8 @@ A metric tracking `lossfn` is included by default.
 
 ## Examples
 
-- `metrics = Metrics(accuracy)`
-- `metrics = Metrics(Metric(Flux.mse, device = gpu), Metric(Flux.mae, device = gpu))`
+`metrics = Metrics(accuracy)`
+`metrics = Metrics(Metric(Flux.mse, device = gpu), Metric(Flux.mae, device = gpu))`
 
 """
 struct Metrics <: Callback

@@ -7,7 +7,7 @@
 ### Logging and I/O
 
 - [`Checkpointer`](#)
-- [`Metrics](#)*
+- [`Metrics`](#)*
 - [`MetricsPrinter`](#)*
 - [`ProgressPrinter`](#)*
 - [`Recorder`](#)*

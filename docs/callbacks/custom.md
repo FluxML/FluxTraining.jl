@@ -95,7 +95,7 @@ function FluxTraining.on(
         printer::Printer,
         learner)
     step = learner.cbstate.history.nstepsepoch  # steps completed in current epoch
-    println("Step ", , " loss:", learner.batch.loss)
+    println("Step ", step, " loss:", learner.batch.loss)
 end
 ```
 
@@ -117,9 +117,9 @@ When creating a `Learner`, a dependency graph is created. The graph is then anal
 ### Resolving conflicts
 
 There are two methods for resolving conflicts, `runafter` and `resolveconflict`.
-`runafter` allows you to define list of callbacks that should run before the callback. For example, `Recorder` needs to run after all metrics:
+`runafter` allows you to define list of callbacks that should run before the callback. For example, `Recorder` needs to run after the [`Metrics`](#) callback:
 ```julia
-FluxTraining.runafter(::Recorder) = (AbstractMetric,)
+FluxTraining.runafter(::Recorder) = (Metrics,)
 ```
 
 `resolveconflict` provides more granular control to handle a possible conflict between two callbacks. It takes two callbacks and defines how to resolve a conflict:
