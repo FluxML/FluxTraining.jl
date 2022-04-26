@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" /> <meta http-equiv="content-security-policy" content=""><title>FluxTraining.jl</title>
 	<link rel="stylesheet" href="/FluxTraining.jl/internal/assets/pages/__layout.svelte-1c625fee.css">
 	<link rel="stylesheet" href="/FluxTraining.jl/internal/assets/documentloader-de4e99d0.css">
-	<link rel="modulepreload" href="/FluxTraining.jl/internal/start-da91ae1e.js">
+	<link rel="modulepreload" href="/FluxTraining.jl/internal/start-b3a31c0a.js">
 	<link rel="modulepreload" href="/FluxTraining.jl/internal/chunks/vendor-82c3ebfd.js">
 	<link rel="modulepreload" href="/FluxTraining.jl/internal/chunks/paths-4b3c6e7e.js">
 	<link rel="modulepreload" href="/FluxTraining.jl/internal/pages/__layout.svelte-4bac7188.js">
@@ -96,160 +96,173 @@
 <svg data-carbon-icon="Script32" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="currentColor" width="32" height="32" preserveAspectRatio="xMidYMid meet" style="fill: gray; display: inline;" aria-hidden focusable="false"><path d="M18.83 26L21.41 23.42 20 22 16 26 20 30 21.42 28.59 18.83 26zM27.17 26L24.59 28.58 26 30 30 26 26 22 24.58 23.41 27.17 26z"></path><path d="M14,28H8V4h8v6a2.0058,2.0058,0,0,0,2,2h6v6h2V10a.9092.9092,0,0,0-.3-.7l-7-7A.9087.9087,0,0,0,18,2H8A2.0058,2.0058,0,0,0,6,4V28a2.0058,2.0058,0,0,0,2,2h6ZM18,4.4,23.6,10H18Z"></path>
     
   </svg></span></h1>
-	<div class="subtitle">CfYLJ/src/callbacks/
-		is a source file in module <code class="codeinline ">CfYLJ</code>
+	<div class="subtitle">7gIyL/src/callbacks/
+		is a source file in module <code class="codeinline ">7gIyL</code>
 	</div>
 	<div class="source julia">
-			<div class="container svelte-vj8ryq"><pre class="linenumbers svelte-vj8ryq">
-    <span class="linenumber svelte-vj8ryq">
-1
-    </span>
-</pre>
-		<pre class="snd codeblock codeblock svelte-vj8ryq"><code class="svelte-vj8ryq">
-			<span class="CST_DEFINITION ">
-			<span class="CST_macrocall ">
-			<span class="CST_span ">
-			<span class="CST_IDENTIFIER ">
-			@with_kw</span>
-			<span class="CST_whitespace ">
-			 </span></span>
-			<span class="CST_NOTHING ">
-			</span>
-			<span class="CST_struct ">
-			<span class="CST_span ">
-			<span class="CST_KEYWORD ">
+			<span class="julia ">
+			<pre class="codeblock codeblock svelte-vj8ryq"><code class="svelte-vj8ryq">
+			<span class="julia ">
+			<span class="MACROCALL ">
+			<span class="AT_SIGN ">
+			@</span>
+			<span class="MACRO_NAME ">
+			with_kw</span>
+			<span class="WHITESPACE ">
+			 </span>
+			<span class="STRUCT ">
+			<span class="MUTABLE ">
 			mutable</span>
-			<span class="CST_whitespace ">
-			 </span></span>
-			<span class="CST_span ">
-			<span class="CST_KEYWORD ">
-			struct</span>
-			<span class="CST_whitespace ">
-			 </span></span>
-			<span class="CST_TRUE ">
+			<span class="TRUE ">
 			</span>
-			<span class="CST_span ">
+			<span class="WHITESPACE ">
+			 </span>
+			<span class="STRUCT ">
+			struct</span>
+			<span class="WHITESPACE ">
+			 </span>
 			
 
 
 <a href="/FluxTraining.jl/dev/references/FluxTraining.History" class="reference symbol ">
 			History</a>
 	
-			<span class="CST_whitespace ">
+			<span class="BLOCK ">
+			<span class="NEWLINE_WS ">
 			
-    # Number of completed training epochs
-    </span></span>
-			<span class="CST_block ">
-			<span class="CST_OPERATOR ">
-			<span class="CST_OPERATOR ">
-			<span class="CST_IDENTIFIER ">
+    </span>
+			<span class="COMMENT ">
+			# Number of completed training epochs</span>
+			<span class="NEWLINE_WS ">
+			
+    </span>
+			<span class="EQ ">
+			<span class="DECLARATION ">
+			<span class="IDENTIFIER ">
 			epochs</span>
-			<span class="CST_OPERATOR ">
+			<span class="DECLARATION ">
 			::</span>
-			<span class="CST_span ">
-			<span class="CST_IDENTIFIER ">
-			Int</span>
-			<span class="CST_whitespace ">
-			 </span></span></span>
-			<span class="CST_OPERATOR ">
-			= </span>
-			<span class="CST_INTEGER ">
-			0
-    # total number of completed steps
-    </span></span>
-			<span class="CST_OPERATOR ">
-			<span class="CST_OPERATOR ">
-			<span class="CST_IDENTIFIER ">
-			steps</span>
-			<span class="CST_OPERATOR ">
-			::</span>
-			<span class="CST_span ">
-			<span class="CST_IDENTIFIER ">
-			Int</span>
-			<span class="CST_whitespace ">
-			 </span></span></span>
-			<span class="CST_OPERATOR ">
-			= </span>
-			<span class="CST_INTEGER ">
-			0
-    # number of completed steps in current epoch
-    </span></span>
-			<span class="CST_OPERATOR ">
-			<span class="CST_OPERATOR ">
-			<span class="CST_IDENTIFIER ">
-			stepsepoch</span>
-			<span class="CST_OPERATOR ">
-			::</span>
-			<span class="CST_span ">
-			<span class="CST_IDENTIFIER ">
-			Int</span>
-			<span class="CST_whitespace ">
-			 </span></span></span>
-			<span class="CST_OPERATOR ">
-			= </span>
-			<span class="CST_INTEGER ">
-			0
-</span></span></span>
-			<span class="CST_span ">
-			<span class="CST_KEYWORD ">
-			end</span>
-			<span class="CST_whitespace ">
+			<span class="IDENTIFIER ">
+			Int</span></span>
+			<span class="WHITESPACE ">
+			 </span>
+			<span class="EQ ">
+			=</span>
+			<span class="WHITESPACE ">
+			 </span>
+			<span class="INTEGER ">
+			0</span></span>
+			<span class="NEWLINE_WS ">
 			
-
-</span></span></span></span></span>
-			<span class="CST_DEFINITION ">
-			<span class="CST_struct ">
-			<span class="CST_span ">
-			<span class="CST_KEYWORD ">
-			struct</span>
-			<span class="CST_whitespace ">
-			 </span></span>
-			<span class="CST_FALSE ">
+    </span>
+			<span class="COMMENT ">
+			# total number of completed steps</span>
+			<span class="NEWLINE_WS ">
+			
+    </span>
+			<span class="EQ ">
+			<span class="DECLARATION ">
+			<span class="IDENTIFIER ">
+			steps</span>
+			<span class="DECLARATION ">
+			::</span>
+			<span class="IDENTIFIER ">
+			Int</span></span>
+			<span class="WHITESPACE ">
+			 </span>
+			<span class="EQ ">
+			=</span>
+			<span class="WHITESPACE ">
+			 </span>
+			<span class="INTEGER ">
+			0</span></span>
+			<span class="NEWLINE_WS ">
+			
+    </span>
+			<span class="COMMENT ">
+			# number of completed steps in current epoch</span>
+			<span class="NEWLINE_WS ">
+			
+    </span>
+			<span class="EQ ">
+			<span class="DECLARATION ">
+			<span class="IDENTIFIER ">
+			stepsepoch</span>
+			<span class="DECLARATION ">
+			::</span>
+			<span class="IDENTIFIER ">
+			Int</span></span>
+			<span class="WHITESPACE ">
+			 </span>
+			<span class="EQ ">
+			=</span>
+			<span class="WHITESPACE ">
+			 </span>
+			<span class="INTEGER ">
+			0</span></span>
+			<span class="NEWLINE_WS ">
+			
+</span></span>
+			<span class="END ">
+			end</span></span></span>
+			<span class="NEWLINE_WS ">
+			
+</span>
+			<span class="NEWLINE_WS ">
+			
+</span>
+			<span class="STRUCT ">
+			<span class="FALSE ">
 			</span>
-			<span class="CST_OPERATOR ">
-			<span class="CST_span ">
+			<span class="STRUCT ">
+			struct</span>
+			<span class="ISSUBTYPE ">
+			<span class="WHITESPACE ">
+			 </span>
 			
 
 
 <a href="/FluxTraining.jl/dev/references/FluxTraining.Recorder" class="reference symbol ">
 			Recorder</a>
 	
-			<span class="CST_whitespace ">
-			 </span></span>
-			<span class="CST_OPERATOR ">
-			&lt;: </span>
-			<span class="CST_span ">
+			<span class="WHITESPACE ">
+			 </span>
+			<span class="ISSUBTYPE ">
+			&lt;:</span>
+			<span class="WHITESPACE ">
+			 </span>
 			
 
 
 <a href="/FluxTraining.jl/dev/references/FluxTraining.Callback" class="reference symbol ">
 			Callback</a>
-	
-			<span class="CST_whitespace ">
-			 </span></span></span>
-			<span class="CST_block ">
-			</span>
-			<span class="CST_span ">
-			<span class="CST_KEYWORD ">
-			end</span>
-			<span class="CST_whitespace ">
+	</span>
+			<span class="BLOCK ">
+			<span class="WHITESPACE ">
+			 </span></span>
+			<span class="END ">
+			end</span></span>
+			<span class="NEWLINE_WS ">
 			
-
-
-</span></span></span></span>
-			<span class="CST_DEFINITION ">
-			<span class="CST_OPERATOR ">
-			<span class="CST_call ">
+</span>
+			<span class="NEWLINE_WS ">
+			
+</span>
+			<span class="NEWLINE_WS ">
+			
+</span>
+			<span class="EQ ">
+			<span class="CALL ">
 			
 
 
 <a href="/FluxTraining.jl/dev/references/FluxTraining.stateaccess" class="reference symbol ">
 			stateaccess</a>
 	
-			<span class="CST_BRACKET ">
+			<span class="LPAREN ">
 			(</span>
-			<span class="CST_OPERATOR ">
-			<span class="CST_OPERATOR ">
+			<span class="DECLARATION ">
+			<span class="DECLARATION ">
 			::</span>
 			
 
@@ -257,97 +270,113 @@
 <a href="/FluxTraining.jl/dev/references/FluxTraining.Recorder" class="reference symbol ">
 			Recorder</a>
 	</span>
-			<span class="CST_BRACKET ">
-			) </span></span>
-			<span class="CST_OPERATOR ">
-			= </span>
-			<span class="CST_block ">
-			<span class="CST_tuple ">
-			<span class="CST_BRACKET ">
-			(
-    </span>
-			<span class="CST_OPERATOR ">
-			<span class="CST_span ">
-			<span class="CST_IDENTIFIER ">
-			cbstate</span>
-			<span class="CST_whitespace ">
-			 </span></span>
-			<span class="CST_OPERATOR ">
-			= </span>
-			<span class="CST_tuple ">
-			<span class="CST_BRACKET ">
+			<span class="RPAREN ">
+			)</span></span>
+			<span class="WHITESPACE ">
+			 </span>
+			<span class="EQ ">
+			=</span>
+			<span class="WHITESPACE ">
+			 </span>
+			<span class="TUPLE ">
+			<span class="LPAREN ">
 			(</span>
-			<span class="CST_OPERATOR ">
-			<span class="CST_span ">
-			<span class="CST_IDENTIFIER ">
+			<span class="NEWLINE_WS ">
+			
+    </span>
+			<span class="EQ ">
+			<span class="IDENTIFIER ">
+			cbstate</span>
+			<span class="WHITESPACE ">
+			 </span>
+			<span class="EQ ">
+			=</span>
+			<span class="WHITESPACE ">
+			 </span>
+			<span class="TUPLE ">
+			<span class="LPAREN ">
+			(</span>
+			<span class="EQ ">
+			<span class="IDENTIFIER ">
 			history</span>
-			<span class="CST_whitespace ">
-			 </span></span>
-			<span class="CST_OPERATOR ">
-			= </span>
-			<span class="CST_call ">
+			<span class="WHITESPACE ">
+			 </span>
+			<span class="EQ ">
+			=</span>
+			<span class="WHITESPACE ">
+			 </span>
+			<span class="CALL ">
 			
 
 
 <a href="/FluxTraining.jl/dev/references/FluxTraining.Write" class="reference symbol ">
 			Write</a>
 	
-			<span class="CST_BRACKET ">
+			<span class="LPAREN ">
 			(</span>
-			<span class="CST_BRACKET ">
+			<span class="RPAREN ">
 			)</span></span></span>
-			<span class="CST_PUNCTUATION ">
+			<span class="COMMA ">
 			,</span>
-			<span class="CST_BRACKET ">
+			<span class="RPAREN ">
 			)</span></span></span>
-			<span class="CST_PUNCTUATION ">
-			,
+			<span class="COMMA ">
+			,</span>
+			<span class="NEWLINE_WS ">
+			
     </span>
-			<span class="CST_OPERATOR ">
-			<span class="CST_span ">
-			<span class="CST_IDENTIFIER ">
+			<span class="EQ ">
+			<span class="IDENTIFIER ">
 			step</span>
-			<span class="CST_whitespace ">
-			 </span></span>
-			<span class="CST_OPERATOR ">
-			= </span>
-			<span class="CST_call ">
+			<span class="WHITESPACE ">
+			 </span>
+			<span class="EQ ">
+			=</span>
+			<span class="WHITESPACE ">
+			 </span>
+			<span class="CALL ">
 			
 
 
 <a href="/FluxTraining.jl/dev/references/FluxTraining.Read" class="reference symbol ">
 			Read</a>
 	
-			<span class="CST_BRACKET ">
+			<span class="LPAREN ">
 			(</span>
-			<span class="CST_BRACKET ">
+			<span class="RPAREN ">
 			)</span></span></span>
-			<span class="CST_PUNCTUATION ">
-			,
+			<span class="COMMA ">
+			,</span>
+			<span class="NEWLINE_WS ">
+			
     </span>
-			<span class="CST_BRACKET ">
-			)
-
-
-</span></span></span></span></span>
-			<span class="CST_DEFINITION ">
-			<span class="CST_function ">
-			<span class="CST_span ">
-			<span class="CST_KEYWORD ">
+			<span class="RPAREN ">
+			)</span></span></span>
+			<span class="NEWLINE_WS ">
+			
+</span>
+			<span class="NEWLINE_WS ">
+			
+</span>
+			<span class="NEWLINE_WS ">
+			
+</span>
+			<span class="FUNCTION ">
+			<span class="FUNCTION ">
 			function</span>
-			<span class="CST_whitespace ">
-			 </span></span>
-			<span class="CST_call ">
+			<span class="WHITESPACE ">
+			 </span>
+			<span class="CALL ">
 			
 
 
 <a href="/FluxTraining.jl/dev/references/FluxTraining.init!" class="reference symbol ">
 			init!</a>
 	
-			<span class="CST_BRACKET ">
+			<span class="LPAREN ">
 			(</span>
-			<span class="CST_OPERATOR ">
-			<span class="CST_OPERATOR ">
+			<span class="DECLARATION ">
+			<span class="DECLARATION ">
 			::</span>
 			
 
@@ -355,72 +384,80 @@
 <a href="/FluxTraining.jl/dev/references/FluxTraining.Recorder" class="reference symbol ">
 			Recorder</a>
 	</span>
-			<span class="CST_PUNCTUATION ">
-			, </span>
-			<span class="CST_IDENTIFIER ">
+			<span class="COMMA ">
+			,</span>
+			<span class="WHITESPACE ">
+			 </span>
+			<span class="IDENTIFIER ">
 			learner</span>
-			<span class="CST_BRACKET ">
-			)
-    </span></span>
-			<span class="CST_block ">
-			<span class="CST_if ">
-			<span class="CST_span ">
-			<span class="CST_KEYWORD ">
+			<span class="RPAREN ">
+			)</span></span>
+			<span class="BLOCK ">
+			<span class="NEWLINE_WS ">
+			
+    </span>
+			<span class="IF ">
+			<span class="IF ">
 			if</span>
-			<span class="CST_whitespace ">
-			 </span></span>
-			<span class="CST_call ">
-			<span class="CST_OPERATOR ">
+			<span class="WHITESPACE ">
+			 </span>
+			<span class="CALL ">
+			<span class="NOT ">
 			!</span>
-			<span class="CST_call ">
-			<span class="CST_IDENTIFIER ">
+			<span class="CALL ">
+			<span class="IDENTIFIER ">
 			haskey</span>
-			<span class="CST_BRACKET ">
+			<span class="LPAREN ">
 			(</span>
-			<span class="CST_OPERATOR ">
-			<span class="CST_IDENTIFIER ">
+			<span class="DOT ">
+			<span class="IDENTIFIER ">
 			learner</span>
-			<span class="CST_OPERATOR ">
+			<span class="DOT ">
 			.</span>
-			<span class="CST_quotenode ">
-			<span class="CST_IDENTIFIER ">
+			<span class="QUOTE ">
+			<span class="IDENTIFIER ">
 			cbstate</span></span></span>
-			<span class="CST_PUNCTUATION ">
-			, </span>
-			<span class="CST_quotenode ">
-			<span class="CST_OPERATOR ">
+			<span class="COMMA ">
+			,</span>
+			<span class="WHITESPACE ">
+			 </span>
+			<span class="QUOTE ">
+			<span class="COLON ">
 			:</span>
-			<span class="CST_IDENTIFIER ">
+			<span class="IDENTIFIER ">
 			history</span></span>
-			<span class="CST_BRACKET ">
-			)
-        </span></span></span>
-			<span class="CST_block ">
-			<span class="CST_OPERATOR ">
-			<span class="CST_OPERATOR ">
-			<span class="CST_OPERATOR ">
-			<span class="CST_IDENTIFIER ">
+			<span class="RPAREN ">
+			)</span></span></span>
+			<span class="BLOCK ">
+			<span class="NEWLINE_WS ">
+			
+        </span>
+			<span class="EQ ">
+			<span class="DOT ">
+			<span class="DOT ">
+			<span class="IDENTIFIER ">
 			learner</span>
-			<span class="CST_OPERATOR ">
+			<span class="DOT ">
 			.</span>
-			<span class="CST_quotenode ">
-			<span class="CST_IDENTIFIER ">
+			<span class="QUOTE ">
+			<span class="IDENTIFIER ">
 			cbstate</span></span></span>
-			<span class="CST_OPERATOR ">
+			<span class="DOT ">
 			.</span>
-			<span class="CST_quotenode ">
-			<span class="CST_span ">
-			<span class="CST_IDENTIFIER ">
-			history</span>
-			<span class="CST_whitespace ">
-			 </span></span></span></span>
-			<span class="CST_OPERATOR ">
-			= </span>
-			<span class="CST_call ">
-			<span class="CST_curly ">
-			<span class="CST_IDENTIFIER ">
+			<span class="QUOTE ">
+			<span class="IDENTIFIER ">
+			history</span></span></span>
+			<span class="WHITESPACE ">
+			 </span>
+			<span class="EQ ">
+			=</span>
+			<span class="WHITESPACE ">
+			 </span>
+			<span class="CALL ">
+			<span class="CURLY ">
+			<span class="IDENTIFIER ">
 			DefaultDict</span>
-			<span class="CST_BRACKET ">
+			<span class="LBRACE ">
 			{</span>
 			
 
@@ -428,73 +465,80 @@
 <a href="/FluxTraining.jl/dev/references/FluxTraining.Phases.Phase" class="reference symbol ">
 			Phase</a>
 	
-			<span class="CST_PUNCTUATION ">
-			, </span>
+			<span class="COMMA ">
+			,</span>
+			<span class="WHITESPACE ">
+			 </span>
 			
 
 
 <a href="/FluxTraining.jl/dev/references/FluxTraining.History" class="reference symbol ">
 			History</a>
 	
-			<span class="CST_BRACKET ">
+			<span class="RBRACE ">
 			}</span></span>
-			<span class="CST_BRACKET ">
+			<span class="LPAREN ">
 			(</span>
-			<span class="CST_OPERATOR ">
-			<span class="CST_tuple ">
-			<span class="CST_BRACKET ">
+			<span class="ANON_FUNC ">
+			<span class="TUPLE ">
+			<span class="LPAREN ">
 			(</span>
-			<span class="CST_BRACKET ">
-			) </span></span>
-			<span class="CST_OPERATOR ">
-			-&gt; </span>
-			<span class="CST_block ">
-			<span class="CST_call ">
+			<span class="RPAREN ">
+			)</span></span>
+			<span class="WHITESPACE ">
+			 </span>
+			<span class="ANON_FUNC ">
+			-&gt;</span>
+			<span class="WHITESPACE ">
+			 </span>
+			<span class="CALL ">
 			
 
 
 <a href="/FluxTraining.jl/dev/references/FluxTraining.History" class="reference symbol ">
 			History</a>
 	
-			<span class="CST_BRACKET ">
+			<span class="LPAREN ">
 			(</span>
-			<span class="CST_BRACKET ">
-			)</span></span></span></span>
-			<span class="CST_BRACKET ">
-			)
-    </span></span></span></span>
-			<span class="CST_span ">
-			<span class="CST_KEYWORD ">
-			end</span>
-			<span class="CST_whitespace ">
+			<span class="RPAREN ">
+			)</span></span></span>
+			<span class="RPAREN ">
+			)</span></span></span>
+			<span class="NEWLINE_WS ">
 			
-</span></span></span></span>
-			<span class="CST_span ">
-			<span class="CST_KEYWORD ">
-			end</span>
-			<span class="CST_whitespace ">
+    </span></span>
+			<span class="END ">
+			end</span></span>
+			<span class="NEWLINE_WS ">
 			
-
-
-</span></span></span></span>
-			<span class="CST_DEFINITION ">
-			<span class="CST_function ">
-			<span class="CST_span ">
-			<span class="CST_KEYWORD ">
+</span></span>
+			<span class="END ">
+			end</span></span>
+			<span class="NEWLINE_WS ">
+			
+</span>
+			<span class="NEWLINE_WS ">
+			
+</span>
+			<span class="NEWLINE_WS ">
+			
+</span>
+			<span class="FUNCTION ">
+			<span class="FUNCTION ">
 			function</span>
-			<span class="CST_whitespace ">
-			 </span></span>
-			<span class="CST_call ">
+			<span class="WHITESPACE ">
+			 </span>
+			<span class="CALL ">
 			
 
 
 <a href="/FluxTraining.jl/dev/references/FluxTraining.on" class="reference symbol ">
 			on</a>
 	
-			<span class="CST_BRACKET ">
+			<span class="LPAREN ">
 			(</span>
-			<span class="CST_OPERATOR ">
-			<span class="CST_OPERATOR ">
+			<span class="DECLARATION ">
+			<span class="DECLARATION ">
 			::</span>
 			
 
@@ -502,12 +546,14 @@
 <a href="/FluxTraining.jl/dev/references/FluxTraining.Events.EpochBegin" class="reference symbol ">
 			EpochBegin</a>
 	</span>
-			<span class="CST_PUNCTUATION ">
-			, </span>
-			<span class="CST_OPERATOR ">
-			<span class="CST_IDENTIFIER ">
+			<span class="COMMA ">
+			,</span>
+			<span class="WHITESPACE ">
+			 </span>
+			<span class="DECLARATION ">
+			<span class="IDENTIFIER ">
 			phase</span>
-			<span class="CST_OPERATOR ">
+			<span class="DECLARATION ">
 			::</span>
 			
 
@@ -515,12 +561,14 @@
 <a href="/FluxTraining.jl/dev/references/FluxTraining.Phases.Phase" class="reference symbol ">
 			Phase</a>
 	</span>
-			<span class="CST_PUNCTUATION ">
-			, </span>
-			<span class="CST_OPERATOR ">
-			<span class="CST_IDENTIFIER ">
+			<span class="COMMA ">
+			,</span>
+			<span class="WHITESPACE ">
+			 </span>
+			<span class="DECLARATION ">
+			<span class="IDENTIFIER ">
 			recorder</span>
-			<span class="CST_OPERATOR ">
+			<span class="DECLARATION ">
 			::</span>
 			
 
@@ -528,76 +576,84 @@
 <a href="/FluxTraining.jl/dev/references/FluxTraining.Recorder" class="reference symbol ">
 			Recorder</a>
 	</span>
-			<span class="CST_PUNCTUATION ">
-			, </span>
-			<span class="CST_IDENTIFIER ">
+			<span class="COMMA ">
+			,</span>
+			<span class="WHITESPACE ">
+			 </span>
+			<span class="IDENTIFIER ">
 			learner</span>
-			<span class="CST_BRACKET ">
-			)
-    </span></span>
-			<span class="CST_block ">
-			<span class="CST_OPERATOR ">
-			<span class="CST_OPERATOR ">
-			<span class="CST_ref ">
-			<span class="CST_OPERATOR ">
-			<span class="CST_OPERATOR ">
-			<span class="CST_IDENTIFIER ">
-			learner</span>
-			<span class="CST_OPERATOR ">
-			.</span>
-			<span class="CST_quotenode ">
-			<span class="CST_IDENTIFIER ">
-			cbstate</span></span></span>
-			<span class="CST_OPERATOR ">
-			.</span>
-			<span class="CST_quotenode ">
-			<span class="CST_IDENTIFIER ">
-			history</span></span></span>
-			<span class="CST_BRACKET ">
-			[</span>
-			<span class="CST_IDENTIFIER ">
-			phase</span>
-			<span class="CST_BRACKET ">
-			]</span></span>
-			<span class="CST_OPERATOR ">
-			.</span>
-			<span class="CST_quotenode ">
-			<span class="CST_span ">
-			<span class="CST_IDENTIFIER ">
-			stepsepoch</span>
-			<span class="CST_whitespace ">
-			 </span></span></span></span>
-			<span class="CST_OPERATOR ">
-			= </span>
-			<span class="CST_INTEGER ">
-			0
-</span></span></span>
-			<span class="CST_span ">
-			<span class="CST_KEYWORD ">
-			end</span>
-			<span class="CST_whitespace ">
+			<span class="RPAREN ">
+			)</span></span>
+			<span class="BLOCK ">
+			<span class="NEWLINE_WS ">
 			
-
-
-</span></span></span></span>
-			<span class="CST_DEFINITION ">
-			<span class="CST_function ">
-			<span class="CST_span ">
-			<span class="CST_KEYWORD ">
+    </span>
+			<span class="EQ ">
+			<span class="DOT ">
+			<span class="REF ">
+			<span class="DOT ">
+			<span class="DOT ">
+			<span class="IDENTIFIER ">
+			learner</span>
+			<span class="DOT ">
+			.</span>
+			<span class="QUOTE ">
+			<span class="IDENTIFIER ">
+			cbstate</span></span></span>
+			<span class="DOT ">
+			.</span>
+			<span class="QUOTE ">
+			<span class="IDENTIFIER ">
+			history</span></span></span>
+			<span class="LSQUARE ">
+			[</span>
+			<span class="IDENTIFIER ">
+			phase</span>
+			<span class="RSQUARE ">
+			]</span></span>
+			<span class="DOT ">
+			.</span>
+			<span class="QUOTE ">
+			<span class="IDENTIFIER ">
+			stepsepoch</span></span></span>
+			<span class="WHITESPACE ">
+			 </span>
+			<span class="EQ ">
+			=</span>
+			<span class="WHITESPACE ">
+			 </span>
+			<span class="INTEGER ">
+			0</span></span>
+			<span class="NEWLINE_WS ">
+			
+</span></span>
+			<span class="END ">
+			end</span></span>
+			<span class="NEWLINE_WS ">
+			
+</span>
+			<span class="NEWLINE_WS ">
+			
+</span>
+			<span class="NEWLINE_WS ">
+			
+</span>
+			<span class="FUNCTION ">
+			<span class="FUNCTION ">
 			function</span>
-			<span class="CST_whitespace ">
-			 </span></span>
-			<span class="CST_call ">
+			<span class="WHITESPACE ">
+			 </span>
+			<span class="CALL ">
 			
 
 
 <a href="/FluxTraining.jl/dev/references/FluxTraining.on" class="reference symbol ">
 			on</a>
 	
-			<span class="CST_BRACKET ">
+			<span class="LPAREN ">
 			(</span>
-			<span class="CST_OPERATOR ">
-			<span class="CST_OPERATOR ">
+			<span class="DECLARATION ">
+			<span class="DECLARATION ">
 			::</span>
 			
 
@@ -605,12 +661,14 @@
 <a href="/FluxTraining.jl/dev/references/FluxTraining.Events.StepEnd" class="reference symbol ">
 			StepEnd</a>
 	</span>
-			<span class="CST_PUNCTUATION ">
-			, </span>
-			<span class="CST_OPERATOR ">
-			<span class="CST_IDENTIFIER ">
+			<span class="COMMA ">
+			,</span>
+			<span class="WHITESPACE ">
+			 </span>
+			<span class="DECLARATION ">
+			<span class="IDENTIFIER ">
 			phase</span>
-			<span class="CST_OPERATOR ">
+			<span class="DECLARATION ">
 			::</span>
 			
 
@@ -618,12 +676,14 @@
 <a href="/FluxTraining.jl/dev/references/FluxTraining.Phases.Phase" class="reference symbol ">
 			Phase</a>
 	</span>
-			<span class="CST_PUNCTUATION ">
-			, </span>
-			<span class="CST_OPERATOR ">
-			<span class="CST_IDENTIFIER ">
+			<span class="COMMA ">
+			,</span>
+			<span class="WHITESPACE ">
+			 </span>
+			<span class="DECLARATION ">
+			<span class="IDENTIFIER ">
 			recorder</span>
-			<span class="CST_OPERATOR ">
+			<span class="DECLARATION ">
 			::</span>
 			
 
@@ -631,104 +691,118 @@
 <a href="/FluxTraining.jl/dev/references/FluxTraining.Recorder" class="reference symbol ">
 			Recorder</a>
 	</span>
-			<span class="CST_PUNCTUATION ">
-			, </span>
-			<span class="CST_IDENTIFIER ">
+			<span class="COMMA ">
+			,</span>
+			<span class="WHITESPACE ">
+			 </span>
+			<span class="IDENTIFIER ">
 			learner</span>
-			<span class="CST_BRACKET ">
-			)
-    </span></span>
-			<span class="CST_block ">
-			<span class="CST_OPERATOR ">
-			<span class="CST_span ">
-			<span class="CST_IDENTIFIER ">
-			history</span>
-			<span class="CST_whitespace ">
-			 </span></span>
-			<span class="CST_OPERATOR ">
-			= </span>
-			<span class="CST_ref ">
-			<span class="CST_OPERATOR ">
-			<span class="CST_OPERATOR ">
-			<span class="CST_IDENTIFIER ">
-			learner</span>
-			<span class="CST_OPERATOR ">
-			.</span>
-			<span class="CST_quotenode ">
-			<span class="CST_IDENTIFIER ">
-			cbstate</span></span></span>
-			<span class="CST_OPERATOR ">
-			.</span>
-			<span class="CST_quotenode ">
-			<span class="CST_IDENTIFIER ">
-			history</span></span></span>
-			<span class="CST_BRACKET ">
-			[</span>
-			<span class="CST_IDENTIFIER ">
-			phase</span>
-			<span class="CST_BRACKET ">
-			]
-    </span></span></span>
-			<span class="CST_OPERATOR ">
-			<span class="CST_OPERATOR ">
-			<span class="CST_IDENTIFIER ">
-			history</span>
-			<span class="CST_OPERATOR ">
-			.</span>
-			<span class="CST_quotenode ">
-			<span class="CST_span ">
-			<span class="CST_IDENTIFIER ">
-			steps</span>
-			<span class="CST_whitespace ">
-			 </span></span></span></span>
-			<span class="CST_OPERATOR ">
-			+= </span>
-			<span class="CST_INTEGER ">
-			1
-    </span></span>
-			<span class="CST_OPERATOR ">
-			<span class="CST_OPERATOR ">
-			<span class="CST_IDENTIFIER ">
-			history</span>
-			<span class="CST_OPERATOR ">
-			.</span>
-			<span class="CST_quotenode ">
-			<span class="CST_span ">
-			<span class="CST_IDENTIFIER ">
-			stepsepoch</span>
-			<span class="CST_whitespace ">
-			 </span></span></span></span>
-			<span class="CST_OPERATOR ">
-			+= </span>
-			<span class="CST_INTEGER ">
-			1
-</span></span></span>
-			<span class="CST_span ">
-			<span class="CST_KEYWORD ">
-			end</span>
-			<span class="CST_whitespace ">
+			<span class="RPAREN ">
+			)</span></span>
+			<span class="BLOCK ">
+			<span class="NEWLINE_WS ">
 			
-
-
-</span></span></span></span>
-			<span class="CST_DEFINITION ">
-			<span class="CST_function ">
-			<span class="CST_span ">
-			<span class="CST_KEYWORD ">
+    </span>
+			<span class="EQ ">
+			<span class="IDENTIFIER ">
+			history</span>
+			<span class="WHITESPACE ">
+			 </span>
+			<span class="EQ ">
+			=</span>
+			<span class="WHITESPACE ">
+			 </span>
+			<span class="REF ">
+			<span class="DOT ">
+			<span class="DOT ">
+			<span class="IDENTIFIER ">
+			learner</span>
+			<span class="DOT ">
+			.</span>
+			<span class="QUOTE ">
+			<span class="IDENTIFIER ">
+			cbstate</span></span></span>
+			<span class="DOT ">
+			.</span>
+			<span class="QUOTE ">
+			<span class="IDENTIFIER ">
+			history</span></span></span>
+			<span class="LSQUARE ">
+			[</span>
+			<span class="IDENTIFIER ">
+			phase</span>
+			<span class="RSQUARE ">
+			]</span></span></span>
+			<span class="NEWLINE_WS ">
+			
+    </span>
+			<span class="PLUS_EQ ">
+			<span class="DOT ">
+			<span class="IDENTIFIER ">
+			history</span>
+			<span class="DOT ">
+			.</span>
+			<span class="QUOTE ">
+			<span class="IDENTIFIER ">
+			steps</span></span></span>
+			<span class="WHITESPACE ">
+			 </span>
+			<span class="PLUS_EQ ">
+			+=</span>
+			<span class="WHITESPACE ">
+			 </span>
+			<span class="INTEGER ">
+			1</span></span>
+			<span class="NEWLINE_WS ">
+			
+    </span>
+			<span class="PLUS_EQ ">
+			<span class="DOT ">
+			<span class="IDENTIFIER ">
+			history</span>
+			<span class="DOT ">
+			.</span>
+			<span class="QUOTE ">
+			<span class="IDENTIFIER ">
+			stepsepoch</span></span></span>
+			<span class="WHITESPACE ">
+			 </span>
+			<span class="PLUS_EQ ">
+			+=</span>
+			<span class="WHITESPACE ">
+			 </span>
+			<span class="INTEGER ">
+			1</span></span>
+			<span class="NEWLINE_WS ">
+			
+</span></span>
+			<span class="END ">
+			end</span></span>
+			<span class="NEWLINE_WS ">
+			
+</span>
+			<span class="NEWLINE_WS ">
+			
+</span>
+			<span class="NEWLINE_WS ">
+			
+</span>
+			<span class="FUNCTION ">
+			<span class="FUNCTION ">
 			function</span>
-			<span class="CST_whitespace ">
-			 </span></span>
-			<span class="CST_call ">
+			<span class="WHITESPACE ">
+			 </span>
+			<span class="CALL ">
 			
 
 
 <a href="/FluxTraining.jl/dev/references/FluxTraining.on" class="reference symbol ">
 			on</a>
 	
-			<span class="CST_BRACKET ">
+			<span class="LPAREN ">
 			(</span>
-			<span class="CST_OPERATOR ">
-			<span class="CST_OPERATOR ">
+			<span class="DECLARATION ">
+			<span class="DECLARATION ">
 			::</span>
 			
 
@@ -736,12 +810,14 @@
 <a href="/FluxTraining.jl/dev/references/FluxTraining.Events.EpochEnd" class="reference symbol ">
 			EpochEnd</a>
 	</span>
-			<span class="CST_PUNCTUATION ">
-			, </span>
-			<span class="CST_OPERATOR ">
-			<span class="CST_IDENTIFIER ">
+			<span class="COMMA ">
+			,</span>
+			<span class="WHITESPACE ">
+			 </span>
+			<span class="DECLARATION ">
+			<span class="IDENTIFIER ">
 			phase</span>
-			<span class="CST_OPERATOR ">
+			<span class="DECLARATION ">
 			::</span>
 			
 
@@ -749,12 +825,14 @@
 <a href="/FluxTraining.jl/dev/references/FluxTraining.Phases.Phase" class="reference symbol ">
 			Phase</a>
 	</span>
-			<span class="CST_PUNCTUATION ">
-			, </span>
-			<span class="CST_OPERATOR ">
-			<span class="CST_IDENTIFIER ">
+			<span class="COMMA ">
+			,</span>
+			<span class="WHITESPACE ">
+			 </span>
+			<span class="DECLARATION ">
+			<span class="IDENTIFIER ">
 			recorder</span>
-			<span class="CST_OPERATOR ">
+			<span class="DECLARATION ">
 			::</span>
 			
 
@@ -762,70 +840,80 @@
 <a href="/FluxTraining.jl/dev/references/FluxTraining.Recorder" class="reference symbol ">
 			Recorder</a>
 	</span>
-			<span class="CST_PUNCTUATION ">
-			, </span>
-			<span class="CST_IDENTIFIER ">
+			<span class="COMMA ">
+			,</span>
+			<span class="WHITESPACE ">
+			 </span>
+			<span class="IDENTIFIER ">
 			learner</span>
-			<span class="CST_BRACKET ">
-			)
-    </span></span>
-			<span class="CST_block ">
-			<span class="CST_OPERATOR ">
-			<span class="CST_span ">
-			<span class="CST_IDENTIFIER ">
+			<span class="RPAREN ">
+			)</span></span>
+			<span class="BLOCK ">
+			<span class="NEWLINE_WS ">
+			
+    </span>
+			<span class="EQ ">
+			<span class="IDENTIFIER ">
 			history</span>
-			<span class="CST_whitespace ">
-			 </span></span>
-			<span class="CST_OPERATOR ">
-			= </span>
-			<span class="CST_ref ">
-			<span class="CST_OPERATOR ">
-			<span class="CST_OPERATOR ">
-			<span class="CST_IDENTIFIER ">
+			<span class="WHITESPACE ">
+			 </span>
+			<span class="EQ ">
+			=</span>
+			<span class="WHITESPACE ">
+			 </span>
+			<span class="REF ">
+			<span class="DOT ">
+			<span class="DOT ">
+			<span class="IDENTIFIER ">
 			learner</span>
-			<span class="CST_OPERATOR ">
+			<span class="DOT ">
 			.</span>
-			<span class="CST_quotenode ">
-			<span class="CST_IDENTIFIER ">
+			<span class="QUOTE ">
+			<span class="IDENTIFIER ">
 			cbstate</span></span></span>
-			<span class="CST_OPERATOR ">
+			<span class="DOT ">
 			.</span>
-			<span class="CST_quotenode ">
-			<span class="CST_IDENTIFIER ">
+			<span class="QUOTE ">
+			<span class="IDENTIFIER ">
 			history</span></span></span>
-			<span class="CST_BRACKET ">
+			<span class="LSQUARE ">
 			[</span>
-			<span class="CST_IDENTIFIER ">
+			<span class="IDENTIFIER ">
 			phase</span>
-			<span class="CST_BRACKET ">
-			]
-    </span></span></span>
-			<span class="CST_OPERATOR ">
-			<span class="CST_OPERATOR ">
-			<span class="CST_IDENTIFIER ">
+			<span class="RSQUARE ">
+			]</span></span></span>
+			<span class="NEWLINE_WS ">
+			
+    </span>
+			<span class="PLUS_EQ ">
+			<span class="DOT ">
+			<span class="IDENTIFIER ">
 			history</span>
-			<span class="CST_OPERATOR ">
+			<span class="DOT ">
 			.</span>
-			<span class="CST_quotenode ">
-			<span class="CST_span ">
-			<span class="CST_IDENTIFIER ">
-			epochs</span>
-			<span class="CST_whitespace ">
-			 </span></span></span></span>
-			<span class="CST_OPERATOR ">
-			+= </span>
-			<span class="CST_INTEGER ">
-			1
-</span></span></span>
-			<span class="CST_KEYWORD ">
-			end</span></span></span></code></pre></div></div>
+			<span class="QUOTE ">
+			<span class="IDENTIFIER ">
+			epochs</span></span></span>
+			<span class="WHITESPACE ">
+			 </span>
+			<span class="PLUS_EQ ">
+			+=</span>
+			<span class="WHITESPACE ">
+			 </span>
+			<span class="INTEGER ">
+			1</span></span>
+			<span class="NEWLINE_WS ">
+			
+</span></span>
+			<span class="END ">
+			end</span></span></span></code></pre></span></div>
 </div></div></div></div>
 
 
-		<script type="module" data-hydrate="1lvr6cw">
-		import { start } from "/FluxTraining.jl/internal/start-da91ae1e.js";
+		<script type="module" data-hydrate="v3e3c4">
+		import { start } from "/FluxTraining.jl/internal/start-b3a31c0a.js";
 		start({
-			target: document.querySelector('[data-hydrate="1lvr6cw"]').parentNode,
+			target: document.querySelector('[data-hydrate="v3e3c4"]').parentNode,
 			paths: {"base":"/FluxTraining.jl","assets":"/FluxTraining.jl"},
 			session: {},
 			route: false,
@@ -842,9 +930,9 @@
 				params: {version:"dev",documentId:"sourcefiles\u002FFluxTraining\u002Fsrc\u002Fcallbacks\u002Frecorder.jl"}
 			}
 		});
-	</script><script type="application/json" data-type="svelte-data" data-url="/FluxTraining.jl/data/dev/attributes.json">{"status":200,"statusText":"","headers":{"content-type":"application/json"},"body":"{\"documents\u002FCHANGELOG.md\":{\"tag\":\"document\",\"title\":\"News\"},\"references\u002FFluxTraining.HyperParameter\":{\"tag\":\"documentation\",\"title\":\"HyperParameter\"},\"references\u002FFluxTraining.savemodel\":{\"tag\":\"documentation\",\"title\":\"savemodel\"},\"sourcefiles\u002FFluxTraining\u002Fsrc\u002Fcallbacks\u002Fscheduler.jl\":{\"tag\":\"sourcefile\",\"title\":\"FluxTraining\u002Fsrc\u002Fcallbacks\u002Fscheduler.jl\"},\"references\u002FFluxTraining.ES.Warmup\":{\"tag\":\"documentation\",\"title\":\"Warmup\"},\"references\u002FFluxTraining.ES.Never\":{\"tag\":\"documentation\",\"title\":\"Never\"},\"references\u002FFluxTraining.CheckModelLossStep\":{\"tag\":\"documentation\",\"title\":\"CheckModelLossStep\"},\"references\u002FFluxTraining.CancelStepException\":{\"tag\":\"documentation\",\"title\":\"CancelStepException\"},\"references\u002FFluxTraining.Loggables.Loggables\":{\"tag\":\"documentation\",\"title\":null},\"references\u002FFluxTraining.ConflictResolution\":{\"tag\":\"documentation\",\"title\":\"ConflictResolution\"},\"references\u002FFluxTraining.replacecallback!\":{\"tag\":\"documentation\",\"title\":\"replacecallback!\"},\"documents\u002Fdocs\u002Ftutorials\u002Fhyperparameters.md\":{\"tag\":\"document\",\"title\":\"Hyperparameter scheduling\"},\"sourcefiles\u002FFluxTraining\u002Fsrc\u002Fcallbacks\u002Fmetrics.jl\":{\"tag\":\"sourcefile\",\"title\":\"FluxTraining\u002Fsrc\u002Fcallbacks\u002Fmetrics.jl\"},\"references\u002FFluxTraining.ES.PQ\":{\"tag\":\"documentation\",\"title\":\"PQ\"},\"references\u002FFluxTraining.ES.NumberLimit\":{\"tag\":\"documentation\",\"title\":\"NumberLimit\"},\"references\u002FFluxTraining.print_epoch_table\":{\"tag\":\"documentation\",\"title\":\"print_epoch_table\"},\"references\u002FFluxTraining.log_to\":{\"tag\":\"documentation\",\"title\":\"log_to\"},\"references\u002FFluxTraining.@pack_History!\":{\"tag\":\"documentation\",\"title\":\"@pack_History!\"},\"references\u002FFluxTraining.AbstractCallback\":{\"tag\":\"documentation\",\"title\":\"AbstractCallback\"},\"references\u002FFluxTraining.ES.InvalidValue\":{\"tag\":\"documentation\",\"title\":\"InvalidValue\"},\"references\u002FFluxTraining.getindexperm\":{\"tag\":\"documentation\",\"title\":\"getindexperm\"},\"sourcefiles\u002FFluxTraining\u002Fsrc\u002Fcallbacks\u002Fcustom.jl\":{\"tag\":\"sourcefile\",\"title\":\"FluxTraining\u002Fsrc\u002Fcallbacks\u002Fcustom.jl\"},\"references\u002FFluxTraining.Phases.ValidationPhase\":{\"tag\":\"documentation\",\"title\":\"ValidationPhase\"},\"references\u002FFluxTraining.iterpairs\":{\"tag\":\"documentation\",\"title\":\"iterpairs\"},\"references\u002FFluxTraining.Callback\":{\"tag\":\"documentation\",\"title\":\"Callback\"},\"references\u002FFluxTraining.StopOnNaNLoss\":{\"tag\":\"documentation\",\"title\":\"StopOnNaNLoss\"},\"references\u002FFluxTraining.Protected\":{\"tag\":\"documentation\",\"title\":\"Protected\"},\"references\u002FFluxTraining.Events.StepBegin\":{\"tag\":\"documentation\",\"title\":\"StepBegin\"},\"references\u002FFluxTraining.paramsrec\":{\"tag\":\"documentation\",\"title\":\"paramsrec\"},\"documents\u002FLICENSE.md\":{\"tag\":\"document\",\"title\":\"LICENSE\"},\"references\u002FFluxTraining.AbstractMetric\":{\"tag\":\"documentation\",\"title\":\"AbstractMetric\"},\"documents\u002Fdocs\u002Ftutorials\u002Fmnist.ipynb\":{\"tag\":\"document\",\"title\":\"Training an image classifier\"},\"references\u002FFluxTraining.@pack_History\":{\"tag\":\"documentation\",\"title\":\"@pack_History\"},\"references\u002FFluxTraining.edgesrunafter\":{\"tag\":\"documentation\",\"title\":\"edgesrunafter\"},\"references\u002FFluxTraining.ES.message\":{\"tag\":\"documentation\",\"title\":\"message\"},\"references\u002FFluxTraining.LinearRunner\":{\"tag\":\"documentation\",\"title\":\"LinearRunner\"},\"references\u002FFluxTraining.protect\":{\"tag\":\"documentation\",\"title\":\"protect\"},\"references\u002FFluxTraining.formataccess\":{\"tag\":\"documentation\",\"title\":\"formataccess\"},\"references\u002FFluxTraining.resolveconflict\":{\"tag\":\"documentation\",\"title\":\"resolveconflict\"},\"documents\u002Fdocs\u002Fcallbacks\u002Freference.md\":{\"tag\":\"document\",\"title\":\"Callback reference\"},\"references\u002FFluxTraining.Loggables\":{\"tag\":\"documentation\",\"title\":\"Loggables\"},\"references\u002FFluxTraining.setlearningrate!\":{\"tag\":\"documentation\",\"title\":\"setlearningrate!\"},\"references\u002FFluxTraining.stepvalue\":{\"tag\":\"documentation\",\"title\":\"stepvalue\"},\"sourcefiles\u002FFluxTraining\u002Fsrc\u002Ftraining.jl\":{\"tag\":\"sourcefile\",\"title\":\"FluxTraining\u002Fsrc\u002Ftraining.jl\"},\"sourcefiles\u002FFluxTraining\u002Fsrc\u002Fcallbacks\u002Fhyperparameters.jl\":{\"tag\":\"sourcefile\",\"title\":\"FluxTraining\u002Fsrc\u002Fcallbacks\u002Fhyperparameters.jl\"},\"references\u002FFluxTraining.@unpack_History\":{\"tag\":\"documentation\",\"title\":\"@unpack_History\"},\"references\u002FFluxTraining.ProtectedException\":{\"tag\":\"documentation\",\"title\":\"ProtectedException\"},\"references\u002FFluxTraining.FrequencyThrottle\":{\"tag\":\"documentation\",\"title\":\"FrequencyThrottle\"},\"references\u002FFluxTraining.RunFirst\":{\"tag\":\"documentation\",\"title\":\"RunFirst\"},\"references\u002FFluxTraining.Events.StepEnd\":{\"tag\":\"documentation\",\"title\":\"StepEnd\"},\"references\u002FFluxTraining.SanityCheck\":{\"tag\":\"documentation\",\"title\":\"SanityCheck\"},\"references\u002FFluxTraining.ToDevice\":{\"tag\":\"documentation\",\"title\":\"ToDevice\"},\"references\u002FFluxTraining._on\":{\"tag\":\"documentation\",\"title\":\"_on\"},\"references\u002FFluxTraining.Loggables.Audio\":{\"tag\":\"documentation\",\"title\":\"Audio\"},\"documents\u002Fdocs\u002Fimagenette_demo.ipynb\":{\"tag\":\"document\",\"title\":\"imagenette_demo\"},\"sourcefiles\u002FFluxTraining\u002Fsrc\u002Fcallbacks\u002Fprotect.jl\":{\"tag\":\"sourcefile\",\"title\":\"FluxTraining\u002Fsrc\u002Fcallbacks\u002Fprotect.jl\"},\"references\u002FFluxTraining.Loggables.Image\":{\"tag\":\"documentation\",\"title\":\"Image\"},\"references\u002FFluxTraining.CustomCallback\":{\"tag\":\"documentation\",\"title\":\"CustomCallback\"},\"references\u002FFluxTraining.ES.Threshold\":{\"tag\":\"documentation\",\"title\":\"Threshold\"},\"documents\u002Ftoc.md\":{\"tag\":\"document\",\"title\":\"toc\"},\"references\u002FFluxTraining._dataiters\":{\"tag\":\"documentation\",\"title\":\"_dataiters\"},\"sourcefiles\u002FFluxTraining\u002Fsrc\u002Fcallbacks\u002Flogging\u002Flogger.jl\":{\"tag\":\"sourcefile\",\"title\":\"FluxTraining\u002Fsrc\u002Fcallbacks\u002Flogging\u002Flogger.jl\"},\"references\u002FFluxTraining.ToGPU\":{\"tag\":\"documentation\",\"title\":\"ToGPU\"},\"sourcefiles\u002FFluxTraining\u002Fsrc\u002Ffunctional\u002Fmetrics.jl\":{\"tag\":\"sourcefile\",\"title\":\"FluxTraining\u002Fsrc\u002Ffunctional\u002Fmetrics.jl\"},\"references\u002FFluxTraining.ES.StoppingCriterion\":{\"tag\":\"documentation\",\"title\":\"StoppingCriterion\"},\"references\u002FFluxTraining.on\":{\"tag\":\"documentation\",\"title\":\"on\"},\"references\u002FFluxTraining.accuracy\":{\"tag\":\"documentation\",\"title\":\"accuracy\"},\"sourcefiles\u002FFluxTraining\u002Fsrc\u002Fcallbackutils.jl\":{\"tag\":\"sourcefile\",\"title\":\"FluxTraining\u002Fsrc\u002Fcallbackutils.jl\"},\"references\u002FFluxTraining.Check\":{\"tag\":\"documentation\",\"title\":\"Check\"},\"references\u002FFluxTraining.throttle\":{\"tag\":\"documentation\",\"title\":\"throttle\"},\"references\u002FFluxTraining.Callbacks\":{\"tag\":\"documentation\",\"title\":\"Callbacks\"},\"references\u002FFluxTraining.LearningRate\":{\"tag\":\"documentation\",\"title\":\"LearningRate\"},\"references\u002FFluxTraining.Metric\":{\"tag\":\"documentation\",\"title\":\"Metric\"},\"references\u002FFluxTraining.FitException\":{\"tag\":\"documentation\",\"title\":\"FitException\"},\"sourcefiles\u002FFluxTraining\u002Fsrc\u002Fcallbacks\u002Fgraph.jl\":{\"tag\":\"sourcefile\",\"title\":\"FluxTraining\u002Fsrc\u002Fcallbacks\u002Fgraph.jl\"},\"documents\u002Fdocs\u002Fbackground\u002Flossfunction.md\":{\"tag\":\"document\",\"title\":\"Loss functions\"},\"sourcefiles\u002FFluxTraining\u002Fsrc\u002FFluxTraining.jl\":{\"tag\":\"sourcefile\",\"title\":\"FluxTraining\u002Fsrc\u002FFluxTraining.jl\"},\"sourcefiles\u002FFluxTraining\u002Fsrc\u002Fcallbacks\u002Fexecution.jl\":{\"tag\":\"sourcefile\",\"title\":\"FluxTraining\u002Fsrc\u002Fcallbacks\u002Fexecution.jl\"},\"references\u002FFluxTraining._combinename\":{\"tag\":\"documentation\",\"title\":\"_combinename\"},\"references\u002FFluxTraining.testbatch\":{\"tag\":\"documentation\",\"title\":\"testbatch\"},\"references\u002FFluxTraining.ES.reset!\":{\"tag\":\"documentation\",\"title\":\"reset!\"},\"references\u002FFluxTraining.Phases.AbstractTrainingPhase\":{\"tag\":\"documentation\",\"title\":\"AbstractTrainingPhase\"},\"references\u002FFluxTraining.stateaccess\":{\"tag\":\"documentation\",\"title\":\"stateaccess\"},\"references\u002FFluxTraining.GarbageCollect\":{\"tag\":\"documentation\",\"title\":\"GarbageCollect\"},\"documents\u002FREADME.md\":{\"tag\":\"document\",\"title\":\"FluxTraining.jl\"},\"sourcefiles\u002FFluxTraining\u002Fsrc\u002Fcallbacks\u002Flogging\u002FLoggables.jl\":{\"tag\":\"sourcefile\",\"title\":\"FluxTraining\u002Fsrc\u002Fcallbacks\u002Flogging\u002FLoggables.jl\"},\"references\u002FFluxTraining.runtests\":{\"tag\":\"documentation\",\"title\":\"runtests\"},\"references\u002FFluxTraining.Loggables.Graph\":{\"tag\":\"documentation\",\"title\":\"Graph\"},\"references\u002FFluxTraining.LogVisualization\":{\"tag\":\"documentation\",\"title\":\"LogVisualization\"},\"references\u002FFluxTraining.defaultcallbacks\":{\"tag\":\"documentation\",\"title\":\"defaultcallbacks\"},\"references\u002FFluxTraining.NoConflict\":{\"tag\":\"documentation\",\"title\":\"NoConflict\"},\"references\u002FFluxTraining.Events\":{\"tag\":\"documentation\",\"title\":\"Events\"},\"references\u002FFluxTraining.Events.Event\":{\"tag\":\"documentation\",\"title\":\"Event\"},\"references\u002FFluxTraining.Learner\":{\"tag\":\"documentation\",\"title\":\"Learner\"},\"references\u002FFluxTraining.setindexperm!\":{\"tag\":\"documentation\",\"title\":\"setindexperm!\"},\"references\u002FFluxTraining.CancelFittingException\":{\"tag\":\"documentation\",\"title\":\"CancelFittingException\"},\"references\u002FFluxTraining.metricname\":{\"tag\":\"documentation\",\"title\":\"metricname\"},\"references\u002FFluxTraining.TrainingPhase\":{\"tag\":\"documentation\",\"title\":\"TrainingPhase\"},\"references\u002FFluxTraining.ES\":{\"tag\":\"documentation\",\"title\":\"ES\"},\"references\u002FFluxTraining.runafter\":{\"tag\":\"documentation\",\"title\":\"runafter\"},\"references\u002FFluxTraining.MetricsPrinter\":{\"tag\":\"documentation\",\"title\":\"MetricsPrinter\"},\"references\u002FFluxTraining.hasconflict\":{\"tag\":\"documentation\",\"title\":\"hasconflict\"},\"references\u002FFluxTraining.runchecks\":{\"tag\":\"documentation\",\"title\":\"runchecks\"},\"references\u002FFluxTraining.TimeThrottle\":{\"tag\":\"documentation\",\"title\":\"TimeThrottle\"},\"references\u002FFluxTraining.ConditionalCallback\":{\"tag\":\"documentation\",\"title\":\"ConditionalCallback\"},\"sourcefiles\u002FFluxTraining\u002Fsrc\u002Fcallbacks\u002Fsanitycheck.jl\":{\"tag\":\"sourcefile\",\"title\":\"FluxTraining\u002Fsrc\u002Fcallbacks\u002Fsanitycheck.jl\"},\"references\u002FFluxTraining.ES.UP\":{\"tag\":\"documentation\",\"title\":\"UP\"},\"references\u002FFluxTraining.LogHyperParams\":{\"tag\":\"documentation\",\"title\":\"LogHyperParams\"},\"references\u002FFluxTraining.History\":{\"tag\":\"documentation\",\"title\":\"History\"},\"references\u002FFluxTraining.Scheduler\":{\"tag\":\"documentation\",\"title\":\"Scheduler\"},\"references\u002FFluxTraining.Phases.TrainingPhase\":{\"tag\":\"documentation\",\"title\":\"TrainingPhase\"},\"documents\u002Fdocs\u002Fbackground\u002Fmodel.md\":{\"tag\":\"document\",\"title\":\"Models\"},\"references\u002FFluxTraining.Checkpointer\":{\"tag\":\"documentation\",\"title\":\"Checkpointer\"},\"references\u002FFluxTraining.Events.BackwardEnd\":{\"tag\":\"documentation\",\"title\":\"BackwardEnd\"},\"references\u002FFluxTraining.Loggables.Histogram\":{\"tag\":\"documentation\",\"title\":\"Histogram\"},\"references\u002FFluxTraining.CheckIteratesTuples\":{\"tag\":\"documentation\",\"title\":\"CheckIteratesTuples\"},\"references\u002FFluxTraining.ES.Disjunction\":{\"tag\":\"documentation\",\"title\":\"Disjunction\"},\"references\u002FFluxTraining.phasedataiter\":{\"tag\":\"documentation\",\"title\":\"phasedataiter\"},\"references\u002FFluxTraining.EarlyStopping\":{\"tag\":\"documentation\",\"title\":\"EarlyStopping\"},\"references\u002FFluxTraining.ES.done!\":{\"tag\":\"documentation\",\"title\":\"done!\"},\"references\u002FFluxTraining.sethyperparameter!\":{\"tag\":\"documentation\",\"title\":\"sethyperparameter!\"},\"references\u002FFluxTraining.Write\":{\"tag\":\"documentation\",\"title\":\"Write\"},\"references\u002FFluxTraining.Events.EpochEnd\":{\"tag\":\"documentation\",\"title\":\"EpochEnd\"},\"references\u002FFluxTraining.callbackgraph\":{\"tag\":\"documentation\",\"title\":\"callbackgraph\"},\"references\u002FFluxTraining.Phases\":{\"tag\":\"documentation\",\"title\":\"Phases\"},\"references\u002FFluxTraining.TensorBoardBackend\":{\"tag\":\"documentation\",\"title\":\"TensorBoardBackend\"},\"documents\u002Fdocs\u002Fbackground\u002Foptimizer.md\":{\"tag\":\"document\",\"title\":\"Optimizers\"},\"references\u002FFluxTraining.testlearner\":{\"tag\":\"documentation\",\"title\":\"testlearner\"},\"references\u002FFluxTraining.epochvalue\":{\"tag\":\"documentation\",\"title\":\"epochvalue\"},\"documents\u002Fdocs\u002Fgetting_started.md\":{\"tag\":\"document\",\"title\":\"Getting started\"},\"references\u002FFluxTraining.garbagecollect\":{\"tag\":\"documentation\",\"title\":\"garbagecollect\"},\"documents\u002Fdocs\u002Fcustom_training.ipynb\":{\"tag\":\"document\",\"title\":\"Custom training loops\"},\"references\u002FFluxTraining.epoch!\":{\"tag\":\"documentation\",\"title\":\"epoch!\"},\"references\u002FFluxTraining.SmoothLoss\":{\"tag\":\"documentation\",\"title\":\"SmoothLoss\"},\"references\u002FFluxTraining.Phases.Phase\":{\"tag\":\"documentation\",\"title\":\"Phase\"},\"references\u002FFluxTraining.setcallbacks!\":{\"tag\":\"documentation\",\"title\":\"setcallbacks!\"},\"references\u002FFluxTraining.Unresolvable\":{\"tag\":\"documentation\",\"title\":\"Unresolvable\"},\"references\u002FFluxTraining\":{\"tag\":\"documentation\",\"title\":\"FluxTraining\"},\"references\u002FFluxTraining.testbatches\":{\"tag\":\"documentation\",\"title\":\"testbatches\"},\"documents\u002Fdocs\u002Foverview.md\":{\"tag\":\"document\",\"title\":\"Getting started\"},\"references\u002FFluxTraining.accesses\":{\"tag\":\"documentation\",\"title\":\"accesses\"},\"documents\u002Fdocs\u002Fcallbacks\u002Ftipstricks.md\":{\"tag\":\"document\",\"title\":\"Tips & tricks\"},\"references\u002FFluxTraining.Phases.AbstractValidationPhase\":{\"tag\":\"documentation\",\"title\":\"AbstractValidationPhase\"},\"references\u002FFluxTraining.ES.stopping_time\":{\"tag\":\"documentation\",\"title\":\"stopping_time\"},\"sourcefiles\u002FFluxTraining\u002Fsrc\u002Fcallbacks\u002Frecorder.jl\":{\"tag\":\"sourcefile\",\"title\":\"FluxTraining\u002Fsrc\u002Fcallbacks\u002Frecorder.jl\"},\"references\u002FFluxTraining.NotDefined\":{\"tag\":\"documentation\",\"title\":\"NotDefined\"},\"references\u002FFluxTraining.findconflicts\":{\"tag\":\"documentation\",\"title\":\"findconflicts\"},\"references\u002FFluxTraining.Loggables.Text\":{\"tag\":\"documentation\",\"title\":\"Text\"},\"references\u002FFluxTraining.ES.NotANumber\":{\"tag\":\"documentation\",\"title\":\"NotANumber\"},\"references\u002FFluxTraining.PropDict\":{\"tag\":\"documentation\",\"title\":\"PropDict\"},\"documents\u002Fdocs\u002Fcallbacks\u002Fusage.md\":{\"tag\":\"document\",\"title\":\"How to use callbacks\"},\"references\u002FFluxTraining.ES.EarlyStopper\":{\"tag\":\"documentation\",\"title\":\"EarlyStopper\"},\"references\u002FFluxTraining.Events.LossBegin\":{\"tag\":\"documentation\",\"title\":\"LossBegin\"},\"references\u002FFluxTraining.Recorder\":{\"tag\":\"documentation\",\"title\":\"Recorder\"},\"references\u002FFluxTraining.LogMetrics\":{\"tag\":\"documentation\",\"title\":\"LogMetrics\"},\"references\u002FFluxTraining.fit!\":{\"tag\":\"documentation\",\"title\":\"fit!\"},\"references\u002FFluxTraining.UnsafeCallback\":{\"tag\":\"documentation\",\"title\":\"UnsafeCallback\"},\"references\u002FFluxTraining.SanityCheckException\":{\"tag\":\"documentation\",\"title\":\"SanityCheckException\"},\"sourcefiles\u002FFluxTraining\u002Fsrc\u002Fcallbacks\u002Fcallbacks.jl\":{\"tag\":\"sourcefile\",\"title\":\"FluxTraining\u002Fsrc\u002Fcallbacks\u002Fcallbacks.jl\"},\"references\u002FFluxTraining.CancelEpochException\":{\"tag\":\"documentation\",\"title\":\"CancelEpochException\"},\"references\u002FFluxTraining.Permission\":{\"tag\":\"documentation\",\"title\":\"Permission\"},\"references\u002FFluxTraining.runstep\":{\"tag\":\"documentation\",\"title\":\"runstep\"},\"sourcefiles\u002FFluxTraining\u002Fsrc\u002Ftestutils.jl\":{\"tag\":\"sourcefile\",\"title\":\"FluxTraining\u002Fsrc\u002Ftestutils.jl\"},\"references\u002FFluxTraining.ES.GL\":{\"tag\":\"documentation\",\"title\":\"GL\"},\"references\u002FFluxTraining.removecallback!\":{\"tag\":\"documentation\",\"title\":\"removecallback!\"},\"references\u002FFluxTraining.CallbackRunner\":{\"tag\":\"documentation\",\"title\":\"CallbackRunner\"},\"references\u002FFluxTraining.addcallback!\":{\"tag\":\"documentation\",\"title\":\"addcallback!\"},\"references\u002FFluxTraining.ValidationPhase\":{\"tag\":\"documentation\",\"title\":\"ValidationPhase\"},\"references\u002FFluxTraining.CheckDataIteratorTrain\":{\"tag\":\"documentation\",\"title\":\"CheckDataIteratorTrain\"},\"references\u002FFluxTraining.reset!\":{\"tag\":\"documentation\",\"title\":\"reset!\"},\"sourcefiles\u002FFluxTraining\u002Fsrc\u002Fcallbacks\u002Fcallback.jl\":{\"tag\":\"sourcefile\",\"title\":\"FluxTraining\u002Fsrc\u002Fcallbacks\u002Fcallback.jl\"},\"references\u002FFluxTraining.Events.BackwardBegin\":{\"tag\":\"documentation\",\"title\":\"BackwardBegin\"},\"sourcefiles\u002FFluxTraining\u002Fsrc\u002Flearner.jl\":{\"tag\":\"sourcefile\",\"title\":\"FluxTraining\u002Fsrc\u002Flearner.jl\"},\"references\u002FFluxTraining.Loss\":{\"tag\":\"documentation\",\"title\":\"Loss\"},\"sourcefiles\u002FFluxTraining\u002Fsrc\u002Fcallbacks\u002Fphases.jl\":{\"tag\":\"sourcefile\",\"title\":\"FluxTraining\u002Fsrc\u002Fcallbacks\u002Fphases.jl\"},\"references\u002FFluxTraining.runepoch\":{\"tag\":\"documentation\",\"title\":\"runepoch\"},\"references\u002FFluxTraining.ES.EarlyStopping\":{\"tag\":\"documentation\",\"title\":\"EarlyStopping\"},\"sourcefiles\u002FFluxTraining\u002Fsrc\u002Fcallbacks\u002Fconditional.jl\":{\"tag\":\"sourcefile\",\"title\":\"FluxTraining\u002Fsrc\u002Fcallbacks\u002Fconditional.jl\"},\"references\u002FFluxTraining.ES.TimeLimit\":{\"tag\":\"documentation\",\"title\":\"TimeLimit\"},\"documents\u002Fdocs\u002Ffeatures.md\":{\"tag\":\"document\",\"title\":\"Features\"},\"references\u002FFluxTraining.shouldrun\":{\"tag\":\"documentation\",\"title\":\"shouldrun\"},\"references\u002FFluxTraining.LogHistograms\":{\"tag\":\"documentation\",\"title\":\"LogHistograms\"},\"sourcefiles\u002FFluxTraining\u002Fsrc\u002Fcallbacks\u002Fevents.jl\":{\"tag\":\"sourcefile\",\"title\":\"FluxTraining\u002Fsrc\u002Fcallbacks\u002Fevents.jl\"},\"references\u002FFluxTraining.init!\":{\"tag\":\"documentation\",\"title\":\"init!\"},\"references\u002FFluxTraining.setfieldperm!\":{\"tag\":\"documentation\",\"title\":\"setfieldperm!\"},\"references\u002FFluxTraining.ES.NumberSinceBest\":{\"tag\":\"documentation\",\"title\":\"NumberSinceBest\"},\"references\u002FFluxTraining.getfieldperm\":{\"tag\":\"documentation\",\"title\":\"getfieldperm\"},\"references\u002FFluxTraining.CHECKS\":{\"tag\":\"documentation\",\"title\":\"CHECKS\"},\"documents\u002Fdocs\u002Freference\u002Ftraining.md\":{\"tag\":\"document\",\"title\":\"Training loop API reference\"},\"references\u002FFluxTraining.Loggables.File\":{\"tag\":\"documentation\",\"title\":\"File\"},\"references\u002FFluxTraining.Metrics\":{\"tag\":\"documentation\",\"title\":\"Metrics\"},\"references\u002FFluxTraining.model!\":{\"tag\":\"documentation\",\"title\":\"model!\"},\"references\u002FFluxTraining.log_parameters\":{\"tag\":\"documentation\",\"title\":\"log_parameters\"},\"references\u002FFluxTraining.Events.EpochBegin\":{\"tag\":\"documentation\",\"title\":\"EpochBegin\"},\"references\u002FFluxTraining.CallbackCondition\":{\"tag\":\"documentation\",\"title\":\"CallbackCondition\"},\"sourcefiles\u002FFluxTraining\u002Fsrc\u002Fcallbacks\u002Flogging\u002Fcheckpointer.jl\":{\"tag\":\"sourcefile\",\"title\":\"FluxTraining\u002Fsrc\u002Fcallbacks\u002Flogging\u002Fcheckpointer.jl\"},\"references\u002FFluxTraining.onecycle\":{\"tag\":\"documentation\",\"title\":\"onecycle\"},\"references\u002FFluxTraining.loadmodel\":{\"tag\":\"documentation\",\"title\":\"loadmodel\"},\"references\u002FFluxTraining.ES.Patience\":{\"tag\":\"documentation\",\"title\":\"Patience\"},\"sourcefiles\u002FFluxTraining\u002Fsrc\u002Fcallbacks\u002Fearlystopping.jl\":{\"tag\":\"sourcefile\",\"title\":\"FluxTraining\u002Fsrc\u002Fcallbacks\u002Fearlystopping.jl\"},\"references\u002FFluxTraining.Loggables.Loggable\":{\"tag\":\"documentation\",\"title\":\"Loggable\"},\"references\u002FFluxTraining.Read\":{\"tag\":\"documentation\",\"title\":\"Read\"},\"references\u002FFluxTraining.step!\":{\"tag\":\"documentation\",\"title\":\"step!\"},\"references\u002FFluxTraining.ProgressPrinter\":{\"tag\":\"documentation\",\"title\":\"ProgressPrinter\"},\"references\u002FFluxTraining.getcallback\":{\"tag\":\"documentation\",\"title\":\"getcallback\"},\"references\u002FFluxTraining.handle\":{\"tag\":\"documentation\",\"title\":\"handle\"},\"documents\u002Fdocs\u002Ftutorials\u002Ftraining.md\":{\"tag\":\"document\",\"title\":\"Training loop\"},\"references\u002FFluxTraining._resolveconflict\":{\"tag\":\"documentation\",\"title\":\"_resolveconflict\"},\"references\u002FFluxTraining.SafeCallback\":{\"tag\":\"documentation\",\"title\":\"SafeCallback\"},\"documents\u002Fdocs\u002Fcallbacks\u002Fcustom.md\":{\"tag\":\"document\",\"title\":\"Custom callbacks\"},\"sourcefiles\u002FFluxTraining\u002Fsrc\u002Fcallbacks\u002Flogging\u002Ftensorboard.jl\":{\"tag\":\"sourcefile\",\"title\":\"FluxTraining\u002Fsrc\u002Fcallbacks\u002Flogging\u002Ftensorboard.jl\"},\"references\u002FFluxTraining.CheckDataIteratorValid\":{\"tag\":\"documentation\",\"title\":\"CheckDataIteratorValid\"},\"references\u002FFluxTraining.Events.Events\":{\"tag\":\"documentation\",\"title\":null},\"references\u002FFluxTraining.errorwriteconflict\":{\"tag\":\"documentation\",\"title\":\"errorwriteconflict\"},\"references\u002FFluxTraining.Loggables.Value\":{\"tag\":\"documentation\",\"title\":\"Value\"},\"references\u002FFluxTraining.TestModel\":{\"tag\":\"documentation\",\"title\":\"TestModel\"},\"references\u002FFluxTraining.LoggerBackend\":{\"tag\":\"documentation\",\"title\":\"LoggerBackend\"},\"documents\u002Fdocs\u002Fbackground\u002Fdataiterator.md\":{\"tag\":\"document\",\"title\":\"Data iterators\"}}"}</script>
+	</script><script type="application/json" data-type="svelte-data" data-url="/FluxTraining.jl/data/dev/attributes.json">{"status":200,"statusText":"","headers":{"content-type":"application/json"},"body":"{\"documents\u002FCHANGELOG.md\":{\"tag\":\"document\",\"title\":\"News\"},\"references\u002FFluxTraining.HyperParameter\":{\"tag\":\"documentation\",\"title\":\"HyperParameter\"},\"sourcefiles\u002FFluxTraining\u002Fsrc\u002Fcallbacks\u002Fscheduler.jl\":{\"tag\":\"sourcefile\",\"title\":\"FluxTraining\u002Fsrc\u002Fcallbacks\u002Fscheduler.jl\"},\"references\u002FFluxTraining.savemodel\":{\"tag\":\"documentation\",\"title\":\"savemodel\"},\"references\u002FFluxTraining.CheckModelLossStep\":{\"tag\":\"documentation\",\"title\":\"CheckModelLossStep\"},\"references\u002FFluxTraining.CancelStepException\":{\"tag\":\"documentation\",\"title\":\"CancelStepException\"},\"references\u002FFluxTraining.ConflictResolution\":{\"tag\":\"documentation\",\"title\":\"ConflictResolution\"},\"references\u002FFluxTraining.replacecallback!\":{\"tag\":\"documentation\",\"title\":\"replacecallback!\"},\"documents\u002Fdocs\u002Ftutorials\u002Fhyperparameters.md\":{\"tag\":\"document\",\"title\":\"Hyperparameter scheduling\"},\"sourcefiles\u002FFluxTraining\u002Fsrc\u002Fcallbacks\u002Fmetrics.jl\":{\"tag\":\"sourcefile\",\"title\":\"FluxTraining\u002Fsrc\u002Fcallbacks\u002Fmetrics.jl\"},\"references\u002FFluxTraining.##InlineTest-01b48f5c342f65df7fcd07f28f0d2cacbb09f0a0.tests\":{\"tag\":\"documentation\",\"title\":\"tests\"},\"references\u002FFluxTraining.print_epoch_table\":{\"tag\":\"documentation\",\"title\":\"print_epoch_table\"},\"references\u002FFluxTraining.log_to\":{\"tag\":\"documentation\",\"title\":\"log_to\"},\"references\u002FFluxTraining.@pack_History!\":{\"tag\":\"documentation\",\"title\":\"@pack_History!\"},\"references\u002FFluxTraining.AbstractCallback\":{\"tag\":\"documentation\",\"title\":\"AbstractCallback\"},\"references\u002FFluxTraining.getindexperm\":{\"tag\":\"documentation\",\"title\":\"getindexperm\"},\"sourcefiles\u002FFluxTraining\u002Fsrc\u002Fcallbacks\u002Fcustom.jl\":{\"tag\":\"sourcefile\",\"title\":\"FluxTraining\u002Fsrc\u002Fcallbacks\u002Fcustom.jl\"},\"references\u002FFluxTraining.Phases.ValidationPhase\":{\"tag\":\"documentation\",\"title\":\"ValidationPhase\"},\"references\u002FFluxTraining.iterpairs\":{\"tag\":\"documentation\",\"title\":\"iterpairs\"},\"references\u002FFluxTraining.Callback\":{\"tag\":\"documentation\",\"title\":\"Callback\"},\"references\u002FFluxTraining.StopOnNaNLoss\":{\"tag\":\"documentation\",\"title\":\"StopOnNaNLoss\"},\"references\u002FFluxTraining.Protected\":{\"tag\":\"documentation\",\"title\":\"Protected\"},\"references\u002FFluxTraining.Events.StepBegin\":{\"tag\":\"documentation\",\"title\":\"StepBegin\"},\"documents\u002FLICENSE.md\":{\"tag\":\"document\",\"title\":\"LICENSE\"},\"references\u002FFluxTraining.paramsrec\":{\"tag\":\"documentation\",\"title\":\"paramsrec\"},\"references\u002FFluxTraining.AbstractMetric\":{\"tag\":\"documentation\",\"title\":\"AbstractMetric\"},\"documents\u002Fdocs\u002Ftutorials\u002Fmnist.ipynb\":{\"tag\":\"document\",\"title\":\"Training an image classifier\"},\"references\u002FFluxTraining.@pack_History\":{\"tag\":\"documentation\",\"title\":\"@pack_History\"},\"references\u002FFluxTraining.edgesrunafter\":{\"tag\":\"documentation\",\"title\":\"edgesrunafter\"},\"references\u002FFluxTraining.LinearRunner\":{\"tag\":\"documentation\",\"title\":\"LinearRunner\"},\"references\u002FFluxTraining.protect\":{\"tag\":\"documentation\",\"title\":\"protect\"},\"references\u002FFluxTraining.formataccess\":{\"tag\":\"documentation\",\"title\":\"formataccess\"},\"references\u002FFluxTraining.resolveconflict\":{\"tag\":\"documentation\",\"title\":\"resolveconflict\"},\"documents\u002Fdocs\u002Fcallbacks\u002Freference.md\":{\"tag\":\"document\",\"title\":\"Callback reference\"},\"references\u002FFluxTraining.Loggables\":{\"tag\":\"documentation\",\"title\":\"Loggables\"},\"references\u002FFluxTraining.setlearningrate!\":{\"tag\":\"documentation\",\"title\":\"setlearningrate!\"},\"references\u002FFluxTraining.stepvalue\":{\"tag\":\"documentation\",\"title\":\"stepvalue\"},\"sourcefiles\u002FFluxTraining\u002Fsrc\u002Ftraining.jl\":{\"tag\":\"sourcefile\",\"title\":\"FluxTraining\u002Fsrc\u002Ftraining.jl\"},\"sourcefiles\u002FFluxTraining\u002Fsrc\u002Fcallbacks\u002Fhyperparameters.jl\":{\"tag\":\"sourcefile\",\"title\":\"FluxTraining\u002Fsrc\u002Fcallbacks\u002Fhyperparameters.jl\"},\"references\u002FFluxTraining.@unpack_History\":{\"tag\":\"documentation\",\"title\":\"@unpack_History\"},\"references\u002FFluxTraining.ProtectedException\":{\"tag\":\"documentation\",\"title\":\"ProtectedException\"},\"references\u002FFluxTraining.FrequencyThrottle\":{\"tag\":\"documentation\",\"title\":\"FrequencyThrottle\"},\"references\u002FFluxTraining.RunFirst\":{\"tag\":\"documentation\",\"title\":\"RunFirst\"},\"references\u002FFluxTraining.Events.StepEnd\":{\"tag\":\"documentation\",\"title\":\"StepEnd\"},\"references\u002FFluxTraining.SanityCheck\":{\"tag\":\"documentation\",\"title\":\"SanityCheck\"},\"references\u002FFluxTraining.ToDevice\":{\"tag\":\"documentation\",\"title\":\"ToDevice\"},\"references\u002FFluxTraining._on\":{\"tag\":\"documentation\",\"title\":\"_on\"},\"references\u002FFluxTraining.Loggables.Audio\":{\"tag\":\"documentation\",\"title\":\"Audio\"},\"documents\u002Fdocs\u002Fimagenette_demo.ipynb\":{\"tag\":\"document\",\"title\":\"imagenette_demo\"},\"sourcefiles\u002FFluxTraining\u002Fsrc\u002Fcallbacks\u002Fprotect.jl\":{\"tag\":\"sourcefile\",\"title\":\"FluxTraining\u002Fsrc\u002Fcallbacks\u002Fprotect.jl\"},\"references\u002FFluxTraining.Loggables.Image\":{\"tag\":\"documentation\",\"title\":\"Image\"},\"references\u002FFluxTraining.CustomCallback\":{\"tag\":\"documentation\",\"title\":\"CustomCallback\"},\"sourcefiles\u002FFluxTraining\u002Fsrc\u002Fcallbacks\u002Flogging\u002Flogger.jl\":{\"tag\":\"sourcefile\",\"title\":\"FluxTraining\u002Fsrc\u002Fcallbacks\u002Flogging\u002Flogger.jl\"},\"references\u002FFluxTraining._dataiters\":{\"tag\":\"documentation\",\"title\":\"_dataiters\"},\"references\u002FFluxTraining.ToGPU\":{\"tag\":\"documentation\",\"title\":\"ToGPU\"},\"sourcefiles\u002FFluxTraining\u002Fsrc\u002Ffunctional\u002Fmetrics.jl\":{\"tag\":\"sourcefile\",\"title\":\"FluxTraining\u002Fsrc\u002Ffunctional\u002Fmetrics.jl\"},\"references\u002FFluxTraining.##InlineTest-01b48f5c342f65df7fcd07f28f0d2cacbb09f0a0.TESTSET_MACROS\":{\"tag\":\"documentation\",\"title\":\"TESTSET_MACROS\"},\"references\u002FFluxTraining.on\":{\"tag\":\"documentation\",\"title\":\"on\"},\"references\u002FFluxTraining.accuracy\":{\"tag\":\"documentation\",\"title\":\"accuracy\"},\"sourcefiles\u002FFluxTraining\u002Fsrc\u002Fcallbackutils.jl\":{\"tag\":\"sourcefile\",\"title\":\"FluxTraining\u002Fsrc\u002Fcallbackutils.jl\"},\"references\u002FFluxTraining.Check\":{\"tag\":\"documentation\",\"title\":\"Check\"},\"references\u002FFluxTraining.throttle\":{\"tag\":\"documentation\",\"title\":\"throttle\"},\"references\u002FFluxTraining.Callbacks\":{\"tag\":\"documentation\",\"title\":\"Callbacks\"},\"references\u002FFluxTraining.LearningRate\":{\"tag\":\"documentation\",\"title\":\"LearningRate\"},\"references\u002FFluxTraining.Metric\":{\"tag\":\"documentation\",\"title\":\"Metric\"},\"references\u002FFluxTraining.FitException\":{\"tag\":\"documentation\",\"title\":\"FitException\"},\"sourcefiles\u002FFluxTraining\u002Fsrc\u002Fcallbacks\u002Fgraph.jl\":{\"tag\":\"sourcefile\",\"title\":\"FluxTraining\u002Fsrc\u002Fcallbacks\u002Fgraph.jl\"},\"documents\u002Fdocs\u002Fbackground\u002Flossfunction.md\":{\"tag\":\"document\",\"title\":\"Loss functions\"},\"sourcefiles\u002FFluxTraining\u002Fsrc\u002FFluxTraining.jl\":{\"tag\":\"sourcefile\",\"title\":\"FluxTraining\u002Fsrc\u002FFluxTraining.jl\"},\"sourcefiles\u002FFluxTraining\u002Fsrc\u002Fcallbacks\u002Fexecution.jl\":{\"tag\":\"sourcefile\",\"title\":\"FluxTraining\u002Fsrc\u002Fcallbacks\u002Fexecution.jl\"},\"references\u002FFluxTraining._combinename\":{\"tag\":\"documentation\",\"title\":\"_combinename\"},\"references\u002FFluxTraining.testbatch\":{\"tag\":\"documentation\",\"title\":\"testbatch\"},\"references\u002FFluxTraining.Phases.AbstractTrainingPhase\":{\"tag\":\"documentation\",\"title\":\"AbstractTrainingPhase\"},\"references\u002FFluxTraining.stateaccess\":{\"tag\":\"documentation\",\"title\":\"stateaccess\"},\"documents\u002FREADME.md\":{\"tag\":\"document\",\"title\":\"FluxTraining.jl\"},\"references\u002FFluxTraining.GarbageCollect\":{\"tag\":\"documentation\",\"title\":\"GarbageCollect\"},\"sourcefiles\u002FFluxTraining\u002Fsrc\u002Fcallbacks\u002Flogging\u002FLoggables.jl\":{\"tag\":\"sourcefile\",\"title\":\"FluxTraining\u002Fsrc\u002Fcallbacks\u002Flogging\u002FLoggables.jl\"},\"references\u002FFluxTraining.runtests\":{\"tag\":\"documentation\",\"title\":\"runtests\"},\"references\u002FFluxTraining.Loggables.Graph\":{\"tag\":\"documentation\",\"title\":\"Graph\"},\"references\u002FFluxTraining.LogVisualization\":{\"tag\":\"documentation\",\"title\":\"LogVisualization\"},\"references\u002FFluxTraining.Events\":{\"tag\":\"documentation\",\"title\":\"Events\"},\"references\u002FFluxTraining.NoConflict\":{\"tag\":\"documentation\",\"title\":\"NoConflict\"},\"references\u002FFluxTraining.defaultcallbacks\":{\"tag\":\"documentation\",\"title\":\"defaultcallbacks\"},\"references\u002FFluxTraining.Events.Event\":{\"tag\":\"documentation\",\"title\":\"Event\"},\"references\u002FFluxTraining.Learner\":{\"tag\":\"documentation\",\"title\":\"Learner\"},\"references\u002FFluxTraining.setindexperm!\":{\"tag\":\"documentation\",\"title\":\"setindexperm!\"},\"references\u002FFluxTraining.CancelFittingException\":{\"tag\":\"documentation\",\"title\":\"CancelFittingException\"},\"references\u002FFluxTraining.metricname\":{\"tag\":\"documentation\",\"title\":\"metricname\"},\"references\u002FFluxTraining.ES\":{\"tag\":\"documentation\",\"title\":\"ES\"},\"references\u002FFluxTraining.runafter\":{\"tag\":\"documentation\",\"title\":\"runafter\"},\"references\u002FFluxTraining.MetricsPrinter\":{\"tag\":\"documentation\",\"title\":\"MetricsPrinter\"},\"references\u002FFluxTraining.hasconflict\":{\"tag\":\"documentation\",\"title\":\"hasconflict\"},\"references\u002FFluxTraining.runchecks\":{\"tag\":\"documentation\",\"title\":\"runchecks\"},\"references\u002FFluxTraining.TimeThrottle\":{\"tag\":\"documentation\",\"title\":\"TimeThrottle\"},\"sourcefiles\u002FFluxTraining\u002Fsrc\u002Fcallbacks\u002Fsanitycheck.jl\":{\"tag\":\"sourcefile\",\"title\":\"FluxTraining\u002Fsrc\u002Fcallbacks\u002Fsanitycheck.jl\"},\"references\u002FFluxTraining.ConditionalCallback\":{\"tag\":\"documentation\",\"title\":\"ConditionalCallback\"},\"references\u002FFluxTraining.LogHyperParams\":{\"tag\":\"documentation\",\"title\":\"LogHyperParams\"},\"references\u002FFluxTraining.History\":{\"tag\":\"documentation\",\"title\":\"History\"},\"references\u002FFluxTraining.Scheduler\":{\"tag\":\"documentation\",\"title\":\"Scheduler\"},\"references\u002FFluxTraining.Phases.TrainingPhase\":{\"tag\":\"documentation\",\"title\":\"TrainingPhase\"},\"documents\u002Fdocs\u002Fbackground\u002Fmodel.md\":{\"tag\":\"document\",\"title\":\"Models\"},\"references\u002FFluxTraining.Checkpointer\":{\"tag\":\"documentation\",\"title\":\"Checkpointer\"},\"references\u002FFluxTraining.Events.BackwardEnd\":{\"tag\":\"documentation\",\"title\":\"BackwardEnd\"},\"references\u002FFluxTraining.Loggables.Histogram\":{\"tag\":\"documentation\",\"title\":\"Histogram\"},\"references\u002FFluxTraining.CheckIteratesTuples\":{\"tag\":\"documentation\",\"title\":\"CheckIteratesTuples\"},\"references\u002FFluxTraining.phasedataiter\":{\"tag\":\"documentation\",\"title\":\"phasedataiter\"},\"references\u002FFluxTraining.EarlyStopping\":{\"tag\":\"documentation\",\"title\":\"EarlyStopping\"},\"references\u002FFluxTraining.sethyperparameter!\":{\"tag\":\"documentation\",\"title\":\"sethyperparameter!\"},\"references\u002FFluxTraining.Write\":{\"tag\":\"documentation\",\"title\":\"Write\"},\"references\u002FFluxTraining.Events.EpochEnd\":{\"tag\":\"documentation\",\"title\":\"EpochEnd\"},\"references\u002FFluxTraining.callbackgraph\":{\"tag\":\"documentation\",\"title\":\"callbackgraph\"},\"references\u002FFluxTraining.Phases\":{\"tag\":\"documentation\",\"title\":\"Phases\"},\"references\u002FFluxTraining.TensorBoardBackend\":{\"tag\":\"documentation\",\"title\":\"TensorBoardBackend\"},\"documents\u002Fdocs\u002Fbackground\u002Foptimizer.md\":{\"tag\":\"document\",\"title\":\"Optimizers\"},\"references\u002FFluxTraining.testlearner\":{\"tag\":\"documentation\",\"title\":\"testlearner\"},\"references\u002FFluxTraining.epochvalue\":{\"tag\":\"documentation\",\"title\":\"epochvalue\"},\"documents\u002Fdocs\u002Fgetting_started.md\":{\"tag\":\"document\",\"title\":\"Getting started\"},\"references\u002FFluxTraining.garbagecollect\":{\"tag\":\"documentation\",\"title\":\"garbagecollect\"},\"documents\u002Fdocs\u002Fcustom_training.ipynb\":{\"tag\":\"document\",\"title\":\"Custom training loops\"},\"references\u002FFluxTraining.epoch!\":{\"tag\":\"documentation\",\"title\":\"epoch!\"},\"references\u002FFluxTraining.SmoothLoss\":{\"tag\":\"documentation\",\"title\":\"SmoothLoss\"},\"references\u002FFluxTraining.Phases.Phase\":{\"tag\":\"documentation\",\"title\":\"Phase\"},\"references\u002FFluxTraining.setcallbacks!\":{\"tag\":\"documentation\",\"title\":\"setcallbacks!\"},\"references\u002FFluxTraining.Unresolvable\":{\"tag\":\"documentation\",\"title\":\"Unresolvable\"},\"references\u002FFluxTraining\":{\"tag\":\"documentation\",\"title\":\"FluxTraining\"},\"references\u002FFluxTraining.testbatches\":{\"tag\":\"documentation\",\"title\":\"testbatches\"},\"documents\u002Fdocs\u002Foverview.md\":{\"tag\":\"document\",\"title\":\"Getting started\"},\"references\u002FFluxTraining.accesses\":{\"tag\":\"documentation\",\"title\":\"accesses\"},\"documents\u002Fdocs\u002Fcallbacks\u002Ftipstricks.md\":{\"tag\":\"document\",\"title\":\"Tips & tricks\"},\"references\u002FFluxTraining.Phases.AbstractValidationPhase\":{\"tag\":\"documentation\",\"title\":\"AbstractValidationPhase\"},\"sourcefiles\u002FFluxTraining\u002Fsrc\u002Fcallbacks\u002Frecorder.jl\":{\"tag\":\"sourcefile\",\"title\":\"FluxTraining\u002Fsrc\u002Fcallbacks\u002Frecorder.jl\"},\"references\u002FFluxTraining.NotDefined\":{\"tag\":\"documentation\",\"title\":\"NotDefined\"},\"references\u002FFluxTraining.findconflicts\":{\"tag\":\"documentation\",\"title\":\"findconflicts\"},\"references\u002FFluxTraining.Loggables.Text\":{\"tag\":\"documentation\",\"title\":\"Text\"},\"references\u002FFluxTraining.PropDict\":{\"tag\":\"documentation\",\"title\":\"PropDict\"},\"documents\u002Fdocs\u002Fcallbacks\u002Fusage.md\":{\"tag\":\"document\",\"title\":\"How to use callbacks\"},\"references\u002FFluxTraining.Events.LossBegin\":{\"tag\":\"documentation\",\"title\":\"LossBegin\"},\"references\u002FFluxTraining.Recorder\":{\"tag\":\"documentation\",\"title\":\"Recorder\"},\"references\u002FFluxTraining.LogMetrics\":{\"tag\":\"documentation\",\"title\":\"LogMetrics\"},\"references\u002FFluxTraining.fit!\":{\"tag\":\"documentation\",\"title\":\"fit!\"},\"references\u002FFluxTraining.SanityCheckException\":{\"tag\":\"documentation\",\"title\":\"SanityCheckException\"},\"references\u002FFluxTraining.UnsafeCallback\":{\"tag\":\"documentation\",\"title\":\"UnsafeCallback\"},\"sourcefiles\u002FFluxTraining\u002Fsrc\u002Fcallbacks\u002Fcallbacks.jl\":{\"tag\":\"sourcefile\",\"title\":\"FluxTraining\u002Fsrc\u002Fcallbacks\u002Fcallbacks.jl\"},\"references\u002FFluxTraining.CancelEpochException\":{\"tag\":\"documentation\",\"title\":\"CancelEpochException\"},\"references\u002FFluxTraining.Permission\":{\"tag\":\"documentation\",\"title\":\"Permission\"},\"sourcefiles\u002FFluxTraining\u002Fsrc\u002Ftestutils.jl\":{\"tag\":\"sourcefile\",\"title\":\"FluxTraining\u002Fsrc\u002Ftestutils.jl\"},\"references\u002FFluxTraining.runstep\":{\"tag\":\"documentation\",\"title\":\"runstep\"},\"references\u002FFluxTraining.removecallback!\":{\"tag\":\"documentation\",\"title\":\"removecallback!\"},\"references\u002FFluxTraining.CallbackRunner\":{\"tag\":\"documentation\",\"title\":\"CallbackRunner\"},\"references\u002FFluxTraining.addcallback!\":{\"tag\":\"documentation\",\"title\":\"addcallback!\"},\"references\u002FFluxTraining.CheckDataIteratorTrain\":{\"tag\":\"documentation\",\"title\":\"CheckDataIteratorTrain\"},\"references\u002FFluxTraining.reset!\":{\"tag\":\"documentation\",\"title\":\"reset!\"},\"sourcefiles\u002FFluxTraining\u002Fsrc\u002Fcallbacks\u002Fcallback.jl\":{\"tag\":\"sourcefile\",\"title\":\"FluxTraining\u002Fsrc\u002Fcallbacks\u002Fcallback.jl\"},\"references\u002FFluxTraining.Events.BackwardBegin\":{\"tag\":\"documentation\",\"title\":\"BackwardBegin\"},\"sourcefiles\u002FFluxTraining\u002Fsrc\u002Flearner.jl\":{\"tag\":\"sourcefile\",\"title\":\"FluxTraining\u002Fsrc\u002Flearner.jl\"},\"references\u002FFluxTraining.Loss\":{\"tag\":\"documentation\",\"title\":\"Loss\"},\"sourcefiles\u002FFluxTraining\u002Fsrc\u002Fcallbacks\u002Fphases.jl\":{\"tag\":\"sourcefile\",\"title\":\"FluxTraining\u002Fsrc\u002Fcallbacks\u002Fphases.jl\"},\"references\u002FFluxTraining.runepoch\":{\"tag\":\"documentation\",\"title\":\"runepoch\"},\"sourcefiles\u002FFluxTraining\u002Fsrc\u002Fcallbacks\u002Fconditional.jl\":{\"tag\":\"sourcefile\",\"title\":\"FluxTraining\u002Fsrc\u002Fcallbacks\u002Fconditional.jl\"},\"documents\u002Fdocs\u002Ffeatures.md\":{\"tag\":\"document\",\"title\":\"Features\"},\"references\u002FFluxTraining.LogHistograms\":{\"tag\":\"documentation\",\"title\":\"LogHistograms\"},\"references\u002FFluxTraining.shouldrun\":{\"tag\":\"documentation\",\"title\":\"shouldrun\"},\"sourcefiles\u002FFluxTraining\u002Fsrc\u002Fcallbacks\u002Fevents.jl\":{\"tag\":\"sourcefile\",\"title\":\"FluxTraining\u002Fsrc\u002Fcallbacks\u002Fevents.jl\"},\"references\u002FFluxTraining.init!\":{\"tag\":\"documentation\",\"title\":\"init!\"},\"references\u002FFluxTraining.##InlineTest-01b48f5c342f65df7fcd07f28f0d2cacbb09f0a0.__init__\":{\"tag\":\"documentation\",\"title\":\"__init__\"},\"references\u002FFluxTraining.setfieldperm!\":{\"tag\":\"documentation\",\"title\":\"setfieldperm!\"},\"references\u002FFluxTraining.getfieldperm\":{\"tag\":\"documentation\",\"title\":\"getfieldperm\"},\"references\u002FFluxTraining.CHECKS\":{\"tag\":\"documentation\",\"title\":\"CHECKS\"},\"documents\u002Fdocs\u002Freference\u002Ftraining.md\":{\"tag\":\"document\",\"title\":\"Training loop API reference\"},\"references\u002FFluxTraining.Loggables.File\":{\"tag\":\"documentation\",\"title\":\"File\"},\"references\u002FFluxTraining.Metrics\":{\"tag\":\"documentation\",\"title\":\"Metrics\"},\"references\u002FFluxTraining.log_parameters\":{\"tag\":\"documentation\",\"title\":\"log_parameters\"},\"references\u002FFluxTraining.model!\":{\"tag\":\"documentation\",\"title\":\"model!\"},\"references\u002FFluxTraining.Events.EpochBegin\":{\"tag\":\"documentation\",\"title\":\"EpochBegin\"},\"references\u002FFluxTraining.CallbackCondition\":{\"tag\":\"documentation\",\"title\":\"CallbackCondition\"},\"sourcefiles\u002FFluxTraining\u002Fsrc\u002Fcallbacks\u002Flogging\u002Fcheckpointer.jl\":{\"tag\":\"sourcefile\",\"title\":\"FluxTraining\u002Fsrc\u002Fcallbacks\u002Flogging\u002Fcheckpointer.jl\"},\"references\u002FFluxTraining.onecycle\":{\"tag\":\"documentation\",\"title\":\"onecycle\"},\"references\u002FFluxTraining.loadmodel\":{\"tag\":\"documentation\",\"title\":\"loadmodel\"},\"sourcefiles\u002FFluxTraining\u002Fsrc\u002Fcallbacks\u002Fearlystopping.jl\":{\"tag\":\"sourcefile\",\"title\":\"FluxTraining\u002Fsrc\u002Fcallbacks\u002Fearlystopping.jl\"},\"references\u002FFluxTraining.Loggables.Loggable\":{\"tag\":\"documentation\",\"title\":\"Loggable\"},\"references\u002FFluxTraining.Read\":{\"tag\":\"documentation\",\"title\":\"Read\"},\"references\u002FFluxTraining.step!\":{\"tag\":\"documentation\",\"title\":\"step!\"},\"references\u002FFluxTraining.ProgressPrinter\":{\"tag\":\"documentation\",\"title\":\"ProgressPrinter\"},\"references\u002FFluxTraining.getcallback\":{\"tag\":\"documentation\",\"title\":\"getcallback\"},\"references\u002FFluxTraining.handle\":{\"tag\":\"documentation\",\"title\":\"handle\"},\"documents\u002Fdocs\u002Ftutorials\u002Ftraining.md\":{\"tag\":\"document\",\"title\":\"Training loop\"},\"references\u002FFluxTraining._resolveconflict\":{\"tag\":\"documentation\",\"title\":\"_resolveconflict\"},\"references\u002FFluxTraining.SafeCallback\":{\"tag\":\"documentation\",\"title\":\"SafeCallback\"},\"documents\u002Fdocs\u002Fcallbacks\u002Fcustom.md\":{\"tag\":\"document\",\"title\":\"Custom callbacks\"},\"sourcefiles\u002FFluxTraining\u002Fsrc\u002Fcallbacks\u002Flogging\u002Ftensorboard.jl\":{\"tag\":\"sourcefile\",\"title\":\"FluxTraining\u002Fsrc\u002Fcallbacks\u002Flogging\u002Ftensorboard.jl\"},\"references\u002FFluxTraining.CheckDataIteratorValid\":{\"tag\":\"documentation\",\"title\":\"CheckDataIteratorValid\"},\"references\u002FFluxTraining.errorwriteconflict\":{\"tag\":\"documentation\",\"title\":\"errorwriteconflict\"},\"references\u002FFluxTraining.Loggables.Value\":{\"tag\":\"documentation\",\"title\":\"Value\"},\"references\u002FFluxTraining.TestModel\":{\"tag\":\"documentation\",\"title\":\"TestModel\"},\"references\u002FFluxTraining.LoggerBackend\":{\"tag\":\"documentation\",\"title\":\"LoggerBackend\"},\"documents\u002Fdocs\u002Fbackground\u002Fdataiterator.md\":{\"tag\":\"document\",\"title\":\"Data iterators\"}}"}</script>
 	<script type="application/json" data-type="svelte-data" data-url="/FluxTraining.jl/data/dev/config.json">{"status":200,"statusText":"","headers":{"content-type":"application/json"},"body":"{\"linktree\":{\"Overview\":\"documents\u002FREADME.md\",\"Getting started\":\"documents\u002Fdocs\u002Fgetting_started.md\",\"Features\":\"documents\u002Fdocs\u002Ffeatures.md\",\"Tutorials\":{\"Train an image classifier\":\"documents\u002Fdocs\u002Ftutorials\u002Fmnist.ipynb\",\"Write a custom callback\":\"documents\u002Fdocs\u002Fcallbacks\u002Fcustom.md\"},\"How to\":{\"Use callbacks\":\"documents\u002Fdocs\u002Fcallbacks\u002Fusage.md\",\"Tips & Tricks\":\"documents\u002Fdocs\u002Fcallbacks\u002Ftipstricks.md\"},\"Reference\":{\"Module\":\"references\u002FFluxTraining\",\"List of callbacks\":\"documents\u002Fdocs\u002Fcallbacks\u002Freference.md\",\"Training loop API\":\"documents\u002Fdocs\u002Freference\u002Ftraining.md\"},\"Backround\":{\"Hyperparameter scheduling\":\"documents\u002Fdocs\u002Ftutorials\u002Fhyperparameters.md\",\"Custom training loops\":\"documents\u002Fdocs\u002Ftutorials\u002Ftraining.md\"}},\"columnWidth\":650,\"title\":\"FluxTraining.jl\",\"url\":\"https:\u002F\u002Fgithub.com\u002FFluxML\u002FFluxTraining.jl\",\"defaultDocument\":\"documents\u002FREADME.md\"}"}</script>
-	<script type="application/json" data-type="svelte-data" data-url="/FluxTraining.jl/data/dev/sourcefiles/FluxTraining/src/callbacks/recorder.jl.json">{"status":200,"statusText":"","headers":{"content-type":"application/json"},"body":"{\"attributes\":{\"backlinks\":[],\"path\":\"\u002Fhome\u002Frunner\u002F.julia\u002Fpackages\u002FFluxTraining\u002FCfYLJ\u002Fsrc\u002Fcallbacks\u002Frecorder.jl\",\"title\":\"FluxTraining\u002Fsrc\u002Fcallbacks\u002Frecorder.jl\"},\"tag\":\"sourcefile\",\"children\":[{\"attributes\":{\"startline\":1,\"endline\":47},\"tag\":\"codeblock\",\"children\":[{\"attributes\":{},\"tag\":\"CST_DEFINITION\",\"children\":[{\"attributes\":{},\"tag\":\"CST_macrocall\",\"children\":[{\"attributes\":{},\"tag\":\"CST_span\",\"children\":[{\"attributes\":{},\"tag\":\"CST_IDENTIFIER\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"@with_kw\"}}]},{\"attributes\":{},\"tag\":\"CST_whitespace\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\" \"}}]}]},{\"attributes\":{},\"tag\":\"CST_NOTHING\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"\"}}]},{\"attributes\":{},\"tag\":\"CST_struct\",\"children\":[{\"attributes\":{},\"tag\":\"CST_span\",\"children\":[{\"attributes\":{},\"tag\":\"CST_KEYWORD\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"mutable\"}}]},{\"attributes\":{},\"tag\":\"CST_whitespace\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\" \"}}]}]},{\"attributes\":{},\"tag\":\"CST_span\",\"children\":[{\"attributes\":{},\"tag\":\"CST_KEYWORD\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"struct\"}}]},{\"attributes\":{},\"tag\":\"CST_whitespace\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\" \"}}]}]},{\"attributes\":{},\"tag\":\"CST_TRUE\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"\"}}]},{\"attributes\":{},\"tag\":\"CST_span\",\"children\":[{\"attributes\":{\"reftype\":\"symbol\",\"document_id\":\"references\u002FFluxTraining.History\"},\"tag\":\"reference\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"History\"}}]},{\"attributes\":{},\"tag\":\"CST_whitespace\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"\\n    # Number of completed training epochs\\n    \"}}]}]},{\"attributes\":{},\"tag\":\"CST_block\",\"children\":[{\"attributes\":{},\"tag\":\"CST_OPERATOR\",\"children\":[{\"attributes\":{},\"tag\":\"CST_OPERATOR\",\"children\":[{\"attributes\":{},\"tag\":\"CST_IDENTIFIER\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"epochs\"}}]},{\"attributes\":{},\"tag\":\"CST_OPERATOR\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"::\"}}]},{\"attributes\":{},\"tag\":\"CST_span\",\"children\":[{\"attributes\":{},\"tag\":\"CST_IDENTIFIER\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"Int\"}}]},{\"attributes\":{},\"tag\":\"CST_whitespace\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\" \"}}]}]}]},{\"attributes\":{},\"tag\":\"CST_OPERATOR\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"= \"}}]},{\"attributes\":{},\"tag\":\"CST_INTEGER\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"0\\n    # total number of completed steps\\n    \"}}]}]},{\"attributes\":{},\"tag\":\"CST_OPERATOR\",\"children\":[{\"attributes\":{},\"tag\":\"CST_OPERATOR\",\"children\":[{\"attributes\":{},\"tag\":\"CST_IDENTIFIER\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"steps\"}}]},{\"attributes\":{},\"tag\":\"CST_OPERATOR\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"::\"}}]},{\"attributes\":{},\"tag\":\"CST_span\",\"children\":[{\"attributes\":{},\"tag\":\"CST_IDENTIFIER\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"Int\"}}]},{\"attributes\":{},\"tag\":\"CST_whitespace\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\" \"}}]}]}]},{\"attributes\":{},\"tag\":\"CST_OPERATOR\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"= \"}}]},{\"attributes\":{},\"tag\":\"CST_INTEGER\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"0\\n    # number of completed steps in current epoch\\n    \"}}]}]},{\"attributes\":{},\"tag\":\"CST_OPERATOR\",\"children\":[{\"attributes\":{},\"tag\":\"CST_OPERATOR\",\"children\":[{\"attributes\":{},\"tag\":\"CST_IDENTIFIER\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"stepsepoch\"}}]},{\"attributes\":{},\"tag\":\"CST_OPERATOR\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"::\"}}]},{\"attributes\":{},\"tag\":\"CST_span\",\"children\":[{\"attributes\":{},\"tag\":\"CST_IDENTIFIER\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"Int\"}}]},{\"attributes\":{},\"tag\":\"CST_whitespace\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\" \"}}]}]}]},{\"attributes\":{},\"tag\":\"CST_OPERATOR\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"= \"}}]},{\"attributes\":{},\"tag\":\"CST_INTEGER\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"0\\n\"}}]}]}]},{\"attributes\":{},\"tag\":\"CST_span\",\"children\":[{\"attributes\":{},\"tag\":\"CST_KEYWORD\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"end\"}}]},{\"attributes\":{},\"tag\":\"CST_whitespace\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"\\n\\n\"}}]}]}]}]}]},{\"attributes\":{\"docstring\":\"\\\"\\\"\\\"\\n    Recorder()\\n\\nMaintains a [`History`](#). It's stored in `learner.cbstate.history`.\\n\\\"\\\"\\\"\\n\"},\"tag\":\"CST_DEFINITION\",\"children\":[{\"attributes\":{},\"tag\":\"CST_struct\",\"children\":[{\"attributes\":{},\"tag\":\"CST_span\",\"children\":[{\"attributes\":{},\"tag\":\"CST_KEYWORD\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"struct\"}}]},{\"attributes\":{},\"tag\":\"CST_whitespace\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\" \"}}]}]},{\"attributes\":{},\"tag\":\"CST_FALSE\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"\"}}]},{\"attributes\":{},\"tag\":\"CST_OPERATOR\",\"children\":[{\"attributes\":{},\"tag\":\"CST_span\",\"children\":[{\"attributes\":{\"reftype\":\"symbol\",\"document_id\":\"references\u002FFluxTraining.Recorder\"},\"tag\":\"reference\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"Recorder\"}}]},{\"attributes\":{},\"tag\":\"CST_whitespace\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\" \"}}]}]},{\"attributes\":{},\"tag\":\"CST_OPERATOR\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"\u003C: \"}}]},{\"attributes\":{},\"tag\":\"CST_span\",\"children\":[{\"attributes\":{\"reftype\":\"symbol\",\"document_id\":\"references\u002FFluxTraining.Callback\"},\"tag\":\"reference\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"Callback\"}}]},{\"attributes\":{},\"tag\":\"CST_whitespace\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\" \"}}]}]}]},{\"attributes\":{},\"tag\":\"CST_block\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"\"}}]},{\"attributes\":{},\"tag\":\"CST_span\",\"children\":[{\"attributes\":{},\"tag\":\"CST_KEYWORD\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"end\"}}]},{\"attributes\":{},\"tag\":\"CST_whitespace\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"\\n\\n\\n\"}}]}]}]}]},{\"attributes\":{},\"tag\":\"CST_DEFINITION\",\"children\":[{\"attributes\":{},\"tag\":\"CST_OPERATOR\",\"children\":[{\"attributes\":{},\"tag\":\"CST_call\",\"children\":[{\"attributes\":{\"reftype\":\"symbol\",\"document_id\":\"references\u002FFluxTraining.stateaccess\"},\"tag\":\"reference\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"stateaccess\"}}]},{\"attributes\":{},\"tag\":\"CST_BRACKET\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"(\"}}]},{\"attributes\":{},\"tag\":\"CST_OPERATOR\",\"children\":[{\"attributes\":{},\"tag\":\"CST_OPERATOR\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"::\"}}]},{\"attributes\":{\"reftype\":\"symbol\",\"document_id\":\"references\u002FFluxTraining.Recorder\"},\"tag\":\"reference\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"Recorder\"}}]}]},{\"attributes\":{},\"tag\":\"CST_BRACKET\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\") \"}}]}]},{\"attributes\":{},\"tag\":\"CST_OPERATOR\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"= \"}}]},{\"attributes\":{},\"tag\":\"CST_block\",\"children\":[{\"attributes\":{},\"tag\":\"CST_tuple\",\"children\":[{\"attributes\":{},\"tag\":\"CST_BRACKET\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"(\\n    \"}}]},{\"attributes\":{},\"tag\":\"CST_OPERATOR\",\"children\":[{\"attributes\":{},\"tag\":\"CST_span\",\"children\":[{\"attributes\":{},\"tag\":\"CST_IDENTIFIER\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"cbstate\"}}]},{\"attributes\":{},\"tag\":\"CST_whitespace\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\" \"}}]}]},{\"attributes\":{},\"tag\":\"CST_OPERATOR\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"= \"}}]},{\"attributes\":{},\"tag\":\"CST_tuple\",\"children\":[{\"attributes\":{},\"tag\":\"CST_BRACKET\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"(\"}}]},{\"attributes\":{},\"tag\":\"CST_OPERATOR\",\"children\":[{\"attributes\":{},\"tag\":\"CST_span\",\"children\":[{\"attributes\":{},\"tag\":\"CST_IDENTIFIER\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"history\"}}]},{\"attributes\":{},\"tag\":\"CST_whitespace\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\" \"}}]}]},{\"attributes\":{},\"tag\":\"CST_OPERATOR\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"= \"}}]},{\"attributes\":{},\"tag\":\"CST_call\",\"children\":[{\"attributes\":{\"reftype\":\"symbol\",\"document_id\":\"references\u002FFluxTraining.Write\"},\"tag\":\"reference\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"Write\"}}]},{\"attributes\":{},\"tag\":\"CST_BRACKET\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"(\"}}]},{\"attributes\":{},\"tag\":\"CST_BRACKET\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\")\"}}]}]}]},{\"attributes\":{},\"tag\":\"CST_PUNCTUATION\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\",\"}}]},{\"attributes\":{},\"tag\":\"CST_BRACKET\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\")\"}}]}]}]},{\"attributes\":{},\"tag\":\"CST_PUNCTUATION\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\",\\n    \"}}]},{\"attributes\":{},\"tag\":\"CST_OPERATOR\",\"children\":[{\"attributes\":{},\"tag\":\"CST_span\",\"children\":[{\"attributes\":{},\"tag\":\"CST_IDENTIFIER\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"step\"}}]},{\"attributes\":{},\"tag\":\"CST_whitespace\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\" \"}}]}]},{\"attributes\":{},\"tag\":\"CST_OPERATOR\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"= \"}}]},{\"attributes\":{},\"tag\":\"CST_call\",\"children\":[{\"attributes\":{\"reftype\":\"symbol\",\"document_id\":\"references\u002FFluxTraining.Read\"},\"tag\":\"reference\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"Read\"}}]},{\"attributes\":{},\"tag\":\"CST_BRACKET\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"(\"}}]},{\"attributes\":{},\"tag\":\"CST_BRACKET\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\")\"}}]}]}]},{\"attributes\":{},\"tag\":\"CST_PUNCTUATION\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\",\\n    \"}}]},{\"attributes\":{},\"tag\":\"CST_BRACKET\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\")\\n\\n\\n\"}}]}]}]}]}]},{\"attributes\":{},\"tag\":\"CST_DEFINITION\",\"children\":[{\"attributes\":{},\"tag\":\"CST_function\",\"children\":[{\"attributes\":{},\"tag\":\"CST_span\",\"children\":[{\"attributes\":{},\"tag\":\"CST_KEYWORD\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"function\"}}]},{\"attributes\":{},\"tag\":\"CST_whitespace\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\" \"}}]}]},{\"attributes\":{},\"tag\":\"CST_call\",\"children\":[{\"attributes\":{\"reftype\":\"symbol\",\"document_id\":\"references\u002FFluxTraining.init!\"},\"tag\":\"reference\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"init!\"}}]},{\"attributes\":{},\"tag\":\"CST_BRACKET\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"(\"}}]},{\"attributes\":{},\"tag\":\"CST_OPERATOR\",\"children\":[{\"attributes\":{},\"tag\":\"CST_OPERATOR\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"::\"}}]},{\"attributes\":{\"reftype\":\"symbol\",\"document_id\":\"references\u002FFluxTraining.Recorder\"},\"tag\":\"reference\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"Recorder\"}}]}]},{\"attributes\":{},\"tag\":\"CST_PUNCTUATION\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\", \"}}]},{\"attributes\":{},\"tag\":\"CST_IDENTIFIER\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"learner\"}}]},{\"attributes\":{},\"tag\":\"CST_BRACKET\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\")\\n    \"}}]}]},{\"attributes\":{},\"tag\":\"CST_block\",\"children\":[{\"attributes\":{},\"tag\":\"CST_if\",\"children\":[{\"attributes\":{},\"tag\":\"CST_span\",\"children\":[{\"attributes\":{},\"tag\":\"CST_KEYWORD\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"if\"}}]},{\"attributes\":{},\"tag\":\"CST_whitespace\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\" \"}}]}]},{\"attributes\":{},\"tag\":\"CST_call\",\"children\":[{\"attributes\":{},\"tag\":\"CST_OPERATOR\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"!\"}}]},{\"attributes\":{},\"tag\":\"CST_call\",\"children\":[{\"attributes\":{},\"tag\":\"CST_IDENTIFIER\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"haskey\"}}]},{\"attributes\":{},\"tag\":\"CST_BRACKET\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"(\"}}]},{\"attributes\":{},\"tag\":\"CST_OPERATOR\",\"children\":[{\"attributes\":{},\"tag\":\"CST_IDENTIFIER\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"learner\"}}]},{\"attributes\":{},\"tag\":\"CST_OPERATOR\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\".\"}}]},{\"attributes\":{},\"tag\":\"CST_quotenode\",\"children\":[{\"attributes\":{},\"tag\":\"CST_IDENTIFIER\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"cbstate\"}}]}]}]},{\"attributes\":{},\"tag\":\"CST_PUNCTUATION\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\", \"}}]},{\"attributes\":{},\"tag\":\"CST_quotenode\",\"children\":[{\"attributes\":{},\"tag\":\"CST_OPERATOR\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\":\"}}]},{\"attributes\":{},\"tag\":\"CST_IDENTIFIER\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"history\"}}]}]},{\"attributes\":{},\"tag\":\"CST_BRACKET\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\")\\n        \"}}]}]}]},{\"attributes\":{},\"tag\":\"CST_block\",\"children\":[{\"attributes\":{},\"tag\":\"CST_OPERATOR\",\"children\":[{\"attributes\":{},\"tag\":\"CST_OPERATOR\",\"children\":[{\"attributes\":{},\"tag\":\"CST_OPERATOR\",\"children\":[{\"attributes\":{},\"tag\":\"CST_IDENTIFIER\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"learner\"}}]},{\"attributes\":{},\"tag\":\"CST_OPERATOR\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\".\"}}]},{\"attributes\":{},\"tag\":\"CST_quotenode\",\"children\":[{\"attributes\":{},\"tag\":\"CST_IDENTIFIER\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"cbstate\"}}]}]}]},{\"attributes\":{},\"tag\":\"CST_OPERATOR\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\".\"}}]},{\"attributes\":{},\"tag\":\"CST_quotenode\",\"children\":[{\"attributes\":{},\"tag\":\"CST_span\",\"children\":[{\"attributes\":{},\"tag\":\"CST_IDENTIFIER\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"history\"}}]},{\"attributes\":{},\"tag\":\"CST_whitespace\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\" \"}}]}]}]}]},{\"attributes\":{},\"tag\":\"CST_OPERATOR\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"= \"}}]},{\"attributes\":{},\"tag\":\"CST_call\",\"children\":[{\"attributes\":{},\"tag\":\"CST_curly\",\"children\":[{\"attributes\":{},\"tag\":\"CST_IDENTIFIER\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"DefaultDict\"}}]},{\"attributes\":{},\"tag\":\"CST_BRACKET\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"{\"}}]},{\"attributes\":{\"reftype\":\"symbol\",\"document_id\":\"references\u002FFluxTraining.Phases.Phase\"},\"tag\":\"reference\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"Phase\"}}]},{\"attributes\":{},\"tag\":\"CST_PUNCTUATION\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\", \"}}]},{\"attributes\":{\"reftype\":\"symbol\",\"document_id\":\"references\u002FFluxTraining.History\"},\"tag\":\"reference\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"History\"}}]},{\"attributes\":{},\"tag\":\"CST_BRACKET\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"}\"}}]}]},{\"attributes\":{},\"tag\":\"CST_BRACKET\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"(\"}}]},{\"attributes\":{},\"tag\":\"CST_OPERATOR\",\"children\":[{\"attributes\":{},\"tag\":\"CST_tuple\",\"children\":[{\"attributes\":{},\"tag\":\"CST_BRACKET\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"(\"}}]},{\"attributes\":{},\"tag\":\"CST_BRACKET\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\") \"}}]}]},{\"attributes\":{},\"tag\":\"CST_OPERATOR\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"-\u003E \"}}]},{\"attributes\":{},\"tag\":\"CST_block\",\"children\":[{\"attributes\":{},\"tag\":\"CST_call\",\"children\":[{\"attributes\":{\"reftype\":\"symbol\",\"document_id\":\"references\u002FFluxTraining.History\"},\"tag\":\"reference\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"History\"}}]},{\"attributes\":{},\"tag\":\"CST_BRACKET\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"(\"}}]},{\"attributes\":{},\"tag\":\"CST_BRACKET\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\")\"}}]}]}]}]},{\"attributes\":{},\"tag\":\"CST_BRACKET\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\")\\n    \"}}]}]}]}]},{\"attributes\":{},\"tag\":\"CST_span\",\"children\":[{\"attributes\":{},\"tag\":\"CST_KEYWORD\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"end\"}}]},{\"attributes\":{},\"tag\":\"CST_whitespace\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"\\n\"}}]}]}]}]},{\"attributes\":{},\"tag\":\"CST_span\",\"children\":[{\"attributes\":{},\"tag\":\"CST_KEYWORD\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"end\"}}]},{\"attributes\":{},\"tag\":\"CST_whitespace\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"\\n\\n\\n\"}}]}]}]}]},{\"attributes\":{},\"tag\":\"CST_DEFINITION\",\"children\":[{\"attributes\":{},\"tag\":\"CST_function\",\"children\":[{\"attributes\":{},\"tag\":\"CST_span\",\"children\":[{\"attributes\":{},\"tag\":\"CST_KEYWORD\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"function\"}}]},{\"attributes\":{},\"tag\":\"CST_whitespace\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\" \"}}]}]},{\"attributes\":{},\"tag\":\"CST_call\",\"children\":[{\"attributes\":{\"reftype\":\"symbol\",\"document_id\":\"references\u002FFluxTraining.on\"},\"tag\":\"reference\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"on\"}}]},{\"attributes\":{},\"tag\":\"CST_BRACKET\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"(\"}}]},{\"attributes\":{},\"tag\":\"CST_OPERATOR\",\"children\":[{\"attributes\":{},\"tag\":\"CST_OPERATOR\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"::\"}}]},{\"attributes\":{\"reftype\":\"symbol\",\"document_id\":\"references\u002FFluxTraining.Events.EpochBegin\"},\"tag\":\"reference\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"EpochBegin\"}}]}]},{\"attributes\":{},\"tag\":\"CST_PUNCTUATION\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\", \"}}]},{\"attributes\":{},\"tag\":\"CST_OPERATOR\",\"children\":[{\"attributes\":{},\"tag\":\"CST_IDENTIFIER\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"phase\"}}]},{\"attributes\":{},\"tag\":\"CST_OPERATOR\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"::\"}}]},{\"attributes\":{\"reftype\":\"symbol\",\"document_id\":\"references\u002FFluxTraining.Phases.Phase\"},\"tag\":\"reference\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"Phase\"}}]}]},{\"attributes\":{},\"tag\":\"CST_PUNCTUATION\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\", \"}}]},{\"attributes\":{},\"tag\":\"CST_OPERATOR\",\"children\":[{\"attributes\":{},\"tag\":\"CST_IDENTIFIER\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"recorder\"}}]},{\"attributes\":{},\"tag\":\"CST_OPERATOR\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"::\"}}]},{\"attributes\":{\"reftype\":\"symbol\",\"document_id\":\"references\u002FFluxTraining.Recorder\"},\"tag\":\"reference\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"Recorder\"}}]}]},{\"attributes\":{},\"tag\":\"CST_PUNCTUATION\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\", \"}}]},{\"attributes\":{},\"tag\":\"CST_IDENTIFIER\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"learner\"}}]},{\"attributes\":{},\"tag\":\"CST_BRACKET\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\")\\n    \"}}]}]},{\"attributes\":{},\"tag\":\"CST_block\",\"children\":[{\"attributes\":{},\"tag\":\"CST_OPERATOR\",\"children\":[{\"attributes\":{},\"tag\":\"CST_OPERATOR\",\"children\":[{\"attributes\":{},\"tag\":\"CST_ref\",\"children\":[{\"attributes\":{},\"tag\":\"CST_OPERATOR\",\"children\":[{\"attributes\":{},\"tag\":\"CST_OPERATOR\",\"children\":[{\"attributes\":{},\"tag\":\"CST_IDENTIFIER\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"learner\"}}]},{\"attributes\":{},\"tag\":\"CST_OPERATOR\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\".\"}}]},{\"attributes\":{},\"tag\":\"CST_quotenode\",\"children\":[{\"attributes\":{},\"tag\":\"CST_IDENTIFIER\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"cbstate\"}}]}]}]},{\"attributes\":{},\"tag\":\"CST_OPERATOR\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\".\"}}]},{\"attributes\":{},\"tag\":\"CST_quotenode\",\"children\":[{\"attributes\":{},\"tag\":\"CST_IDENTIFIER\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"history\"}}]}]}]},{\"attributes\":{},\"tag\":\"CST_BRACKET\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"[\"}}]},{\"attributes\":{},\"tag\":\"CST_IDENTIFIER\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"phase\"}}]},{\"attributes\":{},\"tag\":\"CST_BRACKET\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"]\"}}]}]},{\"attributes\":{},\"tag\":\"CST_OPERATOR\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\".\"}}]},{\"attributes\":{},\"tag\":\"CST_quotenode\",\"children\":[{\"attributes\":{},\"tag\":\"CST_span\",\"children\":[{\"attributes\":{},\"tag\":\"CST_IDENTIFIER\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"stepsepoch\"}}]},{\"attributes\":{},\"tag\":\"CST_whitespace\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\" \"}}]}]}]}]},{\"attributes\":{},\"tag\":\"CST_OPERATOR\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"= \"}}]},{\"attributes\":{},\"tag\":\"CST_INTEGER\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"0\\n\"}}]}]}]},{\"attributes\":{},\"tag\":\"CST_span\",\"children\":[{\"attributes\":{},\"tag\":\"CST_KEYWORD\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"end\"}}]},{\"attributes\":{},\"tag\":\"CST_whitespace\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"\\n\\n\\n\"}}]}]}]}]},{\"attributes\":{},\"tag\":\"CST_DEFINITION\",\"children\":[{\"attributes\":{},\"tag\":\"CST_function\",\"children\":[{\"attributes\":{},\"tag\":\"CST_span\",\"children\":[{\"attributes\":{},\"tag\":\"CST_KEYWORD\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"function\"}}]},{\"attributes\":{},\"tag\":\"CST_whitespace\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\" \"}}]}]},{\"attributes\":{},\"tag\":\"CST_call\",\"children\":[{\"attributes\":{\"reftype\":\"symbol\",\"document_id\":\"references\u002FFluxTraining.on\"},\"tag\":\"reference\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"on\"}}]},{\"attributes\":{},\"tag\":\"CST_BRACKET\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"(\"}}]},{\"attributes\":{},\"tag\":\"CST_OPERATOR\",\"children\":[{\"attributes\":{},\"tag\":\"CST_OPERATOR\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"::\"}}]},{\"attributes\":{\"reftype\":\"symbol\",\"document_id\":\"references\u002FFluxTraining.Events.StepEnd\"},\"tag\":\"reference\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"StepEnd\"}}]}]},{\"attributes\":{},\"tag\":\"CST_PUNCTUATION\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\", \"}}]},{\"attributes\":{},\"tag\":\"CST_OPERATOR\",\"children\":[{\"attributes\":{},\"tag\":\"CST_IDENTIFIER\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"phase\"}}]},{\"attributes\":{},\"tag\":\"CST_OPERATOR\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"::\"}}]},{\"attributes\":{\"reftype\":\"symbol\",\"document_id\":\"references\u002FFluxTraining.Phases.Phase\"},\"tag\":\"reference\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"Phase\"}}]}]},{\"attributes\":{},\"tag\":\"CST_PUNCTUATION\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\", \"}}]},{\"attributes\":{},\"tag\":\"CST_OPERATOR\",\"children\":[{\"attributes\":{},\"tag\":\"CST_IDENTIFIER\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"recorder\"}}]},{\"attributes\":{},\"tag\":\"CST_OPERATOR\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"::\"}}]},{\"attributes\":{\"reftype\":\"symbol\",\"document_id\":\"references\u002FFluxTraining.Recorder\"},\"tag\":\"reference\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"Recorder\"}}]}]},{\"attributes\":{},\"tag\":\"CST_PUNCTUATION\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\", \"}}]},{\"attributes\":{},\"tag\":\"CST_IDENTIFIER\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"learner\"}}]},{\"attributes\":{},\"tag\":\"CST_BRACKET\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\")\\n    \"}}]}]},{\"attributes\":{},\"tag\":\"CST_block\",\"children\":[{\"attributes\":{},\"tag\":\"CST_OPERATOR\",\"children\":[{\"attributes\":{},\"tag\":\"CST_span\",\"children\":[{\"attributes\":{},\"tag\":\"CST_IDENTIFIER\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"history\"}}]},{\"attributes\":{},\"tag\":\"CST_whitespace\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\" \"}}]}]},{\"attributes\":{},\"tag\":\"CST_OPERATOR\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"= \"}}]},{\"attributes\":{},\"tag\":\"CST_ref\",\"children\":[{\"attributes\":{},\"tag\":\"CST_OPERATOR\",\"children\":[{\"attributes\":{},\"tag\":\"CST_OPERATOR\",\"children\":[{\"attributes\":{},\"tag\":\"CST_IDENTIFIER\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"learner\"}}]},{\"attributes\":{},\"tag\":\"CST_OPERATOR\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\".\"}}]},{\"attributes\":{},\"tag\":\"CST_quotenode\",\"children\":[{\"attributes\":{},\"tag\":\"CST_IDENTIFIER\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"cbstate\"}}]}]}]},{\"attributes\":{},\"tag\":\"CST_OPERATOR\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\".\"}}]},{\"attributes\":{},\"tag\":\"CST_quotenode\",\"children\":[{\"attributes\":{},\"tag\":\"CST_IDENTIFIER\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"history\"}}]}]}]},{\"attributes\":{},\"tag\":\"CST_BRACKET\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"[\"}}]},{\"attributes\":{},\"tag\":\"CST_IDENTIFIER\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"phase\"}}]},{\"attributes\":{},\"tag\":\"CST_BRACKET\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"]\\n    \"}}]}]}]},{\"attributes\":{},\"tag\":\"CST_OPERATOR\",\"children\":[{\"attributes\":{},\"tag\":\"CST_OPERATOR\",\"children\":[{\"attributes\":{},\"tag\":\"CST_IDENTIFIER\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"history\"}}]},{\"attributes\":{},\"tag\":\"CST_OPERATOR\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\".\"}}]},{\"attributes\":{},\"tag\":\"CST_quotenode\",\"children\":[{\"attributes\":{},\"tag\":\"CST_span\",\"children\":[{\"attributes\":{},\"tag\":\"CST_IDENTIFIER\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"steps\"}}]},{\"attributes\":{},\"tag\":\"CST_whitespace\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\" \"}}]}]}]}]},{\"attributes\":{},\"tag\":\"CST_OPERATOR\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"+= \"}}]},{\"attributes\":{},\"tag\":\"CST_INTEGER\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"1\\n    \"}}]}]},{\"attributes\":{},\"tag\":\"CST_OPERATOR\",\"children\":[{\"attributes\":{},\"tag\":\"CST_OPERATOR\",\"children\":[{\"attributes\":{},\"tag\":\"CST_IDENTIFIER\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"history\"}}]},{\"attributes\":{},\"tag\":\"CST_OPERATOR\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\".\"}}]},{\"attributes\":{},\"tag\":\"CST_quotenode\",\"children\":[{\"attributes\":{},\"tag\":\"CST_span\",\"children\":[{\"attributes\":{},\"tag\":\"CST_IDENTIFIER\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"stepsepoch\"}}]},{\"attributes\":{},\"tag\":\"CST_whitespace\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\" \"}}]}]}]}]},{\"attributes\":{},\"tag\":\"CST_OPERATOR\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"+= \"}}]},{\"attributes\":{},\"tag\":\"CST_INTEGER\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"1\\n\"}}]}]}]},{\"attributes\":{},\"tag\":\"CST_span\",\"children\":[{\"attributes\":{},\"tag\":\"CST_KEYWORD\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"end\"}}]},{\"attributes\":{},\"tag\":\"CST_whitespace\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"\\n\\n\\n\"}}]}]}]}]},{\"attributes\":{},\"tag\":\"CST_DEFINITION\",\"children\":[{\"attributes\":{},\"tag\":\"CST_function\",\"children\":[{\"attributes\":{},\"tag\":\"CST_span\",\"children\":[{\"attributes\":{},\"tag\":\"CST_KEYWORD\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"function\"}}]},{\"attributes\":{},\"tag\":\"CST_whitespace\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\" \"}}]}]},{\"attributes\":{},\"tag\":\"CST_call\",\"children\":[{\"attributes\":{\"reftype\":\"symbol\",\"document_id\":\"references\u002FFluxTraining.on\"},\"tag\":\"reference\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"on\"}}]},{\"attributes\":{},\"tag\":\"CST_BRACKET\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"(\"}}]},{\"attributes\":{},\"tag\":\"CST_OPERATOR\",\"children\":[{\"attributes\":{},\"tag\":\"CST_OPERATOR\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"::\"}}]},{\"attributes\":{\"reftype\":\"symbol\",\"document_id\":\"references\u002FFluxTraining.Events.EpochEnd\"},\"tag\":\"reference\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"EpochEnd\"}}]}]},{\"attributes\":{},\"tag\":\"CST_PUNCTUATION\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\", \"}}]},{\"attributes\":{},\"tag\":\"CST_OPERATOR\",\"children\":[{\"attributes\":{},\"tag\":\"CST_IDENTIFIER\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"phase\"}}]},{\"attributes\":{},\"tag\":\"CST_OPERATOR\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"::\"}}]},{\"attributes\":{\"reftype\":\"symbol\",\"document_id\":\"references\u002FFluxTraining.Phases.Phase\"},\"tag\":\"reference\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"Phase\"}}]}]},{\"attributes\":{},\"tag\":\"CST_PUNCTUATION\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\", \"}}]},{\"attributes\":{},\"tag\":\"CST_OPERATOR\",\"children\":[{\"attributes\":{},\"tag\":\"CST_IDENTIFIER\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"recorder\"}}]},{\"attributes\":{},\"tag\":\"CST_OPERATOR\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"::\"}}]},{\"attributes\":{\"reftype\":\"symbol\",\"document_id\":\"references\u002FFluxTraining.Recorder\"},\"tag\":\"reference\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"Recorder\"}}]}]},{\"attributes\":{},\"tag\":\"CST_PUNCTUATION\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\", \"}}]},{\"attributes\":{},\"tag\":\"CST_IDENTIFIER\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"learner\"}}]},{\"attributes\":{},\"tag\":\"CST_BRACKET\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\")\\n    \"}}]}]},{\"attributes\":{},\"tag\":\"CST_block\",\"children\":[{\"attributes\":{},\"tag\":\"CST_OPERATOR\",\"children\":[{\"attributes\":{},\"tag\":\"CST_span\",\"children\":[{\"attributes\":{},\"tag\":\"CST_IDENTIFIER\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"history\"}}]},{\"attributes\":{},\"tag\":\"CST_whitespace\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\" \"}}]}]},{\"attributes\":{},\"tag\":\"CST_OPERATOR\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"= \"}}]},{\"attributes\":{},\"tag\":\"CST_ref\",\"children\":[{\"attributes\":{},\"tag\":\"CST_OPERATOR\",\"children\":[{\"attributes\":{},\"tag\":\"CST_OPERATOR\",\"children\":[{\"attributes\":{},\"tag\":\"CST_IDENTIFIER\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"learner\"}}]},{\"attributes\":{},\"tag\":\"CST_OPERATOR\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\".\"}}]},{\"attributes\":{},\"tag\":\"CST_quotenode\",\"children\":[{\"attributes\":{},\"tag\":\"CST_IDENTIFIER\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"cbstate\"}}]}]}]},{\"attributes\":{},\"tag\":\"CST_OPERATOR\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\".\"}}]},{\"attributes\":{},\"tag\":\"CST_quotenode\",\"children\":[{\"attributes\":{},\"tag\":\"CST_IDENTIFIER\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"history\"}}]}]}]},{\"attributes\":{},\"tag\":\"CST_BRACKET\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"[\"}}]},{\"attributes\":{},\"tag\":\"CST_IDENTIFIER\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"phase\"}}]},{\"attributes\":{},\"tag\":\"CST_BRACKET\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"]\\n    \"}}]}]}]},{\"attributes\":{},\"tag\":\"CST_OPERATOR\",\"children\":[{\"attributes\":{},\"tag\":\"CST_OPERATOR\",\"children\":[{\"attributes\":{},\"tag\":\"CST_IDENTIFIER\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"history\"}}]},{\"attributes\":{},\"tag\":\"CST_OPERATOR\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\".\"}}]},{\"attributes\":{},\"tag\":\"CST_quotenode\",\"children\":[{\"attributes\":{},\"tag\":\"CST_span\",\"children\":[{\"attributes\":{},\"tag\":\"CST_IDENTIFIER\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"epochs\"}}]},{\"attributes\":{},\"tag\":\"CST_whitespace\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\" \"}}]}]}]}]},{\"attributes\":{},\"tag\":\"CST_OPERATOR\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"+= \"}}]},{\"attributes\":{},\"tag\":\"CST_INTEGER\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"1\\n\"}}]}]}]},{\"attributes\":{},\"tag\":\"CST_KEYWORD\",\"children\":[{\"mimes\":{\"text\u002Fplain\":\"end\"}}]}]}]}]}]}"}</script></div>
+	<script type="application/json" data-type="svelte-data" data-url="/FluxTraining.jl/data/dev/sourcefiles/FluxTraining/src/callbacks/recorder.jl.json">{"status":200,"statusText":"","headers":{"content-type":"application/json"},"body":"{\"attributes\":{\"backlinks\":[],\"path\":\"\u002Fhome\u002Frunner\u002F.julia\u002Fpackages\u002FFluxTraining\u002F7gIyL\u002Fsrc\u002Fcallbacks\u002Frecorder.jl\",\"title\":\"FluxTraining\u002Fsrc\u002Fcallbacks\u002Frecorder.jl\"},\"tag\":\"sourcefile\",\"children\":[{\"attributes\":{},\"tag\":\"julia\",\"children\":[{\"attributes\":{\"lang\":\"julia\"},\"tag\":\"codeblock\",\"children\":[{\"attributes\":{},\"tag\":\"julia\",\"children\":[{\"attributes\":{},\"tag\":\"MACROCALL\",\"children\":[{\"attributes\":{},\"tag\":\"AT_SIGN\",\"children\":[\"@\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"MACRO_NAME\",\"children\":[\"with_kw\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"WHITESPACE\",\"children\":[\" \"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"STRUCT\",\"children\":[{\"attributes\":{},\"tag\":\"MUTABLE\",\"children\":[\"mutable\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"TRUE\",\"children\":[\"\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"WHITESPACE\",\"children\":[\" \"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"STRUCT\",\"children\":[\"struct\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"WHITESPACE\",\"children\":[\" \"],\"type\":\"node\"},{\"attributes\":{\"reftype\":\"symbol\",\"document_id\":\"references\u002FFluxTraining.History\"},\"tag\":\"reference\",\"children\":[\"History\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"BLOCK\",\"children\":[{\"attributes\":{},\"tag\":\"NEWLINE_WS\",\"children\":[\"\\n    \"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"COMMENT\",\"children\":[\"# Number of completed training epochs\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"NEWLINE_WS\",\"children\":[\"\\n    \"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"EQ\",\"children\":[{\"attributes\":{},\"tag\":\"DECLARATION\",\"children\":[{\"attributes\":{},\"tag\":\"IDENTIFIER\",\"children\":[\"epochs\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"DECLARATION\",\"children\":[\"::\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"IDENTIFIER\",\"children\":[\"Int\"],\"type\":\"node\"}],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"WHITESPACE\",\"children\":[\" \"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"EQ\",\"children\":[\"=\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"WHITESPACE\",\"children\":[\" \"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"INTEGER\",\"children\":[\"0\"],\"type\":\"node\"}],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"NEWLINE_WS\",\"children\":[\"\\n    \"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"COMMENT\",\"children\":[\"# total number of completed steps\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"NEWLINE_WS\",\"children\":[\"\\n    \"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"EQ\",\"children\":[{\"attributes\":{},\"tag\":\"DECLARATION\",\"children\":[{\"attributes\":{},\"tag\":\"IDENTIFIER\",\"children\":[\"steps\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"DECLARATION\",\"children\":[\"::\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"IDENTIFIER\",\"children\":[\"Int\"],\"type\":\"node\"}],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"WHITESPACE\",\"children\":[\" \"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"EQ\",\"children\":[\"=\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"WHITESPACE\",\"children\":[\" \"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"INTEGER\",\"children\":[\"0\"],\"type\":\"node\"}],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"NEWLINE_WS\",\"children\":[\"\\n    \"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"COMMENT\",\"children\":[\"# number of completed steps in current epoch\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"NEWLINE_WS\",\"children\":[\"\\n    \"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"EQ\",\"children\":[{\"attributes\":{},\"tag\":\"DECLARATION\",\"children\":[{\"attributes\":{},\"tag\":\"IDENTIFIER\",\"children\":[\"stepsepoch\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"DECLARATION\",\"children\":[\"::\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"IDENTIFIER\",\"children\":[\"Int\"],\"type\":\"node\"}],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"WHITESPACE\",\"children\":[\" \"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"EQ\",\"children\":[\"=\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"WHITESPACE\",\"children\":[\" \"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"INTEGER\",\"children\":[\"0\"],\"type\":\"node\"}],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"NEWLINE_WS\",\"children\":[\"\\n\"],\"type\":\"node\"}],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"END\",\"children\":[\"end\"],\"type\":\"node\"}],\"type\":\"node\"}],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"NEWLINE_WS\",\"children\":[\"\\n\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"NEWLINE_WS\",\"children\":[\"\\n\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"STRUCT\",\"children\":[{\"attributes\":{},\"tag\":\"FALSE\",\"children\":[\"\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"STRUCT\",\"children\":[\"struct\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"ISSUBTYPE\",\"children\":[{\"attributes\":{},\"tag\":\"WHITESPACE\",\"children\":[\" \"],\"type\":\"node\"},{\"attributes\":{\"reftype\":\"symbol\",\"document_id\":\"references\u002FFluxTraining.Recorder\"},\"tag\":\"reference\",\"children\":[\"Recorder\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"WHITESPACE\",\"children\":[\" \"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"ISSUBTYPE\",\"children\":[\"\u003C:\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"WHITESPACE\",\"children\":[\" \"],\"type\":\"node\"},{\"attributes\":{\"reftype\":\"symbol\",\"document_id\":\"references\u002FFluxTraining.Callback\"},\"tag\":\"reference\",\"children\":[\"Callback\"],\"type\":\"node\"}],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"BLOCK\",\"children\":[{\"attributes\":{},\"tag\":\"WHITESPACE\",\"children\":[\" \"],\"type\":\"node\"}],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"END\",\"children\":[\"end\"],\"type\":\"node\"}],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"NEWLINE_WS\",\"children\":[\"\\n\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"NEWLINE_WS\",\"children\":[\"\\n\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"NEWLINE_WS\",\"children\":[\"\\n\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"EQ\",\"children\":[{\"attributes\":{},\"tag\":\"CALL\",\"children\":[{\"attributes\":{\"reftype\":\"symbol\",\"document_id\":\"references\u002FFluxTraining.stateaccess\"},\"tag\":\"reference\",\"children\":[\"stateaccess\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"LPAREN\",\"children\":[\"(\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"DECLARATION\",\"children\":[{\"attributes\":{},\"tag\":\"DECLARATION\",\"children\":[\"::\"],\"type\":\"node\"},{\"attributes\":{\"reftype\":\"symbol\",\"document_id\":\"references\u002FFluxTraining.Recorder\"},\"tag\":\"reference\",\"children\":[\"Recorder\"],\"type\":\"node\"}],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"RPAREN\",\"children\":[\")\"],\"type\":\"node\"}],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"WHITESPACE\",\"children\":[\" \"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"EQ\",\"children\":[\"=\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"WHITESPACE\",\"children\":[\" \"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"TUPLE\",\"children\":[{\"attributes\":{},\"tag\":\"LPAREN\",\"children\":[\"(\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"NEWLINE_WS\",\"children\":[\"\\n    \"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"EQ\",\"children\":[{\"attributes\":{},\"tag\":\"IDENTIFIER\",\"children\":[\"cbstate\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"WHITESPACE\",\"children\":[\" \"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"EQ\",\"children\":[\"=\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"WHITESPACE\",\"children\":[\" \"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"TUPLE\",\"children\":[{\"attributes\":{},\"tag\":\"LPAREN\",\"children\":[\"(\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"EQ\",\"children\":[{\"attributes\":{},\"tag\":\"IDENTIFIER\",\"children\":[\"history\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"WHITESPACE\",\"children\":[\" \"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"EQ\",\"children\":[\"=\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"WHITESPACE\",\"children\":[\" \"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"CALL\",\"children\":[{\"attributes\":{\"reftype\":\"symbol\",\"document_id\":\"references\u002FFluxTraining.Write\"},\"tag\":\"reference\",\"children\":[\"Write\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"LPAREN\",\"children\":[\"(\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"RPAREN\",\"children\":[\")\"],\"type\":\"node\"}],\"type\":\"node\"}],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"COMMA\",\"children\":[\",\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"RPAREN\",\"children\":[\")\"],\"type\":\"node\"}],\"type\":\"node\"}],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"COMMA\",\"children\":[\",\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"NEWLINE_WS\",\"children\":[\"\\n    \"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"EQ\",\"children\":[{\"attributes\":{},\"tag\":\"IDENTIFIER\",\"children\":[\"step\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"WHITESPACE\",\"children\":[\" \"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"EQ\",\"children\":[\"=\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"WHITESPACE\",\"children\":[\" \"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"CALL\",\"children\":[{\"attributes\":{\"reftype\":\"symbol\",\"document_id\":\"references\u002FFluxTraining.Read\"},\"tag\":\"reference\",\"children\":[\"Read\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"LPAREN\",\"children\":[\"(\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"RPAREN\",\"children\":[\")\"],\"type\":\"node\"}],\"type\":\"node\"}],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"COMMA\",\"children\":[\",\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"NEWLINE_WS\",\"children\":[\"\\n    \"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"RPAREN\",\"children\":[\")\"],\"type\":\"node\"}],\"type\":\"node\"}],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"NEWLINE_WS\",\"children\":[\"\\n\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"NEWLINE_WS\",\"children\":[\"\\n\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"NEWLINE_WS\",\"children\":[\"\\n\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"FUNCTION\",\"children\":[{\"attributes\":{},\"tag\":\"FUNCTION\",\"children\":[\"function\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"WHITESPACE\",\"children\":[\" \"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"CALL\",\"children\":[{\"attributes\":{\"reftype\":\"symbol\",\"document_id\":\"references\u002FFluxTraining.init!\"},\"tag\":\"reference\",\"children\":[\"init!\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"LPAREN\",\"children\":[\"(\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"DECLARATION\",\"children\":[{\"attributes\":{},\"tag\":\"DECLARATION\",\"children\":[\"::\"],\"type\":\"node\"},{\"attributes\":{\"reftype\":\"symbol\",\"document_id\":\"references\u002FFluxTraining.Recorder\"},\"tag\":\"reference\",\"children\":[\"Recorder\"],\"type\":\"node\"}],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"COMMA\",\"children\":[\",\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"WHITESPACE\",\"children\":[\" \"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"IDENTIFIER\",\"children\":[\"learner\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"RPAREN\",\"children\":[\")\"],\"type\":\"node\"}],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"BLOCK\",\"children\":[{\"attributes\":{},\"tag\":\"NEWLINE_WS\",\"children\":[\"\\n    \"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"IF\",\"children\":[{\"attributes\":{},\"tag\":\"IF\",\"children\":[\"if\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"WHITESPACE\",\"children\":[\" \"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"CALL\",\"children\":[{\"attributes\":{},\"tag\":\"NOT\",\"children\":[\"!\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"CALL\",\"children\":[{\"attributes\":{},\"tag\":\"IDENTIFIER\",\"children\":[\"haskey\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"LPAREN\",\"children\":[\"(\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"DOT\",\"children\":[{\"attributes\":{},\"tag\":\"IDENTIFIER\",\"children\":[\"learner\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"DOT\",\"children\":[\".\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"QUOTE\",\"children\":[{\"attributes\":{},\"tag\":\"IDENTIFIER\",\"children\":[\"cbstate\"],\"type\":\"node\"}],\"type\":\"node\"}],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"COMMA\",\"children\":[\",\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"WHITESPACE\",\"children\":[\" \"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"QUOTE\",\"children\":[{\"attributes\":{},\"tag\":\"COLON\",\"children\":[\":\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"IDENTIFIER\",\"children\":[\"history\"],\"type\":\"node\"}],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"RPAREN\",\"children\":[\")\"],\"type\":\"node\"}],\"type\":\"node\"}],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"BLOCK\",\"children\":[{\"attributes\":{},\"tag\":\"NEWLINE_WS\",\"children\":[\"\\n        \"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"EQ\",\"children\":[{\"attributes\":{},\"tag\":\"DOT\",\"children\":[{\"attributes\":{},\"tag\":\"DOT\",\"children\":[{\"attributes\":{},\"tag\":\"IDENTIFIER\",\"children\":[\"learner\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"DOT\",\"children\":[\".\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"QUOTE\",\"children\":[{\"attributes\":{},\"tag\":\"IDENTIFIER\",\"children\":[\"cbstate\"],\"type\":\"node\"}],\"type\":\"node\"}],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"DOT\",\"children\":[\".\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"QUOTE\",\"children\":[{\"attributes\":{},\"tag\":\"IDENTIFIER\",\"children\":[\"history\"],\"type\":\"node\"}],\"type\":\"node\"}],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"WHITESPACE\",\"children\":[\" \"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"EQ\",\"children\":[\"=\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"WHITESPACE\",\"children\":[\" \"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"CALL\",\"children\":[{\"attributes\":{},\"tag\":\"CURLY\",\"children\":[{\"attributes\":{},\"tag\":\"IDENTIFIER\",\"children\":[\"DefaultDict\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"LBRACE\",\"children\":[\"{\"],\"type\":\"node\"},{\"attributes\":{\"reftype\":\"symbol\",\"document_id\":\"references\u002FFluxTraining.Phases.Phase\"},\"tag\":\"reference\",\"children\":[\"Phase\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"COMMA\",\"children\":[\",\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"WHITESPACE\",\"children\":[\" \"],\"type\":\"node\"},{\"attributes\":{\"reftype\":\"symbol\",\"document_id\":\"references\u002FFluxTraining.History\"},\"tag\":\"reference\",\"children\":[\"History\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"RBRACE\",\"children\":[\"}\"],\"type\":\"node\"}],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"LPAREN\",\"children\":[\"(\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"ANON_FUNC\",\"children\":[{\"attributes\":{},\"tag\":\"TUPLE\",\"children\":[{\"attributes\":{},\"tag\":\"LPAREN\",\"children\":[\"(\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"RPAREN\",\"children\":[\")\"],\"type\":\"node\"}],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"WHITESPACE\",\"children\":[\" \"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"ANON_FUNC\",\"children\":[\"-\u003E\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"WHITESPACE\",\"children\":[\" \"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"CALL\",\"children\":[{\"attributes\":{\"reftype\":\"symbol\",\"document_id\":\"references\u002FFluxTraining.History\"},\"tag\":\"reference\",\"children\":[\"History\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"LPAREN\",\"children\":[\"(\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"RPAREN\",\"children\":[\")\"],\"type\":\"node\"}],\"type\":\"node\"}],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"RPAREN\",\"children\":[\")\"],\"type\":\"node\"}],\"type\":\"node\"}],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"NEWLINE_WS\",\"children\":[\"\\n    \"],\"type\":\"node\"}],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"END\",\"children\":[\"end\"],\"type\":\"node\"}],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"NEWLINE_WS\",\"children\":[\"\\n\"],\"type\":\"node\"}],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"END\",\"children\":[\"end\"],\"type\":\"node\"}],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"NEWLINE_WS\",\"children\":[\"\\n\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"NEWLINE_WS\",\"children\":[\"\\n\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"NEWLINE_WS\",\"children\":[\"\\n\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"FUNCTION\",\"children\":[{\"attributes\":{},\"tag\":\"FUNCTION\",\"children\":[\"function\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"WHITESPACE\",\"children\":[\" \"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"CALL\",\"children\":[{\"attributes\":{\"reftype\":\"symbol\",\"document_id\":\"references\u002FFluxTraining.on\"},\"tag\":\"reference\",\"children\":[\"on\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"LPAREN\",\"children\":[\"(\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"DECLARATION\",\"children\":[{\"attributes\":{},\"tag\":\"DECLARATION\",\"children\":[\"::\"],\"type\":\"node\"},{\"attributes\":{\"reftype\":\"symbol\",\"document_id\":\"references\u002FFluxTraining.Events.EpochBegin\"},\"tag\":\"reference\",\"children\":[\"EpochBegin\"],\"type\":\"node\"}],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"COMMA\",\"children\":[\",\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"WHITESPACE\",\"children\":[\" \"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"DECLARATION\",\"children\":[{\"attributes\":{},\"tag\":\"IDENTIFIER\",\"children\":[\"phase\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"DECLARATION\",\"children\":[\"::\"],\"type\":\"node\"},{\"attributes\":{\"reftype\":\"symbol\",\"document_id\":\"references\u002FFluxTraining.Phases.Phase\"},\"tag\":\"reference\",\"children\":[\"Phase\"],\"type\":\"node\"}],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"COMMA\",\"children\":[\",\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"WHITESPACE\",\"children\":[\" \"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"DECLARATION\",\"children\":[{\"attributes\":{},\"tag\":\"IDENTIFIER\",\"children\":[\"recorder\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"DECLARATION\",\"children\":[\"::\"],\"type\":\"node\"},{\"attributes\":{\"reftype\":\"symbol\",\"document_id\":\"references\u002FFluxTraining.Recorder\"},\"tag\":\"reference\",\"children\":[\"Recorder\"],\"type\":\"node\"}],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"COMMA\",\"children\":[\",\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"WHITESPACE\",\"children\":[\" \"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"IDENTIFIER\",\"children\":[\"learner\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"RPAREN\",\"children\":[\")\"],\"type\":\"node\"}],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"BLOCK\",\"children\":[{\"attributes\":{},\"tag\":\"NEWLINE_WS\",\"children\":[\"\\n    \"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"EQ\",\"children\":[{\"attributes\":{},\"tag\":\"DOT\",\"children\":[{\"attributes\":{},\"tag\":\"REF\",\"children\":[{\"attributes\":{},\"tag\":\"DOT\",\"children\":[{\"attributes\":{},\"tag\":\"DOT\",\"children\":[{\"attributes\":{},\"tag\":\"IDENTIFIER\",\"children\":[\"learner\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"DOT\",\"children\":[\".\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"QUOTE\",\"children\":[{\"attributes\":{},\"tag\":\"IDENTIFIER\",\"children\":[\"cbstate\"],\"type\":\"node\"}],\"type\":\"node\"}],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"DOT\",\"children\":[\".\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"QUOTE\",\"children\":[{\"attributes\":{},\"tag\":\"IDENTIFIER\",\"children\":[\"history\"],\"type\":\"node\"}],\"type\":\"node\"}],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"LSQUARE\",\"children\":[\"[\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"IDENTIFIER\",\"children\":[\"phase\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"RSQUARE\",\"children\":[\"]\"],\"type\":\"node\"}],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"DOT\",\"children\":[\".\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"QUOTE\",\"children\":[{\"attributes\":{},\"tag\":\"IDENTIFIER\",\"children\":[\"stepsepoch\"],\"type\":\"node\"}],\"type\":\"node\"}],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"WHITESPACE\",\"children\":[\" \"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"EQ\",\"children\":[\"=\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"WHITESPACE\",\"children\":[\" \"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"INTEGER\",\"children\":[\"0\"],\"type\":\"node\"}],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"NEWLINE_WS\",\"children\":[\"\\n\"],\"type\":\"node\"}],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"END\",\"children\":[\"end\"],\"type\":\"node\"}],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"NEWLINE_WS\",\"children\":[\"\\n\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"NEWLINE_WS\",\"children\":[\"\\n\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"NEWLINE_WS\",\"children\":[\"\\n\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"FUNCTION\",\"children\":[{\"attributes\":{},\"tag\":\"FUNCTION\",\"children\":[\"function\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"WHITESPACE\",\"children\":[\" \"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"CALL\",\"children\":[{\"attributes\":{\"reftype\":\"symbol\",\"document_id\":\"references\u002FFluxTraining.on\"},\"tag\":\"reference\",\"children\":[\"on\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"LPAREN\",\"children\":[\"(\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"DECLARATION\",\"children\":[{\"attributes\":{},\"tag\":\"DECLARATION\",\"children\":[\"::\"],\"type\":\"node\"},{\"attributes\":{\"reftype\":\"symbol\",\"document_id\":\"references\u002FFluxTraining.Events.StepEnd\"},\"tag\":\"reference\",\"children\":[\"StepEnd\"],\"type\":\"node\"}],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"COMMA\",\"children\":[\",\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"WHITESPACE\",\"children\":[\" \"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"DECLARATION\",\"children\":[{\"attributes\":{},\"tag\":\"IDENTIFIER\",\"children\":[\"phase\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"DECLARATION\",\"children\":[\"::\"],\"type\":\"node\"},{\"attributes\":{\"reftype\":\"symbol\",\"document_id\":\"references\u002FFluxTraining.Phases.Phase\"},\"tag\":\"reference\",\"children\":[\"Phase\"],\"type\":\"node\"}],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"COMMA\",\"children\":[\",\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"WHITESPACE\",\"children\":[\" \"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"DECLARATION\",\"children\":[{\"attributes\":{},\"tag\":\"IDENTIFIER\",\"children\":[\"recorder\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"DECLARATION\",\"children\":[\"::\"],\"type\":\"node\"},{\"attributes\":{\"reftype\":\"symbol\",\"document_id\":\"references\u002FFluxTraining.Recorder\"},\"tag\":\"reference\",\"children\":[\"Recorder\"],\"type\":\"node\"}],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"COMMA\",\"children\":[\",\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"WHITESPACE\",\"children\":[\" \"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"IDENTIFIER\",\"children\":[\"learner\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"RPAREN\",\"children\":[\")\"],\"type\":\"node\"}],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"BLOCK\",\"children\":[{\"attributes\":{},\"tag\":\"NEWLINE_WS\",\"children\":[\"\\n    \"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"EQ\",\"children\":[{\"attributes\":{},\"tag\":\"IDENTIFIER\",\"children\":[\"history\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"WHITESPACE\",\"children\":[\" \"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"EQ\",\"children\":[\"=\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"WHITESPACE\",\"children\":[\" \"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"REF\",\"children\":[{\"attributes\":{},\"tag\":\"DOT\",\"children\":[{\"attributes\":{},\"tag\":\"DOT\",\"children\":[{\"attributes\":{},\"tag\":\"IDENTIFIER\",\"children\":[\"learner\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"DOT\",\"children\":[\".\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"QUOTE\",\"children\":[{\"attributes\":{},\"tag\":\"IDENTIFIER\",\"children\":[\"cbstate\"],\"type\":\"node\"}],\"type\":\"node\"}],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"DOT\",\"children\":[\".\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"QUOTE\",\"children\":[{\"attributes\":{},\"tag\":\"IDENTIFIER\",\"children\":[\"history\"],\"type\":\"node\"}],\"type\":\"node\"}],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"LSQUARE\",\"children\":[\"[\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"IDENTIFIER\",\"children\":[\"phase\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"RSQUARE\",\"children\":[\"]\"],\"type\":\"node\"}],\"type\":\"node\"}],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"NEWLINE_WS\",\"children\":[\"\\n    \"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"PLUS_EQ\",\"children\":[{\"attributes\":{},\"tag\":\"DOT\",\"children\":[{\"attributes\":{},\"tag\":\"IDENTIFIER\",\"children\":[\"history\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"DOT\",\"children\":[\".\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"QUOTE\",\"children\":[{\"attributes\":{},\"tag\":\"IDENTIFIER\",\"children\":[\"steps\"],\"type\":\"node\"}],\"type\":\"node\"}],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"WHITESPACE\",\"children\":[\" \"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"PLUS_EQ\",\"children\":[\"+=\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"WHITESPACE\",\"children\":[\" \"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"INTEGER\",\"children\":[\"1\"],\"type\":\"node\"}],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"NEWLINE_WS\",\"children\":[\"\\n    \"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"PLUS_EQ\",\"children\":[{\"attributes\":{},\"tag\":\"DOT\",\"children\":[{\"attributes\":{},\"tag\":\"IDENTIFIER\",\"children\":[\"history\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"DOT\",\"children\":[\".\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"QUOTE\",\"children\":[{\"attributes\":{},\"tag\":\"IDENTIFIER\",\"children\":[\"stepsepoch\"],\"type\":\"node\"}],\"type\":\"node\"}],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"WHITESPACE\",\"children\":[\" \"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"PLUS_EQ\",\"children\":[\"+=\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"WHITESPACE\",\"children\":[\" \"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"INTEGER\",\"children\":[\"1\"],\"type\":\"node\"}],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"NEWLINE_WS\",\"children\":[\"\\n\"],\"type\":\"node\"}],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"END\",\"children\":[\"end\"],\"type\":\"node\"}],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"NEWLINE_WS\",\"children\":[\"\\n\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"NEWLINE_WS\",\"children\":[\"\\n\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"NEWLINE_WS\",\"children\":[\"\\n\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"FUNCTION\",\"children\":[{\"attributes\":{},\"tag\":\"FUNCTION\",\"children\":[\"function\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"WHITESPACE\",\"children\":[\" \"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"CALL\",\"children\":[{\"attributes\":{\"reftype\":\"symbol\",\"document_id\":\"references\u002FFluxTraining.on\"},\"tag\":\"reference\",\"children\":[\"on\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"LPAREN\",\"children\":[\"(\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"DECLARATION\",\"children\":[{\"attributes\":{},\"tag\":\"DECLARATION\",\"children\":[\"::\"],\"type\":\"node\"},{\"attributes\":{\"reftype\":\"symbol\",\"document_id\":\"references\u002FFluxTraining.Events.EpochEnd\"},\"tag\":\"reference\",\"children\":[\"EpochEnd\"],\"type\":\"node\"}],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"COMMA\",\"children\":[\",\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"WHITESPACE\",\"children\":[\" \"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"DECLARATION\",\"children\":[{\"attributes\":{},\"tag\":\"IDENTIFIER\",\"children\":[\"phase\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"DECLARATION\",\"children\":[\"::\"],\"type\":\"node\"},{\"attributes\":{\"reftype\":\"symbol\",\"document_id\":\"references\u002FFluxTraining.Phases.Phase\"},\"tag\":\"reference\",\"children\":[\"Phase\"],\"type\":\"node\"}],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"COMMA\",\"children\":[\",\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"WHITESPACE\",\"children\":[\" \"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"DECLARATION\",\"children\":[{\"attributes\":{},\"tag\":\"IDENTIFIER\",\"children\":[\"recorder\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"DECLARATION\",\"children\":[\"::\"],\"type\":\"node\"},{\"attributes\":{\"reftype\":\"symbol\",\"document_id\":\"references\u002FFluxTraining.Recorder\"},\"tag\":\"reference\",\"children\":[\"Recorder\"],\"type\":\"node\"}],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"COMMA\",\"children\":[\",\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"WHITESPACE\",\"children\":[\" \"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"IDENTIFIER\",\"children\":[\"learner\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"RPAREN\",\"children\":[\")\"],\"type\":\"node\"}],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"BLOCK\",\"children\":[{\"attributes\":{},\"tag\":\"NEWLINE_WS\",\"children\":[\"\\n    \"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"EQ\",\"children\":[{\"attributes\":{},\"tag\":\"IDENTIFIER\",\"children\":[\"history\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"WHITESPACE\",\"children\":[\" \"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"EQ\",\"children\":[\"=\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"WHITESPACE\",\"children\":[\" \"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"REF\",\"children\":[{\"attributes\":{},\"tag\":\"DOT\",\"children\":[{\"attributes\":{},\"tag\":\"DOT\",\"children\":[{\"attributes\":{},\"tag\":\"IDENTIFIER\",\"children\":[\"learner\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"DOT\",\"children\":[\".\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"QUOTE\",\"children\":[{\"attributes\":{},\"tag\":\"IDENTIFIER\",\"children\":[\"cbstate\"],\"type\":\"node\"}],\"type\":\"node\"}],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"DOT\",\"children\":[\".\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"QUOTE\",\"children\":[{\"attributes\":{},\"tag\":\"IDENTIFIER\",\"children\":[\"history\"],\"type\":\"node\"}],\"type\":\"node\"}],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"LSQUARE\",\"children\":[\"[\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"IDENTIFIER\",\"children\":[\"phase\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"RSQUARE\",\"children\":[\"]\"],\"type\":\"node\"}],\"type\":\"node\"}],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"NEWLINE_WS\",\"children\":[\"\\n    \"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"PLUS_EQ\",\"children\":[{\"attributes\":{},\"tag\":\"DOT\",\"children\":[{\"attributes\":{},\"tag\":\"IDENTIFIER\",\"children\":[\"history\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"DOT\",\"children\":[\".\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"QUOTE\",\"children\":[{\"attributes\":{},\"tag\":\"IDENTIFIER\",\"children\":[\"epochs\"],\"type\":\"node\"}],\"type\":\"node\"}],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"WHITESPACE\",\"children\":[\" \"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"PLUS_EQ\",\"children\":[\"+=\"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"WHITESPACE\",\"children\":[\" \"],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"INTEGER\",\"children\":[\"1\"],\"type\":\"node\"}],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"NEWLINE_WS\",\"children\":[\"\\n\"],\"type\":\"node\"}],\"type\":\"node\"},{\"attributes\":{},\"tag\":\"END\",\"children\":[\"end\"],\"type\":\"node\"}],\"type\":\"node\"}],\"type\":\"node\"}],\"type\":\"node\"}],\"type\":\"node\"}],\"type\":\"node\"}"}</script></div>
 </body>
 
 </html>
