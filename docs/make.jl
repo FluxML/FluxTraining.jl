@@ -1,43 +1,28 @@
-using Pkg
-using Pollen
+"""
+This script builds the Pollen.jl documentation so that it can be loaded
+by the frontend. It accepts one argument: the path where the generated
+files should be stored.
 
-using GraphPlot
-using FluxTraining
-const PACKAGE = FluxTraining
+    > julia docs/make.jl DIR
 
+Use `./serve.jl` for interactive development.
+"""
 
 # Create target folder
+isempty(ARGS) && error("Please pass a file path to make.jl:\n\t> julia docs/make.jl DIR ")
 DIR = abspath(mkpath(ARGS[1]))
 
-
 # Create Project
-m = PACKAGE
-ms = [m, m.Events, m.Phases, m.Loggables]
-
-
-@info "Creating project..."
-project = Project(
-    Pollen.Rewriter[
-        Pollen.DocumentFolder(pkgdir(m), prefix = "documents"),
-        Pollen.ParseCode(),
-        Pollen.ExecuteCode(),
-        Pollen.PackageDocumentation(ms),
-        Pollen.DocumentGraph(),
-        Pollen.SearchIndex(),
-        Pollen.SaveAttributes((:title,)),
-        Pollen.LoadFrontendConfig(pkgdir(m))
-    ],
-)
+project = include("project.jl")
 
 @info "Rewriting documents..."
 Pollen.rewritesources!(project)
 
 @info "Writing to disk at \"$DIR\"..."
-builder = Pollen.FileBuilder(
-    Pollen.JSON(),
-    DIR,
-)
 Pollen.build(
-    builder,
+    FileBuilder(
+        JSONFormat(),
+        DIR,
+    ),
     project,
 )

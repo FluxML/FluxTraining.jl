@@ -1,31 +1,26 @@
-using Pkg
+"""
+This script serves the Pollen.jl documentation on a local file server
+so that it can be loaded by the frontend in development mode.
+files should be stored.
+
+    > julia docs/serve.jl
+
+Use `./make.jl` to export the generated documents to disk.
+
+There are two modes for interactive development: Lazy and Regular.
+In lazy mode, each document will be built only if it is requested in
+the frontend, while for Regular mode, each document will be built
+once before serving.
+"""
+
 using Pollen
 
-using FluxTraining
-const PACKAGE = FluxTraining
-
-LAZY = get(ENV, "POLLEN_LAZY", "false") == "true"
-
-# Create Project
-m = PACKAGE
-ms = [m, m.Events, m.Phases, m.Loggables]
+project = include("project.jl")
 
 
-@info "Creating project..."
-project = Project(
-    Pollen.Rewriter[
-        Pollen.DocumentFolder(pkgdir(m), prefix = "documents"),
-        Pollen.ParseCode(),
-        Pollen.ExecuteCode(),
-        Pollen.PackageDocumentation(ms),
-        Pollen.DocumentGraph(),
-        Pollen.SearchIndex(),
-        Pollen.SaveAttributes((:title,)),
-        Pollen.LoadFrontendConfig(pkgdir(m))
-    ],
+Pollen.serve(
+    project;
+    lazy = get(ENV, "POLLEN_LAZY", "false") == "true",
+    port = Base.parse(Int, get(ENV, "POLLEN_PORT", "8000")),
+    format = JSONFormat()
 )
-
-
-DIR = mktempdir()
-@info "Serving from directory $DIR"
-Pollen.serve(project, DIR, lazy=LAZY, format = Pollen.JSON())

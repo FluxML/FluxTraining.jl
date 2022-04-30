@@ -7,10 +7,20 @@
 
 - Support for [Optimisers.jl](https://github.com/FluxML/Optimisers.jl) https://github.com/FluxML/FluxTraining.jl/pull/114.
 
+## [0.3.0] - 04.04.2022
+
+### Added
+
+- Short-hand `Learner` method `Learner(model, lossfn[; data, optim, callbacks, kwargs...])`. The old method still exists but use is discouraged.
+- Compatibility with Flux.jl v0.13 once released 
+- [Pollen.jl doucmentation frontend](https://fluxml.ai/FluxTraining.jl/dev/i/?id=documents%2FREADME.md)
+
+### Changed
+
+- (BREAKING) Hyperparameter scheduling now uses ParameterSchedules.jl instead of Animations.jl for defining schedules. See [the docs](https://fluxml.ai/FluxTraining.jl/dev/documents/docs/tutorials/hyperparameters.md/).
+- Fixes on documentation pages
 
 ## [0.2.0]
-
-This is a **breaking** release.
 
 ### Added
 
