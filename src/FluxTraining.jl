@@ -15,6 +15,7 @@ module ES
 end
 import OnlineStats
 using OnlineStats: EqualWeight, Mean, OnlineStat
+import Optimisers
 using Parameters
 using ProgressMeter: Progress, next!
 using Statistics: mean

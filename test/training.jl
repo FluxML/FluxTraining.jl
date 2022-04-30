@@ -47,3 +47,10 @@ end
     fit!(learner, 5)
     @test learner.model.coeff[1] ≈ 3 atol = 0.1
 end
+
+
+@testset "Optimisers.jl compatibility" begin
+    learner = testlearner(coeff = 3, opt=Optimisers.Descent(0.001))
+    fit!(learner, 5)
+    @test learner.model.coeff[1] ≈ 3 atol = 0.1
+end

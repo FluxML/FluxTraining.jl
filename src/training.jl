@@ -49,16 +49,27 @@ function step! end
 function step!(learner, phase::TrainingPhase, batch)
     xs, ys = batch
     runstep(learner, phase, (; xs=xs, ys=ys)) do handle, state
-        state.grads = gradient(learner.params) do
-            state.ŷs = learner.model(state.xs)
+        state.grads, _, _= gradient(learner.model, state.xs, state.ys) do model, xs, ys
+            state.ŷs = model(xs)
             handle(LossBegin())
-            state.loss = learner.lossfn(state.ŷs, state.ys)
+            state.loss = learner.lossfn(state.ŷs, ys)
             handle(BackwardBegin())
             return state.loss
         end
         handle(BackwardEnd())
-        update!(learner.optimizer, learner.params, state.grads)
+        learner.params, learner.model = _update!(
+            learner.optimizer, learner.params, learner.model, state.grads)
     end
+end
+
+# Handle both old Flux.jl and new Optimisers.jl optimisers
+function _update!(optimizer::Flux.Optimise.AbstractOptimiser, params, model, grads)
+    update!(optimizer, model, grads)
+    return params, model
+end
+function _update!(_, st, model, grads)
+    st, model = Optimisers.update!(st, model, grads)
+    return st, model
 end
 
 
