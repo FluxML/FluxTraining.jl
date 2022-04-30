@@ -1,4 +1,5 @@
 using ReTest
+import Optimisers
 using FluxTraining
 using ParameterSchedulers
 using Colors

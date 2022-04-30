@@ -50,7 +50,7 @@ function step!(learner, phase::TrainingPhase, batch)
     xs, ys = batch
     runstep(learner, phase, (; xs=xs, ys=ys)) do handle, state
 
-        state.grads, = gradient(learner.model) do model
+        state.grads = _gradient(learner.optimizer, learner.model, learner.params) do model
             state.ŷs = model(state.xs)
             handle(LossBegin())
             state.loss = learner.lossfn(state.ŷs, state.ys)
@@ -63,9 +63,14 @@ function step!(learner, phase::TrainingPhase, batch)
     end
 end
 
+
 # Handle both old Flux.jl and new Optimisers.jl optimisers
+
+_gradient(f, _, m, _) = gradient(f, m)[1]
+_gradient(f, ::Flux.Optimise.AbstractOptimiser, m, ps::Params) = gradient(() -> f(m), ps)
+
 function _update!(optimizer::Flux.Optimise.AbstractOptimiser, params, model, grads)
-    update!(optimizer, model, grads)
+    update!(optimizer, params, grads)
     return params, model
 end
 function _update!(_, st, model, grads)

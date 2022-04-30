@@ -1,7 +1,14 @@
 
 # News
 
-## [0.2.0] – Unreleased
+## Unreleased
+
+### Added
+
+- Support for [Optimisers.jl](https://github.com/FluxML/Optimisers.jl) https://github.com/FluxML/FluxTraining.jl/pull/114.
+
+
+## [0.2.0]
 
 This is a **breaking** release.
 
