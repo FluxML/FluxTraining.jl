@@ -1,8 +1,13 @@
 
 # News
 
-## [0.3.0] - 04.04.2022
+## Unreleased
 
+### Added
+
+- Support for [Optimisers.jl](https://github.com/FluxML/Optimisers.jl) https://github.com/FluxML/FluxTraining.jl/pull/114.
+
+## [0.3.0] - 04.04.2022
 
 ### Added
 

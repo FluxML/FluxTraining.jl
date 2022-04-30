@@ -16,6 +16,8 @@ mutable struct Learner
     data::PropDict
     optimizer
     lossfn
+    # this used to store `Flux.Params` but now stores the optimiser state
+    # if an optim from Optimisers.jl is used
     params
     step::PropDict
     callbacks::Callbacks
@@ -96,7 +98,7 @@ function Learner(
         _dataiters(data),
         optimizer,
         lossfn,
-        paramsrec(model),
+        setupoptimstate(model, optimizer),
         PropDict(),
         cbs,
         PropDict())
@@ -129,8 +131,14 @@ phasedataiter(::AbstractValidationPhase) = :validation
 
 function model!(learner, model)
     learner.model = model
-    learner.params = paramsrec(model)
+    learner.params = setupoptimstate(model, learner.optimizer)
 end
+
+# Flux.jl optimisers store `params`, while Optimisers.jl store the result of `setup`
+setupoptimstate(model, ::Flux.Optimise.AbstractOptimiser) = Flux.params(model)
+# Optimisers.jl has no abstract supertype so we assume non-Flux optimisers
+# conform to the Optimisers.jl interface.
+setupoptimstate(model, optim) = Optimisers.setup(optim, model)
 
 
 _dataiters(d::PropDict) = d
@@ -146,9 +154,3 @@ function _dataiters(t::Tuple)
         error("Please pass a `NamedTuple` or `PropDict` as `data`.")
     end
 end
-
-
-paramsrec(m) = Flux.params(m)
-paramsrec(t::Union{Tuple,NamedTuple}) = map(paramsrec, t)
-
-# Callback utilities
