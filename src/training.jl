@@ -49,10 +49,11 @@ function step! end
 function step!(learner, phase::TrainingPhase, batch)
     xs, ys = batch
     runstep(learner, phase, (; xs=xs, ys=ys)) do handle, state
-        state.grads, _, _= gradient(learner.model, state.xs, state.ys) do model, xs, ys
-            state.ŷs = model(xs)
+
+        state.grads, = gradient(learner.model) do model
+            state.ŷs = model(state.xs)
             handle(LossBegin())
-            state.loss = learner.lossfn(state.ŷs, ys)
+            state.loss = learner.lossfn(state.ŷs, state.ys)
             handle(BackwardBegin())
             return state.loss
         end
