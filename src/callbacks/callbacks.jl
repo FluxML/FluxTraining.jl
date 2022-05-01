@@ -107,6 +107,7 @@ stateaccess(::ToDevice) = (
     model = Write(),
     params = Write(),
     step = Write(),
+    optimizer = Read(),
 )
 
 """
