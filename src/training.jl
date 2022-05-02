@@ -81,8 +81,9 @@ end
 
 function step!(learner, phase::ValidationPhase, batch)
     xs, ys = batch
-    runstep(learner, phase, (;xs=xs, ys=ys)) do _, state
+    runstep(learner, phase, (;xs=xs, ys=ys)) do handle, state
         state.ŷs = learner.model(state.xs)
+        handle(LossBegin())
         state.loss = learner.lossfn(state.ŷs, state.ys)
     end
 end

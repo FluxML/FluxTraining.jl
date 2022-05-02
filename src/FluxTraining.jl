@@ -3,6 +3,10 @@ module FluxTraining
 
 using Graphs
 using BSON: @load, @save
+using Colors: @colorant_str
+using ColorSchemes: ColorScheme, colorschemes
+using DataFrames: DataFrame, groupby, select, subset, combine
+using DataFrames.PooledArrays: PooledArray
 using Flux
 using Flux: Params, onecold
 using Flux.Optimise: update!
@@ -18,7 +22,7 @@ using OnlineStats: EqualWeight, Mean, OnlineStat
 import Optimisers
 using Parameters
 using ProgressMeter: Progress, next!
-using Statistics: mean
+using Statistics: mean, median
 using UUIDs
 using Zygote
 using ParameterSchedulers
@@ -27,6 +31,7 @@ using Zygote: Grads, gradient
 using ValueHistories
 using DataStructures: DefaultDict
 using PrettyTables
+using StructArrays
 
 # functional
 include("./functional/metrics.jl")
@@ -38,6 +43,7 @@ include("./callbacks/events.jl")
 include("./callbacks/callback.jl")
 include("./callbacks/graph.jl")
 include("./callbacks/execution.jl")
+include("./callbacks/runners/profiler.jl")
 
 # logging
 include("./callbacks/logging/Loggables.jl")
@@ -106,5 +112,6 @@ export AbstractCallback,
     step!,
     onecycle,
     loadmodel,
-    savemodel
+    savemodel,
+    ProfileRunner
 end # module
