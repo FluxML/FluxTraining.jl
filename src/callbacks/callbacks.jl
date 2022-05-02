@@ -84,7 +84,7 @@ stateaccess(::StopOnNaNLoss) = (step = (loss = Read()),)
 
 
 """
-    ToDevice(movefn[, movemodelfn]) <: Callback
+    ToDevice(movedatafn, movemodelfn) <: Callback
 
 Moves model and step data to a device using `movedatafn` for step data
 and `movemodelfn` for the model. For example `ToDevice(Flux.gpu, Flux.gpu)`,

@@ -8,7 +8,7 @@ using FluxTraining: protect, Events, Phases, runstep, runepoch, epoch!, step!, t
 using FluxTraining: getcallback, setcallbacks!, replacecallback!, removecallback!, addcallback!
 using .Phases: Phase, AbstractTrainingPhase
 
-using Flux: trainable
+using Flux: trainable, cpu
 using Flux.Optimise: Descent
 using Suppressor
 using FluxTraining: CHECKS
