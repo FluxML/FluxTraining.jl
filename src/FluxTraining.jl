@@ -27,6 +27,7 @@ using Zygote: Grads, gradient
 using ValueHistories
 using DataStructures: DefaultDict
 using PrettyTables
+using Setfield: @set
 
 # functional
 include("./functional/metrics.jl")

@@ -12,9 +12,10 @@ callback.
 abstract type HyperParameter{T} end
 
 """
-    sethyperparameter!(learner, H, value)
+    sethyperparameter!(learner, H, value) -> learner
 
-Sets hyperparameter `H` to `value` on `learner`.
+Sets hyperparameter `H` to `value` on `learner`, returning
+the modified learner.
 """
 function sethyperparameter! end
 
@@ -40,9 +41,17 @@ See [`Scheduler`](#) and [hyperparameter scheduling](./docs/tutorials/hyperparam
 abstract type LearningRate <: HyperParameter{Float64} end
 
 stateaccess(::Type{LearningRate}) = (optimizer = Write(),)
-sethyperparameter!(learner, ::Type{LearningRate}, value) =
-    setlearningrate!(learner.optimizer, value)
+
+function sethyperparameter!(learner, ::Type{LearningRate}, value)
+    learner.optimizer = setlearningrate!(learner.optimizer, value)
+    return learner
+end
+
+function setlearningrate!(optimizer::Flux.Optimise.AbstractOptimiser, value)
+    optimizer.eta = value
+    optimizer
+end
 
 function setlearningrate!(optimizer, value)
-    optimizer.eta = value
+    @set optimizer.eta = value
 end

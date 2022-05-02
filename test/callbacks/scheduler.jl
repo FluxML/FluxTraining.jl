@@ -11,4 +11,18 @@ include("../imports.jl")
 
     epoch!(learner, TrainingPhase())
     @test isapprox(last(learner.cbstate.hyperparams[:LearningRate])[2], 8.0e-5, atol =0.1)
+
+    @testset "Optimisers.jl" begin
+        learner = testlearner(
+            coeff = 3,
+            opt = Optimisers.Descent(0.0001),
+            Recorder(), Scheduler(LearningRate => schedule),
+            nbatches = nbatches)
+
+        epoch!(learner, TrainingPhase())
+        @test isapprox(last(learner.cbstate.hyperparams[:LearningRate])[2], 9.0e-5, atol = 0.1)
+
+        epoch!(learner, TrainingPhase())
+        @test isapprox(last(learner.cbstate.hyperparams[:LearningRate])[2], 8.0e-5, atol =0.1)
+    end
 end
