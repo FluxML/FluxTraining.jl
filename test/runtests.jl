@@ -20,6 +20,7 @@ include("./callbacks/checkpointer.jl")
 include("./callbacks/garbagecollect.jl")
 include("./callbacks/sanitycheck.jl")
 include("./callbacks/earlystopping.jl")
+include("./callbacks/todevice.jl")
 include("./callbackutils.jl")
 
 end
