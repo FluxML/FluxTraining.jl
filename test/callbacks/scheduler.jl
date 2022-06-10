@@ -25,4 +25,9 @@ include("../imports.jl")
         epoch!(learner, TrainingPhase())
         @test isapprox(last(learner.cbstate.hyperparams[:LearningRate])[2], 8.0e-5, atol =0.1)
     end
+
+    @testset "Regression test for #122" begin
+        learner = testlearner(Recorder(), Scheduler(LearningRate => ParameterSchedulers.Cos(0,0,0)), ToGPU())
+        @test_nowarn FluxTraining.Graphs.topological_sort_by_dfs(learner.callbacks.graph)
+    end
 end

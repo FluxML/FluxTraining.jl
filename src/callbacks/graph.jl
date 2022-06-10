@@ -47,8 +47,13 @@ function callbackgraph(callbacks)
 
     # detect read-write conflicts and handle them
     # writes will be places before reads!
-    for (i, j, access) in findconflicts(writeaccesses, readaccesses)
-        add_edge!(g, i, j)
+    for (i, j) in findconflicts(writeaccesses, readaccesses)
+        resolution = resolveconflict(callbacks[i], callbacks[j])
+        if resolution isa RunFirst && resolution.cb == callbacks[j]
+            add_edge!(g, j, i)
+        else
+            add_edge!(g, i, j)
+        end
     end
 
     # TODO: check if callback state is read without being written
