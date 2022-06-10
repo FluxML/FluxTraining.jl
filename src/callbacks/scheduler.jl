@@ -40,6 +40,7 @@ function stateaccess(scheduler::Scheduler)
     )
 end
 
+resolveconflict(::Scheduler, to::ToDevice) = RunFirst(to)
 
 function init!(scheduler::Scheduler, learner)
     if !haskey(learner.cbstate, :hyperparams)
