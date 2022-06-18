@@ -10,8 +10,8 @@
 | [`Recorder`](#)*        | Records training stats like number of steps and epochs              |
 | [`ProgressPrinter`](#)* | Prints a progress bar for the current epoch during training         |
 | [`MetricsPrinter`](#)*  | Prints out metrics after every epoch                                |
-| [`SanityCheck`](#)*     | Performs sanity checks on data, model and loss before training      |
-| [`StopOnNaNLoss`](#)    | Stops training early if a step loss is `NaN`                        |
+| [`StopOnNaNLoss`](#)*   | Stops training early if a step loss is `NaN`                        |
+| [`SanityCheck`](#)      | Performs sanity checks on data, model and loss before training      |
 | [`ToGPU`](#)            | Trains using a CUDA GPU if available                                |
 | [`Checkpointer`](#)     | Saves the model after every epoch                                   |
 | [`EarlyStopping`](#)    | Stops training early when a criterion is met                        |
@@ -21,19 +21,22 @@
 | [`LogVisualization`](#) | Logs visualization to a logging backend                             |
 | [`LogHistograms`](#)    | Logs model weight histograms to a logging backend                   |
 
-
-There are also some utilities for creating callbacks:
-
-- [`CustomCallback`](#) to quickly hook a function into an event
-- [`throttle`](#) to run a callback only after every `n` events or every `t` seconds
-
-And for working with callbacks on an existing [`Learner`](#):
+To construct a learner without default callbacks, pass `usedefaultcallbacks=false` when constructing it.   
+For working with callbacks on an existing [`Learner`](#), see:
 
 - [`setcallbacks!`](#)
 - [`addcallback!`](#)
 - [`getcallback`](#)
 - [`replacecallback!`](#)
 - [`removecallback!`](#)
+
+
+There are also some utilities for creating callbacks:
+
+- [`CustomCallback`](#) to quickly hook a function into an event
+- [`throttle`](#) to run a callback only after every `n` events or every `t` seconds
+
+
 
 
 ## Extension API

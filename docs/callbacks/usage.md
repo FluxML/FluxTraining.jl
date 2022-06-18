@@ -18,7 +18,8 @@ learner = Learner(
     callbacks=[ToGPU(), Metrics(accuracy)], data=data)      # pass any number of callbacks as additional arguments
 ```
 
-Some useful callbacks are added by default:
+Some useful callbacks are added by default. Below, the callbacks of `learner` are shown. Both the explicitly passed callbacks
+and the default ones are included:
 
 {cell=main, output=false}
 ```julia
