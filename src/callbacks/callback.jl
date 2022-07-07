@@ -248,7 +248,7 @@ on(::Event, phase, ::Callback, learner) = return
 
 _on(e, p, cb, learner) = on(e, p, cb, learner)
 function _on(e, p, cb::SafeCallback, learner)
-    perms = Zygote.ignore() do
+    perms = ChainRulesCore.ignore_derivatives() do
         stateaccess(cb)
     end
     on(e, p, cb, protect(learner, perms))
