@@ -21,6 +21,7 @@ using ProgressMeter: Progress, next!
 using Statistics: mean
 using UUIDs
 using Zygote
+using ChainRulesCore
 using ParameterSchedulers
 using TensorBoardLogger: TBLogger, log_value, log_image, log_text, log_histogram, tb_overwrite
 using Zygote: Grads, gradient

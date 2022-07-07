@@ -5,7 +5,7 @@ abstract type CallbackRunner end
 struct LinearRunner <: CallbackRunner end
 
 function handle(runner::LinearRunner, event::Event, phase, learner)
-    idxs = Zygote.ignore() do
+    idxs = ChainRulesCore.ignore_derivatives() do
         topological_sort_by_dfs(learner.callbacks.graph)
     end
     for i in idxs
