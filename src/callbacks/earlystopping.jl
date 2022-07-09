@@ -10,7 +10,7 @@ Stop training early when `criteria` are met. See
 criteria.
 
 Passing an integer `n` uses the simple patience criterion: stop if the
-validation loss hasn't increased for `n` epochs.
+validation loss hasn't decreased for `n` epochs.
 
 You can control which phases are taken to measure the out-of-sample loss
 and the training loss with keyword arguments `trainphase` (default
