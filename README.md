@@ -7,9 +7,9 @@ A Julia package for using and writing powerful, extensible training loops for de
 ## What does it do?
 
 - Implements a training loop to take the boilerplate out of training deep learning models
-- Lets you add features to training loops through reusable [callbacks](/documents/docs/callbacks/usage.md)
-- Comes with callbacks for many common use cases like [hyperparameter scheduling](/documents/docs/tutorials/hyperparameters.md), [metrics](/references/FluxTraining.Metrics) tracking and [logging](/references/FluxTraining.LogMetrics), [checkpointing](/references/FluxTraining.Checkpointer), [early stopping](/references/FluxTraining.EarlyStopping), and [more...](/documents/docs/callbacks/reference.md)
-- Is extensible by creating [custom, reusable callbacks](/documents/docs/callbacks/custom.md) or even [custom training loops](/documents/docs/tutorials/training.md)
+- Lets you add features to training loops through reusable [callbacks](https://fluxml.ai/FluxTraining.jl/dev/documents/docs/callbacks/usage.md)
+- Comes with callbacks for many common use cases like [hyperparameter scheduling](https://fluxml.ai/FluxTraining.jl/dev/documents/docs/tutorials/hyperparameters.md), [metrics](https://fluxml.ai/FluxTraining.jl/dev/references/FluxTraining.Metrics) tracking and [logging](https://fluxml.ai/FluxTraining.jl/dev/references/FluxTraining.LogMetrics), [checkpointing](https://fluxml.ai/FluxTraining.jl/dev/references/FluxTraining.Checkpointer), [early stopping](https://fluxml.ai/FluxTraining.jl/dev/references/FluxTraining.EarlyStopping), and [more...](https://fluxml.ai/FluxTraining.jl/dev/documents/docs/callbacks/reference.md)
+- Is extensible by creating [custom, reusable callbacks](https://fluxml.ai/FluxTraining.jl/dev/documents/docs/callbacks/custom.md) or even [custom training loops](https://fluxml.ai/FluxTraining.jl/dev/documents/docs/tutorials/training.md)
 
 ## When should you use FluxTraining.jl?
 
