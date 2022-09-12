@@ -55,6 +55,7 @@ include("./callbacks/earlystopping.jl")
 include("./callbacks/custom.jl")
 include("./callbacks/metrics.jl")
 include("./callbacks/recorder.jl")
+include("./callbacks/trace.jl")
 include("./callbacks/sanitycheck.jl")
 
 # hyperparameter scheduling
@@ -88,6 +89,7 @@ export AbstractCallback,
     ProgressPrinter,
     Metrics,
     MetricsPrinter,
+    Traces,
     TrainingPhase,
     ValidationPhase,
     Schedule,
