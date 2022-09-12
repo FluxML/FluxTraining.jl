@@ -33,7 +33,22 @@ function log_to(backends::Tuple, loggable, name, i; group = ())
     end
 end
 
+"""
+    LogTraces(backends...) <: Callback
 
+Callback that logs step traces to one or more [`LoggerBackend`](#)s.
+
+See also [`LoggerBackend`](#), [`Loggables.Loggable`](#), [`log_to`](#),
+[`TensorBoardBackend`](#)
+
+Example:
+
+```julia
+logcb = LogTraces(TensorBoardBackend("tblogs"))
+tracer = Traces((trace = learner -> learner.step.loss^2,), TrainingPhase)
+Learner(model, lossfn; callbacks=[tracer, logcb])
+```
+"""
 struct LogTraces <: Callback
     backends::Tuple
     LogTraces(backends...) = new(backends)
