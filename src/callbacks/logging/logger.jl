@@ -34,6 +34,28 @@ function log_to(backends::Tuple, loggable, name, i; group = ())
 end
 
 
+struct LogTraces <: Callback
+    backends::Tuple
+    LogTraces(backends...) = new(backends)
+end
+
+stateaccess(::LogTraces) = (cbstate = (history = Read(), tracehistory = Read()),)
+
+function on(::StepEnd, phase, logger::LogTraces, learner)
+    history = learner.cbstate.history[phase]
+    traces = learner.cbstate.tracehistory[phase]
+    for trace in keys(traces)
+        val = last(last(traces, trace))
+        log_to(
+            logger.backends,
+            Loggables.Value(val),
+            string(trace),
+            history.steps,
+            group = ("Step", string(typeof(phase)), "Traces"))
+    end
+end
+
+
 """
     LogMetrics(backends...) <: Callback
 
