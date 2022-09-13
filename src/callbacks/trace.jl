@@ -32,10 +32,10 @@ end
 
 function on(::StepEnd, phase::P, traces::Traces{P}, learner) where {P<:Phase}
     step = learner.cbstate.history[phase].steps
-    traces = learner.cbstate.tracehistory[phase]
+    history = learner.cbstate.tracehistory[phase]
     for (trace_name, f) in pairs(traces.preprocess)
         val = f(learner)
-        push!(traces, trace_name, step, val)
+        push!(history, trace_name, step, val)
     end
 end
 
