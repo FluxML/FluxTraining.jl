@@ -45,6 +45,8 @@ end
                 ValidationPhase)
     learner = testlearner(Recorder(), cb)
     @test_nowarn fit!(learner, 1)
-    @test :keya ∈ keys(learner.cbstate.tracehistory)
-    @test :keyb ∈ keys(learner.cbstate.tracehistory)
+    @test :keya ∈ keys(learner.cbstate.tracehistory[ValidationPhase()])
+    @test :keyb ∈ keys(learner.cbstate.tracehistory[ValidationPhase()])
+    @test :keya ∉ keys(learner.cbstate.tracehistory[TrainingPhase()])
+    @test :keyb ∉ keys(learner.cbstate.tracehistory[TrainingPhase()])
 end
