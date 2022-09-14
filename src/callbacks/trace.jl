@@ -5,6 +5,7 @@ Record a trace during `phase` by apply each pre-processing function in
 `preprocess` to the [`Learner`](#) to produce a trace value.
 The trace is recorded at the end of each learning step.
 
+See [`LogTraces`](#) for logging of the trace values.
 ```julia
 cb = Traces((loss2 = learner -> learner.step.loss^2,
              avg_gnorm = learner -> mean(map((_, g) -> norm(g), pairs(learner.step.grads))))
