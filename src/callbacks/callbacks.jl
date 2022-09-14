@@ -56,7 +56,7 @@ end
 function print_epoch_table(mvhistory, epoch, phase)
     header = vcat(["Phase", "Epoch"], string.(keys(mvhistory)))
     vals = [last(mvhistory, key) |> last for key in keys(mvhistory)]
-    data = reshape(vcat([string(typeof(phase)), epoch], vals), 1, :)
+    data = reshape(vcat([string(phase), epoch], vals), 1, :)
     pretty_table(data; header = header, formatters = PrettyTables.ft_round(5))
 end
 
