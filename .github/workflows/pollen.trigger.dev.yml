@@ -3,7 +3,7 @@ name: Pollen.jl build - dev
 on:
   push:
     branches:
-      - main
+      - master
 
 jobs:
   pollen:
