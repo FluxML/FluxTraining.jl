@@ -1,6 +1,6 @@
 # Models
 
-FluxTraining.jl works with all [Flux.jl](https://github.com/FluxML/Flux.jl)-compatible models. Unless you are using a [custom training loop](/documents/docs/tutorials/training.md), a `model` is expected to take a single input `xs`, which corresponds to the encoded inputs returned by your [data iterator](/documents/docs/background/dataiterator.md). This means the following has to work:
+FluxTraining.jl works with all [Flux.jl](https://github.com/FluxML/Flux.jl)-compatible models. Unless you are using a [custom training loop](/doc/docs/tutorials/training.md), a `model` is expected to take a single input `xs`, which corresponds to the encoded inputs returned by your [data iterator](/doc/docs/background/dataiterator.md). This means the following has to work:
 
 ```julia
 xs, ys = first(dataiter)

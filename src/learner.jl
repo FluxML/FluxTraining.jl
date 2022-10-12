@@ -66,7 +66,7 @@ Keyword arguments (optional):
     [`Phase`](#).
 - `cbstate::`[`PropDict`](#): Special state container that callbacks can
     save state to for other callbacks. Its keys depend on what callbacks
-    are being used. See the [custom callbacks guide](/documents/docs/callbacks/custom.md)
+    are being used. See the [custom callbacks guide](/docs/docs/callbacks/custom.md)
     for more info.
 """
 function Learner(model, lossfn; callbacks = [], data = (), optimizer = ADAM(), kwargs...)

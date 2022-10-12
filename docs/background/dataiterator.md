@@ -14,14 +14,14 @@ end
 The data iterator must also be compatible with the other components of the [`Learner`](#). For the standard supervised learning step ([`TrainingPhase`](#) and [`ValidationPhase`](#)), this means
 
 - `batch` is a tuple `(xs, ys)` of encoded inputs and targets,
-- `xs` is a valid input to the [model](/documents/docs/background/model.md), so `ŷs = model(xs)`; and
-- `ys` can be compared to the model output with the [loss function](/documents/docs/background/lossfunction.md), i.e. `lossfn(ŷs, ys)`
+- `xs` is a valid input to the [model](/doc/docs/background/model.md), so `ŷs = model(xs)`; and
+- `ys` can be compared to the model output with the [loss function](/doc/docs/background/lossfunction.md), i.e. `lossfn(ŷs, ys)`
 
-If you are working with a [custom training loop](/documents/docs/tutorials/training.md), you may need to satisfy additional or different properties.
+If you are working with a [custom training loop](/doc/docs/tutorials/training.md), you may need to satisfy additional or different properties.
 
 ## Creating data iterators
 
-The simplest data iterator is a vector of preloaded batches. This is what we're using in the [MNIST tutorial](/documents/docs/tutorials/mnist.ipynb). This is a fine approach for smaller datasets, but has some limitations.
+The simplest data iterator is a vector of preloaded batches. This is what we're using in the [MNIST tutorial](/doc/docs/tutorials/mnist.ipynb). This is a fine approach for smaller datasets, but has some limitations.
 
 First of all, there is no principled way for doing things like splitting, subsetting and shuffling data. For this, we recommend using [MLDataPattern.jl](https://github.com/JuliaML/MLDataPattern.jl) which provides this functionality and many more utilities for defining and working with datasets.
 
