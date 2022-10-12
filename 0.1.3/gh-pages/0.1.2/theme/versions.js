@@ -1,3 +1,0 @@
-var PUBLISH_ROOT = '';
-var PUBLISH_VERSION = null;
-var PUBLISH_VERSIONS = [];
