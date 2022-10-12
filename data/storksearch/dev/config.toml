@@ -1,0 +1,760 @@
+[input]
+base_directory = "."
+url_prefix = ""
+
+    [[input.files]]
+    title = "Tips & tricks"
+    contents = "FluxTraining FluxTraining FluxTraining \nTips & tricks\nListing event handlers for a callback\nUse Base.methods to check what events a callback handles:\nmethods FluxTraining Any Any Any \nVisualize the callback dependency graph\nYou can use GraphPlot.jl to visualize the dependencies between callbacks:\nlearner nothing nothing callbacks \nGraphPlot gplot learner callbacks graph nodelabel learner callbacks cbs layout stressmajorize_layout \n(the target of an arrow depends on the origin)\nAs an example for a detected dependency, we can see that MetricsPrinter runs after Metrics. MetricsPrinter prints the values of all metrics, so [Metrics] needs to run first.\n\n"
+    url = "FluxTraining@dev/doc/docs/callbacks/tipstricks.md"
+    [[input.files]]
+    title = "StepBegin"
+    contents = "StepBegin()\nEvent called at the beginning of a batch.\n\n"
+    url = "FluxTraining@dev/ref/FluxTraining.Events.StepBegin"
+    [[input.files]]
+    title = "stepvalue"
+    contents = "stepvalue"
+    url = "FluxTraining@dev/ref/FluxTraining.stepvalue"
+    [[input.files]]
+    title = "NoConflict"
+    contents = "abstract type NoConflict <: ConflictResolution\nReturn from resolveconflict to indicate that, while the callbacks modify the same state, they can be used together without any problems.\n\n"
+    url = "FluxTraining@dev/ref/FluxTraining.NoConflict"
+    [[input.files]]
+    title = "FluxTraining/callbacks/graph.jl"
+    contents = "callbacks g SimpleDiGraph length callbacks foreach e add_edge! g e callbacks permissions callbacks writeaccesses ps ps permissions readaccesses ps ps permissions i j accessi accessj writeaccesses writeaccesses has_edge g i j has_edge g j i cb1 cb2 callbacks i callbacks j resolution cb1 cb2 resolution cb1 cb2 accessi accessj resolvable resolution cb1 cb2 accessi accessj resolvable resolution resolution cb cb1 add_edge! g cb1 cb2 add_edge! g cb2 cb1 i j writeaccesses readaccesses resolution callbacks i callbacks j resolution resolution cb callbacks j add_edge! g j i add_edge! g i j g accesses1 accesses2 conflicts i j Iterators product length accesses1 length accesses2 i j a1 a2 Iterators product accesses1 i accesses2 j a1 a2 push! conflicts i j a1 a2 conflicts callbacks edges Edge Int i cb enumerate callbacks Ts cb j othercb enumerate callbacks any othercb T T Ts push! edges Edge j i edges permissions NamedTuple P Type a prefix field perm zip keys permissions permissions perm P push! a prefix field perm NamedTuple perm P a prefix field a access1 T1 access2 T2 Bool T1 Tuple T2 Tuple l1 l2 length access1 length access2 l1 l2 access1 access2 l1 l2 access1 end access2 end cb1 cb2 access1 access2 resolvable msg cb1 cb2 cb1 access1 cb2 access2 resolvable msg typeof cb1 typeof cb2 msg error msg access join string access a AbstractArray filter i j i j Iterators product collect \n"
+    url = "FluxTraining@dev/src/callbacks/graph.jl"
+    [[input.files]]
+    title = "Loggables"
+    contents = "Loggables"
+    url = "FluxTraining@dev/ref/FluxTraining.Loggables"
+    [[input.files]]
+    title = "ES"
+    contents = "ES"
+    url = "FluxTraining@dev/ref/FluxTraining.ES"
+    [[input.files]]
+    title = "Models"
+    contents = "Models\nFluxTraining.jl works with all Flux.jl-compatible models. Unless you are using a custom training loop, a model is expected to take a single input xs, which corresponds to the encoded inputs returned by your data iterator. This means the following has to work:\nxs ys first dataiter ŷs model xs \nmodel also has to be differentiable. If you're composing Flux.jl layers, this is likely the case. You can always make sure by testing:\nFlux Zygote xs ys first dataiter lossfn Flux mse grads Zygote gradient Flux params model lossfn model xs ys \nCreating models\nThe simplest way to create a Flux.jl-compatible model is to use layers from Flux.jl. A good entrypoint is this tutorialin Flux's documentation.\nThere is also a large number of packages that provide complete model architectures or domain-specific layers. Below is a non-exhaustive list:\nMetalhead.jl implements common model architectures for computer vision,\n\nGraphNeuralNetworks.jl provides layers and utilities for graph neural networks,\n\nTransformers.jl implements transformer models including pretrained language models\n\n\n\n"
+    url = "FluxTraining@dev/doc/docs/background/model.md"
+    [[input.files]]
+    title = "FluxTraining/callbacks/hyperparameters.jl"
+    contents = "T Type Float64 Type optimizer learner Type value learner optimizer learner optimizer value learner optimizer Flux Optimise AbstractOptimiser value optimizer eta value optimizer optimizer value optimizer eta value \n"
+    url = "FluxTraining@dev/src/callbacks/hyperparameters.jl"
+    [[input.files]]
+    title = "FluxTraining/callbacks/logging/checkpointer.jl"
+    contents = "folder folder mkpath folder new folder model cbstate metricsepoch history phase checkpointer learner loss last learner cbstate metricsepoch phase epoch learner cbstate history phase epochs filename lpad string epoch loss learner model joinpath checkpointer folder filename model path path model cpu model path path model model \n"
+    url = "FluxTraining@dev/src/callbacks/logging/checkpointer.jl"
+    [[input.files]]
+    title = "Hyperparameter scheduling"
+    contents = "Hyperparameter scheduling\nWhen training neural networks, you often have to tune hyperparameters.\nIn FluxTraining.jl the following definition is used:\nA hyperparameter is any state that influences the training and is not a parameter of the model.\n\nCommon hyperparameters to worry about are the learning rate, batch size and regularization strength.\nIn recent years, it has also become common practice to schedule some hyperparameters. The cyclical learning rate schedule introduced in L. Smith 2015, for example, changes the learning rate every step to speed up convergence.\nFluxTraining.jl provides an extensible interface for hyperparameter scheduling that is not restricted to optimizer hyperparameters as in many other training frameworks. To use it, you have to create a Scheduler, a callback that can be passed to a Learner.\nScheduler's constructor takes pairs of hyperparameter types and associated schedules.\nAs an example\nLearningRate is a hyperparameter type representing the optimizer's step size; and\n\nschedule = Exp(γ=0.9) represents an exponential decay scheduling\n\n\nWe can create the callback scheduling the learning rate according to Scheduler(LearningRate => schedule).\nSchedules are built around ParameterSchedulers.jl. See that package's documentation for more details on how to construct them.\nOne-cycle learning rate\nLet's define a Schedule that follows the above-mentioned cyclical learning rate schedule.\nThe idea is to start with a small learning rate, gradually increase it, and then slowly decrease it again.\nFor example, we could start with a learning rate of 0.01, increase it to 0.1 over 3 epochs, and then down to 0.001 over 7 epochs. Let's also use cosine annealing, a common practice that makes sure the values are interpolated more smoothly.\nIn code, that looks like this:\nParameterSchedulers Shifted Sin es length traindl schedule Sequence Sin λ0 λ1 period es es Shifted Sin λ0 λ1 period es es es learner model model data opt lossfn schedule \nFor convenience, you can also use the onecycle helper to create this Schedule. See ParameterSchedulers.jl documentation for more details on warm-up schedules.\nExtending\nYou can create and schedule your own hyperparameters.\nTo do this, you will need to define\na type for your hyperparameter, e.g. abstract type MyParam <: HyperParameter end,\n\nhow to set the hyperparameter by implementing sethyperparameter!(learner, ::Type{MyParam}, value)\n\nwhat state needs to be accessed to set the hyperparameter by implementing stateaccess(::Type{MyParam}). See custom callbacks for more info on why this is needed.\n\n\nKinds of hyperparameters\nHyperparameters don't need to belong to the optimizer! For example, you could create a hyperparameter for batch size. That is not implemented here because this package is agnostic of the data iterators and the implementation would differ for every type of iterator.\n\n\n\n"
+    url = "FluxTraining@dev/doc/docs/tutorials/hyperparameters.md"
+    [[input.files]]
+    title = "EarlyStopping"
+    contents = "EarlyStopping(criteria...; kwargs...)\nEarlyStopping(n)\nStop training early when criteria are met. See EarlyStopping.jl for available stopping criteria.\nPassing an integer n uses the simple patience criterion: stop if the validation loss hasn't decreased for n epochs.\nYou can control which phases are taken to measure the out-of-sample loss and the training loss with keyword arguments trainphase (default AbstractTrainingPhase) and testphase (default AbstractValidationPhase).\nExamples\nmodel lossfn callbacks \nFluxTraining Disjunction InvalidValue TimeLimit callback Disjunction InvalidValue TimeLimit model lossfn callbacks callback \n\n"
+    url = "FluxTraining@dev/ref/FluxTraining.EarlyStopping"
+    [[input.files]]
+    title = "AbstractTrainingPhase"
+    contents = "abstract type AbstractTrainingPhase <: Phase\nAn abstract type for phases where parameter updates are being made. This exists so callbacks can dispatch on it and work with custom training phases.\nThe default implementation for supervised tasks is TrainingPhase.\n\n"
+    url = "FluxTraining@dev/ref/FluxTraining.Phases.AbstractTrainingPhase"
+    [[input.files]]
+    title = "Features"
+    contents = "Features\nThis page gives a run-down of many features FluxTraining.jl brings to the table.  Most features are implemented as callbacks and using them is as simple as passing the callback when constructing a Learner and training with fit!:\ncb CoolFeature🕶️Callback learner model lossfn callbacks cb data trainiter validiter learner nepochs \nMetrics\nBy default, Learner will track only the loss function. You can track other metric with the Metrics callback. See also Metric, AbstractMetric.\nHyperparameter scheduling\nThe Scheduler callback takes care of hyperparameter scheduling. See the Hyperparameter scheduling tutorial and also Scheduler, Schedule, HyperParameter.\nLogging\nFor logging, use the logging callbacks:\nLogMetrics\n\nLogHyperParams\n\nLogHistograms\n\n\nThey each can have multiple logging backends, but right now the only one implemented in FluxTraining.jl is TensorBoardBackend. See also LoggerBackend, log_to, and Loggables.Loggable.\nThere is also an external package Wandb.jl that implements a logging backend for Weights&Biases.\nCheckpointing\nUse the Checkpointer callback to create model checkpoints after every epoch.\nEarly Stopping\nUse EarlyStopping to stop when a stopping criterion is met. Supports all criteria in EarlyStopping.jl.\n\n"
+    url = "FluxTraining@dev/doc/docs/features.md"
+    [[input.files]]
+    title = "Recorder"
+    contents = "Recorder()\nMaintains a History. It's stored in learner.cbstate.history.\n\n"
+    url = "FluxTraining@dev/ref/FluxTraining.Recorder"
+    [[input.files]]
+    title = "Check"
+    contents = "Check"
+    url = "FluxTraining@dev/ref/FluxTraining.Check"
+    [[input.files]]
+    title = "shouldrun"
+    contents = "shouldrun"
+    url = "FluxTraining@dev/ref/FluxTraining.shouldrun"
+    [[input.files]]
+    title = "LoggerBackend"
+    contents = "abstract type LoggerBackend\nBackend for logging callbacks like.\nTo add support for logging Loggables.Loggable L to backend B, implement\nlog_to(backend::B, loggable::L, names, i)\nSee also LogMetrics, LogHyperParams, log_to\n\n"
+    url = "FluxTraining@dev/ref/FluxTraining.LoggerBackend"
+    [[input.files]]
+    title = "init!"
+    contents = "init!(callback, learner)\nInitialize a callback. Default is to do nothing.\nExtending\nTo extend for a callback, implement init!(cb::MyCallback, learner). init! can set up internal state of a callback that depends on learner and can also initialize shared callback state in learner.cbstate. Just like on event handlers, the state access permissions must be correctly defined using stateaccess to do so.\ninit! must also be idempotent, i.e. running it twice on the same Learner should have the same effect as runnning it once.\n\n"
+    url = "FluxTraining@dev/ref/FluxTraining.init!"
+    [[input.files]]
+    title = "defaultcallbacks"
+    contents = "defaultcallbacks"
+    url = "FluxTraining@dev/ref/FluxTraining.defaultcallbacks"
+    [[input.files]]
+    title = "LossBegin"
+    contents = "LossBegin()\nEvent called between calculating y_pred and calculating loss\n\n"
+    url = "FluxTraining@dev/ref/FluxTraining.Events.LossBegin"
+    [[input.files]]
+    title = "EpochEnd"
+    contents = "EpochEnd()\nEvent called at the end of an epoch.\n\n"
+    url = "FluxTraining@dev/ref/FluxTraining.Events.EpochEnd"
+    [[input.files]]
+    title = "ProgressPrinter"
+    contents = "ProgressPrinter()\nPrints a progress bar of the currently running epoch.\n\n"
+    url = "FluxTraining@dev/ref/FluxTraining.ProgressPrinter"
+    [[input.files]]
+    title = "FluxTraining/callbacks/execution.jl"
+    contents = "runner event phase learner idxs ChainRulesCore ignore_derivatives topological_sort_by_dfs learner callbacks graph i idxs _on event phase learner callbacks cbs i learner \n"
+    url = "FluxTraining@dev/src/callbacks/execution.jl"
+    [[input.files]]
+    title = "LinearRunner"
+    contents = "LinearRunner"
+    url = "FluxTraining@dev/ref/FluxTraining.LinearRunner"
+    [[input.files]]
+    title = "FluxTraining/callbacks/recorder.jl"
+    contents = "epochs Int steps Int stepsepoch Int cbstate history step learner haskey learner cbstate history learner cbstate history DefaultDict phase recorder learner learner cbstate history phase stepsepoch phase recorder learner history learner cbstate history phase history steps history stepsepoch phase recorder learner history learner cbstate history phase history epochs \n"
+    url = "FluxTraining@dev/src/callbacks/recorder.jl"
+    [[input.files]]
+    title = "garbagecollect"
+    contents = "garbagecollect"
+    url = "FluxTraining@dev/ref/FluxTraining.garbagecollect"
+    [[input.files]]
+    title = "stateaccess"
+    contents = "stateaccess(callback)\nReturn a named tuple determining what learner state callback can access. The default is (;), the empty named tuple, meaning no state can be accessed. Implementations of stateaccess should always return the least permissions possible.\nExtending\nFor example, the ToGPU callback needs to write both the model and the batch data, so its stateaccess implementation is:\nmodel params step xs ys \nWhen defining stateaccess, be careful that you do return a NamedTuple. (x = Read(),) is one but (x = Read()) (without the comma) is parsed as an assignment with value Read().\n\nstateaccess(::Type{HyperParameter})\nDefines what Learner state is accessed when calling sethyperparameter! and gethyperparameter. This is needed so that Scheduler can access the state.\n\n"
+    url = "FluxTraining@dev/ref/FluxTraining.stateaccess"
+    [[input.files]]
+    title = "findconflicts"
+    contents = "findconflicts"
+    url = "FluxTraining@dev/ref/FluxTraining.findconflicts"
+    [[input.files]]
+    title = "Metric"
+    contents = "Metric(metricfn[; statistic, device, name])\nImplementation of AbstractMetric that can be used with the Metrics callback.\nArguments\nPositional:\nmetricfn(ŷs, ys) should return a number.\n\n\nKeyword:\nstatistic is a OnlineStats.Statistic that is updated after every step. The default is OnlineStats.Mean()\n\nname is used for printing.\n\ndevice is a function applied to ŷs and ys before passing them to metricfn. The default is Flux.cpu so that the callback works if metricfn doesn't support arrays from other device types. If, for example, metricfn works on CurArrays, you can pass device = Flux.gpu.\n\nphase = Phase: a (sub)type of Phase that restricts for which phases the metric is computed.\n\n\nExamples\nMetric(accuracy)\n\nMetric(Flux.mse, device = gpu, name = \"Mean Squared Error\")\n\nMetric(Flux.mae, device = gpu)\n\n\ncb Flux mse device gpu name \nIf a metric is expensive to compute and you don't want it to slow down the training phase, you can compute it on the validation phase only:\ncb expensivemetric P \n\n"
+    url = "FluxTraining@dev/ref/FluxTraining.Metric"
+    [[input.files]]
+    title = "testlearner"
+    contents = "testlearner(callbacks...[; opt, nbatches, coeff, batchsize, kwargs...])\nConstruct a Learner with a simple optimization problem. This learner should be used in tests that require training a model, e.g. for callbacks.\n\n"
+    url = "FluxTraining@dev/ref/FluxTraining.testlearner"
+    [[input.files]]
+    title = "CancelFittingException"
+    contents = "CancelFittingException(msg)\nThrow during fitting to cancel it.\n\n"
+    url = "FluxTraining@dev/ref/FluxTraining.CancelFittingException"
+    [[input.files]]
+    title = "setlearningrate!"
+    contents = "setlearningrate!"
+    url = "FluxTraining@dev/ref/FluxTraining.setlearningrate!"
+    [[input.files]]
+    title = "MetricsPrinter"
+    contents = "MetricsPrinter() <: Callback\nCallback that prints metrics after every epoch. Relies on the metrics computed by Metrics, so will error if no Metrics callback is used.\nThis callback is added by default to every Learner unless you pass in usedefaultcallbacks = false.\n\n"
+    url = "FluxTraining@dev/ref/FluxTraining.MetricsPrinter"
+    [[input.files]]
+    title = "iterpairs"
+    contents = "iterpairs(a)\nIterators over the Cartesian product of a with itself, skipping any pairs (a, b) where a == b.\n\n"
+    url = "FluxTraining@dev/ref/FluxTraining.iterpairs"
+    [[input.files]]
+    title = "metricname"
+    contents = "metricname"
+    url = "FluxTraining@dev/ref/FluxTraining.metricname"
+    [[input.files]]
+    title = "CallbackCondition"
+    contents = "abstract type CallbackCondition\nSupertype for conditions to use with ConditionalCallback. To implement a CallbackCondition, implement shouldrun(::MyCondition, event, phase).\nSee FrequencyThrottle, TimeThrottle and throttle.\n\n"
+    url = "FluxTraining@dev/ref/FluxTraining.CallbackCondition"
+    [[input.files]]
+    title = "TensorBoardBackend"
+    contents = "TensorBoardBackend(logdir[, tb_overwrite];\n    time=time(),\n    purge_step=nothing,\n    step_increment=1,\n    min_level=Logging.Info)\nTensorBoard backend for logging callbacks. Takes the same arguments as TensorBoardLogger.TBLogger.\n\n"
+    url = "FluxTraining@dev/ref/FluxTraining.TensorBoardBackend"
+    [[input.files]]
+    title = "setupoptimstate"
+    contents = "setupoptimstate"
+    url = "FluxTraining@dev/ref/FluxTraining.setupoptimstate"
+    [[input.files]]
+    title = "GarbageCollect"
+    contents = "GarbageCollect(nsteps)\nEvery nsteps steps, forces garbage collection. Use this if you get memory leaks from, for example, parallel data loading.\nPerforms an additional C-call on Linux systems that can sometimes help.\n\n"
+    url = "FluxTraining@dev/ref/FluxTraining.GarbageCollect"
+    [[input.files]]
+    title = "CheckDataIteratorValid"
+    contents = "CheckDataIteratorValid"
+    url = "FluxTraining@dev/ref/FluxTraining.CheckDataIteratorValid"
+    [[input.files]]
+    title = "epochvalue"
+    contents = "epochvalue"
+    url = "FluxTraining@dev/ref/FluxTraining.epochvalue"
+    [[input.files]]
+    title = "Value"
+    contents = "Value"
+    url = "FluxTraining@dev/ref/FluxTraining.Loggables.Value"
+    [[input.files]]
+    title = "getfieldperm"
+    contents = "getfieldperm"
+    url = "FluxTraining@dev/ref/FluxTraining.getfieldperm"
+    [[input.files]]
+    title = "StepEnd"
+    contents = "StepEnd()\nEvent called at the end of a batch.\n\n"
+    url = "FluxTraining@dev/ref/FluxTraining.Events.StepEnd"
+    [[input.files]]
+    title = "CHECKS"
+    contents = "CHECKS"
+    url = "FluxTraining@dev/ref/FluxTraining.CHECKS"
+    [[input.files]]
+    title = "log_parameters"
+    contents = "log_parameters"
+    url = "FluxTraining@dev/ref/FluxTraining.log_parameters"
+    [[input.files]]
+    title = "FluxTraining/callbacks/logging/logger.jl"
+    contents = "backends Tuple loggable name i group backend backends backend loggable name i group group backends Tuple backends new backends cbstate history tracehistory phase logger learner history learner cbstate history phase traces learner cbstate tracehistory phase trace keys traces val last last traces trace logger backends val string trace history steps group string typeof phase backends Tuple backends new backends cbstate history metricsstep metricsepoch phase logger learner history learner cbstate history phase metricsstep learner cbstate metricsstep phase metric keys metricsstep val last last metricsstep metric logger backends val string metric history steps group string typeof phase phase logger learner history learner cbstate history phase metricsepoch learner cbstate metricsepoch phase metric keys metricsepoch _ val last metricsepoch metric logger backends val string metric history epochs group string typeof phase backends Tuple backends new backends cbstate history hyperparams phase logger learner history learner cbstate history phase hyperparams learner cbstate hyperparams hparam keys hyperparams val last last hyperparams hparam logger backends val string hparam history steps group backends Tuple backends freq isnothing freq new backends new backends freq freq model cbstate history phase logger learner history learner cbstate history phase logger backends learner model history steps group backends x name epochs group params Flux trainable x isempty params x AbstractArray backends vec x name epochs group group pname pval pairs params backends pval name pname epochs group group visfn backends Tuple visfn backends freq cb new visfn backends isnothing freq cb cb freq freq step cbstate history phase logger learner history learner cbstate history phase image logger visfn learner step logger backends image history steps group \n"
+    url = "FluxTraining@dev/src/callbacks/logging/logger.jl"
+    [[input.files]]
+    title = "setfieldperm!"
+    contents = "setfieldperm!"
+    url = "FluxTraining@dev/ref/FluxTraining.setfieldperm!"
+    [[input.files]]
+    title = "ProtectedException"
+    contents = "ProtectedException"
+    url = "FluxTraining@dev/ref/FluxTraining.ProtectedException"
+    [[input.files]]
+    title = "getcallback"
+    contents = "getcallback(learner, C)\nFind callback of type C in learner's callbacks and return it. If there is none, return nothing.\n\n"
+    url = "FluxTraining@dev/ref/FluxTraining.getcallback"
+    [[input.files]]
+    title = "Read"
+    contents = "Read"
+    url = "FluxTraining@dev/ref/FluxTraining.Read"
+    [[input.files]]
+    title = "BackwardBegin"
+    contents = "BackwardBegin()\nEvent called between calculating loss and calculating gradients\n\n"
+    url = "FluxTraining@dev/ref/FluxTraining.Events.BackwardBegin"
+    [[input.files]]
+    title = "setcallbacks!"
+    contents = "setcallbacks!(learner, callbacks)\nSet learner's callbacks to callbacks, removing all current callbacks.\n\n"
+    url = "FluxTraining@dev/ref/FluxTraining.setcallbacks!"
+    [[input.files]]
+    title = "Histogram"
+    contents = "Histogram"
+    url = "FluxTraining@dev/ref/FluxTraining.Loggables.Histogram"
+    [[input.files]]
+    title = "AbstractCallback"
+    contents = "abstract type AbstractCallback\nSupertype of SafeCallback/Callback. When implementing callbacks, you should subtype SafeCallback instead.\n\n"
+    url = "FluxTraining@dev/ref/FluxTraining.AbstractCallback"
+    [[input.files]]
+    title = "FluxTraining/testutils.jl"
+    contents = "coeff coeff Number coeff Flux trainable m m coeff m x x m coeff Flux batchsize coeff xs rand batchsize xs xs coeff n Int coeff batchsize batchsize coeff _ n args opt Descent nbatches coeff batchsize usedefaultcallbacks kwargs model rand data collect nbatches coeff batchsize model data data opt Flux mae args usedefaultcallbacks usedefaultcallbacks kwargs \n"
+    url = "FluxTraining@dev/src/testutils.jl"
+    [[input.files]]
+    title = "hasconflict"
+    contents = "hasconflict"
+    url = "FluxTraining@dev/ref/FluxTraining.hasconflict"
+    [[input.files]]
+    title = "Permission"
+    contents = "Permission"
+    url = "FluxTraining@dev/ref/FluxTraining.Permission"
+    [[input.files]]
+    title = "FluxTraining/callbacks/logging/Loggables.jl"
+    contents = "data data data data data data file data \n"
+    url = "FluxTraining@dev/src/callbacks/logging/Loggables.jl"
+    [[input.files]]
+    title = "Checkpointer"
+    contents = "Checkpointer(folder)\nSaves learner.model to folder after every AbstractTrainingPhase.\nUse FluxTraining.loadmodel to load a model.\n\n"
+    url = "FluxTraining@dev/ref/FluxTraining.Checkpointer"
+    [[input.files]]
+    title = "FluxTraining/callbacks/sanitycheck.jl"
+    contents = "checkfn name throw_error Bool message Exception Base show io IO check print io check name checks learner failed trues length checks i check enumerate checks failed i check checkfn learner failedchecks checks failed isempty failedchecks println length failedchecks length checks i check enumerate failedchecks println println i check name check throw_error println println check message any getfield failedchecks throw_error throw checks Vector checked Bool checks usedefault isempty checks usedefault checks vcat checks new checks Base show io IO cb print io length cb checks data model lossfn optimizer callbacks phase cb learner cb checked cb checks learner cb checked learner isnothing learner data training learner isnothing learner data validation learner batch _ Base iterate learner data training x y batch learner dev learner callbacks cbs gpu identity x y dev iterate learner data training ŷ dev learner model x learner lossfn ŷ y Number \n"
+    url = "FluxTraining@dev/src/callbacks/sanitycheck.jl"
+    [[input.files]]
+    title = "addcallback!"
+    contents = "addcallback!(learner, callback)\nAdds callback to learner and updates the dependency graph.\n\n"
+    url = "FluxTraining@dev/ref/FluxTraining.addcallback!"
+    [[input.files]]
+    title = "LogVisualization"
+    contents = "LogVisualization(visfn, backends...[; freq = 100])\nLogs images created by visfn(learner.step) to backends every freq steps.\n\n"
+    url = "FluxTraining@dev/ref/FluxTraining.LogVisualization"
+    [[input.files]]
+    title = "Training loop API reference"
+    contents = "Training loop API reference\nThe training loop API centers around the abstract type Phase and the function step!. To implement a custom training, you need to\nUsage\nfit for n epochs of supervised training and validation using fit!(learner, n)\n\ntrain for an epoch using epoch!(learner, phase, dataiter)\n\n\nExtending\nsubtype Phase\n\nimplement step!\n\n\nYou can optionally\noverwrite default epoch! implementation\n\nimplement phasedataiter to define which data iterator should be used when epoch! is called without one.\n\ncreate custom Callback and Events with event handlers that dispatch on your Phase subtype.\n\n\nControl flow\nInside callback handlers and step! implementations, you can throw CancelFittingException to stop the training and CancelEpochException and CancelStepException to skip the current epoch or step.\n\n"
+    url = "FluxTraining@dev/doc/docs/reference/training.md"
+    [[input.files]]
+    title = "Loss"
+    contents = "Loss"
+    url = "FluxTraining@dev/ref/FluxTraining.Loss"
+    [[input.files]]
+    title = "CheckDataIteratorTrain"
+    contents = "CheckDataIteratorTrain"
+    url = "FluxTraining@dev/ref/FluxTraining.CheckDataIteratorTrain"
+    [[input.files]]
+    title = "LogTraces"
+    contents = "LogTraces(backends...) <: Callback\nCallback that logs step traces to one or more LoggerBackends.\nSee also LoggerBackend, Loggables.Loggable, log_to, TensorBoardBackend\nExample:\nlogcb tracer trace learner learner step loss model lossfn callbacks tracer logcb \n\n"
+    url = "FluxTraining@dev/ref/FluxTraining.LogTraces"
+    [[input.files]]
+    title = "accuracy"
+    contents = "accuracy"
+    url = "FluxTraining@dev/ref/FluxTraining.accuracy"
+    [[input.files]]
+    title = "LogMetrics"
+    contents = "LogMetrics(backends...) <: Callback\nCallback that logs step and epoch metrics to one or more LoggerBackends.\nSee also LoggerBackend, Loggables.Loggable, log_to, TensorBoardBackend\nExample:\nlogcb model lossfn callbacks logcb \n\n"
+    url = "FluxTraining@dev/ref/FluxTraining.LogMetrics"
+    [[input.files]]
+    title = "CancelStepException"
+    contents = "CancelStepException(message)\nThrow during fitting to cancel the currently running step. This prematurely ends the current step without throwing an error. Must be thrown inside the context of runstep.\nExamples\nlearner phase _ xs ys batches learner phase xs ys _ state isnan state loss throw \n\n"
+    url = "FluxTraining@dev/ref/FluxTraining.CancelStepException"
+    [[input.files]]
+    title = "File"
+    contents = "File"
+    url = "FluxTraining@dev/ref/FluxTraining.Loggables.File"
+    [[input.files]]
+    title = "setindexperm!"
+    contents = "setindexperm!"
+    url = "FluxTraining@dev/ref/FluxTraining.setindexperm!"
+    [[input.files]]
+    title = "Loggable"
+    contents = "abstract type Loggable\nAbstract type for data that LoggerBackends can log. See subtypes(FluxTraining.Loggables.Loggable) and LoggerBackend\n\n"
+    url = "FluxTraining@dev/ref/FluxTraining.Loggables.Loggable"
+    [[input.files]]
+    title = "ValidationPhase"
+    contents = "ValidationPhase()\nA regular validation phase. It iterates over batches in learner.data.validation and performs a forward pass.\nThrows the following events: EpochBegin, StepBegin, LossBegin, StepEnd, EpochEnd.\nThrows the following events in this order:\nEpochBegin when an epoch starts,\n\nStepBegin when a step starts,\n\nLossBegin after the forward pass but before loss calculation,\n\nStepEnd when a step ends; and\n\nEpochEnd when an epoch ends\n\n\nIt writes the following step state to learner.state, grouped by the event from which on it is available.\nStepBegin:\nxs and ys: encoded input and target (batch)\n\n\n\nLossBegin:\nŷs: model output\n\n\n\nStepEnd:\nloss: loss\n\n\n\n\n\n"
+    url = "FluxTraining@dev/ref/FluxTraining.Phases.ValidationPhase"
+    [[input.files]]
+    title = "runafter"
+    contents = "runafter"
+    url = "FluxTraining@dev/ref/FluxTraining.runafter"
+    [[input.files]]
+    title = "Learner"
+    contents = "Learner(model, lossfn; [callbacks = [], optimizer = ADAM(), kwargs...])\nHolds and coordinates all state of the training. model is trained by optimizing lossfn with optimizer on data.\nArguments\nPositional arguments:\nmodel: A Flux.jl model or a NamedTuple of models.\n\nlossfn: Loss function with signature lossfn(model(x), y) -> Number.\n\n\nKeyword arguments (optional):\ndata = (): Data iterators. A 2-tuple will be treated as (trainingdataiter, validdataiter). You can also pass in an empty tuple () and use the epoch! method with a dataiter as third argument.\nA data iterator is an iterable over batches. For regular supervised training, each batch should be a tuple (xs, ys).\n\noptimizer = ADAM(): The optimizer used to update the model's weights\n\ncallbacks = []: A list of callbacks that should be used. If usedefaultcallbacks == true, this will be extended by the default callbacks\n\nusedefaultcallbacks = true: Whether to add some basic callbacks. Included are Metrics, Recorder, ProgressPrinter, StopOnNaNLoss, and MetricsPrinter.\n\ncbrunner = LinearRunner(): Callback runner to use.\n\n\nFields\n(Use this as a reference when implementing callbacks)\nmodel, optimizer, and lossfn are stored as passed in\n\ndata is a PropDict of data iterators, usually :training and :validation.\n\nparams: An instance of model's parameters of type Flux.Params. If model is a NamedTuple, then params is a NamedTuple as well.\n\nstep::PropDict: State of the last step. Contents depend on the last run Phase.\n\ncbstate::PropDict: Special state container that callbacks can save state to for other callbacks. Its keys depend on what callbacks are being used. See the custom callbacks guide for more info.\n\n\n\nLearner(model, data, optimizer, lossfn, [callbacks...; kwargs...])\n\n"
+    url = "FluxTraining@dev/ref/FluxTraining.Learner"
+    [[input.files]]
+    title = "News"
+    contents = "News\nUnreleased\nAdded\nSupport for Optimisers.jl https://github.com/FluxML/FluxTraining.jl/pull/114.\n\n\n[0.3.0] - 04.04.2022\nAdded\nShort-hand Learner method Learner(model, lossfn[; data, optim, callbacks, kwargs...]). The old method still exists but use is discouraged.\n\nCompatibility with Flux.jl v0.13 once released\n\nPollen.jl doucmentation frontend\n\n\nChanged\n(BREAKING) Hyperparameter scheduling now uses ParameterSchedules.jl instead of Animations.jl for defining schedules. See the docs.\n\nFixes on documentation pages\n\n\n[0.2.0]\nAdded\nNew training loop API that is easier to extend. Defining a Phase and step! is all you need. See the new tutorial and the new reference.\nRelevant functions: epoch!, step!, runstep, runepoch\n\n\n\nAdded CHANGELOG.md (this file)\n\nAbstractValidationPhase as supertype for validation phases\n\nDocumentation for callback helpers on reference page\n\n\nChanged\nBatch* renamed to Step*:\nevents: BatchBegin now StepBegin, BatchEnd now StepEnd\n\nCancelBatchException now CancelStepException.\n\nfield Learner.batch now Learner.step\n\n\n\nLearner.step/batch is no longer a special struct but now a PropDict, allowing you to set arbitrary fields.\n\nLearner.model can now be a NamedTuple/Tuple of models for use in custom training loops. Likewise, learner.params now resembles the structure of learner.model, allowing separate access to parameters of different models.\n\nCallbacks\nAdded init! method for callback initilization, replacing the Init event which required a Phase to implement.\n\nScheduler now has internal step counter and no longer relies on Recorder's history. This makes it easier to replace the scheduler without needing to offset the new schedules.\n\nEarlyStopping callback now uses criteria from EarlyStopping.jl\n\n\n\n\nRemoved\nRemoved old training API. Methods fitbatch!, fitbatchphase!, fitepoch!, fitepochphase! have all been removed.\n\n\n\n"
+    url = "FluxTraining@dev/doc/CHANGELOG.md"
+    [[input.files]]
+    title = "Unresolvable"
+    contents = "abstract type Unresolvable <: ConflictResolution\nReturn from resolveconflict to indicate that two callbacks are incompatible and cannot be used together.\n\n"
+    url = "FluxTraining@dev/ref/FluxTraining.Unresolvable"
+    [[input.files]]
+    title = "log_to"
+    contents = "log_to(backend, loggable, group, i)\nlog_to(backends, loggable, group, i)\nLog loggable to backend with group to index i.\nloggable is any Loggables.Loggable\n\ngroup can be a String or a tuple of Strings implying some grouping which can be used by a supporting backend.\n\ni is a step counter and unique for every group.\n\n\n\n"
+    url = "FluxTraining@dev/ref/FluxTraining.log_to"
+    [[input.files]]
+    title = "Write"
+    contents = "Write"
+    url = "FluxTraining@dev/ref/FluxTraining.Write"
+    [[input.files]]
+    title = "StopOnNaNLoss"
+    contents = "StopOnNaNLoss()\nStops the training when a NaN loss is encountered.\nThis callback is added by default to every Learner unless you pass in usedefaultcallbacks = false.\n\n"
+    url = "FluxTraining@dev/ref/FluxTraining.StopOnNaNLoss"
+    [[input.files]]
+    title = "FluxTraining/callbackutils.jl"
+    contents = "learner callbacks learner callbacks callbacks learner callback learner callbacks vcat learner callbacks cbs callback callback learner learner C Type FluxTraining cbidx findfirst isa learner callbacks cbs C isnothing cbidx nothing learner callbacks cbs cbidx learner callback C C FluxTraining cbidx findfirst isa learner callbacks cbs C isnothing cbidx FluxTraining learner callback nothing oldcb learner callbacks cbs cbidx learner callbacks cbs cbidx callback FluxTraining learner learner callbacks cbs oldcb learner C Type FluxTraining cbidx findfirst isa learner callbacks cbs C isnothing cbidx nothing cb popat! learner callbacks cbs cbidx learner callbacks learner callbacks cbs cb \n"
+    url = "FluxTraining@dev/src/callbackutils.jl"
+    [[input.files]]
+    title = "Getting started"
+    contents = "Getting started\nThere are some user-centric tutorials that will introduce you to features of FluxTraining.jl one at a time\n\nAlternatively you can read more about how FluxTraining.jl is implemented and how you can extend it\n\n\nTutorials\nMNIST training\n\nHyperparameter scheduling\n\n\nInterfaces\nTraining loop\nFind out how the training loop is built and how to customize it.\nCallbacks\nCallbacks are a powerful feature of FluxTraining.jl, allowing you to add functionality to the training loop at different points.\nFind out\nhow to use callbacks when training\n\nwhat callbacks come included with FluxTraining.jl; or\n\nhow callbacks work and how to implement your own\n\n\n\n"
+    url = "FluxTraining@dev/doc/docs/overview.md"
+    [[input.files]]
+    title = "formataccess"
+    contents = "formataccess"
+    url = "FluxTraining@dev/ref/FluxTraining.formataccess"
+    [[input.files]]
+    title = "on"
+    contents = "on(event::Event, phase::Phase, callback::AbstractCallback, learner)\nHandle event with Callback callback. By default, this event handler does nothing for a callback.\nTo see events which an AbstractCallback handles, use\n\nExtending\nYou can add event handlers to Callbacks by implementing a method for on. See also Callback and custom callbacks.\nA method of on should always dispatch on the callback type, i.e. on(event, phase, cb::MyCallback, learner). It may also dispatch on specific Events and Phase. It should not dispatch on a specific type for learner.\n\n"
+    url = "FluxTraining@dev/ref/FluxTraining.on"
+    [[input.files]]
+    title = "ConflictResolution"
+    contents = "abstract type ConflictResolution\nA conflict resolution strategy for resolving write/write conflicts of two callbacks.\nSee resolveconflict.\n\n"
+    url = "FluxTraining@dev/ref/FluxTraining.ConflictResolution"
+    [[input.files]]
+    title = "CustomCallback"
+    contents = "CustomCallback(f, Event, [TPhase = Phase, access = (;)])\nA callback that runs f(learner) every time an event of type Event during a phase of type in Phase.\nIf f needs to access learner state, pass access, a named tuple in the same form as stateaccess.\nInstead of using CustomCallback it is recommended to properly implement a Callback.\nExamples\nWe can get a quick idea of when a new epoch starts as follows:\ncb learner println EpochBegin \n\n"
+    url = "FluxTraining@dev/ref/FluxTraining.CustomCallback"
+    [[input.files]]
+    title = "FluxTraining/callbacks/earlystopping.jl"
+    contents = "criterion StoppingCriterion state testphase Type trainphase Type criterion testphase trainphase testphase trainphase trainphase testphase error criterion nothing testphase trainphase n Int kwargs Patience n kwargs Base show io IO cb print io cb criterion phase cb learner loss last learner cbstate metricsepoch phase phase cb testphase isnothing cb state cb state update cb criterion loss cb state update cb criterion loss cb state phase cb trainphase isnothing cb state cb state update_training cb criterion loss cb state update_training cb criterion loss cb state isnothing cb state done cb criterion cb state throw message cb criterion cb state cbstate metricsepoch \n"
+    url = "FluxTraining@dev/src/callbacks/earlystopping.jl"
+    [[input.files]]
+    title = "accesses"
+    contents = "accesses()\nEnumerate all valid state accesses of permissions of kind perm.\naccesses((x = Read(),), Read()) === [(:x,)] accesses((x = Read(),), Write()) === []\n\n"
+    url = "FluxTraining@dev/ref/FluxTraining.accesses"
+    [[input.files]]
+    title = "LICENSE"
+    contents = "MIT License\nCopyright (c) 2020 lorenzoh lorenz.ohly@gmail.com\nPermission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the \"Software\"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:\nThe above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.\n\n"
+    url = "FluxTraining@dev/doc/LICENSE.md"
+    [[input.files]]
+    title = "handle"
+    contents = "handle"
+    url = "FluxTraining@dev/ref/FluxTraining.handle"
+    [[input.files]]
+    title = "FluxTraining/callbacks/conditional.jl"
+    contents = "callback event Type freq nothing seconds nothing xor isnothing freq isnothing seconds error isnothing freq callback freq event isnothing seconds callback seconds event callback condition cc cc callback cc learner cc callback learner event phase cb learner cb condition event phase event phase cb callback learner freq event counter f e new f e c event phase typeof event c event c counter c counter c freq c counter seconds event timer s e t nothing new s e t c event phase typeof event c event isnothing c timer time c timer c seconds c timer time train cb learner cb learner learner cbstate history train steps train freq steps train freq steps Base Sys iswindows train seconds steps train seconds steps \n"
+    url = "FluxTraining@dev/src/callbacks/conditional.jl"
+    [[input.files]]
+    title = "protect"
+    contents = "protect"
+    url = "FluxTraining@dev/ref/FluxTraining.protect"
+    [[input.files]]
+    title = "FluxTraining"
+    contents = "FluxTraining"
+    url = "FluxTraining@dev/ref/FluxTraining"
+    [[input.files]]
+    title = "getindexperm"
+    contents = "getindexperm"
+    url = "FluxTraining@dev/ref/FluxTraining.getindexperm"
+    [[input.files]]
+    title = "Phases"
+    contents = "Phases"
+    url = "FluxTraining@dev/ref/FluxTraining.Phases"
+    [[input.files]]
+    title = "imagenette_demo"
+    contents = "DataLoaders Flux DataAugmentation DeepLearningTasks DLDatasets MLDataPattern LearnBase ProgressBars FluxTraining FluxModels \ntask ImageClassification sz labeltoint metadata ImageNette labeltoclass obsfn image label image labeltoint label \ntrainds valds DLDatasets loaddataset ImageNette split bs traindl taskdataloader task trainds bs obsfn valdl taskdataloader task valds bs obsfn \nmodel gpu Chain xresnet18 FluxModels classificationhead task nclasses \nlearner model traindl valdl ADAM Flux Losses logitcrossentropy callbacks metrics schedule Schedules onecycleschedule length traindl \nFluxTraining learner \n"
+    url = "FluxTraining@dev/doc/docs/imagenette_demo.ipynb"
+    [[input.files]]
+    title = "Training loop"
+    contents = "Training loop\nFluxTraining.jl comes with a training loop for standard supervised learning problems, but for different tasks like self-supervised learning, being able to write custom training logic is essential. The package's training loop API requires little boilerplate to convert a regular Flux.jl training loop while making it compatible with existing callbacks.\nSupervised training, step-by-step\nWe'll explore the API step-by-step by converting a basic training loop and then discuss ways in which more complex training loops can be implemented using the same approach. The central piece of a training loop is the logic for a single training step, and in many cases, that will be all you need to implement. Below is the definition of a basic vanilla Flux.jl training step. It takes a batch of data, calculates the loss, gradients and finally updates the parameters of the model.\nmodel batch params optimizer lossfn xs ys batch grads gradient params ŷs model xs loss lossfn ŷs ys loss update! optimizer params grads \nTo make a training step work with FluxTraining.jl and its callbacks, we need to\nstore data for a step so that callbacks can access it (e.g. Metrics uses ys and ŷs to evaluate metrics for each step); and\n\ndispatch events so the callbacks are triggered\n\n\nWe first need to create a Phase and implement a method for FluxTraining.step! that dispatches on the phase type. Phases are used to define different training behaviors using the same API and to define callback functionality that is only run during certain phases. For example, Scheduler only runs during AbstractTrainingPhases but not during ValidationPhase. Let's implement such a phase and method, moving the arguments inside a Learner in the process.\n\nNow we can already train a model using this implementation, for example using epoch!(learner, MyTrainingPhase(), dataiter). However, no callbacks would be called, since we haven't yet put in any logic that dispatches events or stores the step state. We can do both by using the helper function runstep which takes care of runnning our step logic, dispatching a StepBegin and StepEnd event before and after and handling control flow exceptions like CancelStepException. Additionally, runstep gives us a function handle which we can use to dispatch events inside the step, and state a container for storing step state. Let's use runstep and store the variables of interest inside state:\nlearner phase MyTrainingPhase batch xs ys batch learner phase xs xs ys ys state state grads gradient learner params state ŷs learner model state xs state loss learner lossfn state ŷs state ys loss update! learner optimizer learner params grads \nNow callbacks like Metrics can access variables like ys through learner.step (which is set to the last state). Finally, we can use handle to dispatch additional events:\nFluxTraining LossBegin BackwardBegin BackwardEnd learner phase MyTrainingPhase batch xs ys batch learner phase xs xs ys ys state state grads gradient learner params state ŷs learner model state xs LossBegin state loss learner lossfn state ŷs state ys BackwardBegin loss BackwardEnd update! learner optimizer learner params grads \nThe result is the full implementation of FluxTraining.jl's own TrainingPhase! Now we can use epoch! to train a Learner with full support for all callbacks:\ni learner MyTrainingPhase dataiter \nValidation\nThe implementation of ValidationPhase is even simpler; it runs the forward pass and stores variables so that callbacks like Metrics can access them.\nAbstractValidationPhase learner phase batch xs ys batch learner phase xs xs ys ys _ state state ŷs learner model state xs state loss learner lossfn state ŷs state ys \nEpoch logic\nWe didn't need to implement a custom epoch! method for our phase since the default is fine here: it just iterates over every batch and calls step!. In fact, let's have a look at how epoch! is implemented:\nlearner phase Phase dataiter learner phase batch dataiter learner phase batch \nHere, runepoch, similarly to runstep, takes care of epoch start/stop events and control flow. If you want more control over your training loop, you can use it to write training loops that directly use step!:\nphase MyTrainingPhase withepoch learner phase batch dataiter learner phase batch learner step loss throw \nTips\nHere are some additional tips for making it easier to implement complicated training loops.\nYou can pass (named) tuples of models to the Learner constructor. For example, for generative adversarial training, you can pass in (generator = ..., critic = ...) and then refer to them inside the step! implementation, e.g. using learner.model.generator. The models' parameters will have the same structure, i.e. learner.params.generator corresponds to params(learner.model.generator).\n\nYou can store any data you want in state.\n\nWhen defining a custom phase, instead of subtyping Phase you can subtype AbstractTrainingPhase or AbstractValidationPhase so that some context-specific callbacks will work out of the box with your phase type. For example, Scheduler sets hyperparameter values only during AbstractTrainingPhase.\n\n\n\n"
+    url = "FluxTraining@dev/doc/docs/tutorials/training.md"
+    [[input.files]]
+    title = "FluxTraining/training.jl"
+    contents = "learner phase dataiter learner data phase learner phase _ batch dataiter learner phase batch learner phase batch xs ys batch learner phase xs xs ys ys state state grads _gradient learner optimizer learner model learner params model state ŷs model state xs state loss learner lossfn state ŷs state ys state loss learner params learner model _update! learner optimizer learner params learner model state grads _gradient f _ m _ gradient f m _gradient f Flux Optimise AbstractOptimiser m ps Params gradient f m ps _update! optimizer Flux Optimise AbstractOptimiser params model grads update! optimizer params grads params model _update! _ st model grads st model Optimisers update! st model grads st model learner phase batch xs ys batch learner phase xs xs ys ys _ state state ŷs learner model state xs state loss learner lossfn state ŷs state ys epochfn learner phase handlefn e learner callbacks runner e phase learner handlefn epochfn handlefn handlefn e e error e handlefn rethrow stepfn learner phase initialstate state pairs initialstate handlefn e learner callbacks runner e phase learner learner step state handlefn stepfn handlefn state handlefn state e e error e rethrow state learner nepochs Int trainiter validiter i nepochs learner trainiter learner validiter learner nepochs Int learner nepochs learner data training learner data validation \n"
+    url = "FluxTraining@dev/src/training.jl"
+    [[input.files]]
+    title = "ToGPU"
+    contents = "ToGPU()\nCallback that moves model and batch data to the GPU during training. Convenience for ToDevice(Flux.gpu).\n\n"
+    url = "FluxTraining@dev/ref/FluxTraining.ToGPU"
+    [[input.files]]
+    title = "Callback reference"
+    contents = "Callback reference\nIncluded callbacks\nFluxTraining.jl comes with many callbacks included. Some of them are added to Learner by default, here marked with a *.\nCallbackDescriptionMetrics*Tracks loss and additional metrics on a per-step and per-epoch baseRecorder*Records training stats like number of steps and epochsProgressPrinter*Prints a progress bar for the current epoch during trainingMetricsPrinter*Prints out metrics after every epochStopOnNaNLoss*Stops training early if a step loss is NaNSanityCheckPerforms sanity checks on data, model and loss before trainingToGPUTrains using a CUDA GPU if availableCheckpointerSaves the model after every epochEarlyStoppingStops training early when a criterion is metSchedulerSchedules hyperparametersLogMetricsLogs metrics to a logging backendLogHyperParamsLogs hyperparameters to a logging backendLogVisualizationLogs visualization to a logging backendLogHistogramsLogs model weight histograms to a logging backend\nTo construct a learner without default callbacks, pass usedefaultcallbacks=false when constructing it.For working with callbacks on an existing Learner, see:\nsetcallbacks!\n\naddcallback!\n\ngetcallback\n\nreplacecallback!\n\nremovecallback!\n\n\nThere are also some utilities for creating callbacks:\nCustomCallback to quickly hook a function into an event\n\nthrottle to run a callback only after every n events or every t seconds\n\n\nExtension API\nThe following types and functions can be used to create custom callbacks. Read the custom callbacks guide for more context.\nCallback\n\nstateaccess\n\nrunafter\n\nresolveconflict\n\n\n\n"
+    url = "FluxTraining@dev/doc/docs/callbacks/reference.md"
+    [[input.files]]
+    title = "LogHistograms"
+    contents = "LogHistograms(backends...[; freq = 100]) <: Callback\nCallback that logs histograms of model weights to LoggerBackends backends every freq steps.\nIf histograms should be logged every step, pass freq = nothing\n\n"
+    url = "FluxTraining@dev/ref/FluxTraining.LogHistograms"
+    [[input.files]]
+    title = "phasedataiter"
+    contents = "phasedataiter"
+    url = "FluxTraining@dev/ref/FluxTraining.phasedataiter"
+    [[input.files]]
+    title = "ConditionalCallback"
+    contents = "ConditionalCallback(callback, condition) <: Callback\nWrapper callback that only forwards events to the wrapped callback if CallbackCondition condition is met. See throttle.\n\n"
+    url = "FluxTraining@dev/ref/FluxTraining.ConditionalCallback"
+    [[input.files]]
+    title = "Custom training loops"
+    contents = "Custom training loops\n\nHow can we compose changes to the training loop together?\nAs an example, we want to be able to do data-parallel training or GAN training, but also data-parallel GAN training.\nI want to give some thoughts on this and propose possible solutions to make this possible in FastAI.jl.\nCurrently, implementing custom training behavior is possible by subtyping FitPhase and implementing fitbatchphase!(learner, phase::MyPhase). However, this is not composable, i.e. it doesn't allow you to combine a DataParallelTrainingPhase and GANTrainingPhase.\nBelow are some examples that show how the contents of fitbatchphase! can be changed to illustrate this. For simplicity, they don't include callbacks and state handling.\n\nRegular training (1)\n\ngrads gradient params lossfn model xs ys update! optim params sum grads \nData-parallel training on CPU (2)\n\ngrads Array Grads undef Threads nthreads Threads i xs_ ys_ enumerate scatter xs ys Threads nthreads grads i gradient params lossfn model xs_ ys_ gs sum grads update! optim params gs \nGAN training (3)\n\nxs_fake mgen batchsize xs cat xs_true xs_fake ys onehot vcat trues batchsize falses batchsize grads gradient paramscrit lossfncrit mcrit xs ys update! optim paramscrit grads grads gradient paramsgen xs_fake mgen batchsize ys_fake onehot falses batchsize lossfncrit crit xs_fake ys_fake \nSolutions\nI have found two approaches to deal with this. Both focus on removing execution logic from fitbatchphase!, making them composable with custom Phases like GANTrainingPhase that change\nthe semantics of the training loop.\nOn one hand, there are extensions to the training loop that change the execution (e.g. parallel and distributed CPU and GPU training), on the other hand you have those that change the semantics (e.g. GAN training).\nThe proposed solutions make the assumption that different semantics don't need to be composed, but should be composable with different execution contexts.\n\n(S1) Abstract gradient step (and possibly others) out\n\nModifications to the execution of the training loop could be implemented by wrapping in an execution context.\nIn the below example gradientphase could dispatch to the regular gradient calculation in (1) or the data-parallel approach (2) depending on executionctx.\nThis would mean that only semantic changes to the training loop would use overloading of fitbatchphase! with a custom FitPhase. Changes to the execution work by dispatching on execution contexts, e.g. gradientphase(::Linear, ...) or gradientphase(::DataParallel, ...).\n\ngrads gradient executionctx params model_ params_ xs_ ys_ lossfn model xs_ ys_ update! optim params grads \nAdvantages\nimplementation definitely doable\n\n\nDisadvantages\nimplementation dependent on requirements, i.e. unsure which pieces of the training step need to be overloadable and which state needs to be passed to closures.\n\n\n\n(S2) Wrapper for model\n\nThe idea is to wrap the model in an execution context, e.g. DataParallel(model). The wrapper is then responsible for exhibiting the correct behavior on the forward and backward pass. This is what PyTorch does.\nNo changes to the training loop would need to be made. The implementation for the forward pass should be straightforward and similar to the above sketch (2), however I'm not sure how to make sure that the backward pass is also computed in parallel (can custom gradient definitions include multi-threading code?, what about the loss function that is not wrapped?).\n\nmodel DataParallel model grads gradient params lossfn model xs ys update! optim params sum grads \nAdvantages\nno changes needed to state and event handling\n\n\nDisadvantages\nnot sure if such a simple API is possible to implement for all scenarios\n\nbit unelegant; model is not a pure function anymore\n\n\n\n"
+    url = "FluxTraining@dev/doc/docs/custom_training.ipynb"
+    [[input.files]]
+    title = "Events"
+    contents = "Events"
+    url = "FluxTraining@dev/ref/FluxTraining.Events"
+    [[input.files]]
+    title = "fit!"
+    contents = "fit!(learner, nepochs)\nfit!(learner, nepochs, (trainiter, validiter))\nTrain learner for nepochs of training and validation each. Use data iterators that are passed in. If none are given, use learner.data.training and learner.data.validation.\nExamples\nlearner learner traindl valdl \n\n"
+    url = "FluxTraining@dev/ref/FluxTraining.fit!"
+    [[input.files]]
+    title = "reset!"
+    contents = "reset!"
+    url = "FluxTraining@dev/ref/FluxTraining.reset!"
+    [[input.files]]
+    title = "EpochBegin"
+    contents = "EpochBegin()\nEvent called at the beginning of an epoch.\n\n"
+    url = "FluxTraining@dev/ref/FluxTraining.Events.EpochBegin"
+    [[input.files]]
+    title = "runtests"
+    contents = "FluxTraining.runtests(pattern...; kwargs...)\nEquivalent to ReTest.retest(FluxTraining, pattern...; kwargs...). This function is defined automatically in any module containing a @testset, possibly nested within submodules.\n\n"
+    url = "FluxTraining@dev/ref/FluxTraining.runtests"
+    [[input.files]]
+    title = "Traces"
+    contents = "Traces(preprocess[, phase])\nRecord a trace during phase by apply each pre-processing function in preprocess to the Learner to produce a trace value. The trace is recorded at the end of each learning step.\nSee LogTraces for logging of the trace values.\n\n\n"
+    url = "FluxTraining@dev/ref/FluxTraining.Traces"
+    [[input.files]]
+    title = "History"
+    contents = "History"
+    url = "FluxTraining@dev/ref/FluxTraining.History"
+    [[input.files]]
+    title = "CheckModelLossStep"
+    contents = "CheckModelLossStep"
+    url = "FluxTraining@dev/ref/FluxTraining.CheckModelLossStep"
+    [[input.files]]
+    title = "LogHyperParams"
+    contents = "LogHyperParams(backends...) <: Callback\nCallback that logs hyperparameters to one or more LoggerBackends.\nSee also LoggerBackend, Loggables.Loggable, log_to, TensorBoardBackend\nExample\n\n\n"
+    url = "FluxTraining@dev/ref/FluxTraining.LogHyperParams"
+    [[input.files]]
+    title = "Protected"
+    contents = "Protected"
+    url = "FluxTraining@dev/ref/FluxTraining.Protected"
+    [[input.files]]
+    title = "FluxTraining/callbacks/custom.jl"
+    contents = "E P f Any access f E Type P Type access E P f access cc cc access E P cb E P learner E P cb f learner x cb learner x learner cb learner x cb learner throw learner cb coeff learner learner cbstate history epochs learner cbstate history steps \n"
+    url = "FluxTraining@dev/src/callbacks/custom.jl"
+    [[input.files]]
+    title = "TrainingPhase"
+    contents = "TrainingPhase() <: AbstractTrainingPhase\nA regular training phase for supervised learning. It iterates over batches in learner.data.training and updates the model parameters using learner.optim after calculating the gradients.\nThrows the following events in this order:\nEpochBegin when an epoch starts,\n\nStepBegin when a step starts,\n\nLossBegin after the forward pass but before loss calculation,\n\nBackwardBegin after loss calculation but before backward pass,\n\nBackwardEnd after the bacward pass but before the optimization step,\n\nStepEnd when a step ends; and\n\nEpochEnd when an epoch ends\n\n\nIt writes the following step state to learner.state, grouped by the event from which on it is available.\nStepBegin:\nxs and ys: encoded input and target (batch)\n\n\n\nLossBegin:\nŷs: model output\n\n\n\nBackwardBegin:\nloss: loss\n\n\n\nBackwardEnd:\ngrads: calculated gradients\n\n\n\n\n\n"
+    url = "FluxTraining@dev/ref/FluxTraining.Phases.TrainingPhase"
+    [[input.files]]
+    title = "LearningRate"
+    contents = "abstract type LearningRate <: HyperParameter\nHyperparameter for the optimizer's learning rate.\nSee Scheduler and hyperparameter scheduling.\n\n"
+    url = "FluxTraining@dev/ref/FluxTraining.LearningRate"
+    [[input.files]]
+    title = "FluxTraining/callbacks/metrics.jl"
+    contents = "metrics Tuple metrics new Tuple m m m m metrics cbstate metricsstep metricsepoch history step Base show io IO metrics print io join string metrics metrics metrics learner length metrics metrics length unique metrics metrics error haskey learner cbstate metricsstep learner cbstate metricsstep DefaultDict MVHistory MVHistory haskey learner cbstate metricsepoch learner cbstate metricsepoch DefaultDict MVHistory MVHistory metrics learner foreach metrics metrics phase metrics learner metricsstep learner cbstate metricsstep phase step learner cbstate history phase steps metric metrics metrics metric learner phase val metric val nothing metricsstep learner cbstate metricsstep phase push! metricsstep Symbol metric step val phase metrics learner epoch learner cbstate history phase epochs metric metrics metrics val metric val nothing metricsepoch learner cbstate metricsepoch phase push! metricsepoch Symbol metric epoch val metric learner _ metric learner T metricfn Any statistic OnlineStat T _statistic Any name Any device Any P Any last Union Nothing T Base show io IO metric T T print io metric name metricfn name uppercasefirst string metricfn statistic Mean device cpu phase metricfn deepcopy statistic statistic name device phase nothing metric metric statistic deepcopy metric _statistic metric learner phase phase metric P ŷs ys metric device learner step ŷs learner step ys metric last metric metricfn ŷs ys OnlineStats metric statistic metric last metric last nothing metric metric last metric isnothing metric last nothing OnlineStats value metric statistic metric metric name statistic Any _statistic Any last Any name Any weight EqualWeight name stat Mean weight weight deepcopy stat stat nothing name loss loss statistic deepcopy loss _statistic metric learner _ metric last learner step loss OnlineStats metric statistic metric last Base show io IO print io metric metric last metric OnlineStats value metric statistic metric metric name β OnlineStats ExponentialWeight β name cb phase learner cb learner Accuracy keys learner cbstate metricsstep Accuracy keys learner cbstate metricsstep Accuracy keys learner cbstate metricsepoch Accuracy keys learner cbstate metricsepoch \n"
+    url = "FluxTraining@dev/src/callbacks/metrics.jl"
+    [[input.files]]
+    title = "FitException"
+    contents = "abstract type FitException\nAbstract types for exceptions that can be thrown during fitting, to change its control flow.\nSee CancelStepException, CancelEpochException, CancelFittingException.\n\n"
+    url = "FluxTraining@dev/ref/FluxTraining.FitException"
+    [[input.files]]
+    title = "FluxTraining/callbacks/callback.jl"
+    contents = "cb _resolveconflict cb1 cb2 r cb1 cb2 r cb2 cb1 r Exception msg String msg String msg String phase learner _on e p cb learner e p cb learner _on e p cb learner perms ChainRulesCore ignore_derivatives cb e p cb learner perms learner \n"
+    url = "FluxTraining@dev/src/callbacks/callback.jl"
+    [[input.files]]
+    title = "sethyperparameter!"
+    contents = "sethyperparameter!(learner, H, value) -> learner\nSets hyperparameter H to value on learner, returning the modified learner.\n\n"
+    url = "FluxTraining@dev/ref/FluxTraining.sethyperparameter!"
+    [[input.files]]
+    title = "FluxTraining/learner.jl"
+    contents = "cbs Vector runner graph SimpleDiGraph initialized Bool cbs runner cbs runner cbs cbs learner foreach cb cb learner cbs cbs model data optimizer lossfn params step callbacks cbstate model lossfn callbacks data optimizer ADAM kwargs model data optimizer lossfn callbacks kwargs model data optimizer lossfn callbacks Vararg usedefaultcallbacks cbrunner callbacks collect callbacks usedefaultcallbacks cb any typeof cb typeof callbacks push! callbacks cb cbs callbacks cbrunner learner model _dataiters data optimizer lossfn model optimizer cbs cbs learner learner Base show io IO learner print io Vector event learner phase learner callbacks runner event phase learner training validation learner model learner model model learner params model learner optimizer model Flux Optimise AbstractOptimiser Flux params model model optim Optimisers setup optim model _dataiters d d _dataiters t NamedTuple pairs t _dataiters t Tuple length t Dict Symbol Any length t _dataiters training t length t _dataiters training t validation t error \n"
+    url = "FluxTraining@dev/src/learner.jl"
+    [[input.files]]
+    title = "runepoch"
+    contents = "runepoch(epochfn, learner, phase)\nRun epochfn inside the context of an epoch. Calls epochfn(handle) where handle(e) can be called to dispatch events.\nTakes care of dispatching EpochBegin and EpochEnd events as well as handling CancelEpochExceptions.\n\n"
+    url = "FluxTraining@dev/ref/FluxTraining.runepoch"
+    [[input.files]]
+    title = "FluxTraining/callbacks/scheduler.jl"
+    contents = "schedules Dict Type ParameterSchedulers AbstractSchedule step Int args kwargs new Dict args kwargs Base show io IO scheduler print io join keys scheduler schedules scheduler length keys scheduler schedules hpstateaccess hpstateaccess merge keys scheduler schedules data cbstate hyperparams history hpstateaccess to to scheduler learner haskey learner cbstate hyperparams learner cbstate hyperparams MVHistory scheduler step phase scheduler learner step scheduler step H schedule scheduler schedules value schedule step learner H value push! learner cbstate hyperparams Symbol H learner cbstate history phase steps value scheduler step nsteps max_val pct_start div divfinal start_val max_val div end_val max_val divfinal warmup ceil Int nsteps pct_start warmdown nsteps warmup Sequence Sin λ0 max_val λ1 start_val period warmup warmup Shifted Sin λ0 max_val λ1 end_val period warmdown warmdown warmdown \n"
+    url = "FluxTraining@dev/src/callbacks/scheduler.jl"
+    [[input.files]]
+    title = "HyperParameter"
+    contents = "HyperParameter{T}\nA hyperparameter is any state that influences the training and is not a parameter of the model.\nHyperparameters can be scheduled using the Scheduler callback.\n\n"
+    url = "FluxTraining@dev/ref/FluxTraining.HyperParameter"
+    [[input.files]]
+    title = "testbatch"
+    contents = "testbatch"
+    url = "FluxTraining@dev/ref/FluxTraining.testbatch"
+    [[input.files]]
+    title = "runchecks"
+    contents = "runchecks"
+    url = "FluxTraining@dev/ref/FluxTraining.runchecks"
+    [[input.files]]
+    title = "FluxTraining/callbacks/events.jl"
+    contents = "\n"
+    url = "FluxTraining@dev/src/callbacks/events.jl"
+    [[input.files]]
+    title = "replacecallback!"
+    contents = "replacecallback!(learner, callback::C)\nReplace existing callback of type C on learner with callback. Return the replaced callback.\nIf learner doesn't have a callback of type C, add callback and return nothing.\n\n"
+    url = "FluxTraining@dev/ref/FluxTraining.replacecallback!"
+    [[input.files]]
+    title = "Optimizers"
+    contents = "Optimizers\nAn optimizer takes the calculated gradients from a training step and uses them to update the parameters of a model. FluxTraining.jl currently only supports optimizers from Flux.jl.\nA complete reference of optimizers in Flux.jl can be found here.\n\n"
+    url = "FluxTraining@dev/doc/docs/background/optimizer.md"
+    [[input.files]]
+    title = "PropDict"
+    contents = "PropDict(dict)\nLike a Dict{Symbol}, but attribute syntax can be used to access values.\n\n"
+    url = "FluxTraining@dev/ref/FluxTraining.PropDict"
+    [[input.files]]
+    title = "testbatches"
+    contents = "testbatches"
+    url = "FluxTraining@dev/ref/FluxTraining.testbatches"
+    [[input.files]]
+    title = "SafeCallback"
+    contents = "SafeCallback"
+    url = "FluxTraining@dev/ref/FluxTraining.SafeCallback"
+    [[input.files]]
+    title = "model!"
+    contents = "model!"
+    url = "FluxTraining@dev/ref/FluxTraining.model!"
+    [[input.files]]
+    title = "Scheduler"
+    contents = "Scheduler(schedules...)\nCallback for hyperparameter scheduling. Takes pairs of HyperParameter types and ParameterSchedulers.jl schedules.\nSee the tutorial for more information.\nExample\nes length learner data training lrschedule ParameterSchedulers Step λ γ step_sizes scheduler lrschedule \n\n"
+    url = "FluxTraining@dev/ref/FluxTraining.Scheduler"
+    [[input.files]]
+    title = "FluxTraining/callbacks/logging/tensorboard.jl"
+    contents = "logger TBLogger logdir existfn tb_overwrite kwargs new TBLogger logdir existfn kwargs Base show io IO backend print io backend logger logdir backend value name i group name _combinename name group log_value backend logger name value data step i backend image name i group name _combinename name group im ImageCore clamp01nan! collect image data log_image backend logger name im step i backend text name i group name _combinename name group log_text backend logger name text data step i backend hist name i group name _combinename name group log_histogram backend logger name hist data step i _combinename name group String _combinename group name _combinename name group Tuple _combinename group name _combinename strings Tuple join strings \n"
+    url = "FluxTraining@dev/src/callbacks/logging/tensorboard.jl"
+    [[input.files]]
+    title = "Graph"
+    contents = "Graph"
+    url = "FluxTraining@dev/ref/FluxTraining.Loggables.Graph"
+    [[input.files]]
+    title = "AbstractValidationPhase"
+    contents = "abstract type AbstractValidationPhase <: Phase\nAn abstract type for phases where no parameter updates are being made. This exists so callbacks can dispatch on it and work with custom validation phases.\nThe default implementation for supervised tasks is ValidationPhase.\n\n"
+    url = "FluxTraining@dev/ref/FluxTraining.Phases.AbstractValidationPhase"
+    [[input.files]]
+    title = "resolveconflict"
+    contents = "resolveconflict(cb1, cb2)\nDefine a conflict resolution strategy for resolving a write/write conflict between two callbacks.\nThe default is [NotDefined()], which will result in an error and a message to implement this method.\nTo implement, dispatch on the callback types that you which to resolve (in any order) and return one of the following:\nUnresolvable() if the callbacks must not be used together\n\nRunFirst(cb) if one of the callbacks needs to run first; or\n\nNoConflict() if the callbacks may run together in any order\n\n\n\n"
+    url = "FluxTraining@dev/ref/FluxTraining.resolveconflict"
+    [[input.files]]
+    title = "callbackgraph"
+    contents = "callbackgraph(callbacks) -> SimpleDiGraph\nCreates a directed acyclic graph from a list of callbacks. Ordering is given through runafter and resolveconflict.\nIf a write conflict cannot be resolved (i.e. resolveconflict) is not implemented), throws an error.\n\n"
+    url = "FluxTraining@dev/ref/FluxTraining.callbackgraph"
+    [[input.files]]
+    title = "loadmodel"
+    contents = "loadmodel(path)\nLoads a model that was saved to path using FluxTraining.savemodel.\n\n"
+    url = "FluxTraining@dev/ref/FluxTraining.loadmodel"
+    [[input.files]]
+    title = "Custom callbacks"
+    contents = "Custom callbacks\nFluxTraining.jl's callback system is built around multiple dispatch, so you specify which part of the training you want to \"hook into\" by dispatching on Phases and Events. See Training loop and Events as a reference to phases and events.\nA guided example\nThere are 4 things you need to do to implement a custom callback:\nCreate a callback struct that subtypes Callback\n\nWrite event handlers with on\n\nDefine what state the callback accesses by implementing stateaccess\n\n(Optionally) define dependencies on other callbacks with runafter\n\nLet's go through them one at a time by implementing a simple callback that prints something after every batch.\nCallback struct\nA callback definition has to subtype the abstract Callback type. It can include fields to use as internal state, but we don't need that here.\nPrinter \nEvent handlers\nNow we need to add an event handler so that Printer can run some code when a step ends. Event handlers can be defined by adding a method to FluxTraining.on. It takes as arguments an Event, a Phase, the callback and the learner:\non(event::Event, phase::Phase, callback::Callback, learner)\nThe event, phase and callback are used to dispatch.\nIn this case, we want to run code at the end of a step, so the event we need to dispatch on is StepEnd. We want it to run in any phase, so we use the abstract type Phase. The third argument type is the callback we want to add an event handler to. This gives us:\nFluxTraining event StepEnd phase Phase printer Printer learner println \nWe can now pass an instance of Printer when creating a Learner and the message will be printed at the end of every step.\nState\nAs seen above, the callback handler on receives as the last argument a Learner instance, allowing the callback to access and modify state. If we wanted to print the last step's loss instead of a generic message, we could update our definition of on:\nFluxTraining event EpochEnd phase Phase printer Printer learner println learner step loss \n(see Learner for in-depth documentation of the Learner's state)\nThe ability to modify any state is very powerful, but it can quickly become problematic when it is unclear which callbacks modify what state and what the correct order should be. Because of that, FluxTraining.jl prevents callbacks from reading and modifying state by default. If we tried to use the above redefinition of on, we would get the following error:\nFluxTraining \nTo fix that error, we need to implement stateaccess, a function that specifies what state a callback is allowed to read and write. In our case, we want to read the loss of the current step:\nFluxTraining Printer step loss \n(see stateaccess for more information on how to implement it)\nAfter that definition, the above code will run fine. This might seem bothersome, but this extra information makes it possible to analyze state dependencies before any code is run and saves you from running into nasty, hard-to-find bugs that can occur when using many callbacks together.\nDependencies\nLet's improve our callback a bit by adding the current step number to the printed message, so it will look like this: \"Step 14 loss: 0.0032\". For that we need to know what the current number of steps is. One way to go about this is to add a field to Printer that starts at 0 and is incremented every step. Luckily, there already is a callback that tracks this kind of statistics, the Recorder. It uses a special piece of state, learner.cbstate, to store a History with this information.\nCallback state\nlearner.cbstate is an object where callbacks can store state that they want to make available to other callbacks. Like any other piece of state, the callback writing to it needs to add a Write() permission to it using stateaccess.\nWhat makes cbstate special is that when creating the callback graph, it is checked that every entry in cbstate that is accessed is being created first.\n\n\nThe update to the event handler looks like this:\n\nWe also need to update the definition of stateaccess now:\nFluxTraining Printer step loss cbstate history \nSince Printer depends on Recorder now, an error will be thrown if you try to use Printer without Recorder. And that's it, pass Printer to a Learner and test it out! The upside of jumping through some additional hoops is that using the callback in the wrong context will always result in an error, so the user can have peace of mind.\nConflict resolution\nWhen creating a Learner, a dependency graph is created. The graph is then analyzed to find possible conflicts (for example, when two callbacks update the same state). Conflicts are detected automatically and will result in an error. Conflicts happen when the same state is being modified by multiple callbacks and it is unclear which order of running them (if any) is valid.\nResolving conflicts\nThere are two methods for resolving conflicts, runafter and resolveconflict. runafter allows you to define list of callbacks that should run before the callback. For example, Recorder needs to run after all metrics:\nFluxTraining \nresolveconflict provides more granular control to handle a possible conflict between two callbacks. It takes two callbacks and defines how to resolve a conflict:\nC1 C2 NotImplemented C1 C2 C1 C2 cb1 C1 cb2 C2 cb1 \nCallback execution\nBy default, a topological ordering of the callbacks is created from the dependency graph and the callbacks are executed serially. This behavior can be overwritten with custom callback executors, for example to create a Dagger.jl node from the graph to allow callbacks to safely run in parallel where valid.\n\n"
+    url = "FluxTraining@dev/doc/docs/callbacks/custom.md"
+    [[input.files]]
+    title = "TestModel"
+    contents = "TestModel"
+    url = "FluxTraining@dev/ref/FluxTraining.TestModel"
+    [[input.files]]
+    title = "step!"
+    contents = "step!(learner, phase::Phase, batch)\nRun one step of training for learner on batch. Behavior is customized through phase.\nExtending\nThis is a required method for custom Phases to implement. To implement step!, it is recommended you make use of runstep to get begin and end events as well as proper handling of CancelStepExceptions.\nSee the implementations of TrainingPhase and ValidationPhase for reference.\n\n"
+    url = "FluxTraining@dev/ref/FluxTraining.step!"
+    [[input.files]]
+    title = "savemodel"
+    contents = "savemodel"
+    url = "FluxTraining@dev/ref/FluxTraining.savemodel"
+    [[input.files]]
+    title = "Getting started"
+    contents = "Getting started\nLet's look at a simple training example. In FluxTraining.jl, a Learner holds all state necessary for training. To get started, you need\na model\n\ntraining and validation data iterators\n\na loss function; and\n\nan optimizer\n\n\nFirst we define the necessary pieces:\n\nThen we construct a Learner:\nlearner model lossfn data traindata valdata \nAnd train for 10 epochs:\nlearner \n\n"
+    url = "FluxTraining@dev/doc/docs/getting_started.md"
+    [[input.files]]
+    title = "UnsafeCallback"
+    contents = "UnsafeCallback"
+    url = "FluxTraining@dev/ref/FluxTraining.UnsafeCallback"
+    [[input.files]]
+    title = "Loss functions"
+    contents = "Loss functions\nA loss function compares model outputs to true targets, resulting in a loss. For a loss function to be compatible with the standard supervised training loop, the following properties must hold.\nFirstly, the loss function should accept the model outputs and targets, and return a single scalar value. Given a data iterator dataiter and a model model:\nxs ys dataiter ŷs model xs lossfn ŷs ys Number \nThe loss function must also be differentiable, so that gradients can be calculated during training. See models for more on how to check this.\nCreating loss functions\nFlux.jl comes with a lot of commonly used loss functions built-in in its submodule Flux.Losses. See Flux.jl loss functions for a complete reference.\nYou can also write your own loss functions. If you are using non-mutating array operations, there is a good chance that it will be differentiable and also be compatible with GPU arrays from CUDA.jl.\n\n"
+    url = "FluxTraining@dev/doc/docs/background/lossfunction.md"
+    [[input.files]]
+    title = "FluxTraining/callbacks/protect.jl"
+    contents = "Exception msg String T data T perms NamedTuple Base getproperty protected field Symbol getfield protected data field get getfield protected perms field nothing Base setproperty! protected field Symbol x getfield protected data field x get getfield protected perms field nothing Base getindex protected idx getfield protected data idx get getfield protected perms idx nothing Base setindex! protected x idx getfield protected data x idx get getfield protected perms idx nothing Base haskey d key haskey getfield d data key data D idx perm Nothing D throw D idx data idx perm Union getindex data idx data idx perm NamedTuple getindex data idx perm data D idx x perm Union Nothing NamedTuple D throw D idx data x idx perm setindex! data x idx data D field perm Nothing D throw D string field data field perm Union getproperty data field data field perm NamedTuple getproperty data field perm data D field x perm Union Nothing NamedTuple D throw D string field data field x perm setproperty! data field x Base fieldnames protected fieldnames typeof getfield protected data x perms x perms V d Dict Symbol V Base getproperty d field Symbol getfield d d field Base setproperty! d field Symbol val getfield d d field val Base propertynames d Tuple keys getfield d d Base haskey d key haskey getfield d d key Base getindex d FluxTraining Any i Symbol getproperty d i Base keys d keys getfield d d Base values d values getfield d d Base get d args kwargs get getfield d d args kwargs args Dict Symbol Any args C x Int y Int B c C A b1 B b2 B makea A B C B C a_p makea NamedTuple a_p b1 a_p2 makea b1 a_p2 b1 a_p2 b1 C a_p2 makea b1 a_p2 b1 a_p2 b1 B C a_p3 makea b1 c x a_p3 b1 c x a_p3 b1 c x a_p3 b1 c a_p3 b1 c y \n"
+    url = "FluxTraining@dev/src/callbacks/protect.jl"
+    [[input.files]]
+    title = "AbstractMetric"
+    contents = "abstract type AbstractMetric\nAbstract type for metrics passed to Metrics.\nFor most use cases, you should use Metric, the standard implementation.\nInterface\nIf Metric doesn't fit your use case, you can create a new subtype of AbstractMetric and implement the following methods to make it compatible with Metrics:\nreset!(metric)\n\nstep!(metric, learner)\n\nstepvalue(metric)\n\nepochvalue(metric)\n\nmetricname(metric)\n\n\n\n"
+    url = "FluxTraining@dev/ref/FluxTraining.AbstractMetric"
+    [[input.files]]
+    title = "RunFirst"
+    contents = "abstract type RunFirst <: ConflictResolution\nReturn RunFirst(cb1/cb2) from resolveconflict(cb1, cb2) to indicate that one of the callbacks should always run before the other.\n\n"
+    url = "FluxTraining@dev/ref/FluxTraining.RunFirst"
+    [[input.files]]
+    title = "runstep"
+    contents = "runstep(stepfn, learner, phase) -> state\nRun stepfn inside the context of a step. Calls stepfn(handle, state) where handle(e) can be called to dispatch events and state is a PropDict which step data, gradients and losses can be written to. Return state.\nTakes care of dispatching StepBegin and StepEnd events as well as handling CancelStepExceptions.\n\n"
+    url = "FluxTraining@dev/ref/FluxTraining.runstep"
+    [[input.files]]
+    title = "CheckIteratesTuples"
+    contents = "CheckIteratesTuples"
+    url = "FluxTraining@dev/ref/FluxTraining.CheckIteratesTuples"
+    [[input.files]]
+    title = "ToDevice"
+    contents = "ToDevice(movedatafn, movemodelfn) <: Callback\nMoves model and step data to a device using movedatafn for step data and movemodelfn for the model. For example ToDevice(Flux.gpu, Flux.gpu), moves them to a GPU if available. See ToGPU.\nBy default, only moves step.xs and step.ys, but this can be extended to other state by implementing on(::StepBegin, ::MyCustomPhase, ::ToDevice, learner).\n\n"
+    url = "FluxTraining@dev/ref/FluxTraining.ToDevice"
+    [[input.files]]
+    title = "edgesrunafter"
+    contents = "edgesrunafter(callbacks)\nReturn a vector of Edges representing dependencies defined by runafter.\n\n"
+    url = "FluxTraining@dev/ref/FluxTraining.edgesrunafter"
+    [[input.files]]
+    title = "BackwardEnd"
+    contents = "BackwardEnd()\nEvent called between calculating gradients and updating parameters.\n\n"
+    url = "FluxTraining@dev/ref/FluxTraining.Events.BackwardEnd"
+    [[input.files]]
+    title = "Data iterators"
+    contents = "Data iterators\nA data iterator is an iterator over batches of the data that is used for one step of fitting. You can use different data iterators with this package, as long as they have the following properties.\nFirstly, you must be able to iterate over a data iterator:\nbatch dataiter \nThe data iterator must also be compatible with the other components of the Learner. For the standard supervised learning step (TrainingPhase and ValidationPhase), this means\nbatch is a tuple (xs, ys) of encoded inputs and targets,\n\nxs is a valid input to the model, so ŷs = model(xs); and\n\nys can be compared to the model output with the loss function, i.e. lossfn(ŷs, ys)\n\n\nIf you are working with a custom training loop, you may need to satisfy additional or different properties.\nCreating data iterators\nThe simplest data iterator is a vector of preloaded batches. This is what we're using in the MNIST tutorial. This is a fine approach for smaller datasets, but has some limitations.\nFirst of all, there is no principled way for doing things like splitting, subsetting and shuffling data. For this, we recommend using MLDataPattern.jl which provides this functionality and many more utilities for defining and working with datasets.\nAnother issue is that of memory load: if the whole dataset is too large to be preloaded in to memory, we have to load individual batches during training. To do this in a way that doesn't slow down the training itself, we suggest using DataLoaders.jl. DataLoaders.jl is compatible with MLDataPattern.jl and allows you to easily create efficient data iterators for out-of-memory datasets. The documentation of DataLoaders.jl also has a lot more information on working with large dataset for deep learning.\n\n"
+    url = "FluxTraining@dev/doc/docs/background/dataiterator.md"
+    [[input.files]]
+    title = "FluxTraining.jl"
+    contents = "FluxTraining.jl\nDocs (master)\nA Julia package for using and writing powerful, extensible training loops for deep learning models.\nWhat does it do?\nImplements a training loop to take the boilerplate out of training deep learning models\n\nLets you add features to training loops through reusable callbacks\n\nComes with callbacks for many common use cases like hyperparameter scheduling, metrics tracking and logging, checkpointing, early stopping, and more...\n\nIs extensible by creating custom, reusable callbacks or even custom training loops\n\n\nWhen should you use FluxTraining.jl?\nYou don't want to implement your own metrics tracking and hyperparameter scheduling or insert common training feature here for the 10th time\n\nYou want to use composable and reusable components that enhance your training loop\n\nYou want a simple training loop with reasonable defaults that can grow to the needs of your project\n\n\nHow do you use it?\nInstall like any other Julia package using the package manager:\n]add FluxTraining\nAfter installation, import it, create a Learner from a Flux.jl model, data iterators, an optimizer, and a loss function. Finally train with fit!.\nFluxTraining learner model lossfn learner trainiter validiter \nNext, you may want to read\nGetting started\n\nA full example training an image classifier on the MNIST dataset\n\nThe documentation of FastAI.jl which features many end-to-end examples\n\n\nAcknowledgements\nThe design of FluxTraining.jl's two-way callbacks is adapted from fastai's training loop.\n\n"
+    url = "FluxTraining@dev/doc/README.md"
+    [[input.files]]
+    title = "Image"
+    contents = "Image"
+    url = "FluxTraining@dev/ref/FluxTraining.Loggables.Image"
+    [[input.files]]
+    title = "TimeThrottle"
+    contents = "TimeThrottle"
+    url = "FluxTraining@dev/ref/FluxTraining.TimeThrottle"
+    [[input.files]]
+    title = "epoch!"
+    contents = "epoch!(learner, phase[, dataiter])\nTrain learner for one epoch on dataiter. Iterates through dataiter and step!s for each batch/item.\nIf no data iterator is passed in, use learner.data[phasedataiter(phase)].\nExtending\nThe default implementation iterates over every batch in dataiter and calls step! for each. This behavior can be overloaded by implementing epoch!(learner, ::MyPhase, dataiter).\nIf you're implementing a custom epoch! method, it is recommended you make use of runepoch to get begin and end events as well as proper handling of CancelEpochExceptions.\nSee the default implementation for reference.\n\n"
+    url = "FluxTraining@dev/ref/FluxTraining.epoch!"
+    [[input.files]]
+    title = "Callback"
+    contents = "abstract type Callback\nSupertype of all callbacks. Callbacks add custom functionality to the training loop by hooking into different Events.Events\nAny Callback can be used by passing it to Learner. See subtypes(FluxTraining.Callback) for implementations.\nExtending\nSee Custom callbacks for a less succinct tutorial format.\nCreate a struct MyCallback that subtypes FluxTraining.Callback.\n\nAdd event handlers by implementing methods for on(event, phase, callback, learner). Methods should always dispatch on your callback, and may dispatch on specific Phases.Phases and Events.Events.\nFor example, to implement an event handler that runs at the end of every step during training: on(::StepEnd, ::AbstractTrainingPhase, ::MyCallback, learner).\n\nDefine what state the callback accesses and/or modifies by implementing stateaccess(::MyCallback). While learner is always passed as an argument to on event handlers, by default a callback can not read or write to its fields. See stateaccess for more detail.\nIf a callback needs to write some state that other callbacks should be able to access, it can store it in learner.cbstate if you add a permission in stateaccess.\n\nIf the callback needs some one-time initialization, you can implement init! which will be run at least once before any step is run.\n\n\n"
+    url = "FluxTraining@dev/ref/FluxTraining.Callback"
+    [[input.files]]
+    title = "errorwriteconflict"
+    contents = "errorwriteconflict"
+    url = "FluxTraining@dev/ref/FluxTraining.errorwriteconflict"
+    [[input.files]]
+    title = "FluxTraining/FluxTraining.jl"
+    contents = "FluxTraining Graphs BSON Flux Flux Params onecold Flux Optimise update! ImageCore InlineTest Glob Reexport OnlineStats OnlineStats EqualWeight Mean OnlineStat Optimisers Parameters ProgressMeter Progress next! Statistics mean UUIDs Zygote ChainRulesCore ParameterSchedulers TensorBoardLogger TBLogger log_value log_image log_text log_histogram tb_overwrite Zygote Grads gradient ValueHistories DataStructures DefaultDict PrettyTables Setfield include include include include include include include include include include include include include include include include include include include include include include include include include Schedule \n"
+    url = "FluxTraining@dev/src/FluxTraining.jl"
+    [[input.files]]
+    title = "onecycle"
+    contents = "onecycle(nsteps, max_val, [start_val, end_val; pct_start])\nCreates a one-cycle Schedule over nsteps steps from start_val over max_val to end_val.\nExamples\n\n\n"
+    url = "FluxTraining@dev/ref/FluxTraining.onecycle"
+    [[input.files]]
+    title = "Phase"
+    contents = "abstract type Phase\nAbstract supertype for all phases. See subtypes(FluxTraining.Phase). A Phase is used in dispatch for training loop functions step! and epoch! as well as in Callback handler methods on.\n\n"
+    url = "FluxTraining@dev/ref/FluxTraining.Phases.Phase"
+    [[input.files]]
+    title = "FluxTraining/callbacks/phases.jl"
+    contents = "\n"
+    url = "FluxTraining@dev/src/callbacks/phases.jl"
+    [[input.files]]
+    title = "Audio"
+    contents = "Audio"
+    url = "FluxTraining@dev/ref/FluxTraining.Loggables.Audio"
+    [[input.files]]
+    title = "Event"
+    contents = "abstract type Event\nAbstract type for events that callbacks can hook into\n\n"
+    url = "FluxTraining@dev/ref/FluxTraining.Events.Event"
+    [[input.files]]
+    title = "Text"
+    contents = "Text"
+    url = "FluxTraining@dev/ref/FluxTraining.Loggables.Text"
+    [[input.files]]
+    title = "FluxTraining/callbacks/trace.jl"
+    contents = "P preprocess NamedTuple preprocess NamedTuple P Type P preprocess cbstate history tracehistory step traces learner length traces preprocess length unique keys traces preprocess error haskey learner cbstate tracehistory learner cbstate tracehistory DefaultDict MVHistory MVHistory phase P traces P learner P step learner cbstate history phase steps history learner cbstate tracehistory phase trace_name f pairs traces preprocess val f learner push! history trace_name step val cb keya learner sum learner step ys keyb learner sum learner step ŷs learner cb learner keya keys learner cbstate tracehistory keyb keys learner cbstate tracehistory keya keys learner cbstate tracehistory keyb keys learner cbstate tracehistory \n"
+    url = "FluxTraining@dev/src/callbacks/trace.jl"
+    [[input.files]]
+    title = "CancelEpochException"
+    contents = "CancelEpochException(message)\nThrow during fitting to cancel the currently running epoch. This prematurely ends the current epoch without throwing an error. Must be thrown inside the context of runepoch.\nExamples\nlearner phase _ batch batches learner phase batch learner step loss throw \n\n"
+    url = "FluxTraining@dev/ref/FluxTraining.CancelEpochException"
+    [[input.files]]
+    title = "FluxTraining/callbacks/callbacks.jl"
+    contents = "p Union Nothing Progress nothing Base show io IO print io phase cb learner e learner cbstate history phase epochs dataiter get learner data phase nothing isnothing dataiter cb p nothing println e phase cb p Progress length dataiter e phase cb learner isnothing cb p next! cb p data cbstate history phase cb learner mvhistory learner cbstate metricsepoch phase epoch learner cbstate history phase epochs mvhistory epoch phase mvhistory epoch phase header vcat string keys mvhistory vals last mvhistory key last key keys mvhistory data reshape vcat string phase epoch vals pretty_table data header header formatters PrettyTables ft_round cbstate metricsepoch history learner isnan learner step loss throw step loss movedatafn movemodelfn cb learner learner cb movemodelfn learner model model params step optimizer gpu gpu cb learner learner step xs cb movedatafn learner step xs learner step ys cb movedatafn learner step ys GC gc Base Sys islinux ccall malloc_trim Cvoid Cint nsteps Int learner freq nsteps \n"
+    url = "FluxTraining@dev/src/callbacks/callbacks.jl"
+    [[input.files]]
+    title = "Training an image classifier"
+    contents = "Training an image classifier\n\nLet's put FluxTraining.jl to train a model on the MNIST dataset.\nMNIST is simple enough that we can focus on the part where FluxTraining.jl comes in, the training. If you want to see examples of using FluxTraining.jl on larger datasets, see the documentation of FastAI.jl.\n\nSetup\n\nIf you want to run this tutorial yourself, you can find the notebook file here.\n\nTo make data loading and batching a bit easier, we'll install an additional dependency:\n\nPkg Pkg add \n\nNow we can import everything we'll need.\n\nMLUtils splitobs unsqueeze MLDatasets MNIST Flux Flux onehotbatch Flux Data DataLoader FluxTraining \nOverview\n\nThere are 4 pieces that you always need to construct and train a Learner:\na model\n\ndata\n\nan optimizer; and\n\na loss function\n\n\n\nBuilding a Learner\n\nLet's look at the data first.\nFluxTraining.jl is agnostic of the data source. The only requirements are:\nit is iterable and each iteration returns a tuple (xs, ys)\n\nthe model can take in xs, i.e. model(xs) works; and\n\nthe loss function can take model outputs and ys, i.e. lossfn(model(xs), ys) returns a scalar\n\n\n\nGlossing over the details as it's not the focus of this tutorial, here's the code for getting a data iterator of the MNIST dataset. We use DataLoaders.DataLoader to create an iterator of batches from our dataset.\n\ndata MNIST train LABELS preprocess data targets unsqueeze data onehotbatch targets LABELS traindata MNIST Float32 train preprocess testdata MNIST Float32 test preprocess trainiter testiter DataLoader traindata batchsize DataLoader testdata batchsize \nNext, let's create a simple Flux.jl model that we'll train to classify the MNIST digits.\n\nmodel Chain Conv relu pad stride Conv relu pad GlobalMeanPool Flux flatten Dense \nWe'll use categorical cross entropy as a loss function and ADAM as an optimizer.\n\nlossfn Flux Losses logitcrossentropy optimizer Flux ADAM \nNow we're ready to create a Learner. At this point you can also add any callbacks, like ToGPU to run the training on your GPU if you have one available. Some callbacks are also included by default.\nSince we're classifying digits, we also use the Metrics callback to track the accuracy of the model's predictions:\n\nlearner model lossfn callbacks optimizer \nTraining\n\nWith a Learner in place, training is as simple as calling fit!(learner, nepochs, dataiters).\n\nFluxTraining learner trainiter testiter \n\n"
+    url = "FluxTraining@dev/doc/docs/tutorials/mnist.ipynb"
+    [[input.files]]
+    title = "FluxTraining/functional/metrics.jl"
+    contents = "y_pred y mean onecold y_pred onecold y \n"
+    url = "FluxTraining@dev/src/functional/metrics.jl"
+    [[input.files]]
+    title = "FrequencyThrottle"
+    contents = "FrequencyThrottle"
+    url = "FluxTraining@dev/ref/FluxTraining.FrequencyThrottle"
+    [[input.files]]
+    title = "NotDefined"
+    contents = "abstract type NotDefined <: ConflictResolution\nThe default implementation of resolveconflict. If a conflict is detected, this ensures an error message is printed.\n\n"
+    url = "FluxTraining@dev/ref/FluxTraining.NotDefined"
+    [[input.files]]
+    title = "SanityCheckException"
+    contents = "SanityCheckException"
+    url = "FluxTraining@dev/ref/FluxTraining.SanityCheckException"
+    [[input.files]]
+    title = "SmoothLoss"
+    contents = "SmoothLoss"
+    url = "FluxTraining@dev/ref/FluxTraining.SmoothLoss"
+    [[input.files]]
+    title = "throttle"
+    contents = "throttle(callback, Event, freq = 1)\nthrottle(callback, Event, seconds = 1)\nThrottle Event type for callback so that it is triggered either only every freq'th time  or every seconds seconds.\nExamples\nIf you want to only sporadically log metrics (LogMetrics) or images (LogVisualization), throttle can be used as follows.\nEvery 10 steps:\n\nOr every 5 seconds:\n\n\n"
+    url = "FluxTraining@dev/ref/FluxTraining.throttle"
+    [[input.files]]
+    title = "print_epoch_table"
+    contents = "print_epoch_table"
+    url = "FluxTraining@dev/ref/FluxTraining.print_epoch_table"
+    [[input.files]]
+    title = "How to use callbacks"
+    contents = "FluxTraining FluxTraining model data lossfn nothing nothing nothing \nHow to use callbacks\nCallbacks allow injecting functionality at many points during the training loop.\nTo use them, simply pass each callback to Learner:\nlearner model lossfn callbacks data data \nSome useful callbacks are added by default. Below, the callbacks of learner are shown. Both the explicitly passed callbacks and the default ones are included:\nlearner callbacks cbs \nSee callback reference for a list of all callbacks included in FluxTraining.jl and their documentation.\nOrdering\nThe order the callbacks are passed in doesn't matter. FluxTraining.jl creates a dependency graph that makes sure the callbacks are run in the correct order. Read custom callbacks to find out how to create callbacks yourself.\n\n\n\n"
+    url = "FluxTraining@dev/doc/docs/callbacks/usage.md"
+    [[input.files]]
+    title = "SanityCheck"
+    contents = "SanityCheck([checks; usedefault = true])\nCallback that runs sanity Checks when the Learner is initialized. If usedefault is true, it will run all checks in FluxTraining.CHECKS in addition to the ones you pass in.\n\n"
+    url = "FluxTraining@dev/ref/FluxTraining.SanityCheck"
+    [[input.files]]
+    title = "CallbackRunner"
+    contents = "CallbackRunner"
+    url = "FluxTraining@dev/ref/FluxTraining.CallbackRunner"
+    [[input.files]]
+    title = "Callbacks"
+    contents = "Callbacks"
+    url = "FluxTraining@dev/ref/FluxTraining.Callbacks"
+    [[input.files]]
+    title = "Metrics"
+    contents = "Metrics(metrics...) <: Callback\nCallback that tracks metrics during training.\nYou can pass any number of metrics with every argument being\nan AbstractMetric like Metric; or\n\na function f(ŷs, ys) -> val\n\n\nThis callback is added by default to every Learner unless you pass in usedefaultcallbacks = false. A metric tracking learner.lossfn Loss is included by default.\nThe computed metrics can be access in learner.cbstate.metricsstep and learner.cbstate.metricsepoch for steps and epochs, respectively.\nExamples\nTrack accuracy:\ncb \nPass in [Metric]s:\ncb Flux mse device gpu Flux mae device gpu \n\n"
+    url = "FluxTraining@dev/ref/FluxTraining.Metrics"
+    [[input.files]]
+    title = "removecallback!"
+    contents = "removecallback!(learner, C)\nRemove the first callback of type C from learner and return it. If there is none, return nothing.\n\n"
+    url = "FluxTraining@dev/ref/FluxTraining.removecallback!"
