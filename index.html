@@ -5,10 +5,12 @@
     <meta charset="utf-8" />
     <!--     <link rel="icon" href="/favicon.png" /> -->
     <meta name="viewport" content="width=device-width, initial-scale=1" /> <meta http-equiv="content-security-policy" content="">
-	<link rel="modulepreload" href="/FluxTraining.jl/internal/start-3a3c726e.js">
-	<link rel="modulepreload" href="/FluxTraining.jl/internal/chunks/index-832d6c3c.js">
-	<link rel="modulepreload" href="/FluxTraining.jl/internal/chunks/singletons-83e66bf9.js">
-	<link rel="modulepreload" href="/FluxTraining.jl/internal/chunks/paths-396f020f.js">
+	<link rel="modulepreload" href="/FluxTraining.jl/internal/immutable/start-1bcc5960.js">
+	<link rel="modulepreload" href="/FluxTraining.jl/internal/immutable/chunks/index-af87de52.js">
+	<link rel="modulepreload" href="/FluxTraining.jl/internal/immutable/chunks/singletons-e7d8c62f.js">
+	<link rel="modulepreload" href="/FluxTraining.jl/internal/immutable/chunks/paths-846459bd.js">
+	<link rel="modulepreload" href="/FluxTraining.jl/internal/immutable/chunks/control-e337d4cc.js">
+	<script src="https://files.stork-search.net/releases/v1.5.0/stork.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Fira+Mono:wght@400;500&display=swap');
         @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;600&display=swap');
@@ -17,16 +19,15 @@
 
 <body>
     <div id="svelte">
-		<script type="module" data-hydrate="45h">
-		import { start } from "/FluxTraining.jl/internal/start-3a3c726e.js";
+		<script type="module" data-sveltekit-hydrate="45h">
+		import { start } from "/FluxTraining.jl/internal/immutable/start-1bcc5960.js";
+
 		start({
-			target: document.querySelector('[data-hydrate="45h"]').parentNode,
+			env: {},
+			hydrate: null,
 			paths: {"base":"/FluxTraining.jl","assets":"/FluxTraining.jl"},
-			session: {},
-			route: true,
-			spa: true,
-			trailing_slash: "never",
-			hydrate: null
+			target: document.querySelector('[data-sveltekit-hydrate="45h"]').parentNode,
+			trailing_slash: "never"
 		});
 	</script></div>
 </body>
