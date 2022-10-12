@@ -1,22 +1,22 @@
 {
-    "Overview": "documents/README.md",
-    "Getting started": "documents/docs/getting_started.md",
-    "Features": "documents/docs/features.md",
+    "Overview": "/doc/README.md",
+    "Getting started": "/doc/docs/getting_started.md",
+    "Features": "/doc/docs/features.md",
     "Tutorials": {
-        "Train an image classifier": "documents/docs/tutorials/mnist.ipynb",
-        "Write a custom callback": "documents/docs/callbacks/custom.md"
+        "Train an image classifier": "/doc/docs/tutorials/mnist.ipynb",
+        "Write a custom callback": "/doc/docs/callbacks/custom.md"
     },
     "How to": {
-        "Use callbacks": "documents/docs/callbacks/usage.md",
-        "Tips & Tricks": "documents/docs/callbacks/tipstricks.md"
+        "Use callbacks": "/doc/docs/callbacks/usage.md",
+        "Tips & Tricks": "/doc/docs/callbacks/tipstricks.md"
     },
     "Reference": {
-        "Module": "references/FluxTraining",
-        "List of callbacks": "documents/docs/callbacks/reference.md",
-        "Training loop API": "documents/docs/reference/training.md"
+        "Module": "/ref/FluxTraining",
+        "List of callbacks": "/doc/docs/callbacks/reference.md",
+        "Training loop API": "/doc/docs/reference/training.md"
     },
     "Backround": {
-        "Hyperparameter scheduling": "documents/docs/tutorials/hyperparameters.md",
-        "Custom training loops": "documents/docs/tutorials/training.md"
+        "Hyperparameter scheduling": "/doc/docs/tutorials/hyperparameters.md",
+        "Custom training loops": "/doc/docs/tutorials/training.md"
     }
 }

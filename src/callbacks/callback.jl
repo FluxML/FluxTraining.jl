@@ -20,7 +20,7 @@ Any `Callback` can be used by passing it to [`Learner`](#). See
 
 ## Extending
 
-See [Custom callbacks](/documents/docs/callbacks/custom.md) for a less
+See [Custom callbacks](/docs/docs/callbacks/custom.md) for a less
 succinct tutorial format.
 
 1. Create a `struct MyCallback` that subtypes `FluxTraining.Callback`.

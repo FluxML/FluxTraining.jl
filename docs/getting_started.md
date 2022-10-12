@@ -2,10 +2,10 @@
 
 Let's look at a simple training example. In *FluxTraining.jl*, a [`Learner`](#) holds all state necessary for training. To get started, you need
 
-- a [model](/documents/docs/background/model.md)
-- training and validation [data iterators](/documents/docs/background/dataiterator.md)
-- a [loss function](/documents/docs/background/lossfunction.md); and
-- an [optimizer](/documents/docs/background/optimizer.md)
+- a [model](/doc/docs/background/model.md)
+- training and validation [data iterators](/doc/docs/background/dataiterator.md)
+- a [loss function](/doc/docs/background/lossfunction.md); and
+- an [optimizer](/doc/docs/background/optimizer.md)
 
 First we define the necessary pieces:
 

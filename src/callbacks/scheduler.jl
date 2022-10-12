@@ -4,7 +4,7 @@
 Callback for hyperparameter scheduling. Takes pairs of [`HyperParameter`](#)
 types and [ParameterSchedulers.jl schedules](https://darsnack.github.io/ParameterSchedulers.jl/dev/README.html).
 
-See [the tutorial](/documents/docs/tutorials/hyperparameters.md) for more information.
+See [the tutorial](/docs/docs/tutorials/hyperparameters.md) for more information.
 
 ## Example
 
