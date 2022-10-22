@@ -664,7 +664,7 @@ url_prefix = ""
     url = "FluxTraining@dev/ref/FluxTraining.errorwriteconflict"
     [[input.files]]
     title = "FluxTraining/FluxTraining.jl"
-    contents = "FluxTraining Graphs BSON Flux Flux Params onecold Flux Optimise update! ImageCore InlineTest Glob Reexport OnlineStats OnlineStats EqualWeight Mean OnlineStat Optimisers Parameters ProgressMeter Progress next! Statistics mean UUIDs Zygote ChainRulesCore ParameterSchedulers TensorBoardLogger TBLogger log_value log_image log_text log_histogram tb_overwrite Zygote Grads gradient ValueHistories DataStructures DefaultDict PrettyTables Setfield include include include include include include include include include include include include include include include include include include include include include include include include include Schedule \n"
+    contents = "FluxTraining Graphs BSON Flux Flux Params onecold Flux Optimise update! ImageCore InlineTest Glob Reexport OnlineStats OnlineStats EqualWeight Mean OnlineStat Optimisers Parameters ProgressMeter Progress next! Statistics mean UUIDs Zygote ChainRulesCore ParameterSchedulers TensorBoardLogger TBLogger log_value log_image log_text log_histogram tb_overwrite Zygote Grads gradient ValueHistories DataStructures DefaultDict PrettyTables Setfield SnoopPrecompile include include include include include include include include include include include include include include include include include include include include include include include include include SnoopPrecompile learner learner Schedule \n"
     url = "FluxTraining@dev/src/FluxTraining.jl"
     [[input.files]]
     title = "onecycle"
