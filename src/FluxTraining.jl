@@ -30,6 +30,8 @@ using DataStructures: DefaultDict
 using PrettyTables
 using Setfield: @set
 
+import SnoopPrecompile
+
 # functional
 include("./functional/metrics.jl")
 
@@ -70,6 +72,13 @@ include("./callbackutils.jl")
 include("./training.jl")
 
 include("testutils.jl")
+
+
+SnoopPrecompile.@precompile_all_calls begin
+    learner = testlearner()
+    fit!(learner, 1)
+end
+
 
 export AbstractCallback,
     Loss,
