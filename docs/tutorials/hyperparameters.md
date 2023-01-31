@@ -21,7 +21,7 @@ As an example
 
 We can create the callback scheduling the learning rate according to `Scheduler(LearningRate => schedule)`.
 
-`Schedule`s are built around [*ParameterSchedulers.jl*](https://darsnack.github.io/ParameterSchedulers.jl/dev/). See that package's documentation for more details on how to construct them.
+`Schedule`s are built around [*ParameterSchedulers.jl*](https://github.com/FluxML/ParameterSchedulers.jl). See that package's documentation for more details on how to construct them.
 
 ### One-cycle learning rate
 
@@ -55,7 +55,7 @@ learner = model(model, data, opt, lossfn, Scheduler(LearningRate => schedule))
 ```
 
 For convenience, you can also use the [`onecycle`](#) helper to create this `Schedule`.
-See [ParameterSchedulers.jl documentation](https://darsnack.github.io/ParameterSchedulers.jl/dev/docs/tutorials/warmup-schedules.html) for more details on warm-up schedules.
+See [ParameterSchedulers.jl documentation](https://fluxml.ai/ParameterSchedulers.jl/dev/docs/tutorials/warmup-schedules.html) for more details on warm-up schedules.
 
 ## Extending
 
