@@ -2,7 +2,7 @@
     Scheduler(schedules...)
 
 Callback for hyperparameter scheduling. Takes pairs of [`HyperParameter`](#)
-types and [ParameterSchedulers.jl schedules](https://darsnack.github.io/ParameterSchedulers.jl/dev/README.html).
+types and [ParameterSchedulers.jl schedules](https://github.com/FluxML/ParameterSchedulers.jl).
 
 See [the tutorial](/docs/docs/tutorials/hyperparameters.md) for more information.
 
