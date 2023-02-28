@@ -74,11 +74,12 @@ function Learner(model, lossfn; callbacks = [], data = (), optimizer = ADAM(), k
 end
 
 
+# note that Vararg is covariant, using Vararg{<:Callback} produces warning
 """
     Learner(model, data, optimizer, lossfn, [callbacks...; kwargs...])
 """
 function Learner(
-        model, data, optimizer, lossfn, callbacks::Vararg{<:Callback};
+        model, data, optimizer, lossfn, callbacks::Vararg{Callback};
         usedefaultcallbacks=true, cbrunner=LinearRunner()
     )
     callbacks = collect(Callback, callbacks)
