@@ -30,7 +30,7 @@ using DataStructures: DefaultDict
 using PrettyTables
 using Setfield: @set
 
-import SnoopPrecompile
+import PrecompileTools
 
 # functional
 include("./functional/metrics.jl")
@@ -74,7 +74,7 @@ include("./training.jl")
 include("testutils.jl")
 
 
-SnoopPrecompile.@precompile_all_calls begin
+PrecompileTools.@compile_workload begin
     learner = testlearner()
     fit!(learner, 1)
 end
