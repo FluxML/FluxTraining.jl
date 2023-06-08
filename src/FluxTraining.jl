@@ -26,7 +26,7 @@ using ParameterSchedulers
 using TensorBoardLogger: TBLogger, log_value, log_image, log_text, log_histogram, tb_overwrite
 using Zygote: Grads, gradient
 using ValueHistories
-using DataStructures: DefaultDict
+using DataStructures: DefaultDict, PriorityQueue, enqueue!, dequeue!
 using PrettyTables
 using Setfield: @set
 
