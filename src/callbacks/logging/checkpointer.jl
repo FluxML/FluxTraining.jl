@@ -14,6 +14,7 @@ struct Checkpointer <: Callback
     top_k::PriorityQueue{<:AbstractString, <:Real}
     function Checkpointer(folder; keep_top_k::Union{Integer, Nothing}=nothing)
         mkpath(folder)
+        # notice that in Julia, the PriorityQueue gives you elements with the *lowest* priority first
         return new(folder, keep_top_k, PriorityQueue{String, Float64}(Base.Order.Reverse))
     end
 end
@@ -41,9 +42,9 @@ try_fs_remove(path::String) =
     catch e; @warn e; end
 
 
-"Makes sure only the best k and the latest checkpoints are kept on disk.
-Note that priority queue may have k+1 elements, also tracking the latest model."
+"Makes sure only the best k and the latest checkpoints are kept on disk."
 function process_top_k_checkpoints(checkpointer::Checkpointer, new_checkpoint::String, new_loss::Real)
+    # Note that priority queue may have k+1 elements, also tracking the latest model.
     @assert length(checkpointer.top_k) <= checkpointer.keep_top_k+1
     if length(checkpointer.top_k) > checkpointer.keep_top_k  # if previous model was not in top k
         worst_checkpoint = dequeue!(checkpointer.top_k)
