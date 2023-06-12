@@ -14,7 +14,7 @@ struct Checkpointer <: Callback
     top_k::PriorityQueue{<:AbstractString, <:Real}
     function Checkpointer(folder; keep_top_k::Union{Integer, Nothing}=nothing)
         mkpath(folder)
-        # notice that in Julia, the PriorityQueue gives you elements with the *lowest* priority first
+        # We reverse PriorityQueue ordering, since in Julia it defaults to returning *lowest* priority first.
         return new(folder, keep_top_k, PriorityQueue{String, Float64}(Base.Order.Reverse))
     end
 end
@@ -26,8 +26,8 @@ stateaccess(::Checkpointer) = (
 )
 
 function on(::EpochEnd, phase::AbstractTrainingPhase, checkpointer::Checkpointer, learner)
-    epoch = learner.cbstate.history[phase].epochs
     loss = last(learner.cbstate.metricsepoch[phase], :Loss)[2]
+    epoch = learner.cbstate.history[phase].epochs
     filename = "checkpoint_epoch_$(lpad(string(epoch), 3, '0'))_loss_$loss.bson"
 
     savemodel(learner.model, joinpath(checkpointer.folder, filename))
@@ -44,16 +44,18 @@ try_fs_remove(path::String) =
 
 "Makes sure only the best k and the latest checkpoints are kept on disk."
 function process_top_k_checkpoints(checkpointer::Checkpointer, new_checkpoint::String, new_loss::Real)
-    # Note that priority queue may have k+1 elements, also tracking the latest model.
+    # Note that priority queue may have k+1 elements, also tracking the most recent checkpoint.
     @assert length(checkpointer.top_k) <= checkpointer.keep_top_k+1
-    if length(checkpointer.top_k) > checkpointer.keep_top_k  # if previous model was not in top k
-        worst_checkpoint = dequeue!(checkpointer.top_k)
-        try_fs_remove(joinpath(checkpointer.folder, worst_checkpoint))
+    if length(checkpointer.top_k) == checkpointer.keep_top_k+1  # if most recent checkpoint was worst, remove it
+        most_recent_checkpoint = dequeue!(checkpointer.top_k)
+        try_fs_remove(joinpath(checkpointer.folder, most_recent_checkpoint))
     end
     enqueue!(checkpointer.top_k, new_checkpoint=>new_loss)
-    if length(checkpointer.top_k) > checkpointer.keep_top_k && peek(checkpointer.top_k)[1] != new_checkpoint
-        worst_checkpoint = dequeue!(checkpointer.top_k)
-        try_fs_remove(joinpath(checkpointer.folder, worst_checkpoint))
+    if (length(checkpointer.top_k) > checkpointer.keep_top_k  # We try to shorten the queue...
+        && peek(checkpointer.top_k)[1] != new_checkpoint)     # ...but don't remove new checkpoint even if it's the worst,
+                                                              # potentially creating (k+1) elements.
+        worst_checkpoint_that_is_not_new = dequeue!(checkpointer.top_k)
+        try_fs_remove(joinpath(checkpointer.folder, worst_checkpoint_that_is_not_new))
     end
 end
 
