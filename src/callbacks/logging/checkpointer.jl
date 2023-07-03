@@ -10,11 +10,12 @@ Use `FluxTraining.`[`loadmodel`](#) to load a model.
 """
 struct Checkpointer <: Callback
     folder
-    keep_top_k::Union{Integer, Nothing}
+    keep_top_k::Union{Int, Nothing}
     top_k::PriorityQueue{<:AbstractString, <:Real}
-    function Checkpointer(folder; keep_top_k::Union{Integer, Nothing}=nothing)
+    function Checkpointer(folder; keep_top_k::Union{Int, Nothing}=nothing)
         mkpath(folder)
-        # We reverse PriorityQueue ordering, since in Julia it defaults to returning *lowest* priority first.
+        # We want to pop the worst checkpoints, i.e. with highest loss.
+        # Therefore, we must reverse Julia's PriorityQueue ordering, which defaults to lowest first.
         return new(folder, keep_top_k, PriorityQueue{String, Float64}(Base.Order.Reverse))
     end
 end
@@ -37,10 +38,6 @@ function on(::EpochEnd, phase::AbstractTrainingPhase, checkpointer::Checkpointer
     end
 end
 
-try_fs_remove(path::String) =
-    try; Base.Filesystem.rm(path)
-    catch e; @warn e; end
-
 
 "Makes sure only the best k and the latest checkpoints are kept on disk."
 function process_top_k_checkpoints(checkpointer::Checkpointer, new_checkpoint::String, new_loss::Real)
@@ -48,14 +45,16 @@ function process_top_k_checkpoints(checkpointer::Checkpointer, new_checkpoint::S
     @assert length(checkpointer.top_k) <= checkpointer.keep_top_k+1
     if length(checkpointer.top_k) == checkpointer.keep_top_k+1  # if most recent checkpoint was worst, remove it
         most_recent_checkpoint = dequeue!(checkpointer.top_k)
-        try_fs_remove(joinpath(checkpointer.folder, most_recent_checkpoint))
+        rm(joinpath(checkpointer.folder, most_recent_checkpoint);
+           force=true)  # force=true so that an error doesn't cancel the training
     end
     enqueue!(checkpointer.top_k, new_checkpoint=>new_loss)
     if (length(checkpointer.top_k) > checkpointer.keep_top_k  # We try to shorten the queue...
         && peek(checkpointer.top_k)[1] != new_checkpoint)     # ...but don't remove new checkpoint even if it's the worst,
                                                               # potentially creating (k+1) elements.
         worst_checkpoint_that_is_not_new = dequeue!(checkpointer.top_k)
-        try_fs_remove(joinpath(checkpointer.folder, worst_checkpoint_that_is_not_new))
+        rm(joinpath(checkpointer.folder, worst_checkpoint_that_is_not_new);
+           force=true)  # force=true so that an error doesn't cancel the training
     end
 end
 
