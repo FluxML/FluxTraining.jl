@@ -40,7 +40,7 @@ url_prefix = ""
     url = "FluxTraining@dev/src/callbacks/hyperparameters.jl"
     [[input.files]]
     title = "FluxTraining/callbacks/logging/checkpointer.jl"
-    contents = "folder folder mkpath folder new folder model cbstate metricsepoch history phase checkpointer learner loss last learner cbstate metricsepoch phase epoch learner cbstate history phase epochs filename lpad string epoch loss learner model joinpath checkpointer folder filename model path path model cpu model path path model model \n"
+    contents = "folder keep_top_k Union Int Nothing top_k PriorityQueue AbstractString Real folder keep_top_k Union Int Nothing nothing mkpath folder new folder keep_top_k PriorityQueue String Float64 Base Order Reverse model cbstate metricsepoch history phase checkpointer learner loss last learner cbstate metricsepoch phase epoch learner cbstate history phase epochs filename lpad string epoch loss learner model joinpath checkpointer folder filename isnothing checkpointer keep_top_k checkpointer filename loss checkpointer new_checkpoint String new_loss Real length checkpointer top_k checkpointer keep_top_k length checkpointer top_k checkpointer keep_top_k most_recent_checkpoint dequeue! checkpointer top_k rm joinpath checkpointer folder most_recent_checkpoint force enqueue! checkpointer top_k new_checkpoint new_loss length checkpointer top_k checkpointer keep_top_k peek checkpointer top_k new_checkpoint worst_checkpoint_that_is_not_new dequeue! checkpointer top_k rm joinpath checkpointer folder worst_checkpoint_that_is_not_new force model path path model cpu model path path model model \n"
     url = "FluxTraining@dev/src/callbacks/logging/checkpointer.jl"
     [[input.files]]
     title = "Hyperparameter scheduling"
@@ -244,7 +244,7 @@ url_prefix = ""
     url = "FluxTraining@dev/src/callbacks/logging/Loggables.jl"
     [[input.files]]
     title = "Checkpointer"
-    contents = "Checkpointer(folder)\nSaves learner.model to folder after every AbstractTrainingPhase.\nUse FluxTraining.loadmodel to load a model.\n\n"
+    contents = "Checkpointer(folder)\nSaves learner.model to folder after every AbstractTrainingPhase. If keep_top_k is provided, only the best k models (by smallest training loss) and the latest model are kept.\nUse FluxTraining.loadmodel to load a model.\n\n"
     url = "FluxTraining@dev/ref/FluxTraining.Checkpointer"
     [[input.files]]
     title = "FluxTraining/callbacks/sanitycheck.jl"
@@ -664,7 +664,7 @@ url_prefix = ""
     url = "FluxTraining@dev/ref/FluxTraining.errorwriteconflict"
     [[input.files]]
     title = "FluxTraining/FluxTraining.jl"
-    contents = "FluxTraining Graphs BSON Flux Flux Params onecold Flux Optimise update! ImageCore InlineTest Glob Reexport OnlineStats OnlineStats EqualWeight Mean OnlineStat Optimisers Parameters ProgressMeter Progress next! Statistics mean UUIDs Zygote ChainRulesCore ParameterSchedulers TensorBoardLogger TBLogger log_value log_image log_text log_histogram tb_overwrite Zygote Grads gradient ValueHistories DataStructures DefaultDict PrettyTables Setfield PrecompileTools include include include include include include include include include include include include include include include include include include include include include include include include include PrecompileTools learner learner Schedule \n"
+    contents = "FluxTraining Graphs BSON Flux Flux Params onecold Flux Optimise update! ImageCore InlineTest Glob Reexport OnlineStats OnlineStats EqualWeight Mean OnlineStat Optimisers Parameters ProgressMeter Progress next! Statistics mean UUIDs Zygote ChainRulesCore ParameterSchedulers TensorBoardLogger TBLogger log_value log_image log_text log_histogram tb_overwrite Zygote Grads gradient ValueHistories DataStructures DefaultDict PriorityQueue enqueue! dequeue! PrettyTables Setfield PrecompileTools include include include include include include include include include include include include include include include include include include include include include include include include include PrecompileTools learner learner Schedule \n"
     url = "FluxTraining@dev/src/FluxTraining.jl"
     [[input.files]]
     title = "onecycle"
@@ -706,6 +706,10 @@ url_prefix = ""
     title = "Training an image classifier"
     contents = "Training an image classifier\n\nLet's put FluxTraining.jl to train a model on the MNIST dataset.\nMNIST is simple enough that we can focus on the part where FluxTraining.jl comes in, the training. If you want to see examples of using FluxTraining.jl on larger datasets, see the documentation of FastAI.jl.\n\nSetup\n\nIf you want to run this tutorial yourself, you can find the notebook file here.\n\nTo make data loading and batching a bit easier, we'll install an additional dependency:\n\nPkg Pkg add \n\nNow we can import everything we'll need.\n\nMLUtils splitobs unsqueeze MLDatasets MNIST Flux Flux onehotbatch Flux Data DataLoader FluxTraining \nOverview\n\nThere are 4 pieces that you always need to construct and train a Learner:\na model\n\ndata\n\nan optimizer; and\n\na loss function\n\n\n\nBuilding a Learner\n\nLet's look at the data first.\nFluxTraining.jl is agnostic of the data source. The only requirements are:\nit is iterable and each iteration returns a tuple (xs, ys)\n\nthe model can take in xs, i.e. model(xs) works; and\n\nthe loss function can take model outputs and ys, i.e. lossfn(model(xs), ys) returns a scalar\n\n\n\nGlossing over the details as it's not the focus of this tutorial, here's the code for getting a data iterator of the MNIST dataset. We use DataLoaders.DataLoader to create an iterator of batches from our dataset.\n\ndata MNIST train LABELS preprocess data targets unsqueeze data onehotbatch targets LABELS traindata MNIST Float32 train preprocess testdata MNIST Float32 test preprocess trainiter testiter DataLoader traindata batchsize DataLoader testdata batchsize \nNext, let's create a simple Flux.jl model that we'll train to classify the MNIST digits.\n\nmodel Chain Conv relu pad stride Conv relu pad GlobalMeanPool Flux flatten Dense \nWe'll use categorical cross entropy as a loss function and ADAM as an optimizer.\n\nlossfn Flux Losses logitcrossentropy optimizer Flux ADAM \nNow we're ready to create a Learner. At this point you can also add any callbacks, like ToGPU to run the training on your GPU if you have one available. Some callbacks are also included by default.\nSince we're classifying digits, we also use the Metrics callback to track the accuracy of the model's predictions:\n\nlearner model lossfn callbacks optimizer \nTraining\n\nWith a Learner in place, training is as simple as calling fit!(learner, nepochs, dataiters).\n\nFluxTraining learner trainiter testiter \n\n"
     url = "FluxTraining@dev/doc/docs/tutorials/mnist.ipynb"
+    [[input.files]]
+    title = "process_top_k_checkpoints"
+    contents = "Makes sure only the best k and the latest checkpoints are kept on disk.\n\n"
+    url = "FluxTraining@dev/ref/FluxTraining.process_top_k_checkpoints"
     [[input.files]]
     title = "FluxTraining/functional/metrics.jl"
     contents = "y_pred y mean onecold y_pred onecold y \n"
