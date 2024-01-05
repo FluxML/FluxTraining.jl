@@ -4,3 +4,4 @@
 /Manifest.toml
 **/.ipynb_checkpoints
 theme
+.vscode
