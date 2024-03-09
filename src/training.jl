@@ -165,8 +165,17 @@ fit!(learner, 10, (traindl, valdl))
 """
 function fit!(learner, nepochs::Int, (trainiter, validiter))
     for i in 1:nepochs
-        epoch!(learner, TrainingPhase(), trainiter)
-        epoch!(learner, ValidationPhase(), validiter)
+        try
+            epoch!(learner, TrainingPhase(), trainiter)
+            epoch!(learner, ValidationPhase(), validiter)
+        catch e
+            if e isa CancelFittingException
+                @debug "Fitting canceled" error = e
+                break
+            else
+                rethrow()
+            end
+        end
     end
 end
 
