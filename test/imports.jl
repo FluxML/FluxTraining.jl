@@ -1,7 +1,7 @@
 using ReTest
 import Optimisers
 using FluxTraining
-using ParameterSchedulers
+import ParameterSchedulers: Interpolator, Poly, CosAnneal
 using Colors
 using ImageIO
 using FluxTraining: protect, Events, Phases, runstep, runepoch, epoch!, step!, testlearner, SanityCheckException

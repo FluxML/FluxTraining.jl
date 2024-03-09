@@ -27,7 +27,7 @@ include("../imports.jl")
     end
 
     @testset "Regression test for #122" begin
-        learner = testlearner(Recorder(), Scheduler(LearningRate => ParameterSchedulers.CosAnneal(λ0=0,λ1=0,period=0)), ToGPU())
+        learner = testlearner(Recorder(), Scheduler(LearningRate => CosAnneal(λ0=0,λ1=0,period=0)), ToGPU())
         @test_nowarn FluxTraining.Graphs.topological_sort_by_dfs(learner.callbacks.graph)
     end
 end
