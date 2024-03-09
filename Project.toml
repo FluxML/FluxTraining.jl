@@ -1,7 +1,7 @@
 name = "FluxTraining"
 uuid = "7bf95e4d-ca32-48da-9824-f0dc5310474f"
 authors = ["lorenzoh <lorenz.ohly@gmail.com>"]
-version = "0.3.9"
+version = "0.3.10"
 
 [deps]
 BSON = "fbb218c0-5317-5bc6-957e-2ee96dd4b1f0"
@@ -40,7 +40,7 @@ ImageCore = "0.8, 0.9, 0.10"
 InlineTest = "0.2"
 OnlineStats = "1.5"
 Optimisers = "0.2, 0.3"
-ParameterSchedulers = "0.3.1"
+ParameterSchedulers = "0.3.1, 0.4"
 Parameters = "0.12"
 PrecompileTools = "1"
 PrettyTables = "1, 1.1, 1.2, 2"

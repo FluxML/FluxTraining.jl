@@ -22,7 +22,8 @@ using Statistics: mean
 using UUIDs
 using Zygote
 using ChainRulesCore
-using ParameterSchedulers
+import ParameterSchedulers
+import ParameterSchedulers: Sequence, Shifted, Sin
 using TensorBoardLogger: TBLogger, log_value, log_image, log_text, log_histogram, tb_overwrite
 using Zygote: Grads, gradient
 using ValueHistories
