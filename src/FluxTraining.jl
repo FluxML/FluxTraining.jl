@@ -47,6 +47,8 @@ include("./callbacks/execution.jl")
 # logging
 include("./callbacks/logging/Loggables.jl")
 include("./callbacks/logging/logger.jl")
+include("./callbacks/logging/combinename.jl")
+include("./callbacks/logging/mlflow.jl")
 include("./callbacks/logging/tensorboard.jl")
 include("./callbacks/logging/checkpointer.jl")
 
@@ -111,6 +113,7 @@ export AbstractCallback,
     LogHyperParams,
     LogVisualization,
     TensorBoardBackend,
+    MLFlowBackend,
     StopOnNaNLoss,
     LearningRate,
     throttle,

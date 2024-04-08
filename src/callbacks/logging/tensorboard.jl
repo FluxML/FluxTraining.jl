@@ -44,9 +44,3 @@ function log_to(backend::TensorBoardBackend, hist::Loggables.Histogram, name, i;
     name = _combinename(name, group)
     log_histogram(backend.logger, name, hist.data, step=i)
 end
-
-# Utilities
-
-_combinename(name, group::String) = _combinename((group, name))
-_combinename(name, group::Tuple) = _combinename((group..., name))
-_combinename(strings::Tuple) = join(strings, '/')
