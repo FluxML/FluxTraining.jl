@@ -6,6 +6,8 @@
 ### Added
 
 - Support for [Optimisers.jl](https://github.com/FluxML/Optimisers.jl) https://github.com/FluxML/FluxTraining.jl/pull/114.
+- `Learner` now contains a `metadata` container for storing information that is relevant to training
+  but not part of the training state or callback state. Useful for custom training phases.
 
 ## [0.3.0] - 04.04.2022
 

@@ -22,6 +22,7 @@ mutable struct Learner
     step::PropDict
     callbacks::Callbacks
     cbstate::PropDict
+    metadata::PropDict
 end
 
 
@@ -68,6 +69,10 @@ Keyword arguments (optional):
     save state to for other callbacks. Its keys depend on what callbacks
     are being used. See the [custom callbacks guide](/docs/docs/callbacks/custom.md)
     for more info.
+- `metadata::`[`PropDict`](#): A container to hold useful metadata associated
+    with the `Learner`. Defaults to an empty container for standard training.
+    This can be useful for storing hyper-parameters for
+    unconventional custom training methods.
 """
 function Learner(model, lossfn; callbacks = [], data = (), optimizer = ADAM(), kwargs...)
     return Learner(model, data, optimizer, lossfn, callbacks...; kwargs...)
@@ -102,6 +107,7 @@ function Learner(
         setupoptimstate(model, optimizer),
         PropDict(),
         cbs,
+        PropDict(),
         PropDict())
     init!(cbs, learner)
     return learner
