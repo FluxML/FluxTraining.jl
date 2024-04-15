@@ -33,6 +33,7 @@ jobs:
           python -m pip install mlflow
           python -m pip show mlflow
           mlflow server --host localhost --port 5000 &
+          sleep 5
       - uses: julia-actions/julia-buildpkg@latest
       - uses: julia-actions/julia-runtest@latest
         env:
