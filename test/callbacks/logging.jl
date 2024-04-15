@@ -1,9 +1,14 @@
 include("../imports.jl")
 
 tbbackend() = TensorBoardBackend(mktempdir())
+mlflowbackend() = MLFlowBackend(tracking_uri=ENV["MLFLOW_URI"])
 
 @testset "`LogMetrics`" begin
     cb = LogMetrics(tbbackend())
+    learner = testlearner(Metrics(accuracy), Recorder(), cb)
+    @test_nowarn fit!(learner, 1)
+
+    cb = LogMetrics(mlflowbackend())
     learner = testlearner(Metrics(accuracy), Recorder(), cb)
     @test_nowarn fit!(learner, 1)
 end
