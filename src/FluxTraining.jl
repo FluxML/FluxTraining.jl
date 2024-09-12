@@ -25,6 +25,7 @@ using ChainRulesCore
 import ParameterSchedulers
 import ParameterSchedulers: Sequence, Shifted, Sin
 using TensorBoardLogger: TBLogger, log_value, log_image, log_text, log_histogram, tb_overwrite
+using MLFlowClient
 using Zygote: Grads, gradient
 using ValueHistories
 using DataStructures: DefaultDict, PriorityQueue, enqueue!, dequeue!
@@ -48,6 +49,7 @@ include("./callbacks/execution.jl")
 include("./callbacks/logging/Loggables.jl")
 include("./callbacks/logging/logger.jl")
 include("./callbacks/logging/tensorboard.jl")
+include("./callbacks/logging/mlflow.jl")
 include("./callbacks/logging/checkpointer.jl")
 
 
@@ -111,6 +113,7 @@ export AbstractCallback,
     LogHyperParams,
     LogVisualization,
     TensorBoardBackend,
+    MLFlowBackend,
     StopOnNaNLoss,
     LearningRate,
     throttle,
