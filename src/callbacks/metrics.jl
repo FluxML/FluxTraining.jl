@@ -171,7 +171,7 @@ If a metric is expensive to compute and you don't want it to slow down the
 training phase, you can compute it on the validation phase only:
 
 ```julia
-cb = Metric(expensivemetric, P = ValidationPhase)
+cb = Metric(expensivemetric, phase = ValidationPhase)
 ```
 """
 function Metric(
